@@ -54,6 +54,7 @@
             z-index: 9990;
         }
 
+        /* Video Player Styling */
         .video-container {
             position: relative;
             width: 100%;
@@ -63,11 +64,12 @@
             border: 1px solid rgba(6, 182, 212, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        video { width: 100%; display: block; height: auto; }
+        video { width: 100%; display: block; }
     </style>
 </head>
 <body class="selection:bg-cyan-500 selection:text-black">
 
+    <!-- Pop Up Pengumuman -->
     <div id="announcementPopup" class="fixed inset-0 bg-black/90 z-[10000] hidden items-center justify-center p-6 backdrop-blur-md">
         <div class="glass-card border-2 border-cyan-500 rounded-[32px] p-8 max-w-xs w-full text-center relative animate-up">
             <div class="text-5xl mb-4">🚀</div>
@@ -77,6 +79,7 @@
         </div>
     </div>
 
+    <!-- Container Auth -->
     <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
         <div id="loginBox" class="w-full max-w-sm animate-up">
             <div class="text-center mb-10">
@@ -104,6 +107,7 @@
         </div>
     </div>
 
+    <!-- Dashboad Main -->
     <div id="dashboard" class="hidden h-screen flex flex-col pb-20">
         <div class="p-5 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-50 border-b border-white/5">
             <div class="flex items-center gap-4">
@@ -123,6 +127,7 @@
         </div>
 
         <main class="flex-1 overflow-y-auto p-5 custom-scrollbar">
+            <!-- Section Berita & Video -->
             <div id="newsBox" class="section animate-up">
                 <div class="bg-gradient-to-br from-cyan-600 to-cyan-800 p-8 rounded-[32px] text-black shadow-2xl relative overflow-hidden mb-6">
                     <div class="relative z-10">
@@ -133,21 +138,22 @@
                     <div class="absolute -right-5 -bottom-5 opacity-20 text-9xl">📈</div>
                 </div>
 
-                <!-- VIDEO PLAYER UPDATED -->
-                <div class="space-y-4 mb-10">
+                <!-- VIDEO PLAYER - POSISI DI BAWAH KOTAK BIRU -->
+                <div class="space-y-4">
                     <h3 class="text-sm font-black text-cyan-400 uppercase tracking-widest flex items-center gap-2">
-                        <span class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span> Pengertian Investasi
+                        <span class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span> Video Edukasi Page421
                     </h3>
                     <div class="video-container">
-                        <video controls poster="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=800&auto=format&fit=crop">
-                            <source src="https://archive.org/download/ConceptOfInvestment/ConceptOfInvestment.mp4" type="video/mp4">
+                        <video controls poster="https://images.unsplash.com/photo-1611974714652-960201dc8394?q=80&w=800&auto=format&fit=crop">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                             Browser anda tidak mendukung video.
                         </video>
                     </div>
-                    <p class="text-[10px] text-gray-400 italic text-center">Video edukasi mengenai dasar-dasar investasi dan cara kerjanya.</p>
+                    <p class="text-[10px] text-gray-500 italic text-center">Tonton video tutorial cara kerja investasi otomatis ini.</p>
                 </div>
             </div>
 
+            <!-- Quiz Section -->
             <div id="quizBox" class="section hidden space-y-4 animate-up">
                 <h3 class="text-lg font-extrabold mb-4 flex items-center gap-2">
                     <span class="w-2 h-6 bg-cyan-500 rounded-full"></span> Materi Dasar
@@ -159,6 +165,7 @@
                 </div>
             </div>
 
+            <!-- Invest Section -->
             <div id="investBox" class="section hidden animate-up">
                 <div class="glass-card rounded-[32px] p-6 border border-cyan-500/30">
                     <div class="flex justify-between items-start mb-6">
@@ -183,6 +190,7 @@
                 </div>
             </div>
 
+            <!-- Deposit Section -->
             <div id="depoBox" class="section hidden space-y-6 animate-up">
                 <div class="bg-white rounded-[32px] p-8 text-black text-center shadow-2xl relative overflow-hidden">
                     <p class="text-[10px] font-black opacity-50 uppercase tracking-widest">Fixed Deposit</p>
@@ -192,6 +200,7 @@
                 <div id="listDepo" class="space-y-3"></div>
             </div>
 
+            <!-- Penarikan Section -->
             <div id="tarikBox" class="section hidden space-y-6 animate-up">
                 <div class="glass-card rounded-[32px] p-8 text-center border-red-500/20">
                     <p id="saldoTarik" class="text-[10px] font-bold text-gray-500 mb-2 font-mono">SALDO: Rp 0</p>
@@ -208,6 +217,7 @@
             </div>
         </main>
 
+        <!-- Navbar Bawah -->
         <nav class="fixed bottom-0 left-0 right-0 bg-[#0a0a0a]/90 backdrop-blur-xl border-t border-white/5 px-6 py-3 flex justify-between items-center z-[9000]">
             <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/news.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Berita</span></button>
             <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/book-shelf.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Soal</span></button>
@@ -216,6 +226,7 @@
             <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/atm.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Tarik</span></button>
         </nav>
 
+        <!-- Chat Widget -->
         <button id="chatBtn" onclick="toggleChat()" class="w-14 h-14 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-cyan-500/40 active:scale-90 transition-all">
             <img src="https://img.icons8.com/ios-filled/50/000000/comments.png" class="w-7 h-7">
         </button>
@@ -233,11 +244,13 @@
         </div>
     </div>
 
+    <!-- Firebase SDK (Compatibility Mode) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
+        // KONFIGURASI FIREBASE (FIXED API KEY)
         const firebaseConfig = {
             apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
             authDomain: "page421-b9a6c.firebaseapp.com",
@@ -271,6 +284,7 @@
             }
         });
 
+        // Event listener rupiah formatting
         document.getElementById('nominalTarik').addEventListener('keyup', function(e) {
             let val = this.value.replace(/[^,\d]/g, '').toString();
             let split = val.split(',');
