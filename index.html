@@ -3,478 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🚀 Page421 - Investasi Premium</title>
+    <title>Investasi Page421</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.cdnfonts.com/css/neo-demi');
-        
         * { 
             font-family: 'Inter', sans-serif; 
             -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
+        }
+        body { background: #000; color: #fff; overflow-x: hidden; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-up { animation: slideUp 0.4s ease-out forwards; }
+        
+        .menu-active { color: #06b6d4 !important; }
+        .menu-active div { background: rgba(6, 182, 212, 0.1); border-radius: 12px; }
+
+        .glass-card {
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #chatWidget {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 15px;
+            left: 15px;
+            max-width: 400px;
+            height: 70vh;
+            z-index: 9999;
+            flex-direction: column;
+            background: #0f0f0f;
+            border: 1px solid #06b6d4;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin: auto;
         }
         
-        body { 
-            background: radial-gradient(ellipse at top, #0a0a0a 0%, #000 70%);
-            color: #fff; 
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Animated Background Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .particle {
-            position: absolute;
-            background: linear-gradient(45deg, #06b6d4, #3b82f6);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
-        }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { 
-            background: linear-gradient(45deg, #06b6d4, #3b82f6);
-            border-radius: 20px;
-        }
-
-        /* Glassmorphism Ultra */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 
-                0 8px 32px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 
-                0 20px 40px rgba(6, 182, 212, 0.2),
-                inset 0 1px 0 rgba(255,255,255,0.3);
-            border-color: rgba(6, 182, 212, 0.3);
-        }
-
-        /* Premium Animations */
-        @keyframes slideUp { 
-            from { transform: translateY(50px) scale(0.95); opacity: 0; } 
-            to { transform: translateY(0) scale(1); opacity: 1; } 
-        }
-        @keyframes glow { 
-            0%, 100% { box-shadow: 0 0 20px rgba(6,182,212,0.3); }
-            50% { box-shadow: 0 0 40px rgba(6,182,212,0.6); }
-        }
-        @keyframes pulse-glow { 
-            0%, 100% { box-shadow: 0 0 10px rgba(6,182,212,0.5); }
-            50% { box-shadow: 0 0 25px rgba(6,182,212,0.8); }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .animate-up { animation: slideUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-        .glow { animation: glow 2s ease-in-out infinite; }
-        .pulse-glow { animation: pulse-glow 1.5s ease-in-out infinite; }
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-
-        /* Neon Gradient Text */
-        .neon-text {
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #ec4899 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 300% 300%;
-            animation: gradientShift 3s ease infinite;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        /* Button Effects */
-        .btn-neon {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-neon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-        .btn-neon:hover::before { left: 100%; }
-        .btn-neon:active { transform: scale(0.95) !important; }
-
-        /* Floating Elements */
-        .floating { 
-            animation: float 4s ease-in-out infinite; 
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Menu Active */
-        .menu-active { 
-            transform: scale(1.1); 
-            color: #06b6d4 !important; 
-        }
-        .menu-active div { 
-            background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(59,130,246,0.2));
-            border-radius: 16px;
-            box-shadow: 0 0 20px rgba(6,182,212,0.3);
-        }
-
-        /* Chat Widget */
-        #chatWidget {
+        #chatBtn {
             display: none;
             position: fixed;
             bottom: 100px;
             right: 20px;
-            left: 20px;
-            max-width: 420px;
-            height: 75vh;
-            z-index: 9999;
-            flex-direction: column;
-            background: rgba(15,15,15,0.95);
-            backdrop-filter: blur(30px);
-            border: 2px solid transparent;
-            border-radius: 32px;
-            box-shadow: 
-                0 25px 50px -12px rgba(0,0,0,0.7),
-                0 0 0 1px rgba(6,182,212,0.3);
-            margin: auto;
-            animation: slideUpChat 0.4s ease-out;
-        }
-        @keyframes slideUpChat {
-            from { transform: translateY(100px) scale(0.8); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+            z-index: 9990;
         }
 
-        /* Video Container */
+        /* Video Player Styling */
         .video-container {
             position: relative;
-            border-radius: 28px;
+            width: 100%;
+            border-radius: 24px;
             overflow: hidden;
-            background: linear-gradient(135deg, #000 0%, #0a0a0a 100%);
-            border: 2px solid transparent;
-            box-shadow: 
-                0 20px 40px rgba(0,0,0,0.5),
-                inset 0 0 0 1px rgba(6,182,212,0.2);
-            transition: all 0.3s ease;
+            background: #000;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        .video-container:hover {
-            transform: translateY(-8px);
-            box-shadow: 
-                0 30px 60px rgba(6,182,212,0.2),
-                inset 0 0 0 2px rgba(6,182,212,0.4);
-        }
-
-        /* Auth Form */
-        .auth-form {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(20px);
-            border-radius: 32px;
-            border: 1px solid rgba(6,182,212,0.3);
-            box-shadow: 
-                0 25px 50px rgba(0,0,0,0.5),
-                0 0 0 1px rgba(6,182,212,0.2);
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            #chatWidget { left: 15px; right: 15px; bottom: 90px; }
-        }
+        video { width: 100%; display: block; }
     </style>
 </head>
-<body class="relative">
-    <!-- Animated Background Particles -->
-    <div class="particles" id="particles"></div>
+<body class="selection:bg-cyan-500 selection:text-black">
 
-    <!-- Welcome Popup -->
-    <div id="announcementPopup" class="fixed inset-0 bg-black/95 z-[10000] hidden flex items-center justify-center p-6 backdrop-blur-xl">
-        <div class="glass-card border-3 border-cyan-500/50 rounded-[40px] p-10 max-w-sm w-full text-center relative overflow-hidden animate-up glow">
-            <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-[40px]"></div>
-            <div class="relative z-10">
-                <div class="text-6xl mb-6 floating">🚀</div>
-                <h2 class="text-2xl font-black neon-text mb-4 tracking-[-0.05em] drop-shadow-2xl">Welcome Back!</h2>
-                <p class="text-gray-300 text-lg leading-relaxed mb-8 px-4">Pantau profit harianmu yang terus bertambah setiap 24 jam! 💰</p>
-                <button onclick="closePopup()" class="btn-neon w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-black font-black py-5 px-8 rounded-3xl text-lg shadow-2xl shadow-cyan-500/40 hover:shadow-cyan-500/60 active:shadow-cyan-500/80 transform hover:-translate-y-2 transition-all duration-300 uppercase tracking-wider">
-                    <i class="fas fa-rocket mr-2"></i>🚀 Mulai Trading
-                </button>
-            </div>
+    <!-- Pop Up Pengumuman -->
+    <div id="announcementPopup" class="fixed inset-0 bg-black/90 z-[10000] hidden items-center justify-center p-6 backdrop-blur-md">
+        <div class="glass-card border-2 border-cyan-500 rounded-[32px] p-8 max-w-xs w-full text-center relative animate-up">
+            <div class="text-5xl mb-4">🚀</div>
+            <h2 class="text-xl font-extrabold text-white mb-2">Halo Investor!</h2>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">Selamat datang kembali. Pantau profit harianmu sekarang!</p>
+            <button onclick="closePopup()" class="w-full bg-cyan-500 text-black font-bold py-3 rounded-xl shadow-lg shadow-cyan-500/20 uppercase tracking-widest text-xs">Mulai Sekarang</button>
         </div>
     </div>
 
-    <!-- Auth Container -->
-    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-8 z-[100] bg-gradient-to-br from-black via-gray-900/80 to-black">
-        <div id="loginBox" class="auth-form w-full max-w-md p-10 animate-up">
-            <div class="text-center mb-12 relative">
-                <div class="w-28 h-28 mx-auto mb-6 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-cyan-500/50 pulse-glow">
-                    <i class="fas fa-gem text-3xl text-black font-bold"></i>
-                </div>
-                <h1 class="text-5xl font-black neon-text tracking-[-0.1em] mb-2 drop-shadow-2xl">PAGE421</h1>
-                <p class="text-cyan-400 text-xl font-semibold uppercase tracking-widest letter-spacing-2">Premium Investment</p>
+    <!-- Container Auth -->
+    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
+        <div id="loginBox" class="w-full max-w-sm animate-up">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-black text-cyan-500 tracking-tighter">PAGE421</h1>
+                <p class="text-gray-500 text-xs mt-1 uppercase tracking-widest font-semibold">Investment Portal</p>
             </div>
-            
-            <div class="space-y-6">
-                <div class="relative group">
-                    <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-xl group-focus-within:text-cyan-300"></i>
-                    <input id="loginUser" type="email" placeholder="✨ Masukkan Email" 
-                           class="w-full bg-[#0d0d0d]/80 border border-white/10 pl-12 pr-6 py-5 rounded-3xl outline-none focus:ring-4 ring-cyan-500/30 focus:border-cyan-500/50 text-lg backdrop-blur-sm transition-all duration-300 placeholder-gray-500">
-                </div>
-                <div class="relative group">
-                    <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-xl group-focus-within:text-cyan-300"></i>
-                    <input id="loginPass" type="password" placeholder="🔐 Kata Sandi" 
-                           class="w-full bg-[#0d0d0d]/80 border border-white/10 pl-12 pr-6 py-5 rounded-3xl outline-none focus:ring-4 ring-cyan-500/30 focus:border-cyan-500/50 text-lg backdrop-blur-sm transition-all duration-300 placeholder-gray-500">
-                </div>
-                <button onclick="login()" class="btn-neon w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-black font-black py-6 px-8 rounded-3xl text-xl shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-500/70 active:shadow-cyan-500/90 transform hover:-translate-y-2 active:scale-95 transition-all duration-300 uppercase tracking-wider">
-                    <i class="fas fa-sign-in-alt mr-3"></i>Login Premium
-                </button>
+            <div class="space-y-4">
+                <input id="loginUser" type="email" placeholder="Alamat Email" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
+                <input id="loginPass" type="password" placeholder="Kata Sandi" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
+                <button onclick="login()" class="w-full bg-cyan-500 text-black font-extrabold p-4 rounded-2xl hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">MASUK</button>
             </div>
-            <p class="mt-12 text-center text-sm text-gray-400 font-medium">
-                Belum punya akun? 
-                <span onclick="toggleAuth(true)" class="neon-text cursor-pointer font-black hover:scale-105 transition-all">Daftar Gratis</span>
-            </p>
+            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold">Daftar Sekarang</span></p>
         </div>
 
-        <div id="registerBox" class="hidden auth-form w-full max-w-md p-10 animate-up">
-            <div class="text-center mb-12">
-                <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-emerald-500/50 pulse-glow">
-                    <i class="fas fa-user-plus text-2xl text-black font-bold"></i>
-                </div>
-                <h1 class="text-4xl font-black text-white tracking-[-0.05em] mb-3">Join Premium</h1>
-                <p class="text-emerald-400 text-lg font-semibold">Daftar sekarang dapat bonus Rp 10.000!</p>
+        <div id="registerBox" class="hidden w-full max-w-sm animate-up">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-black text-white tracking-tighter">BUAT AKUN</h1>
             </div>
-            <div class="space-y-6">
-                <div class="relative group">
-                    <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400 text-xl"></i>
-                    <input id="regUser" type="email" placeholder="📧 Email Baru" 
-                           class="w-full bg-[#0d0d0d]/80 border border-white/10 pl-12 pr-6 py-5 rounded-3xl outline-none focus:ring-4 ring-emerald-500/30 text-lg backdrop-blur-sm transition-all">
-                </div>
-                <div class="relative group">
-                    <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400 text-xl"></i>
-                    <input id="regPass" type="password" placeholder="🔐 Password (Min 6)" 
-                           class="w-full bg-[#0d0d0d]/80 border border-white/10 pl-12 pr-6 py-5 rounded-3xl outline-none focus:ring-4 ring-emerald-500/30 text-lg backdrop-blur-sm transition-all">
-                </div>
-                <button onclick="register()" class="btn-neon w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black py-6 px-8 rounded-3xl text-xl shadow-2xl shadow-emerald-500/50 hover:shadow-emerald-500/70 active:scale-95 transition-all duration-300 uppercase tracking-wider">
-                    <i class="fas fa-user-plus mr-3"></i>Buat Akun Premium
-                </button>
+            <div class="space-y-4">
+                <input id="regUser" type="email" placeholder="Email Baru" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
+                <input id="regPass" type="password" placeholder="Password (Min 6 Karakter)" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
+                <button onclick="register()" class="w-full bg-white text-black font-extrabold p-4 rounded-2xl hover:bg-gray-200 transition-all active:scale-95">DAFTAR SEKARANG</button>
             </div>
-            <p class="mt-12 text-center text-sm text-gray-400">
-                Sudah punya akun? 
-                <span onclick="toggleAuth(false)" class="neon-text cursor-pointer font-black hover:scale-105">Login Sekarang</span>
-            </p>
+            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Sudah punya akun? <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer font-bold">Login</span></p>
         </div>
     </div>
 
-    <!-- Premium Dashboard -->
-    <div id="dashboard" class="hidden h-screen flex flex-col relative z-10">
-        <!-- Floating Header -->
-        <header class="p-6 flex justify-between items-center bg-gradient-to-r from-black/60 via-transparent to-black/60 backdrop-blur-xl sticky top-0 z-50 border-b border-cyan-500/20 shadow-2xl glass-card">
-            <div class="flex items-center gap-5">
-                <div class="relative group cursor-pointer" onclick="openGallery()">
-                    <div class="w-16 h-16 rounded-3xl border-3 border-transparent bg-gradient-to-r from-cyan-500 to-blue-500 p-2 overflow-hidden shadow-2xl glow">
-                        <img id="userImg" src="https://i.imgur.com/8Km9tLL.png" class="w-full h-full rounded-2xl object-cover">
+    <!-- Dashboad Main -->
+    <div id="dashboard" class="hidden h-screen flex flex-col pb-20">
+        <div class="p-5 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-50 border-b border-white/5">
+            <div class="flex items-center gap-4">
+                <div class="relative group" onclick="openGallery()">
+                    <div class="w-12 h-12 rounded-2xl border-2 border-cyan-500 overflow-hidden shadow-lg shadow-cyan-500/10">
+                        <img id="userImg" src="https://i.imgur.com/8Km9tLL.png" class="w-full h-full object-cover">
                     </div>
-                    <div class="absolute -bottom-2 -right-2 bg-gradient-to-r from-emerald-400 to-teal-400 text-black rounded-full w-8 h-8 flex items-center justify-center text-xs font-black shadow-lg border-2 border-white/50 animate-pulse">VIP</div>
+                    <div class="absolute -bottom-1 -right-1 bg-cyan-500 text-black rounded-lg w-5 h-5 flex items-center justify-center text-[10px] font-bold border-2 border-black">+</div>
                 </div>
-                <div class="min-w-0">
-                    <div class="text-2xl font-black neon-text tracking-tight mb-1 drop-shadow-2xl" id="balanceText">Rp 0</div>
-                    <p id="emailText" class="text-sm text-gray-400 font-mono truncate max-w-[180px]">user@example.com</p>
+                <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="uploadFoto()">
+                <div>
+                    <h2 id="balanceText" class="text-xl font-extrabold text-white tracking-tight">Rp 0</h2>
+                    <p id="emailText" class="text-[10px] text-gray-500 font-mono">user@mail.com</p>
                 </div>
             </div>
-            <button onclick="logout()" class="glass-card px-6 py-3 rounded-2xl text-sm font-bold text-red-400 border border-red-500/30 hover:bg-red-500/10 hover:text-red-300 active:scale-95 transition-all flex items-center gap-2">
-                <i class="fas fa-sign-out-alt"></i>Logout
-            </button>
-        </header>
+            <button onclick="logout()" class="p-2 px-4 bg-[#111] border border-white/5 rounded-xl text-[10px] font-bold text-red-500 uppercase tracking-tighter">Logout</button>
+        </div>
 
-        <!-- Scrollable Content -->
-        <main class="flex-1 overflow-y-auto p-6 custom-scrollbar space-y-8">
-            <!-- Hero Banner -->
-            <div class="glass-card rounded-[40px] p-10 text-center relative overflow-hidden animate-up glow" style="border-image: linear-gradient(45deg, #06b6d4, #3b82f6, #ec4899) 1;">
-                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-[40px]"></div>
-                <div class="relative z-10">
-                    <div class="text-6xl mb-6 floating">📈</div>
-                    <h2 class="text-3xl font-black neon-text mb-4 tracking-[-0.05em]">Mulai Investasi Premium</h2>
-                    <p class="text-xl text-gray-300 mb-8 max-w-md mx-auto leading-relaxed">Profit otomatis setiap 24 jam • Sistem VIP terjamin • Withdraw instan</p>
-                    <div class="flex flex-wrap gap-4 justify-center text-sm font-bold text-cyan-400 mb-8">
-                        <span class="px-4 py-2 bg-cyan-500/10 rounded-2xl border border-cyan-500/30">🚀 Profit Harian</span>
-                        <span class="px-4 py-2 bg-emerald-500/10 rounded-2xl border border-emerald-500/30">✅ Terjamin</span>
-                        <span class="px-4 py-2 bg-purple-500/10 rounded-2xl border border-purple-500/30">⚡ Instan</span>
+        <main class="flex-1 overflow-y-auto p-5 custom-scrollbar">
+            <!-- Section Berita & Video -->
+            <div id="newsBox" class="section animate-up">
+                <div class="bg-gradient-to-br from-cyan-600 to-cyan-800 p-8 rounded-[32px] text-black shadow-2xl relative overflow-hidden mb-6">
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-black mb-2 leading-tight uppercase">Mulai Investasi,<br>Raih Profitmu!</h3>
+                        <p class="text-black/70 text-xs font-semibold">Nikmati profit otomatis setiap 24 jam bersama Page421. Jika melakukan penarikan dan depo silahkan lapor admin.</p>
+                        <p class="text-[9px] mt-2 font-bold opacity-80 break-all underline">https://chat.whatsapp.com/CYbrANKs7GZ8uzOwqw20MG</p>
                     </div>
-                    <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-yellow-400 mb-2" id="dailyProfit">Rp 0</div>
-                    <p class="text-sm text-gray-500 uppercase tracking-wider font-bold">Profit Hari Ini</p>
+                    <div class="absolute -right-5 -bottom-5 opacity-20 text-9xl">📈</div>
                 </div>
-                <div class="absolute bottom-4 right-4 text-8xl opacity-10 floating">💎</div>
+
+                <!-- VIDEO PLAYER - POSISI DI BAWAH KOTAK BIRU -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-black text-cyan-400 uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span> Video Edukasi Page421
+                    </h3>
+                    <div class="video-container">
+                        <video controls poster="https://images.unsplash.com/photo-1611974714652-960201dc8394?q=80&w=800&auto=format&fit=crop">
+                            <source src="https://files.catbox.moe/ke70c6.mp4" type="video/mp4">
+                            Browser anda tidak mendukung video.
+                        </video>
+                    </div>
+                    <p class="text-[10px] text-gray-500 italic text-center">Tonton video tutorial cara kerja investasi otomatis ini.</p>
+                </div>
             </div>
 
-            <!-- Video Section -->
-            <div class="space-y-6 animate-up">
-                <h3 class="text-2xl font-black neon-text uppercase tracking-widest flex items-center gap-3 justify-center">
-                    <span class="w-4 h-4 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full pulse-glow"></span>
-                    Video Tutorial Premium
+            <!-- Quiz Section -->
+            <div id="quizBox" class="section hidden space-y-4 animate-up">
+                <h3 class="text-lg font-extrabold mb-4 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-cyan-500 rounded-full"></span> Materi Dasar
                 </h3>
-                <div class="video-container mx-auto max-w-2xl">
-                    <video controls poster="https://images.unsplash.com/photo-1611974714652-960201dc8394?q=80&w=800&auto=format&fit=crop" class="w-full">
-                        <source src="https://files.catbox.moe/ke70c6.mp4" type="video/mp4">
-                        Browser tidak mendukung video HTML5.
-                    </video>
+                <div class="space-y-3">
+                    <div class="glass-card p-5 rounded-2xl"><p class="text-xs text-cyan-500 font-bold mb-1">01. PENGENALAN</p><p class="text-sm font-semibold text-gray-200">Investasi Page421 adalah platform profit harian otomatis.</p></div>
+                    <div class="glass-card p-5 rounded-2xl"><p class="text-xs text-cyan-500 font-bold mb-1">02. DEPOSIT</p><p class="text-sm font-semibold text-gray-200">Minimal deposit tetap Rp 50.000 untuk keamanan sistem.</p></div>
+                    <div class="glass-card p-5 rounded-2xl"><p class="text-xs text-cyan-500 font-bold mb-1">03. PENARIKAN</p><p class="text-sm font-semibold text-gray-200">Minimal penarikan saldo adalah Rp 50.000.</p></div>
                 </div>
             </div>
 
-            <!-- Investment Section -->
-            <div id="investBox" class="section hidden glass-card rounded-[40px] p-10 border-2 border-cyan-500/30 shadow-2xl animate-up">
-                <h3 class="text-3xl font-black neon-text mb-10 text-center tracking-[-0.05em]">Paket Investasi VIP</h3>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="glass-card p-8 rounded-3xl text-center group hover:scale-105 transition-all duration-500 border-2 border-yellow-500/40">
-                        <div class="text-5xl mb-6">⭐</div>
-                        <h4 class="text-2xl font-black mb-4 text-yellow-400 drop-shadow-lg">Premium Gold</h4>
-                        <div class="space-y-4 mb-8 text-lg">
-                            <div class="flex justify-between"><span class="text-gray-400">💎 Harga:</span> <span class="font-black text-2xl text-yellow-400">Rp 20.000</span></div>
-                            <div class="flex justify-between"><span class="text-gray-400">📈 Profit:</span> <span class="font-black text-2xl text-emerald-400">Rp 500/hari</span></div>
-                            <div class="flex justify-between"><span class="text-gray-400">⏰ Durasi:</span> <span class="font-black text-2xl text-white">60 Hari</span></div>
+            <!-- Invest Section -->
+            <div id="investBox" class="section hidden animate-up">
+                <div class="glass-card rounded-[32px] p-6 border border-cyan-500/30">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-extrabold text-white">Paket Premium A</h3>
+                            <p class="text-xs text-gray-500">Masa aktif 60 hari</p>
                         </div>
-                        <div id="timerA" class="hidden mb-8 text-lg font-mono text-yellow-400 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 py-4 px-6 rounded-3xl border-2 border-yellow-500/30 font-black shadow-lg"></div>
-                        <button id="btnBeliA" onclick="buyInvest()" class="btn-neon w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black py-5 px-8 rounded-3xl text-xl shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 active:scale-95 transition-all duration-300 uppercase tracking-wider">
-                            <i class="fas fa-shopping-cart mr-2"></i>Beli Sekarang
-                        </button>
-                        <span id="labelPaketA" class="hidden mt-4 inline-block bg-gradient-to-r from-emerald-500 to-green-500 text-black text-xs px-4 py-2 rounded-full font-black shadow-lg animate-pulse">✅ AKTIF</span>
+                        <span id="labelPaketA" class="hidden bg-cyan-500 text-black text-[10px] px-3 py-1 rounded-full font-black">ACTIVE</span>
                     </div>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Harga</p>
+                            <p class="text-sm font-bold">Rp 20.000</p>
+                        </div>
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <p class="text-[10px] text-green-500 font-bold uppercase mb-1">Profit</p>
+                            <p class="text-sm font-bold text-green-400">Rp 500 / Hari</p>
+                        </div>
+                    </div>
+                    <div id="timerA" class="hidden mb-6 text-center text-[10px] font-mono text-cyan-500 bg-cyan-500/5 py-2 rounded-xl border border-cyan-500/20"></div>
+                    <button id="btnBeliA" onclick="buyInvest()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-xl disabled:bg-gray-800 disabled:text-gray-500">BELI PAKET SEKARANG</button>
                 </div>
             </div>
 
             <!-- Deposit Section -->
-            <div id="depoBox" class="section hidden glass-card rounded-[40px] p-10 shadow-2xl border-2 border-emerald-500/40 animate-up">
-                <h3 class="text-3xl font-black text-emerald-400 mb-10 text-center">Deposit Instan</h3>
-                <div class="text-center mb-12 p-8 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-[32px] border-2 border-emerald-500/30">
-                    <p class="text-sm font-black text-gray-400 uppercase tracking-widest mb-4">Minimum Deposit</p>
-                    <div class="text-5xl font-black text-emerald-400 mb-4">Rp 50.000</div>
-                    <p class="text-lg text-emerald-300 font-semibold">Fixed Amount - Proses 1-2 Jam</p>
+            <div id="depoBox" class="section hidden space-y-6 animate-up">
+                <div class="bg-white rounded-[32px] p-8 text-black text-center shadow-2xl relative overflow-hidden">
+                    <p class="text-[10px] font-black opacity-50 uppercase tracking-widest">Fixed Deposit</p>
+                    <h1 class="text-4xl font-black my-3 tracking-tighter">Rp 50.000</h1>
+                    <button onclick="kirimDepo()" class="w-full bg-black text-cyan-400 font-black py-4 rounded-2xl mt-4 active:scale-95 shadow-xl">REQUEST SEKARANG</button>
                 </div>
-                <button onclick="kirimDepo()" class="btn-neon w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black py-6 px-10 rounded-3xl text-2xl shadow-2xl shadow-emerald-500/50 hover:shadow-emerald-500/70 active:scale-95 transition-all duration-300 uppercase tracking-wider mb-8">
-                    <i class="fas fa-plus-circle mr-3 text-xl"></i>Request Deposit
-                </button>
-                <div id="listDepo" class="space-y-4 max-h-96 overflow-y-auto custom-scrollbar"></div>
+                <div id="listDepo" class="space-y-3"></div>
             </div>
 
-            <!-- Withdrawal Section -->
-            <div id="tarikBox" class="section hidden glass-card rounded-[40px] p-10 shadow-2xl border-2 border-red-500/40 animate-up">
-                <h3 class="text-3xl font-black text-red-400 mb-10 text-center">Penarikan Cepat</h3>
-                <div class="text-center mb-12 p-8 bg-gradient-to-br from-red-500/10 to-rose-500/10 rounded-[32px] border-2 border-red-500/30">
-                    <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Saldo Tersedia</p>
-                    <div id="saldoTarik" class="text-5xl font-black text-white mb-4 drop-shadow-2xl">Rp 0</div>
-                    <p class="text-lg text-red-300 font-semibold mb-2">Biaya Admin: <span id="biayaAdmin" class="text-2xl font-black text-red-400">Rp 2.500</span></p>
-                    <p class="text-sm text-gray-400">Minimum Rp 50.000</p>
+            <!-- Penarikan Section -->
+            <div id="tarikBox" class="section hidden space-y-6 animate-up">
+                <div class="glass-card rounded-[32px] p-8 text-center border-red-500/20">
+                    <p id="saldoTarik" class="text-[10px] font-bold text-gray-500 mb-2 font-mono">SALDO: Rp 0</p>
+                    <input id="nominalTarik" type="text" value="50.000" class="w-full bg-transparent text-center text-4xl font-black outline-none mb-2 text-white">
+                    
+                    <div class="flex flex-col gap-1 mb-6">
+                        <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider">Biaya Admin: Rp 2.500</p>
+                        <p class="text-[9px] text-gray-500 italic font-medium">Minimal penarikan: Rp 50.000</p>
+                    </div>
+
+                    <button onclick="kirimTarik()" class="w-full bg-red-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-900/20 active:scale-95">REQUEST PENARIKAN</button>
                 </div>
-                <input id="nominalTarik" type="text" value="50.000" 
-                       class="w-full bg-[#0d0d0d]/80 text-center text-5xl font-black outline-none py-8 px-12 rounded-3xl border-3 border-white/20 focus:border-cyan-500/50 mb-8 backdrop-blur-xl shadow-2xl text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
-                <button onclick="kirimTarik()" class="btn-neon w-full bg-gradient-to-r from-red-600 to-rose-500 text-white font-black py-6 px-10 rounded-3xl text-2xl shadow-2xl shadow-red-500/50 hover:shadow-red-500/70 active:scale-95 transition-all duration-300 uppercase tracking-wider">
-                    <i class="fas fa-money-bill-wave mr-3 text-xl"></i>Proses Withdraw
-                </button>
-                <div id="listTarik" class="space-y-4 mt-8 max-h-96 overflow-y-auto custom-scrollbar"></div>
+                <div id="listTarik" class="space-y-3"></div>
             </div>
         </main>
 
-        <!-- Ultra Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-transparent to-black/50 backdrop-blur-3xl border-t border-white/10 px-8 py-6 flex justify-around items-center z-[9000] glass-card mx-4 mb-6 rounded-3xl shadow-2xl">
-            <button onclick="showSection('newsBox', this)" class="menu-item flex flex-col items-center gap-2 p-3 menu-active relative group">
-                <div class="w-14 h-14 rounded-3xl flex items-center justify-center backdrop-blur-xl glass-card shadow-xl group-hover:shadow-cyan-500/30 transition-all duration-300">
-                    <i class="fas fa-newspaper text-xl text-cyan-400"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-300 tracking-wide">Berita</span>
-            </button>
-            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-2 p-3 relative group">
-                <div class="w-14 h-14 rounded-3xl flex items-center justify-center backdrop-blur-xl glass-card shadow-xl group-hover:shadow-emerald-500/30 transition-all duration-300">
-                    <i class="fas fa-book text-xl text-emerald-400"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-300 tracking-wide">Materi</span>
-            </button>
-            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-2 p-3 relative group">
-                <div class="w-14 h-14 rounded-3xl flex items-center justify-center backdrop-blur-xl glass-card shadow-xl group-hover:shadow-yellow-500/30 transition-all duration-300">
-                    <i class="fas fa-coins text-xl text-yellow-400"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-300 tracking-wide">Invest</span>
-            </button>
-            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-2 p-3 relative group">
-                <div class="w-14 h-14 rounded-3xl flex items-center justify-center backdrop-blur-xl glass-card shadow-xl group-hover:shadow-emerald-500/30 transition-all duration-300">
-                    <i class="fas fa-plus text-xl text-emerald-400"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-300 tracking-wide">Deposit</span>
-            </button>
-            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-2 p-3 relative group">
-                <div class="w-14 h-14 rounded-3xl flex items-center justify-center backdrop-blur-xl glass-card shadow-xl group-hover:shadow-red-500/30 transition-all duration-300">
-                    <i class="fas fa-money-bill-wave text-xl text-red-400"></i>
-                </div>
-                <span class="text-xs font-bold text-gray-300 tracking-wide">Withdraw</span>
-            </button>
+        <!-- Navbar Bawah -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-[#0a0a0a]/90 backdrop-blur-xl border-t border-white/5 px-6 py-3 flex justify-between items-center z-[9000]">
+            <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/news.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Berita</span></button>
+            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/book-shelf.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Soal</span></button>
+            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/coins.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Invest</span></button>
+            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/request-money.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Depo</span></button>
+            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1"><div class="p-2"><img src="https://img.icons8.com/color/48/atm.png" class="w-6 h-6"></div><span class="text-[9px] font-bold">Tarik</span></button>
         </nav>
 
-        <!-- Premium Chat Button -->
-        <button id="chatBtn" onclick="toggleChat()" class="fixed bottom-28 right-8 w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-500/70 active:scale-90 transition-all duration-300 z-[9995] border-4 border-white/20">
-            <i class="fas fa-comments text-2xl text-black font-bold"></i>
+        <!-- Chat Widget -->
+        <button id="chatBtn" onclick="toggleChat()" class="w-14 h-14 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-cyan-500/40 active:scale-90 transition-all">
+            <img src="https://img.icons8.com/ios-filled/50/000000/comments.png" class="w-7 h-7">
         </button>
 
-        <!-- Ultra Chat Widget -->
         <div id="chatWidget">
-            <div class="p-6 flex justify-between items-center border-b border-white/10 bg-gradient-to-r from-[#111] to-[#0a0a0a] rounded-t-[32px] glass-card">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <i class="fas fa-comments text-xl text-black"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-black neon-text uppercase tracking-wider">Live Chat VIP</h4>
-                        <p class="text-xs text-gray-500">Online • 24/7</p>
-                    </div>
-                </div>
-                <button onclick="toggleChat()" class="text-2xl text-gray-400 hover:text-white transition-colors p-2 -m-2 rounded-2xl hover:bg-white/10">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="p-5 flex justify-between items-center border-b border-white/5 bg-[#111] rounded-t-[24px]">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-cyan-400">Global Chat (24h)</h4>
+                <button onclick="toggleChat()" class="text-white text-2xl leading-none">&times;</button>
             </div>
-            <div id="chatContent" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-gradient-to-b from-[#0f0f0f] to-[#111]"></div>
-            <div class="p-5 bg-gradient-to-r from-[#111] to-[#0a0a0a] rounded-b-[32px] border-t border-white/10 glass-card">
-                <div class="flex gap-3">
-                    <input id="chatInput" type="text" placeholder="💬 Ketik pesan..." 
-                           class="flex-1 bg-[#0d0d0d]/80 text-sm p-4 rounded-3xl outline-none focus:ring-2 ring-cyan-500/50 placeholder-gray-500 backdrop-blur-sm border border-white/10 transition-all">
-                    <button onclick="sendChat()" class="bg-gradient-to-r from-cyan-500 to-blue-500 text-black px-8 py-4 rounded-3xl font-black text-sm shadow-xl shadow-cyan-500/40 hover:shadow-cyan-500/60 active:scale-95 transition-all flex items-center gap-2">
-                        <i class="fas fa-paper-plane"></i>Kirim
-                    </button>
-                </div>
+            <div id="chatContent" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar"></div>
+            <div class="p-3 bg-[#111] flex gap-2 rounded-b-[24px] border-t border-white/5">
+                <input id="chatInput" type="text" placeholder="Ketik pesan..." class="flex-1 bg-[#000] text-xs p-4 rounded-xl outline-none focus:ring-1 ring-cyan-500">
+                <button onclick="sendChat()" class="bg-cyan-500 text-black px-5 rounded-xl font-black text-xs active:scale-90 transition-all">KIRIM</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Compatibility Mode) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase Config
+        // KONFIGURASI FIREBASE (FIXED API KEY)
         const firebaseConfig = {
             apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
             authDomain: "page421-b9a6c.firebaseapp.com",
@@ -485,41 +261,203 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
-        // Create Animated Particles
-        function createParticles() {
-            const particles = document.getElementById('particles');
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                particles.appendChild(particle);
-            }
-        }
-        createParticles();
-
-        // All your existing Firebase functions remain the same...
-        // [Include all the original JavaScript functions here - login, register, etc.]
         let balance = 0, historyInv = [], sedangDaftar = false;
         let _lastDepo = 0, _lastTarik = 0;
 
-        // ... [Paste semua fungsi JavaScript yang sudah ada dari kode asli] ...
+        auth.onAuthStateChanged(user => {
+            if (sedangDaftar) return;
+            if (user) {
+                document.getElementById('authContainer').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('chatBtn').style.display = 'flex';
+                document.getElementById('emailText').innerText = user.email;
+                db.ref("users/" + user.uid + "/photo").on("value", snap => {
+                    if (snap.val()) document.getElementById('userImg').src = snap.val();
+                });
+                showPopup();
+                listenData(user.uid);
+                listenChat();
+            } else {
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('authContainer').classList.remove('hidden');
+                document.getElementById('chatBtn').style.display = 'none';
+            }
+        });
 
-        // Tambahan untuk animasi menu
+        // Event listener rupiah formatting
+        document.getElementById('nominalTarik').addEventListener('keyup', function(e) {
+            let val = this.value.replace(/[^,\d]/g, '').toString();
+            let split = val.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            this.value = rupiah;
+        });
+
+        function listenData(uid) {
+            db.ref("topup").on("value", snap => {
+                let h = "", total = 0;
+                snap.forEach(c => {
+                    const d = c.val();
+                    if (d.uid === uid) {
+                        if (d.status === 'selesai') total += Number(d.nominal);
+                        const time = new Date(d.timestamp || d.t).toLocaleString('id-ID', {hour:'2-digit', minute:'2-digit'});
+                        h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up">
+                            <div><div class="font-bold text-white">Rp ${Number(d.nominal).toLocaleString()}</div><div class="text-[8px] text-gray-500 uppercase">${time}</div></div>
+                            <span class="text-[8px] font-black px-2 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 uppercase">${d.status}</span>
+                        </div>`;
+                    }
+                });
+                document.getElementById('listDepo').innerHTML = h || "<p class='text-[9px] text-center text-gray-600 py-4 italic'>Kosong</p>";
+                _lastDepo = total; hitungSaldo();
+            });
+
+            db.ref("penarikan").on("value", snap => {
+                let h = "", total = 0;
+                snap.forEach(c => {
+                    const d = c.val();
+                    if (d.uid === uid) {
+                        if (d.status === 'selesai') total += Number(d.nominal);
+                        const time = new Date(d.timestamp || d.t).toLocaleString('id-ID', {hour:'2-digit', minute:'2-digit'});
+                        h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up">
+                            <div><div class="font-bold text-white">Rp ${Number(d.nominal).toLocaleString()}</div><div class="text-[8px] text-gray-500 uppercase">${time}</div></div>
+                            <span class="text-[8px] font-black px-2 py-1 rounded-lg bg-red-500/10 text-red-500 uppercase">${d.status}</span>
+                        </div>`;
+                    }
+                });
+                document.getElementById('listTarik').innerHTML = h || "<p class='text-[9px] text-center text-gray-600 py-4 italic'>Kosong</p>";
+                _lastTarik = total; hitungSaldo();
+            });
+
+            db.ref("invest_history/" + uid).on("value", snap => {
+                historyInv = []; snap.forEach(c => historyInv.push(c.val()));
+                hitungSaldo();
+            });
+        }
+
+        function hitungSaldo() {
+            let cost = 0, profit = 0, aktif = false, sekarang = Date.now();
+            historyInv.forEach(h => {
+                cost += 20000;
+                let diff = Math.floor((sekarang - h.tanggalBeli) / 86400000);
+                profit += (Math.min(diff, 60) * 500);
+                if (diff < 60) {
+                    aktif = true;
+                    document.getElementById('timerA').innerText = "PAKET BERJALAN: " + (60 - diff) + " HARI SISA";
+                }
+            });
+            balance = _lastDepo - cost + profit - _lastTarik;
+            document.getElementById('balanceText').innerText = "Rp " + balance.toLocaleString('id-ID');
+            document.getElementById('saldoTarik').innerText = "SALDO: Rp " + balance.toLocaleString('id-ID');
+            document.getElementById('labelPaketA').style.display = aktif ? "inline" : "none";
+            document.getElementById('btnBeliA').disabled = aktif;
+            document.getElementById('btnBeliA').innerText = aktif ? "SUDAH AKTIF" : "BELI PAKET SEKARANG";
+            document.getElementById('timerA').style.display = aktif ? "block" : "none";
+        }
+
+        function login() { auth.signInWithEmailAndPassword(document.getElementById('loginUser').value, document.getElementById('loginPass').value).catch(e => alert("Login Gagal: " + e.message)); }
+        function register() {
+            sedangDaftar = true;
+            auth.createUserWithEmailAndPassword(document.getElementById('regUser').value, document.getElementById('regPass').value)
+                .then(() => { alert("Sukses! Silakan Login."); sedangDaftar=false; toggleAuth(false); auth.signOut(); })
+                .catch(e => { alert(e.message); sedangDaftar=false; });
+        }
+        function logout() { auth.signOut().then(() => location.reload()); }
+        
+        function buyInvest() {
+            if (balance < 20000) return alert("Saldo tidak mencukupi!");
+            if (confirm("Gunakan Rp 20.000 untuk beli paket?")) {
+                db.ref("invest_history/" + auth.currentUser.uid).push({ tanggalBeli: Date.now() });
+            }
+        }
+
+        function kirimDepo() {
+            db.ref("topup").push({ 
+                uid: auth.currentUser.uid, 
+                email: auth.currentUser.email, 
+                nominal: 50000, 
+                status: "pending", 
+                timestamp: Date.now() 
+            });
+            alert("Request deposit terkirim!");
+        }
+
+        function kirimTarik() {
+            const biayaAdmin = 2500;
+            let rawVal = document.getElementById('nominalTarik').value.replace(/\./g, '');
+            let nominalTarik = parseInt(rawVal);
+            
+            if (isNaN(nominalTarik) || nominalTarik < 50000) return alert("Minimal penarikan Rp 50.000!");
+            
+            let totalDibutuhkan = nominalTarik + biayaAdmin;
+
+            if (balance < totalDibutuhkan) {
+                return alert("Saldo tidak cukup! Anda butuh Rp " + totalDibutuhkan.toLocaleString() + " (Termasuk Biaya Admin)");
+            }
+
+            if (confirm("Tarik Rp " + nominalTarik.toLocaleString() + "? \nBiaya Admin: Rp 2.500 \nTotal Saldo Terpotong: Rp " + totalDibutuhkan.toLocaleString())) {
+                db.ref("penarikan").push({ 
+                    uid: auth.currentUser.uid, 
+                    email: auth.currentUser.email, 
+                    nominal: nominalTarik, 
+                    biaya_admin: biayaAdmin,
+                    status: "pending", 
+                    timestamp: Date.now() 
+                });
+                alert("Request penarikan berhasil dikirim!");
+            }
+        }
+
+        function toggleAuth(r) {
+            document.getElementById('loginBox').style.display = r ? 'none' : 'block';
+            document.getElementById('registerBox').style.display = r ? 'block' : 'none';
+        }
         function showSection(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
             el.classList.add('menu-active');
         }
-
-        // Initialize
-        window.addEventListener('load', () => {
-            createParticles();
-        });
+        function toggleChat() {
+            const w = document.getElementById('chatWidget');
+            w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
+        }
+        function sendChat() {
+            const inp = document.getElementById('chatInput');
+            if (!inp.value.trim()) return;
+            db.ref("global_chats").push({ m: inp.value.trim(), t: Date.now(), uid: auth.currentUser.uid });
+            inp.value = "";
+        }
+        function listenChat() {
+            db.ref("global_chats").limitToLast(15).on("value", snap => {
+                const box = document.getElementById('chatContent');
+                let h = "";
+                snap.forEach(c => {
+                    const d = c.val();
+                    const isMe = d.uid === auth.currentUser.uid;
+                    h += `<div class="flex flex-col ${isMe ? 'items-end' : 'items-start'} w-full animate-up">
+                        <div class="${isMe ? 'bg-cyan-500 text-black rounded-l-2xl rounded-br-2xl' : 'bg-[#222] text-white rounded-r-2xl rounded-bl-2xl'} p-3 px-4 text-xs max-w-[85%] break-words shadow">
+                            ${d.m}
+                        </div>
+                    </div>`;
+                });
+                box.innerHTML = h;
+                box.scrollTop = box.scrollHeight;
+            });
+        }
+        function openGallery() { document.getElementById('fileInput').click(); }
+        function uploadFoto() {
+            const f = document.getElementById('fileInput').files[0];
+            const rd = new FileReader();
+            rd.onload = e => db.ref("users/" + auth.currentUser.uid).update({ photo: e.target.result });
+            rd.readAsDataURL(f);
+        }
+        function showPopup() { document.getElementById('announcementPopup').style.display = "flex"; }
+        function closePopup() { document.getElementById('announcementPopup').style.display = "none"; }
     </script>
 </body>
 </html>
