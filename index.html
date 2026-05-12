@@ -72,7 +72,7 @@
             background-clip: text;
         }
 
-        /* ===== LOADING SPINNER ===== */
+        /* LOADING SPINNER */
         .btn-loading {
             position: relative;
             pointer-events: none;
@@ -93,7 +93,7 @@
         }
         @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
 
-        /* ===== TOAST NOTIFIKASI ===== */
+        /* TOAST NOTIFIKASI */
         #toast {
             position: fixed;
             top: 20px;
@@ -146,7 +146,6 @@
             <div class="space-y-4">
                 <input id="loginUser" type="email" placeholder="Alamat Email" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
                 <input id="loginPass" type="password" placeholder="Kata Sandi" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
-                <!-- FIX #1: Tombol login dengan loading state -->
                 <button id="btnLogin" onclick="login()" class="w-full bg-cyan-500 text-black font-extrabold p-4 rounded-2xl hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">MASUK</button>
             </div>
             <p class="mt-8 text-center text-xs text-gray-500 font-medium">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold">Daftar Sekarang</span></p>
@@ -159,7 +158,6 @@
             <div class="space-y-4">
                 <input id="regUser" type="email" placeholder="Email Baru" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
                 <input id="regPass" type="password" placeholder="Password (Min 6 Karakter)" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all">
-                <!-- FIX #1: Tombol register dengan loading state -->
                 <button id="btnRegister" onclick="register()" class="w-full bg-white text-black font-extrabold p-4 rounded-2xl hover:bg-gray-200 transition-all active:scale-95">DAFTAR SEKARANG</button>
             </div>
             <p class="mt-8 text-center text-xs text-gray-500 font-medium">Sudah punya akun? <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer font-bold">Login</span></p>
@@ -216,7 +214,6 @@
                 <h3 class="text-lg font-extrabold mb-6 flex items-center gap-2">
                     <span class="w-2 h-6 bg-cyan-500 rounded-full"></span> Sosial Media Page421
                 </h3>
-                
                 <div class="grid grid-cols-2 gap-4 mb-8">
                     <a href="https://www.tiktok.com/@page421_official?_r=1&_t=ZS-964gY6z88u7" target="_blank" class="group">
                         <div class="glass-card p-6 rounded-2xl border-2 border-cyan-500/50 hover:border-cyan-500 transition-all hover:scale-105 cursor-pointer">
@@ -226,7 +223,6 @@
                             <p class="text-[9px] text-gray-500 mt-1">Ikuti update terbaru</p>
                         </div>
                     </a>
-
                     <div class="glass-card p-6 rounded-2xl border border-white/10 hover:border-cyan-500/50 transition-all hover:scale-105 cursor-pointer">
                         <div class="text-4xl mb-3 text-pink-400">📷</div>
                         <h4 class="text-sm font-black text-white mb-1">Instagram</h4>
@@ -234,7 +230,6 @@
                         <p class="text-[9px] text-gray-500 mt-1">Tips & motivasi</p>
                     </div>
                 </div>
-
                 <div class="glass-card p-6 rounded-2xl text-center border border-cyan-500/30">
                     <p class="text-sm text-gray-400">Ikuti semua sosial media Page421 untuk update terbaru dan tips investasi!</p>
                 </div>
@@ -261,7 +256,6 @@
                         </div>
                     </div>
                     <div id="timerA" class="hidden mb-6 text-center text-[10px] font-mono text-cyan-500 bg-cyan-500/5 py-2 rounded-xl border border-cyan-500/20"></div>
-                    <!-- FIX #1: Loading state pada tombol beli -->
                     <button id="btnBeliA" onclick="buyInvest()" class="w-full bg-white text-black font-black py-4 rounded-2xl active:scale-95 transition-all shadow-xl disabled:bg-gray-800 disabled:text-gray-500">BELI PAKET SEKARANG</button>
                 </div>
             </div>
@@ -271,7 +265,6 @@
                 <div class="bg-white rounded-[32px] p-8 text-black text-center shadow-2xl relative overflow-hidden">
                     <p class="text-[10px] font-black opacity-50 uppercase tracking-widest">Fixed Deposit</p>
                     <h1 class="text-4xl font-black my-3 tracking-tighter">Rp 50.000</h1>
-                    <!-- FIX #1: Loading state pada tombol deposit -->
                     <button id="btnDepo" onclick="kirimDepo()" class="w-full bg-black text-cyan-400 font-black py-4 rounded-2xl mt-4 active:scale-95 shadow-xl">REQUEST SEKARANG</button>
                 </div>
                 <div id="listDepo" class="space-y-3"></div>
@@ -281,15 +274,11 @@
             <div id="tarikBox" class="section hidden space-y-6 animate-up">
                 <div class="glass-card rounded-[32px] p-8 text-center border-red-500/20">
                     <p id="saldoTarik" class="text-[10px] font-bold text-gray-500 mb-2 font-mono">SALDO: Rp 0</p>
-                    <!-- FIX #3: Tambah min="50000" dan hanya angka -->
                     <input id="nominalTarik" type="text" value="50.000" inputmode="numeric" class="w-full bg-transparent text-center text-4xl font-black outline-none mb-2 text-white">
-                    
                     <div class="flex flex-col gap-1 mb-6">
                         <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider">Biaya Admin: Rp 2.500</p>
                         <p class="text-[9px] text-gray-500 italic font-medium">Minimal penarikan: Rp 50.000</p>
                     </div>
-
-                    <!-- FIX #1: Loading state pada tombol tarik -->
                     <button id="btnTarik" onclick="kirimTarik()" class="w-full bg-red-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-900/20 active:scale-95">REQUEST PENARIKAN</button>
                 </div>
                 <div id="listTarik" class="space-y-3"></div>
@@ -329,7 +318,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // KONFIGURASI FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
             authDomain: "page421-b9a6c.firebaseapp.com",
@@ -343,25 +331,23 @@
         let balance = 0, historyInv = [], sedangDaftar = false;
         let _lastDepo = 0, _lastTarik = 0;
 
-        // ===== FIX #2: TERJEMAHAN ERROR FIREBASE =====
         function terjemahkanError(kodeError) {
             const pesanError = {
-                'auth/invalid-email':             'Format email tidak valid.',
-                'auth/user-disabled':             'Akun ini telah dinonaktifkan.',
-                'auth/user-not-found':            'Email tidak terdaftar.',
-                'auth/wrong-password':            'Kata sandi salah. Coba lagi.',
-                'auth/invalid-credential':        'Email atau kata sandi salah.',
-                'auth/email-already-in-use':      'Email sudah digunakan akun lain.',
-                'auth/weak-password':             'Password terlalu lemah, minimal 6 karakter.',
-                'auth/network-request-failed':    'Gagal terhubung. Periksa koneksi internet.',
-                'auth/too-many-requests':         'Terlalu banyak percobaan. Coba beberapa saat lagi.',
-                'auth/operation-not-allowed':     'Metode login ini tidak diizinkan.',
-                'auth/requires-recent-login':     'Sesi habis. Silakan login ulang.',
+                'auth/invalid-email':          'Format email tidak valid.',
+                'auth/user-disabled':          'Akun ini telah dinonaktifkan.',
+                'auth/user-not-found':         'Email tidak terdaftar.',
+                'auth/wrong-password':         'Kata sandi salah. Coba lagi.',
+                'auth/invalid-credential':     'Email atau kata sandi salah.',
+                'auth/email-already-in-use':   'Email sudah digunakan akun lain.',
+                'auth/weak-password':          'Password terlalu lemah, minimal 6 karakter.',
+                'auth/network-request-failed': 'Gagal terhubung. Periksa koneksi internet.',
+                'auth/too-many-requests':      'Terlalu banyak percobaan. Coba beberapa saat lagi.',
+                'auth/operation-not-allowed':  'Metode login ini tidak diizinkan.',
+                'auth/requires-recent-login':  'Sesi habis. Silakan login ulang.',
             };
             return pesanError[kodeError] || 'Terjadi kesalahan. Silakan coba lagi.';
         }
 
-        // ===== TOAST NOTIFIKASI =====
         let toastTimer;
         function showToast(pesan, tipe = 'info') {
             const toast = document.getElementById('toast');
@@ -373,8 +359,7 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // ===== FIX #1: HELPER LOADING BUTTON =====
-        function setLoading(btnId, loading, teksAsli = null) {
+        function setLoading(btnId, loading) {
             const btn = document.getElementById(btnId);
             if (!btn) return;
             if (loading) {
@@ -385,7 +370,7 @@
             } else {
                 btn.classList.remove('btn-loading');
                 btn.disabled = false;
-                btn.innerText = teksAsli || btn.dataset.teksAsli || btn.innerText;
+                btn.innerText = btn.dataset.teksAsli || btn.innerText;
             }
         }
 
@@ -409,26 +394,19 @@
             }
         });
 
-        // ===== FIX #3: FORMAT RUPIAH INPUT =====
         document.addEventListener('DOMContentLoaded', function() {
             const nominalTarik = document.getElementById('nominalTarik');
             if (nominalTarik) {
                 nominalTarik.addEventListener('keyup', function() {
-                    // Cegah angka negatif & karakter aneh
                     let val = this.value.replace(/[^0-9]/g, '');
                     if (val === '') { this.value = ''; return; }
                     let num = parseInt(val);
                     if (num < 0) num = 0;
-                    // Format ribuan dengan titik
                     this.value = num.toLocaleString('id-ID');
                 });
-
-                // Cegah input karakter selain angka
                 nominalTarik.addEventListener('keydown', function(e) {
                     const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'];
-                    if (!/[0-9]/.test(e.key) && !allowed.includes(e.key)) {
-                        e.preventDefault();
-                    }
+                    if (!/[0-9]/.test(e.key) && !allowed.includes(e.key)) e.preventDefault();
                 });
             }
         });
@@ -494,123 +472,83 @@
             document.getElementById('timerA').style.display = aktif ? "block" : "none";
         }
 
-        // ===== FIX #1 + #2: LOGIN dengan loading & error Indonesia =====
         function login() {
             const email = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value;
-
-            // FIX #3: Validasi input kosong
             if (!email) return showToast('Email tidak boleh kosong.', 'error');
             if (!pass) return showToast('Kata sandi tidak boleh kosong.', 'error');
-
             setLoading('btnLogin', true);
             auth.signInWithEmailAndPassword(email, pass)
-                .catch(e => {
-                    setLoading('btnLogin', false, 'MASUK');
-                    showToast(terjemahkanError(e.code), 'error');
-                });
+                .catch(e => { setLoading('btnLogin', false); showToast(terjemahkanError(e.code), 'error'); });
         }
 
-        // ===== FIX #1 + #2: REGISTER dengan loading & error Indonesia =====
         function register() {
             const email = document.getElementById('regUser').value.trim();
             const pass = document.getElementById('regPass').value;
-
-            // FIX #3: Validasi input
             if (!email) return showToast('Email tidak boleh kosong.', 'error');
             if (pass.length < 6) return showToast('Password minimal 6 karakter.', 'error');
-
             sedangDaftar = true;
             setLoading('btnRegister', true);
             auth.createUserWithEmailAndPassword(email, pass)
                 .then(() => {
                     showToast('Akun berhasil dibuat! Silakan login.', 'success');
                     sedangDaftar = false;
-                    setLoading('btnRegister', false, 'DAFTAR SEKARANG');
+                    setLoading('btnRegister', false);
                     toggleAuth(false);
                     auth.signOut();
                 })
                 .catch(e => {
                     showToast(terjemahkanError(e.code), 'error');
                     sedangDaftar = false;
-                    setLoading('btnRegister', false, 'DAFTAR SEKARANG');
+                    setLoading('btnRegister', false);
                 });
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
-        
-        // ===== FIX #1: BELI INVEST dengan loading =====
+
         function buyInvest() {
             if (balance < 20000) return showToast('Saldo tidak mencukupi! Minimal Rp 20.000.', 'error');
             if (confirm("Gunakan Rp 20.000 untuk beli paket?")) {
                 setLoading('btnBeliA', true);
                 db.ref("invest_history/" + auth.currentUser.uid).push({ tanggalBeli: Date.now() })
                     .then(() => showToast('Paket berhasil dibeli!', 'success'))
-                    .catch(() => {
-                        showToast('Gagal membeli paket. Coba lagi.', 'error');
-                        setLoading('btnBeliA', false, 'BELI PAKET SEKARANG');
-                    });
+                    .catch(() => { showToast('Gagal membeli paket. Coba lagi.', 'error'); setLoading('btnBeliA', false); });
             }
         }
 
-        // ===== FIX #1: DEPOSIT dengan loading =====
         function kirimDepo() {
             setLoading('btnDepo', true);
-            db.ref("topup").push({ 
-                uid: auth.currentUser.uid, 
-                email: auth.currentUser.email, 
-                nominal: 50000, 
-                status: "pending", 
-                timestamp: Date.now() 
+            db.ref("topup").push({
+                uid: auth.currentUser.uid,
+                email: auth.currentUser.email,
+                nominal: 50000,
+                status: "pending",
+                timestamp: Date.now()
             })
-            .then(() => {
-                showToast('Request deposit berhasil dikirim!', 'success');
-                setLoading('btnDepo', false, 'REQUEST SEKARANG');
-            })
-            .catch(() => {
-                showToast('Gagal mengirim request. Coba lagi.', 'error');
-                setLoading('btnDepo', false, 'REQUEST SEKARANG');
-            });
+            .then(() => { showToast('Request deposit berhasil dikirim!', 'success'); setLoading('btnDepo', false); })
+            .catch(() => { showToast('Gagal mengirim request. Coba lagi.', 'error'); setLoading('btnDepo', false); });
         }
 
-        // ===== FIX #1 + #3: TARIK dengan loading & validasi =====
         function kirimTarik() {
             const biayaAdmin = 2500;
-
-            // FIX #3: Validasi input nominal
-            let rawVal = document.getElementById('nominalTarik').value.replace(/\./g, '').replace(/,/g, '');
+            let rawVal = document.getElementById('nominalTarik').value.replace(/\./g, '');
             let nominalTarik = parseInt(rawVal);
-
-            if (!rawVal || isNaN(nominalTarik) || nominalTarik <= 0) {
-                return showToast('Masukkan nominal penarikan yang valid.', 'error');
-            }
-            if (nominalTarik < 50000) {
-                return showToast('Minimal penarikan adalah Rp 50.000.', 'error');
-            }
-
+            if (!rawVal || isNaN(nominalTarik) || nominalTarik <= 0) return showToast('Masukkan nominal penarikan yang valid.', 'error');
+            if (nominalTarik < 50000) return showToast('Minimal penarikan adalah Rp 50.000.', 'error');
             let totalDibutuhkan = nominalTarik + biayaAdmin;
-            if (balance < totalDibutuhkan) {
-                return showToast(Saldo tidak cukup! Butuh Rp ${totalDibutuhkan.toLocaleString('id-ID')} (termasuk biaya admin)., 'error');
-            }
-
+            if (balance < totalDibutuhkan) return showToast(Saldo tidak cukup! Butuh Rp ${totalDibutuhkan.toLocaleString('id-ID')} (termasuk biaya admin)., 'error');
             if (confirm(Tarik Rp ${nominalTarik.toLocaleString('id-ID')}?\nBiaya Admin: Rp 2.500\nTotal terpotong: Rp ${totalDibutuhkan.toLocaleString('id-ID')})) {
                 setLoading('btnTarik', true);
-                db.ref("penarikan").push({ 
-                    uid: auth.currentUser.uid, 
-                    email: auth.currentUser.email, 
-                    nominal: nominalTarik, 
+                db.ref("penarikan").push({
+                    uid: auth.currentUser.uid,
+                    email: auth.currentUser.email,
+                    nominal: nominalTarik,
                     biaya_admin: biayaAdmin,
-                    status: "pending", 
-                    timestamp: Date.now() 
+                    status: "pending",
+                    timestamp: Date.now()
                 })
-                .then(() => {
-                    showToast('Request penarikan berhasil dikirim!', 'success');
-                    setLoading('btnTarik', false, 'REQUEST PENARIKAN');
-                })
-                .catch(() => {
-                    showToast('Gagal mengirim request. Coba lagi.', 'error');
-                    setLoading('btnTarik', false, 'REQUEST PENARIKAN');
-                });
+                .then(() => { showToast('Request penarikan berhasil dikirim!', 'success'); setLoading('btnTarik', false); })
+                .catch(() => { showToast('Gagal mengirim request. Coba lagi.', 'error'); setLoading('btnTarik', false); });
             }
         }
 
