@@ -8,9 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* PROTEKSI ANTI-SELEKSI TEKS */
         * { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and Older */
+            user-select: none; /* Standard syntax */
         }
         body { 
             background: radial-gradient(circle at top, #111827 0%, #070a13 100%); 
@@ -25,8 +29,9 @@
         @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
+        /* EFEK GLOW MENU AKTIF BARU */
         .menu-active { color: #22d3ee !important; }
-        .menu-active div { background: rgba(34, 211, 238, 0.12); border-radius: 16px; box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); }
+        .menu-active div { background: rgba(34, 211, 238, 0.15); border-radius: 16px; box-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
 
         .glass-card {
             background: rgba(15, 23, 42, 0.65);
@@ -54,7 +59,7 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(6, 182, 212, 0.3);
             border-radius: 28px;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 30px 60px -15 rgba(0, 0, 0, 0.7);
             margin: auto;
         }
         
@@ -102,7 +107,7 @@
         </div>
     </div>
 
-    <!-- AUTH CONTAINER (KEMBALI KE VERSI ASLI KAMU YANG LAMA) -->
+    <!-- AUTH CONTAINER -->
     <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
         
         <!-- LOGIN BOX (ASLI LAMA) -->
@@ -133,7 +138,7 @@
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD (DENGAN UI PREMIUM MODERN & FITUR BARU) -->
+    <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="hidden h-screen flex flex-col pb-24">
         <!-- TOP NAVBAR -->
         <div class="p-5 flex justify-between items-center bg-[#070a13]/60 backdrop-blur-xl sticky top-0 z-50 border-b border-white/5">
@@ -148,7 +153,6 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h2 id="balanceText" class="text-xl font-extrabold text-white tracking-tight">Rp 0</h2>
-                        <!-- FITUR BARU: SEMBUNYIKAN SALDO -->
                         <button onclick="toggleHideSaldo()" class="opacity-50 hover:opacity-100 transition-opacity">
                             <svg id="eyeIcon" class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                         </button>
@@ -176,7 +180,6 @@
                     <div class="absolute -right-6 -bottom-6 opacity-15 text-9xl font-sans select-none">📊</div>
                 </div>
 
-                <!-- FITUR BARU: CARDS STATISTIK REALTIME -->
                 <div class="grid grid-cols-2 gap-3.5">
                     <div class="glass-card p-4 rounded-2xl border border-white/5">
                         <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Investor Aktif</p>
@@ -257,7 +260,7 @@
                 <div id="listDepo" class="space-y-3"></div>
             </div>
 
-            <!-- SECTION PENARIKAN (TARIK) -->
+            <!-- SECTION PENARIKAN -->
             <div id="tarikBox" class="section hidden space-y-5 animate-up">
                 <div class="glass-card rounded-[28px] p-6 border border-white/5 text-center">
                     <p id="saldoTarik" class="text-[10px] font-bold text-cyan-400 mb-2 font-mono tracking-wider">SALDO: Rp 0</p>
@@ -272,13 +275,13 @@
             </div>
         </main>
 
-        <!-- BOTTOM NAV BAR -->
+        <!-- BOTTOM NAV BAR (LOGO BARU VERSI PREMIUM LINEAL HAZE) -->
         <nav class="fixed bottom-0 left-0 right-0 bg-[#070a13]/80 backdrop-blur-2xl border-t border-white/5 px-4 py-3 flex justify-between items-center z-[9000]">
-            <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/color/48/news.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Berita</span></button>
-            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/color/48/share.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Sosmed</span></button>
-            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/color/48/coins.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Invest</span></button>
-            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/color/48/request-money.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Depo</span></button>
-            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/color/48/atm.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Tarik</span></button>
+            <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-news-news-and-media-flatart-icons-outline-flatarticons-1.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Berita</span></button>
+            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-network-internet-marketing-flatart-icons-outline-flatarticons.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Sosmed</span></button>
+            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-money-economy-flatart-icons-outline-flatarticons-2.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Invest</span></button>
+            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-deposit-business-and-finance-flatart-icons-outline-flatarticons.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Depo</span></button>
+            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-withdraw-atm-flatart-icons-outline-flatarticons.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Tarik</span></button>
         </nav>
 
         <!-- GLOBAL CHAT FLOATING BUTTON -->
@@ -306,6 +309,38 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
+        // SCRIPT PROTEKSI FITUR ANTI-SALIN & JAGA TEKAN LAMA (HOLD)
+        function alertAksesDitolak() {
+            Swal.fire({
+                icon: 'error',
+                title: 'AKSES DITOLAK',
+                text: 'Dilarang keras menyalin aset data atau teks halaman ini!',
+                confirmButtonText: 'SAYA MENGERTI',
+                timer: 2000
+            });
+        }
+
+        // 1. Blokir Klik Kanan / Tahan Lama di Desktop & HP
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alertAksesDitolak();
+        });
+
+        // 2. Blokir Kombinasi Tombol Copy (Ctrl+C, Ctrl+U, Ctrl+S, dll)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 65)) {
+                e.preventDefault();
+                alertAksesDitolak();
+                return false;
+            }
+        });
+
+        // 3. Blokir Event Copy Langsung
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alertAksesDitolak();
+        });
+
         // FIREBASE INITIALIZATION
         const firebaseConfig = {
             apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
@@ -341,7 +376,6 @@
             }
         });
 
-        // LOGIC LOGIN
         function login() {
             const email = document.getElementById('loginUser').value;
             const pass = document.getElementById('loginPass').value;
@@ -362,7 +396,6 @@
                 });
         }
 
-        // LOGIC REGISTER + VALIDASI GMAIL JALAN 100%
         function register() {
             const email = document.getElementById('regUser').value.trim();
             const pass = document.getElementById('regPass').value;
@@ -389,7 +422,6 @@
                 });
         }
 
-        // LOGIC BELI INVESTASI
         function buyInvest() {
             if (balance < 20000) return Swal.fire('Saldo Kurang', 'Saldo kamu tidak cukup untuk paket ini.', 'error');
             
@@ -408,7 +440,6 @@
             });
         }
 
-        // LOGIC DEPOSIT
         function kirimDepo() {
             Swal.fire({
                 title: 'Request Deposit?',
@@ -430,7 +461,6 @@
             });
         }
 
-        // LOGIC PENARIKAN
         function kirimTarik() {
             let nom = parseInt(document.getElementById('nominalTarik').value.replace(/\./g, ''));
             if (nom < 50000) return Swal.fire('Gagal', 'Minimal penarikan Rp 50.000!', 'warning');
@@ -457,7 +487,6 @@
             });
         }
 
-        // SYSTEM LISTEN DATA
         function listenData(uid) {
             db.ref("topup").on("value", snap => {
                 let h = "", total = 0;
@@ -519,9 +548,7 @@
                 }
             });
             balance = _lastDepo - cost + profit - _lastTarik;
-            
             updateSaldoDisplay();
-            
             document.getElementById('labelPaketA').style.display = aktif ? "inline" : "none";
             document.getElementById('btnBeliA').disabled = aktif;
             document.getElementById('timerA').style.display = aktif ? "block" : "none";
@@ -533,7 +560,6 @@
             document.getElementById('saldoTarik').innerText = "SALDO: " + (isSaldoHidden ? "Rp •••••" : formatted);
         }
 
-        // INTERAKSI MATA SALDO
         function toggleHideSaldo() {
             isSaldoHidden = !isSaldoHidden;
             const eyeIcon = document.getElementById('eyeIcon');
