@@ -102,44 +102,38 @@
         </div>
     </div>
 
-    <!-- AUTH CONTAINER (LOGIN / REGISTER) -->
-    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-[#070a13]">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.08)_0%,transparent_65%)]"></div>
+    <!-- AUTH CONTAINER (KEMBALI KE VERSI ASLI KAMU YANG LAMA) -->
+    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
         
-        <!-- LOGIN BOX -->
-        <div id="loginBox" class="w-full max-w-sm animate-up relative z-10 glass-card p-8 rounded-[32px] border border-white/5 shadow-2xl">
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 via-teal-400 to-blue-500 bg-clip-text text-transparent tracking-tighter">PAGE421</h1>
-                <p class="text-gray-400 text-[10px] mt-1.5 uppercase tracking-widest font-bold opacity-60">Secure Investment Portal</p>
+        <!-- LOGIN BOX (ASLI LAMA) -->
+        <div id="loginBox" class="w-full max-w-sm animate-up">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-black text-cyan-500 tracking-tighter">PAGE421</h1>
+                <p class="text-gray-500 text-xs mt-1 uppercase tracking-widest font-semibold">Investment Portal</p>
             </div>
             <div class="space-y-4">
-                <div class="relative">
-                    <input id="loginUser" type="email" placeholder="Alamat Email" class="w-full bg-black/40 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-500 text-sm transition-all text-white placeholder:text-gray-600">
-                </div>
-                <div class="relative">
-                    <input id="loginPass" type="password" placeholder="Kata Sandi" class="w-full bg-black/40 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-500 text-sm transition-all text-white placeholder:text-gray-600">
-                </div>
-                <button onclick="login()" class="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 text-black font-black p-4 rounded-2xl hover:brightness-110 transition-all shadow-xl shadow-cyan-500/10 active:scale-[0.98]">MASUK</button>
+                <input id="loginUser" type="email" placeholder="Alamat Email" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+                <input id="loginPass" type="password" placeholder="Kata Sandi" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+                <button onclick="login()" class="w-full bg-cyan-500 text-black font-extrabold p-4 rounded-2xl hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">MASUK</button>
             </div>
-            <p class="mt-8 text-center text-xs text-gray-400">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold underline underline-offset-4">Daftar Sekarang</span></p>
+            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold">Daftar Sekarang</span></p>
         </div>
 
-        <!-- REGISTER BOX -->
-        <div id="registerBox" class="hidden w-full max-w-sm animate-up relative z-10 glass-card p-8 rounded-[32px] border border-white/5 shadow-2xl">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-extrabold text-white tracking-tight">Buat Akun Baru</h1>
-                <p class="text-gray-400 text-xs mt-1">Gunakan akun Gmail aktif Anda</p>
+        <!-- REGISTER BOX (ASLI LAMA) -->
+        <div id="registerBox" class="hidden w-full max-w-sm animate-up">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-black text-white tracking-tighter">BUAT AKUN</h1>
             </div>
             <div class="space-y-4">
-                <input id="regUser" type="email" placeholder="Email Baru (@gmail.com)" class="w-full bg-black/40 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-500 text-sm transition-all text-white placeholder:text-gray-600">
-                <input id="regPass" type="password" placeholder="Password (Min 6 Karakter)" class="w-full bg-black/40 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-500 text-sm transition-all text-white placeholder:text-gray-600">
-                <button onclick="register()" class="w-full bg-white text-black font-black p-4 rounded-2xl hover:bg-gray-100 transition-all active:scale-[0.98]">DAFTAR SEKARANG</button>
+                <input id="regUser" type="email" placeholder="Email Baru" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+                <input id="regPass" type="password" placeholder="Password (Min 6 Karakter)" class="w-full bg-[#111] border border-white/5 p-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+                <button onclick="register()" class="w-full bg-white text-black font-extrabold p-4 rounded-2xl hover:bg-gray-200 transition-all active:scale-95">DAFTAR SEKARANG</button>
             </div>
-            <p class="mt-8 text-center text-xs text-gray-400">Sudah punya akun? <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer font-bold underline underline-offset-4">Login</span></p>
+            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Sudah punya akun? <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer font-bold">Login</span></p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- MAIN DASHBOARD (DENGAN UI PREMIUM MODERN & FITUR BARU) -->
     <div id="dashboard" class="hidden h-screen flex flex-col pb-24">
         <!-- TOP NAVBAR -->
         <div class="p-5 flex justify-between items-center bg-[#070a13]/60 backdrop-blur-xl sticky top-0 z-50 border-b border-white/5">
@@ -325,7 +319,7 @@
 
         let balance = 0, historyInv = [], sedangDaftar = false;
         let _lastDepo = 0, _lastTarik = 0;
-        let isSaldoHidden = false; // Flag untuk mata saldo
+        let isSaldoHidden = false;
 
         auth.onAuthStateChanged(user => {
             if (sedangDaftar) return;
@@ -347,7 +341,7 @@
             }
         });
 
-        // NOTIFIKASI LOGIN
+        // LOGIC LOGIN
         function login() {
             const email = document.getElementById('loginUser').value;
             const pass = document.getElementById('loginPass').value;
@@ -368,7 +362,7 @@
                 });
         }
 
-        // NOTIFIKASI REGISTER + AMAN VALIDASI GMAIL
+        // LOGIC REGISTER + VALIDASI GMAIL JALAN 100%
         function register() {
             const email = document.getElementById('regUser').value.trim();
             const pass = document.getElementById('regPass').value;
@@ -395,7 +389,7 @@
                 });
         }
 
-        // NOTIFIKASI BELI INVESTASI
+        // LOGIC BELI INVESTASI
         function buyInvest() {
             if (balance < 20000) return Swal.fire('Saldo Kurang', 'Saldo kamu tidak cukup untuk paket ini.', 'error');
             
@@ -414,7 +408,7 @@
             });
         }
 
-        // NOTIFIKASI DEPOSIT
+        // LOGIC DEPOSIT
         function kirimDepo() {
             Swal.fire({
                 title: 'Request Deposit?',
@@ -436,7 +430,7 @@
             });
         }
 
-        // NOTIFIKASI PENARIKAN
+        // LOGIC PENARIKAN
         function kirimTarik() {
             let nom = parseInt(document.getElementById('nominalTarik').value.replace(/\./g, ''));
             if (nom < 50000) return Swal.fire('Gagal', 'Minimal penarikan Rp 50.000!', 'warning');
@@ -463,7 +457,7 @@
             });
         }
 
-        // DATABASE LISTENER
+        // SYSTEM LISTEN DATA
         function listenData(uid) {
             db.ref("topup").on("value", snap => {
                 let h = "", total = 0;
@@ -513,7 +507,6 @@
             });
         }
 
-        // PERHITUNGAN SALDO & PEMBARUAN TAMPILAN
         function hitungSaldo() {
             let cost = 0, profit = 0, aktif = false, sekarang = Date.now();
             historyInv.forEach(h => {
@@ -534,14 +527,13 @@
             document.getElementById('timerA').style.display = aktif ? "block" : "none";
         }
 
-        // RE-RENDER TAMPILAN MATA SALDO
         function updateSaldoDisplay() {
             const formatted = "Rp " + balance.toLocaleString('id-ID');
             document.getElementById('balanceText').innerText = isSaldoHidden ? "Rp •••••" : formatted;
             document.getElementById('saldoTarik').innerText = "SALDO: " + (isSaldoHidden ? "Rp •••••" : formatted);
         }
 
-        // TOGGLE FITUR MATA SALDO
+        // INTERAKSI MATA SALDO
         function toggleHideSaldo() {
             isSaldoHidden = !isSaldoHidden;
             const eyeIcon = document.getElementById('eyeIcon');
@@ -553,7 +545,6 @@
             updateSaldoDisplay();
         }
 
-        // WORKFLOW NAVIGASI & SIDE FUNCTIONS
         function logout() { auth.signOut().then(() => location.reload()); }
         function toggleAuth(r) {
             document.getElementById('loginBox').classList.toggle('hidden', r);
