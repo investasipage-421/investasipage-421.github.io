@@ -12,9 +12,9 @@
         * { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and Older */
-            user-select: none; /* Standard syntax */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         body { 
             background: radial-gradient(circle at top, #111827 0%, #070a13 100%); 
@@ -29,9 +29,10 @@
         @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        /* EFEK GLOW MENU AKTIF BARU */
+        /* EFEK GLOW MENU AKTIF */
         .menu-active { color: #22d3ee !important; }
         .menu-active div { background: rgba(34, 211, 238, 0.15); border-radius: 16px; box-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
+        .menu-active svg { stroke: #22d3ee !important; }
 
         .glass-card {
             background: rgba(15, 23, 42, 0.65);
@@ -59,7 +60,7 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(6, 182, 212, 0.3);
             border-radius: 28px;
-            box-shadow: 0 30px 60px -15 rgba(0, 0, 0, 0.7);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
             margin: auto;
         }
         
@@ -110,7 +111,7 @@
     <!-- AUTH CONTAINER -->
     <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
         
-        <!-- LOGIN BOX (ASLI LAMA) -->
+        <!-- LOGIN BOX -->
         <div id="loginBox" class="w-full max-w-sm animate-up">
             <div class="text-center mb-10">
                 <h1 class="text-4xl font-black text-cyan-500 tracking-tighter">PAGE421</h1>
@@ -124,7 +125,7 @@
             <p class="mt-8 text-center text-xs text-gray-500 font-medium">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold">Daftar Sekarang</span></p>
         </div>
 
-        <!-- REGISTER BOX (ASLI LAMA) -->
+        <!-- REGISTER BOX -->
         <div id="registerBox" class="hidden w-full max-w-sm animate-up">
             <div class="text-center mb-10">
                 <h1 class="text-3xl font-black text-white tracking-tighter">BUAT AKUN</h1>
@@ -275,18 +276,48 @@
             </div>
         </main>
 
-        <!-- BOTTOM NAV BAR (LOGO BARU VERSI PREMIUM LINEAL HAZE) -->
+        <!-- BOTTOM NAV BAR (MENGGUNAKAN SVG NATIVE INTERNAL - ANTI ERROR/RUSAK) -->
         <nav class="fixed bottom-0 left-0 right-0 bg-[#070a13]/80 backdrop-blur-2xl border-t border-white/5 px-4 py-3 flex justify-between items-center z-[9000]">
-            <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-news-news-and-media-flatart-icons-outline-flatarticons-1.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Berita</span></button>
-            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-network-internet-marketing-flatart-icons-outline-flatarticons.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Sosmed</span></button>
-            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-money-economy-flatart-icons-outline-flatarticons-2.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Invest</span></button>
-            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-deposit-business-and-finance-flatart-icons-outline-flatarticons.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Depo</span></button>
-            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1"><div class="p-2 px-4 transition-all"><img src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/22d3ee/external-withdraw-atm-flatart-icons-outline-flatarticons.png" class="w-5 h-5"></div><span class="text-[9px] font-bold opacity-80">Tarik</span></button>
+            <!-- BERITA -->
+            <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1">
+                <div class="p-2 px-4 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6m-6 4h3"/></svg>
+                </div>
+                <span class="text-[9px] font-bold opacity-80">Berita</span>
+            </button>
+            <!-- SOSMED -->
+            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
+                <div class="p-2 px-4 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                </div>
+                <span class="text-[9px] font-bold opacity-80">Sosmed</span>
+            </button>
+            <!-- INVEST -->
+            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
+                <div class="p-2 px-4 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <span class="text-[9px] font-bold opacity-80">Invest</span>
+            </button>
+            <!-- DEPO -->
+            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
+                <div class="p-2 px-4 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                </div>
+                <span class="text-[9px] font-bold opacity-80">Depo</span>
+            </button>
+            <!-- TARIK -->
+            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
+                <div class="p-2 px-4 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </div>
+                <span class="text-[9px] font-bold opacity-80">Tarik</span>
+            </button>
         </nav>
 
         <!-- GLOBAL CHAT FLOATING BUTTON -->
         <button id="chatBtn" onclick="toggleChat()" class="w-14 h-14 bg-gradient-to-tr from-cyan-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 active:scale-90 transition-all">
-            <img src="https://img.icons8.com/ios-filled/50/000000/comments.png" class="w-6 h-6">
+            <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L1 17l1.338-3.123C1.393 12.572 1 11.341 1 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>
         </button>
 
         <!-- CHAT WIDGET CONTAINER -->
@@ -309,24 +340,24 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // SCRIPT PROTEKSI FITUR ANTI-SALIN & JAGA TEKAN LAMA (HOLD)
+        // SCRIPT PROTEKSI FITUR ANTI-SALIN & REAKSI TEKAN LAMA (HOLD)
         function alertAksesDitolak() {
             Swal.fire({
                 icon: 'error',
                 title: 'AKSES DITOLAK',
-                text: 'Dilarang keras menyalin aset data atau teks halaman ini!',
+                text: 'Sistem memblokir penyalinan data pada halaman ini!',
                 confirmButtonText: 'SAYA MENGERTI',
                 timer: 2000
             });
         }
 
-        // 1. Blokir Klik Kanan / Tahan Lama di Desktop & HP
+        // Blokir Klik Kanan / Tahan Lama (Hold HP)
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             alertAksesDitolak();
         });
 
-        // 2. Blokir Kombinasi Tombol Copy (Ctrl+C, Ctrl+U, Ctrl+S, dll)
+        // Blokir Kombinasi Tombol Copy Keyboard
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 65)) {
                 e.preventDefault();
@@ -335,7 +366,7 @@
             }
         });
 
-        // 3. Blokir Event Copy Langsung
+        // Blokir Event Copy Mekanis
         document.addEventListener('copy', function(e) {
             e.preventDefault();
             alertAksesDitolak();
