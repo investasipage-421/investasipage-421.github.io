@@ -175,7 +175,7 @@
                         <h3 class="text-2xl font-black mt-3 mb-1.5 leading-tight uppercase tracking-tight">Mulai Investasi,<br>Raih Profitmu!</h3>
                         <p class="text-black/80 text-xs font-medium max-w-[80%]">Nikmati profit otomatis setiap 24 jam bersama sistem Page421.</p>
                         <a href="https://chat.whatsapp.com/CYbrANKs7GZ8uzOwqw20MG" target="_blank" class="inline-block text-[9px] mt-4 font-bold bg-black text-white px-3 py-1.5 rounded-xl shadow-md break-all">
-                            Join Grup WhatsApp ↗️
+                            Join Grup WhatsApp ↗
                         </a>
                     </div>
                     <div class="absolute -right-6 -bottom-6 opacity-15 text-9xl font-sans select-none">📊</div>
@@ -276,7 +276,7 @@
             </div>
         </main>
 
-        <!-- BOTTOM NAV BAR -->
+        <!-- BOTTOM NAV BAR (MENGGUNAKAN SVG NATIVE INTERNAL - ANTI ERROR/RUSAK) -->
         <nav class="fixed bottom-0 left-0 right-0 bg-[#070a13]/80 backdrop-blur-2xl border-t border-white/5 px-4 py-3 flex justify-between items-center z-[9000]">
             <!-- BERITA -->
             <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1">
@@ -340,7 +340,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // SCRIPT PROTEKSI FITUR ANTI-SALIN
+        // SCRIPT PROTEKSI FITUR ANTI-SALIN & REAKSI TEKAN LAMA (HOLD)
         function alertAksesDitolak() {
             Swal.fire({
                 icon: 'error',
@@ -351,13 +351,26 @@
             });
         }
 
-        document.addEventListener('contextmenu', function(e) { e.preventDefault(); alertAksesDitolak(); });
+        // Blokir Klik Kanan / Tahan Lama (Hold HP)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alertAksesDitolak();
+        });
+
+        // Blokir Kombinasi Tombol Copy Keyboard
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 65)) {
-                e.preventDefault(); alertAksesDitolak(); return false;
+                e.preventDefault();
+                alertAksesDitolak();
+                return false;
             }
         });
-        document.addEventListener('copy', function(e) { e.preventDefault(); alertAksesDitolak(); });
+
+        // Blokir Event Copy Mekanis
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alertAksesDitolak();
+        });
 
         // FIREBASE INITIALIZATION
         const firebaseConfig = {
@@ -374,37 +387,36 @@
         let _lastDepo = 0, _lastTarik = 0;
         let isSaldoHidden = false;
 
-        // PERBAIKAN UTAMA: Manajemen state Auth State agar tidak menahan proses halaman
         auth.onAuthStateChanged(user => {
+            if (sedangDaftar) return;
             if (user) {
-                // Sembunyikan Auth Box, Buka Dashboard Utama
                 document.getElementById('authContainer').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 document.getElementById('chatBtn').style.display = 'flex';
                 document.getElementById('emailText').innerText = user.email;
-                
                 db.ref("users/" + user.uid + "/photo").on("value", snap => {
                     if (snap.val()) document.getElementById('userImg').src = snap.val();
                 });
-                
                 showPopup();
                 listenData(user.uid);
                 listenChat();
             } else {
-                if (!sedangDaftar) {
-                    document.getElementById('dashboard').classList.add('hidden');
-                    document.getElementById('authContainer').classList.remove('hidden');
-                    document.getElementById('chatBtn').style.display = 'none';
-                }
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('authContainer').classList.remove('hidden');
+                document.getElementById('chatBtn').style.display = 'none';
             }
         });
 
         function login() {
-            const email = document.getElementById('loginUser').value.trim();
+            const email = document.getElementById('loginUser').value;
             const pass = document.getElementById('loginPass').value;
             if(!email || !pass) return Swal.fire('Oops!', 'Lengkapi email dan password!', 'warning');
             
-            Swal.fire({ title: 'Menghubungkan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            Swal.fire({
+                title: 'Menghubungkan...',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            });
 
             auth.signInWithEmailAndPassword(email, pass)
                 .then(() => {
@@ -420,23 +432,23 @@
             const pass = document.getElementById('regPass').value;
             
             if(!email || pass.length < 6) return Swal.fire('Data Lemah', 'Email harus valid & Password min 6 karakter!', 'warning');
+
             if (!email.toLowerCase().endsWith('@gmail.com')) {
                 return Swal.fire('Email Tidak Valid', 'Pendaftaran wajib menggunakan akun @gmail.com!', 'error');
             }
 
             sedangDaftar = true;
-            Swal.fire({ title: 'Membuat Akun...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            Swal.fire({ title: 'Membuat Akun...', didOpen: () => { Swal.showLoading() } });
 
             auth.createUserWithEmailAndPassword(email, pass)
                 .then(() => { 
-                    Swal.fire('Sukses!', 'Akun berhasil dibuat, silakan masuk menggunakan akun baru Anda.', 'success');
+                    sedangDaftar=false; 
+                    Swal.fire('Sukses!', 'Akun berhasil dibuat, silakan masuk.', 'success');
                     toggleAuth(false); 
-                    auth.signOut().then(() => {
-                        sedangDaftar = false;
-                    });
+                    auth.signOut(); 
                 })
                 .catch(e => { 
-                    sedangDaftar = false;
+                    sedangDaftar=false;
                     Swal.fire('Registrasi Gagal', e.message, 'error');
                 });
         }
@@ -487,7 +499,7 @@
             
             Swal.fire({
                 title: 'Konfirmasi Penarikan',
-                text: Tarik Rp ${nom.toLocaleString()}? (Biaya Admin Rp 2.500),
+                text: `Tarik Rp ${nom.toLocaleString()}? (Biaya Admin Rp 2.500)`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Tarik!'
@@ -550,8 +562,7 @@
             });
 
             db.ref("invest_history/" + uid).on("value", snap => {
-                historyInv = []; 
-                snap.forEach(c => { historyInv.push(c.val()); });
+                historyInv = []; snap.forEach(c => historyInv.push(c.val()));
                 hitungSaldo();
             });
         }
@@ -584,39 +595,34 @@
             isSaldoHidden = !isSaldoHidden;
             const eyeIcon = document.getElementById('eyeIcon');
             if(isSaldoHidden) {
-                eyeIcon.innerHTML = <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>;
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>`;
             } else {
-                eyeIcon.innerHTML = <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>;
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
             }
             updateSaldoDisplay();
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
-        
         function toggleAuth(r) {
             document.getElementById('loginBox').classList.toggle('hidden', r);
             document.getElementById('registerBox').classList.toggle('hidden', !r);
         }
-        
         function showSection(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
             el.classList.add('menu-active');
         }
-        
         function toggleChat() {
             const w = document.getElementById('chatWidget');
             w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
         }
-        
         function sendChat() {
             const inp = document.getElementById('chatInput');
             if (!inp.value.trim()) return;
             db.ref("global_chats").push({ m: inp.value.trim(), t: Date.now(), uid: auth.currentUser.uid });
             inp.value = "";
         }
-        
         function listenChat() {
             db.ref("global_chats").limitToLast(15).on("value", snap => {
                 const box = document.getElementById('chatContent');
@@ -634,15 +640,12 @@
                 box.scrollTop = box.scrollHeight;
             });
         }
-        
         function uploadFoto() {
             const f = document.getElementById('fileInput').files[0];
-            if(!f) return;
             const rd = new FileReader();
             rd.onload = e => db.ref("users/" + auth.currentUser.uid).update({ photo: e.target.result });
             rd.readAsDataURL(f);
         }
-        
         function openGallery() { document.getElementById('fileInput').click(); }
         function showPopup() { document.getElementById('announcementPopup').style.display = "flex"; }
         function closePopup() { document.getElementById('announcementPopup').style.display = "none"; }
