@@ -72,49 +72,6 @@
             z-index: 9990;
         }
 
-        /* HALAMAN QR DEPOSIT BARU */
-        #qrPage {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 10000;
-            background: rgba(0,0,0,0.98);
-            backdrop-filter: blur(20px);
-        }
-
-        .qr-container {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            border-radius: 28px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-        }
-
-        .qr-code {
-            width: 280px;
-            height: 280px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-        }
-
-        .countdown-expired {
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            animation: pulse-red 1s infinite;
-        }
-
-        @keyframes pulse-red {
-            0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.6); }
-            50% { box-shadow: 0 0 40px rgba(239,68,68,0.9); }
-        }
-
         .video-container {
             position: relative;
             width: 100%;
@@ -137,26 +94,6 @@
         .swal2-title, .swal2-html-container { color: #f3f4f6 !important; }
         .swal2-confirm { background: linear-gradient(135deg, #06b6d4, #0891b2) !important; color: #000 !important; font-weight: 800 !important; border-radius: 14px !important; padding: 12px 24px !important; }
         .swal2-cancel { background: #1f2937 !important; color: #fff !important; border-radius: 14px !important; }
-
-        /* QR BOX KECIL */
-        .qr-mini {
-            width: 24px;
-            height: 24px;
-            background: rgba(6, 182, 212, 0.2);
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .qr-mini:hover {
-            background: rgba(6, 182, 212, 0.4);
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
-            transform: scale(1.1);
-        }
     </style>
 </head>
 <body class="selection:bg-cyan-500 selection:text-black">
@@ -168,50 +105,6 @@
             <h2 class="text-xl font-extrabold text-white mb-2 tracking-tight">Halo Investor!</h2>
             <p class="text-gray-400 text-xs leading-relaxed mb-6">Selamat datang kembali. Sistem telah memperbarui profit harian secara otomatis hari ini!</p>
             <button onclick="closePopup()" class="w-full bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-extrabold py-3.5 rounded-xl shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-xs active:scale-95 transition-all">Mulai Sekarang</button>
-        </div>
-    </div>
-
-    <!-- HALAMAN QR DEPOSIT BARU -->
-    <div id="qrPage">
-        <div class="flex items-center justify-center min-h-screen p-6">
-            <div class="qr-container rounded-[32px] p-8 max-w-md w-full text-center relative animate-up">
-                <button onclick="closeQRPage()" class="absolute top-4 right-4 text-white text-2xl opacity-70 hover:opacity-100 transition-opacity">&times;</button>
-                
-                <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-cyan-500 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-2xl">💳</div>
-                
-                <h2 class="text-2xl font-black text-white mb-2 tracking-tight">Deposit Rp 50.000</h2>
-                <p class="text-gray-400 text-sm mb-6">Transfer ke QR Code di bawah ini</p>
-                
-                <div class="qr-code mb-8 shadow-2xl">
-                    <span>📱 Qt</span>
-                </div>
-                
-                <div class="space-y-4 mb-8">
-                    <div class="flex items-center justify-center gap-3 text-sm">
-                        <span class="text-gray-400 font-mono">No. Rekening:</span>
-                        <span class="font-bold text-white">1234-5678-9012-3456</span>
-                    </div>
-                    <div class="flex items-center justify-center gap-3 text-sm">
-                        <span class="text-gray-400 font-mono">A/N:</span>
-                        <span class="font-bold text-white">PAGE421 OFFICIAL</span>
-                    </div>
-                </div>
-                
-                <div id="qrTimer" class="glass-card p-4 rounded-2xl mb-6 border-2 border-yellow-500/30">
-                    <div class="flex items-center justify-center gap-2">
-                        <div class="w-3 h-3 bg-yellow-400 rounded-full animate-ping"></div>
-                        <span class="text-lg font-black text-yellow-400 tracking-wider" id="timerText">23:59:59</span>
-                    </div>
-                    <p class="text-[10px] text-yellow-400 font-bold mt-1 tracking-wider">Waktu Transfer Aktif</p>
-                </div>
-                
-                <p class="text-[11px] text-gray-500 mb-6 font-medium">Screenshot bukti transfer kirim ke WhatsApp admin</p>
-                
-                <div class="space-y-3">
-                    <a href="https://chat.whatsapp.com/CYbrANKs7GZ8uzOwqw20MG" target="_blank" class="block w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-black py-4 rounded-2xl text-lg shadow-lg shadow-green-500/20 hover:shadow-green-500/40 active:scale-95 transition-all">📱 Kirim Bukti WA Admin</a>
-                    <button onclick="downloadQR()" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-black py-3 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 active:scale-95 transition-all text-sm">⬇️ Download QR Code</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -282,7 +175,7 @@
                         <h3 class="text-2xl font-black mt-3 mb-1.5 leading-tight uppercase tracking-tight">Mulai Investasi,<br>Raih Profitmu!</h3>
                         <p class="text-black/80 text-xs font-medium max-w-[80%]">Nikmati profit otomatis setiap 24 jam bersama sistem Page421.</p>
                         <a href="https://chat.whatsapp.com/CYbrANKs7GZ8uzOwqw20MG" target="_blank" class="inline-block text-[9px] mt-4 font-bold bg-black text-white px-3 py-1.5 rounded-xl shadow-md break-all">
-                            Join Grup WhatsApp ↗
+                            Join Grup WhatsApp ↗️
                         </a>
                     </div>
                     <div class="absolute -right-6 -bottom-6 opacity-15 text-9xl font-sans select-none">📊</div>
@@ -358,7 +251,7 @@
                 </div>
             </div>
 
-            <!-- SECTION DEPOSIT - DITAMBAH QR MINI BOX -->
+            <!-- SECTION DEPOSIT -->
             <div id="depoBox" class="section hidden space-y-5 animate-up">
                 <div class="glass-card rounded-[28px] p-6 border border-white/5 text-center relative overflow-hidden">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Fixed Deposit Amount</p>
@@ -383,7 +276,7 @@
             </div>
         </main>
 
-        <!-- BOTTOM NAV BAR -->
+        <!-- BOTTOM NAV BAR (MENGGUNAKAN SVG NATIVE INTERNAL - ANTI ERROR/RUSAK) -->
         <nav class="fixed bottom-0 left-0 right-0 bg-[#070a13]/80 backdrop-blur-2xl border-t border-white/5 px-4 py-3 flex justify-between items-center z-[9000]">
             <!-- BERITA -->
             <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1">
@@ -493,8 +386,6 @@
         let balance = 0, historyInv = [], sedangDaftar = false;
         let _lastDepo = 0, _lastTarik = 0;
         let isSaldoHidden = false;
-        let currentQRDepoId = null;
-        let qrTimerInterval = null;
 
         auth.onAuthStateChanged(user => {
             if (sedangDaftar) return;
@@ -515,79 +406,6 @@
                 document.getElementById('chatBtn').style.display = 'none';
             }
         });
-
-        // FUNGSI HALAMAN QR BARU
-        function openQRPage(depoId) {
-            currentQRDepoId = depoId;
-            document.getElementById('qrPage').style.display = 'flex';
-            startQRTimer();
-        }
-
-        function closeQRPage() {
-            document.getElementById('qrPage').style.display = 'none';
-            if (qrTimerInterval) {
-                clearInterval(qrTimerInterval);
-                qrTimerInterval = null;
-            }
-        }
-
-        function startQRTimer() {
-            const now = Date.now();
-            const endTime = now + (24 * 60 * 60 * 1000); // 24 jam dari sekarang
-            
-            function updateTimer() {
-                const remaining = endTime - Date.now();
-                if (remaining <= 0) {
-                    document.getElementById('qrTimer').classList.add('countdown-expired');
-                    document.getElementById('timerText').innerText = '00:00:00';
-                    document.getElementById('timerText').classList.add('text-red-400');
-                    if (qrTimerInterval) clearInterval(qrTimerInterval);
-                    return;
-                }
-                
-                const hours = Math.floor(remaining / (1000 * 60 * 60));
-                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-                
-                document.getElementById('timerText').innerText = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-            
-            updateTimer();
-            qrTimerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function downloadQR() {
-            Swal.fire({
-                title: 'Download QR Code',
-                text: 'Tekan tombol di bawah untuk menyimpan QR Code',
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Download Sekarang',
-                confirmButtonColor: '#3b82f6'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Buat canvas untuk QR (simulasi)
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 280;
-                    canvas.height = 280;
-                    const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = '#fff';
-                    ctx.fillRect(0, 0, 280, 280);
-                    ctx.fillStyle = '#000';
-                    ctx.font = 'bold 48px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('📱 Qt', 140, 150);
-                    
-                    const link = document.createElement('a');
-                    link.download = `QR-Deposit-${Date.now()}.png`;
-                    link.href = canvas.toDataURL();
-                    link.click();
-                    
-                    Swal.fire('Downloaded!', 'QR Code berhasil diunduh', 'success');
-                }
-            });
-        }
 
         function login() {
             const email = document.getElementById('loginUser').value;
@@ -662,15 +480,14 @@
                 confirmButtonText: 'Kirim Request'
             }).then((res) => {
                 if(res.isConfirmed) {
-                    const depoId = db.ref("topup").push({ 
+                    db.ref("topup").push({ 
                         uid: auth.currentUser.uid, 
                         email: auth.currentUser.email, 
                         nominal: 50000, 
                         status: "pending", 
-                        timestamp: Date.now(),
-                        qr_id: Date.now() // ID unik untuk QR
-                    }).key;
-                    Swal.fire('Terkirim!', 'Silakan buka QR Code untuk transfer. (24 jam)', 'success');
+                        timestamp: Date.now() 
+                    });
+                    Swal.fire('Terkirim!', 'Silakan tunggu konfirmasi admin.', 'success');
                 }
             });
         }
@@ -682,7 +499,7 @@
             
             Swal.fire({
                 title: 'Konfirmasi Penarikan',
-                text: `Tarik Rp ${nom.toLocaleString()}? (Biaya Admin Rp 2.500)`,
+                text: Tarik Rp ${nom.toLocaleString()}? (Biaya Admin Rp 2.500),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Tarik!'
@@ -709,20 +526,13 @@
                     if (d.uid === uid) {
                         if (d.status === 'selesai') total += Number(d.nominal);
                         const time = new Date(d.timestamp || d.t).toLocaleTimeString('id-ID');
-                        const depoId = c.key;
                         
                         let badgeColor = d.status === 'selesai' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400';
-                        if(d.status === 'gagal' || (Date.now() - d.timestamp > 24*60*60*1000)) badgeColor = 'bg-red-500/10 text-red-400';
+                        if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
 
                         h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
-                            <div>
-                                <div class="font-extrabold text-white">Rp ${Number(d.nominal).toLocaleString()}</div>
-                                <div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status || 'expired'}</span>
-                                ${d.status !== 'selesai' ? `<div class="qr-mini" onclick="openQRPage('${depoId}')" title="Buka QR Code">📱</div>` : ''}
-                            </div>
+                            <div><div class="font-extrabold text-white">Rp ${Number(d.nominal).toLocaleString()}</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
+                            <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
                         </div>`;
                     }
                 });
@@ -785,9 +595,9 @@
             isSaldoHidden = !isSaldoHidden;
             const eyeIcon = document.getElementById('eyeIcon');
             if(isSaldoHidden) {
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>`;
+                eyeIcon.innerHTML = <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>;
             } else {
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
+                eyeIcon.innerHTML = <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>;
             }
             updateSaldoDisplay();
         }
