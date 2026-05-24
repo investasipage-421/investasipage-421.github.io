@@ -682,6 +682,45 @@
         function openGallery() { document.getElementById('fileInput').click(); }
         function showPopup() { document.getElementById('announcementPopup').style.display = "flex"; }
         function closePopup() { document.getElementById('announcementPopup').style.display = "none"; }
+    
+        (function() {
+            let basePrice = 2824687;
+            function formatRupiah(angka) {
+                return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+            setInterval(function() {
+                let change = Math.floor(Math.random() * 15000) - 5000; 
+                basePrice += change;
+                if(basePrice < 2500000) basePrice = 2800000;
+                let textChange = Math.abs(change);
+
+                const priceEl = document.getElementById('stockPrice');
+                const changeEl = document.getElementById('stockChange');
+                
+                if(priceEl) priceEl.innerText = formatRupiah(basePrice);
+                if(changeEl) changeEl.innerText = '+Rp ' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+                let p1 = Math.floor(Math.random() * 40) + 30;
+                let p2 = Math.floor(Math.random() * 50) + 60;
+                let p3 = Math.floor(Math.random() * 40) + 40;
+                let p4 = Math.floor(Math.random() * 50) + 50;
+
+                let newD = `M 0 80 Q 100 ${p1} 200 ${p2} T 400 ${p3} L 500 ${p4}`;
+                let newArea = `${newD} L 500 150 L 0 150 Z`;
+
+                const gLine = document.getElementById('graphLine');
+                const gArea = document.getElementById('graphArea');
+                const gDot = document.getElementById('graphDot');
+
+                if(gLine) gLine.setAttribute('d', newD);
+                if(gArea) gArea.setAttribute('d', newArea);
+                if(gDot) {
+                    gDot.setAttribute('cx', '500');
+                    gDot.setAttribute('cy', p4);
+                }
+            }, 2000);
+        })();
+  
     </script>
 </body>
 </html>
