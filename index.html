@@ -194,7 +194,9 @@
                     <div class="flex justify-between items-end mb-4">
                         <div>
                             <span class="text-[9px] font-bold text-gray-500 tracking-wider block uppercase">Harga Berjalan</span>
-                            <h1 id="stockPrice" class="text-2xl font-black text-white tracking-tight mt-0.5 font-mono">2.824.687 Koin</h1>
+                            <h1 id="stockPrice" class="text-2xl font-black text-white tracking-tight mt-0.5 font-mono">2.824.687</h1>
+
+                            <span class="text-lg font-bold text-gray-400 block mt-1">Koin</span>
                         </div>
                         <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-extrabold text-xs px-2.5 py-1.5 rounded-xl font-mono mb-0.5 shadow-sm">
                             <span id="stockChange">+10.624</span>
@@ -686,7 +688,7 @@
         (function() {
             let basePrice = 2824687;
             function formatKoin(angka) {
-                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".") + " Koin";
+                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
             }
             setInterval(function() {
                 let change = Math.floor(Math.random() * 15000) - 5000; 
