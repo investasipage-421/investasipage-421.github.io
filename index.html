@@ -700,7 +700,7 @@
                 const changeEl = document.getElementById('stockChange');
                 
                 if(priceEl) priceEl.innerText = formatKoin(basePrice) + " Koin";
-                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " Koin";
+                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
                 let p1 = Math.floor(Math.random() * 40) + 30;
                 let p2 = Math.floor(Math.random() * 50) + 60;
