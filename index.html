@@ -489,11 +489,11 @@
         }
 
         function buyInvest() {
-            if (balance < 20000) return Swal.fire('Saldo Kurang', 'Saldo kamu tidak cukup untuk paket ini.', 'error');
+            if (balance < 20000) return Swal.fire('Koin Kurang', 'Koin kamu tidak cukup untuk paket ini.', 'error');
             
             Swal.fire({
                 title: 'Konfirmasi Pembelian',
-                text: "Saldo akan terpotong Rp 20.000 untuk Paket Premium A",
+                text: "Koin akan terpotong 20.000 Koin untuk Paket Premium A",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Beli!',
@@ -509,7 +509,7 @@
         function kirimDepo() {
             Swal.fire({
                 title: 'Request Deposit?',
-                text: "Kamu akan mengajukan deposit sebesar Rp 50.000",
+                text: "Kamu akan mengajukan deposit sebesar 50.000 Koin",
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonText: 'Kirim Request'
@@ -529,12 +529,12 @@
 
         function kirimTarik() {
             let nom = parseInt(document.getElementById('nominalTarik').value.replace(/\./g, ''));
-            if (nom < 50000) return Swal.fire('Gagal', 'Minimal penarikan Rp 50.000!', 'warning');
-            if (balance < (nom + 2500)) return Swal.fire('Saldo Kurang', 'Saldo tidak cukup untuk nominal + biaya admin.', 'error');
+            if (nom < 50000) return Swal.fire('Gagal', 'Minimal penarikan 50.000 Koin!', 'warning');
+            if (balance < (nom + 2500)) return Swal.fire('Koin kurang', 'Koin tidak cukup untuk nominal + biaya admin.', 'error');
             
             Swal.fire({
                 title: 'Konfirmasi Penarikan',
-                text: `Tarik Rp ${nom.toLocaleString()}? (Biaya Admin Rp 2.500)`,
+                text: `Tarik ${nom.toLocaleString()} Koin? (Biaya Admin 2.500 Koin)`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Tarik!'
@@ -566,7 +566,7 @@
                         if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
 
                         h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
-                            <div><div class="font-extrabold text-white">Rp ${Number(d.nominal).toLocaleString()}</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
+                            <div><div class="font-extrabold text-white">${Number(d.nominal).toLocaleString()} Koin</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
                             <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
                         </div>`;
                     }
@@ -587,7 +587,7 @@
                         if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
 
                         h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
-                            <div><div class="font-extrabold text-white">Rp ${Number(d.nominal).toLocaleString()}</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
+                            <div><div class="font-extrabold text-white">${Number(d.nominal).toLocaleString()} Koin</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
                             <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
                         </div>`;
                     }
@@ -621,9 +621,9 @@
         }
 
         function updateSaldoDisplay() {
-            const formatted = "Rp " + balance.toLocaleString('id-ID');
-            document.getElementById('balanceText').innerText = isSaldoHidden ? "Rp •••••" : formatted;
-            document.getElementById('saldoTarik').innerText = "SALDO: " + (isSaldoHidden ? "Rp •••••" : formatted);
+            const formatted = balance.toLocaleString('id-ID') + " Koin";
+            document.getElementById('balanceText').innerText = isSaldoHidden ? "••••• Koin" : formatted;
+            document.getElementById('saldoTarik').innerText = "SALDO: " + (isSaldoHidden ? "••••• Koin" : formatted);
         }
 
         function toggleHideSaldo() {
@@ -699,8 +699,8 @@
                 const priceEl = document.getElementById('stockPrice');
                 const changeEl = document.getElementById('stockChange');
                 
-                if(priceEl) priceEl.innerText = formatKoin(basePrice);
-                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                if(priceEl) priceEl.innerText = formatKoin(basePrice) + " Koin";
+                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " Koin";
 
                 let p1 = Math.floor(Math.random() * 40) + 30;
                 let p2 = Math.floor(Math.random() * 50) + 60;
