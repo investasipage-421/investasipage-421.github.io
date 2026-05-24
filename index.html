@@ -699,7 +699,7 @@
                 const priceEl = document.getElementById('stockPrice');
                 const changeEl = document.getElementById('stockChange');
                 
-                if(priceEl) priceEl.innerText = formatKoin(basePrice) + " Koin";
+                if(priceEl) priceEl.innerText = formatKoin(basePrice);
                 if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
                 let p1 = Math.floor(Math.random() * 40) + 30;
