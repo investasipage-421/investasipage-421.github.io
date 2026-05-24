@@ -685,69 +685,44 @@
         function showPopup() { document.getElementById('announcementPopup').style.display = "flex"; }
         function closePopup() { document.getElementById('announcementPopup').style.display = "none"; }
     
-        let hargaAcakPasar = 2824687; 
-        let updateGrafikManual = null;
-
         (function() {
-        function formatKoin(angka) {
-            return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
-        }
+            let basePrice = 2824687;
+            function formatKoin(angka) {
+                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
+            }
+            setInterval(function() {
+                let change = Math.floor(Math.random() * 15000) - 5000; 
+                basePrice += change;
+                if(basePrice < 2500000) basePrice = 2800000;
+                let textChange = Math.abs(change);
 
-        updateGrafikManual = function(profitPaketAktif = 0) {
-            // Pasar normal tetap bergerak acak di background untuk visual grafik
-            let change = Math.floor(Math.random() * 10000) - 4000; 
-            hargaAcakPasar += change;
-            if(hargaAcakPasar < 2500000) hargaAcakPasar = 2800000;
+                const priceEl = document.getElementById('stockPrice');
+                const changeEl = document.getElementById('stockChange');
+                
+                if(priceEl) priceEl.innerText = formatKoin(basePrice);
+                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
+                let p1 = Math.floor(Math.random() * 40) + 30;
+                let p2 = Math.floor(Math.random() * 50) + 60;
+                let p3 = Math.floor(Math.random() * 40) + 40;
+                let p4 = Math.floor(Math.random() * 50) + 50;
 
-            let totalHargaSaatIni = (typeof balance !== 'undefined' && profitPaketAktif > 0) ? balance : hargaAcakPasar;
+                let newD = `M 0 80 Q 100 ${p1} 200 ${p2} T 400 ${p3} L 500 ${p4}`;
+                let newArea = `${newD} L 500 150 L 0 150 Z`;
 
-            const priceEl = document.getElementById('stockPrice');
-            const changeEl = document.getElementById('stockChange');
-            
-            if(priceEl) priceEl.innerText = formatKoin(totalHargaSaatIni) + " Koin";
-            
-            if(changeEl) {
-                if (profitPaketAktif > 0) {
-                  
-                    changeEl.innerText = '+' + formatKoin(profitPaketAktif) + " Koin";
-                    changeEl.style.color = "#10B981"; 
-                } else {
-                  
-                    changeEl.innerText = (change >= 0 ? '+' : '') + formatKoin(change) + " Koin";
-                    changeEl.style.color = change >= 0 ? "#10B981" : "#EF4444";
+                const gLine = document.getElementById('graphLine');
+                const gArea = document.getElementById('graphArea');
+                const gDot = document.getElementById('graphDot');
+
+                if(gLine) gLine.setAttribute('d', newD);
+                if(gArea) gArea.setAttribute('d', newArea);
+                if(gDot) {
+                    gDot.setAttribute('cx', '500');
+                    gDot.setAttribute('cy', p4);
                 }
-            }
-
-            let p1 = profitPaketAktif > 0 ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 40) + 30;
-            let p2 = profitPaketAktif > 0 ? Math.floor(Math.random() * 30) + 20 : Math.floor(Math.random() * 50) + 60;
-            let p3 = profitPaketAktif > 0 ? Math.floor(Math.random() * 20) + 15 : Math.floor(Math.random() * 40) + 40;
-            let p4 = profitPaketAktif > 0 ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 50) + 50; 
-
-            let newD = `M 0 80 Q 100 ${p1} 200 ${p2} T 400 ${p3} L 500 ${p4}`;
-            let newArea = `${newD} L 500 150 L 0 150 Z`;
-
-            const gLine = document.getElementById('graphLine');
-            const gArea = document.getElementById('graphArea');
-            const gDot = document.getElementById('graphDot');
-
-            if(gLine) gLine.setAttribute('d', newD);
-            if(gArea) gArea.setAttribute('d', newArea);
-            if(gDot) {
-                gDot.setAttribute('cx', '500');
-                gDot.setAttribute('cy', p4);
-            }
-        };
-
-        setInterval(function() {
-            if (typeof hitungSaldo === "function") {
-                hitungSaldo(); 
-            } else {
-                updateGrafikManual(0);
-            }
-        }, 2000);
-    })();
-
-</script>
+            }, 2000);
+        })();
+    
+    </script>
 </body>
 </html>
