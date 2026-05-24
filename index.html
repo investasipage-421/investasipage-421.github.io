@@ -194,10 +194,10 @@
                     <div class="flex justify-between items-end mb-4">
                         <div>
                             <span class="text-[9px] font-bold text-gray-500 tracking-wider block uppercase">Harga Berjalan</span>
-                            <h1 id="stockPrice" class="text-2xl font-black text-white tracking-tight mt-0.5 font-mono">Rp 2.824.687</h1>
+                            <h1 id="stockPrice" class="text-2xl font-black text-white tracking-tight mt-0.5 font-mono">Koin 2.824.687</h1>
                         </div>
                         <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-extrabold text-xs px-2.5 py-1.5 rounded-xl font-mono mb-0.5 shadow-sm">
-                            <span id="stockChange">+Rp 10.624</span>
+                            <span id="stockChange">+Koin 10.624</span>
                         </div>
                     </div>
                     <div class="mt-2 rounded-xl bg-black/20 p-2 border border-white/5" style="background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 15px 15px;">
@@ -685,8 +685,8 @@
     
         (function() {
             let basePrice = 2824687;
-            function formatRupiah(angka) {
-                return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            function formatKoin(angka) {
+                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".") + " Koin";
             }
             setInterval(function() {
                 let change = Math.floor(Math.random() * 15000) - 5000; 
@@ -697,8 +697,8 @@
                 const priceEl = document.getElementById('stockPrice');
                 const changeEl = document.getElementById('stockChange');
                 
-                if(priceEl) priceEl.innerText = formatRupiah(basePrice);
-                if(changeEl) changeEl.innerText = '+Rp ' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                if(priceEl) priceEl.innerText = formatKoin(basePrice);
+                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " Koin";
 
                 let p1 = Math.floor(Math.random() * 40) + 30;
                 let p2 = Math.floor(Math.random() * 50) + 60;
