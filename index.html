@@ -661,9 +661,30 @@
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
-        function toggleAuth(r) {
-            document.getElementById('loginBox').classList.toggle('hidden', r);
-            document.getElementById('registerBox').classList.toggle('hidden', !r);
+        function bukaTab(namaTab) {
+            const loginBox = document.getElementById('loginBox');
+            const registerBox = document.getElementById('registerBox');
+            const halamanForto = document.getElementById('halamanForto');
+
+            if (loginBox) loginBox.classList.add('hidden');
+            if (registerBox) registerBox.classList.add('hidden');
+            if (halamanForto) halamanForto.classList.add('hidden');
+
+            if (namaTab === 'login') {
+                if (loginBox) loginBox.classList.remove('hidden');
+            } else if (namaTab === 'register') {
+                if (registerBox) registerBox.classList.remove('hidden');
+            } else if (namaTab === 'forto') {
+                if (halamanForto) halamanForto.classList.remove('hidden');
+            }
+        }
+
+        function toggleAuth(isRegister) {
+            if (isRegister) {
+                bukaTab('register');
+            } else {
+                bukaTab('login');
+            }
         }
         function showSection(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
