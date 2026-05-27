@@ -112,16 +112,16 @@
     <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
 
         <div class="absolute top-6 left-0 right-0 px-6 w-full max-w-sm mx-auto">
-            <div class="flex gap-3 w-full">
-                <div id="menuTable" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px]">
-                    <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">WED</span>
-                    
-                </div>
-                <div id="menuPortfolio" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px]">
-                    <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">FORTOFOLIO</span>
-                </div>
+        <div class="flex gap-3 w-full">
+            <div id="menuTable" onclick="bukaTab('login')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
+                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">WED</span>
+            </div>
+            
+            <div id="menuPortfolio" onclick="bukaTab('forto')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
+                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">FORTOFOLIO</span>
             </div>
         </div>
+    </div>
        
         <!-- LOGIN BOX -->
         <div id="loginBox" class="w-full max-w-sm animate-up">
@@ -665,20 +665,38 @@
             const loginBox = document.getElementById('loginBox');
             const registerBox = document.getElementById('registerBox');
             const halamanForto = document.getElementById('halamanForto');
+            
+            const menuTable = document.getElementById('menuTable');
+            const menuPortfolio = document.getElementById('menuPortfolio');
+            const textWED = document.getElementById('textWED');
+            const textForto = document.getElementById('textForto');
 
+            // Sembunyikan semua box konten
             if (loginBox) loginBox.classList.add('hidden');
             if (registerBox) registerBox.classList.add('hidden');
             if (halamanForto) halamanForto.classList.add('hidden');
 
+            // Reset semua style tombol navbar atas ke kondisi tidak aktif
+            if (menuTable) { menuTable.classList.replace('border-cyan-500/30', 'border-white/10'); }
+            if (menuPortfolio) { menuPortfolio.classList.replace('border-cyan-500/30', 'border-white/10'); }
+            if (textWED) { textWED.classList.replace('text-cyan-400', 'text-gray-500'); textWED.classList.replace('font-black', 'font-bold'); }
+            if (textForto) { textForto.classList.replace('text-cyan-400', 'text-gray-500'); textForto.classList.replace('font-black', 'font-bold'); }
+
+            // Nyalakan box dan ubah style menu sesuai tab yang dipilih
             if (namaTab === 'login') {
                 if (loginBox) loginBox.classList.remove('hidden');
+                if (menuTable) menuTable.classList.replace('border-white/10', 'border-cyan-500/30');
+                if (textWED) { textWED.classList.replace('text-gray-500', 'text-cyan-400'); textWED.classList.replace('font-bold', 'font-black'); }
             } else if (namaTab === 'register') {
                 if (registerBox) registerBox.classList.remove('hidden');
+                if (menuTable) menuTable.classList.replace('border-white/10', 'border-cyan-500/30');
+                if (textWED) { textWED.classList.replace('text-gray-500', 'text-cyan-400'); textWED.classList.replace('font-bold', 'font-black'); }
             } else if (namaTab === 'forto') {
                 if (halamanForto) halamanForto.classList.remove('hidden');
+                if (menuPortfolio) menuPortfolio.classList.replace('border-white/10', 'border-cyan-500/30');
+                if (textForto) { textForto.classList.replace('text-gray-500', 'text-cyan-400'); textForto.classList.replace('font-bold', 'font-black'); }
             }
         }
-
         function toggleAuth(isRegister) {
             if (isRegister) {
                 bukaTab('register');
