@@ -109,19 +109,34 @@
     </div>
 
     <!-- AUTH CONTAINER -->
-    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
-
-        <div class="absolute top-6 left-0 right-0 px-6 w-full max-w-sm mx-auto">
+    <div id="authContainer" class="fixed inset-0 flex flex-col p-6 z-[100] bg-black overflow-y-auto">
+    
+    <div class="w-full max-w-sm mx-auto mb-6">
         <div class="flex gap-3 w-full">
-            <div id="menuTable" onclick="bukaTab('login')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
-                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">WED</span>
+            <div id="menuTable" onclick="bukaTab('login')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center cursor-pointer">
+                <span class="text-[8px] text-cyan-400 font-bold">WED</span>
             </div>
-            
-            <div id="menuPortfolio" onclick="bukaTab('forto')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
-                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">FORTOFOLIO</span>
+            <div id="menuPortfolio" onclick="bukaTab('forto')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center cursor-pointer">
+                <span class="text-[8px] text-cyan-400 font-bold">FORTOFOLIO</span>
             </div>
         </div>
     </div>
+       
+    <div id="loginBox" class="w-full max-w-sm mx-auto animate-up">
+        </div>
+
+    <div id="registerBox" class="hidden w-full max-w-sm mx-auto animate-up">
+        </div>
+
+    <div id="halamanForto" class="hidden w-full max-w-sm mx-auto animate-up mt-4 pb-12">
+        <div style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+            </div>
+
+        <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;">
+            </div>
+    </div>
+
+</div>
        
         <!-- LOGIN BOX -->
         <div id="loginBox" class="w-full max-w-sm animate-up">
@@ -152,8 +167,6 @@
         
         <div id="halamanForto" class="hidden w-full max-w-sm animate-up mt-16">
  
-        
-            
         <div style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
         <div style="position:absolute;width:120px;height:120px;left:10%;top:-10%;background:radial-gradient(circle,rgba(0,220,255,0.12),transparent 70%);border-radius:50%;animation:driftP 18s linear infinite;"></div>
         <div style="position:absolute;width:80px;height:80px;left:70%;top:-5%;background:radial-gradient(circle,rgba(0,220,255,0.1),transparent 70%);border-radius:50%;animation:driftP 24s linear infinite;animation-delay:-6s;"></div>
@@ -905,6 +918,27 @@
                 if (textForto) { textForto.classList.replace('text-gray-500', 'text-cyan-400'); textForto.classList.replace('font-bold', 'font-black'); }
             }
         }
+       
+    // 2. KODE BAWAAN ANDA SEBELUMNYA TETAP DI BAWAHNYA
+    function toggleAuth(isRegister) {
+        if (isRegister) {
+            bukaTab('register');
+        } else {
+            bukaTab('login');
+        }
+    }
+
+    function showSection(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
+        el.classList.add('menu-active');
+    }
+
+    function toggleChat() {
+        const w = document.getElementById('chatWidget');
+        w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
+    } 
         function toggleAuth(isRegister) {
             if (isRegister) {
                 bukaTab('register');
