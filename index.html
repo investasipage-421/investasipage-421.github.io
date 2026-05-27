@@ -226,7 +226,6 @@
 
   <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;">
 
-    <!-- HERO -->
     <div class="forto-card" style="background:linear-gradient(135deg,#0d1520,#111827,#0a1018);border:1px solid rgba(255,255,255,0.07);border-radius:24px;padding:22px;overflow:hidden;position:relative;">
       <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(0,200,255,0.1),transparent 70%);border-radius:50%;animation:floatLogo 5s ease-in-out infinite;pointer-events:none;"></div>
       <div style="display:flex;align-items:center;gap:14px;position:relative;">
@@ -250,7 +249,6 @@
       </p>
     </div>
 
-    <!-- OJK -->
     <div class="forto-card" style="background:linear-gradient(135deg,#011a0e,#012a14);border:1px solid rgba(34,197,94,0.25);border-radius:24px;padding:18px;animation:borderOJK 3s ease-in-out infinite,slideCard 0.6s cubic-bezier(0.16,1,0.3,1) 0.08s forwards;">
       <div style="display:flex;align-items:center;gap:14px;">
         <div style="width:54px;height:54px;border-radius:18px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -267,7 +265,6 @@
       </div>
     </div>
 
-    <!-- STATS -->
     <div class="forto-card" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div class="forto-stat" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:16px;position:relative;overflow:hidden;cursor:default;">
         <div style="position:absolute;top:0;right:0;width:36px;height:36px;background:#00d4ff;opacity:0.06;border-bottom-left-radius:14px;"></div>
@@ -291,7 +288,6 @@
       </div>
     </div>
 
-    <!-- KEUNGGULAN -->
     <div class="forto-card" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:24px;padding:20px;">
       <span class="shimmer-label">✦ Keunggulan Kami</span>
       <div class="forto-feat">
@@ -336,7 +332,6 @@
       </div>
     </div>
 
-    <!-- KONTAK -->
     <div class="forto-card" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:24px;padding:20px;">
       <span class="shimmer-label">✦ Hubungi Kami</span>
       <div style="display:flex;flex-direction:column;gap:8px;">
@@ -374,31 +369,30 @@
 
   </div>
 </div>
-    <!-- MAIN DASHBOARD -->
-    </div> <div id="dashboard" class="hidden h-screen flex flex-col pb-24">
-        <!-- TOP NAVBAR -->
-        <div class="p-5 flex justify-between items-center bg-[#070a13]/60 backdrop-blur-xl sticky top-0 z-50 border-b border-white/5">
-            <div class="flex items-center gap-3.5">
-                <div class="relative group cursor-pointer" onclick="openGallery()">
-                    <div class="w-12 h-12 rounded-2xl border border-cyan-500/40 overflow-hidden shadow-lg">
-                        <img id="userImg" src="https://i.imgur.com/8Km9tLL.png" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute -bottom-1 -right-1 bg-cyan-400 text-black rounded-lg w-5 h-5 flex items-center justify-center text-[10px] font-black border border-[#070a13] shadow">+</div>
-                </div>
-                <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="uploadFoto()">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h2 id="balanceText" class="text-xl font-extrabold text-white tracking-tight">0 Koin</h2>
-                        <button onclick="toggleHideSaldo()" class="opacity-50 hover:opacity-100 transition-opacity">
-                            <svg id="eyeIcon" class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        </button>
-                    </div>
-                    <p id="emailText" class="text-[10px] text-gray-500 font-medium tracking-wide">user@mail.com</p>
-                </div>
-            </div>
-            <button onclick="logout()" class="p-2.5 px-4 bg-red-500/10 border border-red-500/20 rounded-xl text-[10px] font-extrabold text-red-400 uppercase tracking-wider hover:bg-red-500 hover:text-black transition-all">Logout</button>
-        </div>
 
+</div> <div id="dashboard" class="hidden h-screen flex flex-col pb-24">
+    <div class="p-5 flex justify-between items-center bg-[#070a13]/60 backdrop-blur-xl sticky top-0 z-50 border-b border-white/5">
+        <div class="flex items-center gap-3.5">
+            <div class="relative group cursor-pointer" onclick="openGallery()">
+                <div class="w-12 h-12 rounded-2xl border border-cyan-500/40 overflow-hidden shadow-lg">
+                    <img id="userImg" src="https://i.imgur.com/8Km9tLL.png" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-cyan-400 text-black rounded-lg w-5 h-5 flex items-center justify-center text-[10px] font-black border border-[#070a13] shadow">+</div>
+            </div>
+            <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="uploadFoto()">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 id="balanceText" class="text-xl font-extrabold text-white tracking-tight">0 Koin</h2>
+                    <button onclick="toggleHideSaldo()" class="opacity-50 hover:opacity-100 transition-opacity">
+                        <svg id="eyeIcon" class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </button>
+                </div>
+                <p id="emailText" class="text-[10px] text-gray-500 font-medium tracking-wide">user@mail.com</p>
+            </div>
+        </div>
+        <button onclick="logout()" class="p-2.5 px-4 bg-red-500/10 border border-red-500/20 rounded-xl text-[10px] font-extrabold text-red-400 uppercase tracking-wider hover:bg-red-500 hover:text-black transition-all">Logout</button>
+    </div>
+        
         <!-- MAIN SCROLLABLE CONTENT -->
         <main class="flex-1 overflow-y-auto p-5 custom-scrollbar">
             
