@@ -151,17 +151,230 @@
         </div>
         
         <div id="halamanForto" class="hidden w-full max-w-sm animate-up mt-16">
-            <div class="bg-[#111] border border-white/10 p-6 rounded-3xl text-center">
-                <h2 class="text-2xl font-black text-white tracking-tight mb-2">MY PORTFOLIO</h2>
-                <p class="text-gray-400 text-xs mb-6">Daftar projek dan investasi saya</p>
-                
-                <div class="p-4 bg-black/40 border border-white/5 rounded-2xl text-left space-y-2">
-                    <p class="text-cyan-400 text-xs font-bold">Projek Aktif</p>
-                    <p class="text-gray-400 text-[11px]">Silakan isi info portfolio atau proyek investasi kamu di sini.</p>
-                </div>
-            </div>
-        </div>
 
+  <!-- Particles -->
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+    <div style="position:absolute;width:120px;height:120px;left:10%;top:-10%;background:radial-gradient(circle,rgba(0,220,255,0.12),transparent 70%);border-radius:50%;animation:driftP 18s linear infinite;"></div>
+    <div style="position:absolute;width:80px;height:80px;left:70%;top:-5%;background:radial-gradient(circle,rgba(0,220,255,0.1),transparent 70%);border-radius:50%;animation:driftP 24s linear infinite;animation-delay:-6s;"></div>
+    <div style="position:absolute;width:140px;height:140px;left:40%;top:-20%;background:radial-gradient(circle,rgba(120,80,255,0.08),transparent 70%);border-radius:50%;animation:driftP 30s linear infinite;animation-delay:-12s;"></div>
+  </div>
+
+  <style>
+    @keyframes driftP {
+      0%   { transform:translateY(0) scale(1); opacity:0; }
+      10%  { opacity:1; }
+      90%  { opacity:1; }
+      100% { transform:translateY(110vh) scale(1.2); opacity:0; }
+    }
+    @keyframes floatLogo {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-6px); }
+    }
+    @keyframes pingDot {
+      0%  { box-shadow:0 0 0 0 rgba(34,197,94,0.5); }
+      70% { box-shadow:0 0 0 7px rgba(34,197,94,0); }
+      100%{ box-shadow:0 0 0 0 rgba(34,197,94,0); }
+    }
+    @keyframes borderOJK {
+      0%,100%{ border-color:rgba(34,197,94,0.2); box-shadow:none; }
+      50%    { border-color:rgba(34,197,94,0.6); box-shadow:0 0 16px rgba(34,197,94,0.12); }
+    }
+    @keyframes shimmerTxt {
+      0%  { background-position:-200% center; }
+      100%{ background-position: 200% center; }
+    }
+    @keyframes barIn {
+      from{ width:0; }
+      to  { width:var(--w); }
+    }
+    @keyframes popIn {
+      from{ opacity:0; transform:scale(0.7); }
+      to  { opacity:1; transform:scale(1); }
+    }
+    @keyframes slideCard {
+      from{ opacity:0; transform:translateY(24px); }
+      to  { opacity:1; transform:translateY(0); }
+    }
+    .forto-card { opacity:0; animation:slideCard 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .forto-card:nth-child(2){ animation-delay:0.08s; }
+    .forto-card:nth-child(3){ animation-delay:0.16s; }
+    .forto-card:nth-child(4){ animation-delay:0.24s; }
+    .forto-card:nth-child(5){ animation-delay:0.32s; }
+    .forto-card:nth-child(6){ animation-delay:0.40s; }
+    .forto-stat { opacity:0; animation:popIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .forto-stat:nth-child(1){ animation-delay:0.4s; }
+    .forto-stat:nth-child(2){ animation-delay:0.5s; }
+    .forto-stat:nth-child(3){ animation-delay:0.6s; }
+    .forto-stat:nth-child(4){ animation-delay:0.7s; }
+    .forto-stat:hover { transform:translateY(-3px) scale(1.03); border-color:rgba(255,255,255,0.12)!important; transition:all 0.25s; }
+    .forto-feat { transition:all 0.25s; border:1px solid transparent; border-radius:16px; padding:12px; display:flex; align-items:flex-start; gap:12px; cursor:default; }
+    .forto-feat:hover { background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.06); transform:translateX(4px); }
+    .forto-feat:hover .forto-fi { transform:scale(1.1) rotate(-5deg); }
+    .forto-fi { transition:transform 0.3s; flex-shrink:0; width:40px; height:40px; border-radius:14px; display:flex; align-items:center; justify-content:center; }
+    .forto-contact { display:flex; align-items:center; gap:12px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.04); background:rgba(0,0,0,0.3); text-decoration:none; transition:all 0.25s; cursor:pointer; }
+    .forto-contact:hover { transform:translateX(4px); background:rgba(255,255,255,0.03); }
+    .forto-contact:hover .forto-arrow { opacity:1!important; transform:translateX(0)!important; }
+    .forto-arrow { opacity:0; transform:translateX(-4px); transition:all 0.25s; margin-left:auto; }
+    .shimmer-label {
+      font-size:10px; font-weight:800; letter-spacing:3px; text-transform:uppercase;
+      background:linear-gradient(90deg,#00d4ff,#fff,#00d4ff);
+      background-size:200% auto;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      animation:shimmerTxt 3s linear infinite;
+      display:block; margin-bottom:14px;
+    }
+  </style>
+
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;">
+
+    <!-- HERO -->
+    <div class="forto-card" style="background:linear-gradient(135deg,#0d1520,#111827,#0a1018);border:1px solid rgba(255,255,255,0.07);border-radius:24px;padding:22px;overflow:hidden;position:relative;">
+      <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(0,200,255,0.1),transparent 70%);border-radius:50%;animation:floatLogo 5s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="display:flex;align-items:center;gap:14px;position:relative;">
+        <div style="width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,#00d4ff,#0055ff);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(0,180,255,0.35);animation:floatLogo 4s ease-in-out infinite;flex-shrink:0;">
+          <svg width="30" height="30" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+        <div>
+          <div style="font-size:18px;font-weight:900;color:white;letter-spacing:-0.5px;line-height:1.1;">NAMA PERUSAHAAN</div>
+          <div style="font-size:10px;font-weight:700;color:#00d4ff;letter-spacing:2px;text-transform:uppercase;margin-top:3px;">Platform Investasi Digital</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:5px;">
+            <div style="width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pingDot 1.5s ease-in-out infinite;"></div>
+            <span style="font-size:10px;font-weight:600;color:#22c55e;">Beroperasi Resmi</span>
+          </div>
+        </div>
+      </div>
+      <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);margin:16px 0;"></div>
+      <p style="font-size:12px;color:#8b949e;line-height:1.7;position:relative;">
+        Platform investasi digital terdepan di Indonesia yang menghadirkan solusi keuangan 
+        <span style="color:#e6edf3;font-weight:600;">cerdas, aman, dan menguntungkan</span> 
+        untuk masa depan finansial Anda.
+      </p>
+    </div>
+
+    <!-- OJK -->
+    <div class="forto-card" style="background:linear-gradient(135deg,#011a0e,#012a14);border:1px solid rgba(34,197,94,0.25);border-radius:24px;padding:18px;animation:borderOJK 3s ease-in-out infinite,slideCard 0.6s cubic-bezier(0.16,1,0.3,1) 0.08s forwards;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:54px;height:54px;border-radius:18px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="26" height="26" fill="none" stroke="#22c55e" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:9px;font-weight:800;color:#22c55e;letter-spacing:2px;text-transform:uppercase;">DIAWASI OJK</span>
+            <span style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;font-size:8px;font-weight:800;padding:2px 8px;border-radius:99px;">✓ VERIFIED</span>
+          </div>
+          <div style="font-size:12px;font-weight:600;color:white;margin-top:3px;">Otoritas Jasa Keuangan RI</div>
+          <div style="font-size:10px;color:#4a5568;margin-top:2px;">No. Izin: <span style="color:#86efac;font-weight:700;">XXX/OJK/2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="forto-card" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="forto-stat" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:16px;position:relative;overflow:hidden;cursor:default;">
+        <div style="position:absolute;top:0;right:0;width:36px;height:36px;background:#00d4ff;opacity:0.06;border-bottom-left-radius:14px;"></div>
+        <div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#00d4ff,#0066ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">10K+</div>
+        <div style="font-size:10px;color:#4a5568;margin-top:4px;">Pengguna Aktif</div>
+      </div>
+      <div class="forto-stat" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:16px;position:relative;overflow:hidden;cursor:default;">
+        <div style="position:absolute;top:0;right:0;width:36px;height:36px;background:#a855f7;opacity:0.06;border-bottom-left-radius:14px;"></div>
+        <div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">2019</div>
+        <div style="font-size:10px;color:#4a5568;margin-top:4px;">Tahun Berdiri</div>
+      </div>
+      <div class="forto-stat" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:16px;position:relative;overflow:hidden;cursor:default;">
+        <div style="position:absolute;top:0;right:0;width:36px;height:36px;background:#22c55e;opacity:0.06;border-bottom-left-radius:14px;"></div>
+        <div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#22c55e,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">100%</div>
+        <div style="font-size:10px;color:#4a5568;margin-top:4px;">Dana Terjamin</div>
+      </div>
+      <div class="forto-stat" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:20px;padding:16px;position:relative;overflow:hidden;cursor:default;">
+        <div style="position:absolute;top:0;right:0;width:36px;height:36px;background:#fb923c;opacity:0.06;border-bottom-left-radius:14px;"></div>
+        <div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#fb923c,#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">24/7</div>
+        <div style="font-size:10px;color:#4a5568;margin-top:4px;">Support Online</div>
+      </div>
+    </div>
+
+    <!-- KEUNGGULAN -->
+    <div class="forto-card" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:24px;padding:20px;">
+      <span class="shimmer-label">✦ Keunggulan Kami</span>
+      <div class="forto-feat">
+        <div class="forto-fi" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);">
+          <svg width="18" height="18" fill="none" stroke="#00d4ff" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#e6edf3;">Proses Cepat & Mudah</div>
+          <div style="font-size:10px;color:#4a5568;margin-top:3px;line-height:1.5;">Transaksi selesai dalam hitungan detik</div>
+          <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.05);border-radius:99px;overflow:hidden;"><div style="height:100%;border-radius:99px;background:#00d4ff;--w:92%;animation:barIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.8s both;"></div></div>
+        </div>
+      </div>
+      <div class="forto-feat">
+        <div class="forto-fi" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);">
+          <svg width="18" height="18" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#e6edf3;">Keamanan Berlapis</div>
+          <div style="font-size:10px;color:#4a5568;margin-top:3px;line-height:1.5;">Enkripsi SSL 256-bit & autentikasi 2FA</div>
+          <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.05);border-radius:99px;overflow:hidden;"><div style="height:100%;border-radius:99px;background:#22c55e;--w:98%;animation:barIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.9s both;"></div></div>
+        </div>
+      </div>
+      <div class="forto-feat">
+        <div class="forto-fi" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);">
+          <svg width="18" height="18" fill="none" stroke="#a855f7" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#e6edf3;">Return Kompetitif</div>
+          <div style="font-size:10px;color:#4a5568;margin-top:3px;line-height:1.5;">Imbal hasil terbaik di kelasnya</div>
+          <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.05);border-radius:99px;overflow:hidden;"><div style="height:100%;border-radius:99px;background:#a855f7;--w:85%;animation:barIn 1.2s cubic-bezier(0.16,1,0.3,1) 1.0s both;"></div></div>
+        </div>
+      </div>
+      <div class="forto-feat" style="margin-bottom:0;">
+        <div class="forto-fi" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2);">
+          <svg width="18" height="18" fill="none" stroke="#fb923c" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#e6edf3;">Support 24/7</div>
+          <div style="font-size:10px;color:#4a5568;margin-top:3px;line-height:1.5;">Tim siap membantu kapan saja</div>
+          <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.05);border-radius:99px;overflow:hidden;"><div style="height:100%;border-radius:99px;background:#fb923c;--w:100%;animation:barIn 1.2s cubic-bezier(0.16,1,0.3,1) 1.1s both;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTAK -->
+    <div class="forto-card" style="background:#0d1117;border:1px solid rgba(255,255,255,0.05);border-radius:24px;padding:20px;">
+      <span class="shimmer-label">✦ Hubungi Kami</span>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a class="forto-contact" href="mailto:support@perusahaan.com">
+          <div style="width:36px;height:36px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="#00d4ff" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;color:#374151;letter-spacing:1px;text-transform:uppercase;">Email</div>
+            <div style="font-size:11px;color:#6b7280;margin-top:1px;">support@perusahaan.com</div>
+          </div>
+          <svg class="forto-arrow" width="16" height="16" fill="none" stroke="#4a5568" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a class="forto-contact" href="https://wa.me/6281234567890">
+          <div style="width:36px;height:36px;border-radius:12px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="#22c55e" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.527 5.845L.057 23.428l5.752-1.507A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.368l-.36-.214-3.714.974.991-3.61-.234-.372A9.818 9.818 0 1112 21.818z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;color:#374151;letter-spacing:1px;text-transform:uppercase;">WhatsApp</div>
+            <div style="font-size:11px;color:#6b7280;margin-top:1px;">+62 800-XXXX-XXXX</div>
+          </div>
+          <svg class="forto-arrow" width="16" height="16" fill="none" stroke="#4a5568" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <div class="forto-contact">
+          <div style="width:36px;height:36px;border-radius:12px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="#60a5fa" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:9px;font-weight:600;color:#374151;letter-spacing:1px;text-transform:uppercase;">Kantor Pusat</div>
+            <div style="font-size:11px;color:#6b7280;margin-top:1px;">Jakarta, Indonesia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
     <!-- MAIN DASHBOARD -->
     </div> <div id="dashboard" class="hidden h-screen flex flex-col pb-24">
         <!-- TOP NAVBAR -->
