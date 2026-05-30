@@ -234,13 +234,13 @@
                             Lihat Semua <span class="text-xs">→</span>
                         </a>
                     </div>
-                    <div onclick="showSection('portfolioBox')" class="flex flex-col items-center cursor-pointer group">
+                    <div class="grid grid-cols-4 gap-y-5 gap-x-2">
+                        <div onclick="showSection('investBox', document.querySelectorAll('.menu-item')[2])" class="flex flex-col items-center cursor-pointer group">
                             <div class="w-12 h-12 rounded-2xl bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 active:scale-90 transition-all">
                                 <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                             </div>
                             <span class="text-[10px] font-bold text-white text-center mt-2.5 leading-tight tracking-tight">Portofolio</span>
                         </div>
-                        
                         <div onclick="Swal.fire({icon:'info', title:'PAGE Saham', text:'Fitur ini segera hadir!', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
                             <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
                                 <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -787,20 +787,12 @@
                 bukaTab('login');
             }
         }
-       function showSection(id, el) {
-    document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-    
-    const targetSection = document.getElementById(id);
-    if (targetSection) {
-        targetSection.classList.remove('hidden');
-    }
-    
-    // Pengaman: Hanya ubah tampilan menu aktif jika tombolnya berasal dari Bottom Nav Bar (bukan dari grid portfolio)
-    if (el) {
-        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
-        el.classList.add('menu-active');
-    }
-}
+        function showSection(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
+            el.classList.add('menu-active');
+        }
         function toggleChat() {
             const w = document.getElementById('chatWidget');
             w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
