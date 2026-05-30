@@ -281,6 +281,8 @@
       console.error("Portal PAGE421: Gagal inisiasi Firebase:", e);
     }
 
+    const IS_USING_PLACEHOLDER_KEY = firebaseConfig.apiKey.includes("FakeKeyPlaceholder") || firebaseConfig.apiKey === "";
+
     function getClientInfo() {
       return {
         device: 'Standalone Web App (Chrome)',
@@ -447,7 +449,12 @@
                 setIsLoading(false);
                 onSuccess(matchedLocal);
               } else {
-                setError("Gagal masuk via Firebase: " + err.message);
+                const isApiKeyError = err.code === 'auth/api-key-not-valid' || err.code === 'auth/invalid-api-key' || err.message.includes('api-key') || err.message.includes('API key');
+                if (isApiKeyError) {
+                  setError("Kunci API Firebase dalam kode Anda tidak valid atau belum diatur asli. Jangan khawatir! Silakan mendaftar di menu 'Daftar Sekarang' di bawah, akun Anda akan terdaftar secara otomatis di Mode Simulasi Lokal (Offline)!");
+                } else {
+                  setError("Gagal masuk via Firebase: " + err.message);
+                }
                 setIsLoading(false);
               }
             });
@@ -480,6 +487,16 @@
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Masuk ke Akun</h2>
             <p className="text-sm text-slate-500">Gunakan alamat email @gmail.com dan kata sandi terdaftar Anda.</p>
           </div>
+
+          {IS_USING_PLACEHOLDER_KEY && (
+            <div className="p-3.5 bg-amber-50 text-amber-800 text-xs rounded-xl flex items-start gap-2 border border-amber-100 font-medium animate-fade-in">
+              <Icon name="info" className="w-4 h-4 shrink-0 mt-0.5 text-amber-500 font-bold" />
+              <div>
+                <strong className="block mb-0.5 font-bold">Mode Simulasi Lokal (Offline) Aktif</strong>
+                <span className="leading-relaxed">Aplikasi mendeteksi API Key Firebase belum diatur/diisi asli. Pendaftaran & login akan otomatis berjalan secara lokal di memori browser Anda agar semua fitur premium tetap dapat diuji dengan lancar!</span>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="p-3.5 bg-red-50 text-red-600 text-xs rounded-xl flex items-start gap-2 border border-red-100 font-medium animate-fade-in">
@@ -614,8 +631,45 @@
             })
             .catch((err) => {
               console.error(err);
-              setError("Gagal mendaftar via Firebase: " + err.message);
-              setIsLoading(false);
+              const isApiKeyError = err.code === 'auth/api-key-not-valid' || err.code === 'auth/invalid-api-key' || err.message.includes('api-key') || err.message.includes('API key');
+              if (isApiKeyError) {
+                // Fallback to local storage database automatically
+                const users = getStoredUsers();
+                const emailExists = users.some(u => u.email.toLowerCase() === emailTrimmed);
+
+                if (emailExists) {
+                  setError('Alamat email ini sudah terdaftar di Penyimpanan Lokal Anda. Silakan langsung gunakan untuk masuk!');
+                  setIsLoading(false);
+                  return;
+                }
+
+                const newUser = {
+                  id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                  name: name.trim(),
+                  email: emailTrimmed,
+                  passwordHash: password,
+                  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
+                  role: 'user',
+                  createdAt: new Date().toISOString(),
+                  balance: 15.250,
+                  earned: 15.250,
+                  withdrawn: 0.0,
+                  isVerified: false,
+                  invitedEmails: []
+                };
+
+                const updatedUsers = [...users, newUser];
+                saveUsers(updatedUsers);
+                addActivityLog('register', `Akun baru ${newUser.email} (${newUser.name}) didaftarkan otomatis via Mode Simulasi Lokal (Offline) karena Kunci Firebase belum diatur.`, newUser.id);
+
+                alert("💡 Firebase API Key Belum Valid!\n\nAplikasi mendeteksi bahwa Kunci API Firebase belum diatur/diperbarui dengan yang asli di kode HTML.\n\nSistem otomatis mendaftarkan akun Anda ke 'Mode Simulasi Lokal (Offline)'. Pendaftaran Sukses! Anda sekarang dapat langsung masuk menggunakan email & sandi ini.");
+                
+                setIsLoading(false);
+                onRegisterSuccess(newUser.email);
+              } else {
+                setError("Gagal mendaftar via Firebase: " + err.message);
+                setIsLoading(false);
+              }
             });
         } else {
           // Fallback lokal jika Firebase belum diaktifkan
@@ -660,6 +714,16 @@
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Daftar Akun Baru</h2>
             <p className="text-sm text-slate-500">Lengkapi formulir di bawah ini untuk memulai registrasi.</p>
           </div>
+
+          {IS_USING_PLACEHOLDER_KEY && (
+            <div className="p-3.5 bg-amber-50 text-amber-800 text-xs rounded-xl flex items-start gap-2 border border-amber-100 font-medium animate-fade-in">
+              <Icon name="info" className="w-4 h-4 shrink-0 mt-0.5 text-amber-500 font-bold" />
+              <div>
+                <strong className="block mb-0.5 font-bold">Mode Simulasi Lokal (Offline) Aktif</strong>
+                <span className="leading-relaxed">API Key Firebase belum diatur/diisi asli. Pendaftaran akun Anda akan otomatis diproses dan disimpan secara lokal di browser agar Anda langsung bisa masuk & mencoba menu portal.</span>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="p-3.5 bg-red-50 text-red-600 text-xs rounded-xl flex items-start gap-2 border border-red-100 font-medium">
