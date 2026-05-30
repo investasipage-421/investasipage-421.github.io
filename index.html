@@ -209,51 +209,13 @@
     const LOGGED_IN_USER_KEY = 'portal_current_user';
     const ACTIVITY_LOGS_KEY = 'portal_activity_logs';
 
-    const SEEDED_MEMBER = {
-      id: 'user_seeded_member_001',
-      name: 'Nagha Kancil',
-      email: 'nagha.kancil@gmail.com',
-      passwordHash: 'Nagha123!',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-      bio: '',
-      phoneNumber: '',
-      role: 'user',
-      createdAt: new Date().toISOString(),
-      balance: 15.250,
-      earned: 15.250,
-      withdrawn: 0.0,
-      isVerified: false,
-      invitedEmails: []
-    };
-
-    const SEEDED_LOGS = [
-      {
-        id: 'log_seed_1',
-        timestamp: new Date(Date.now() - 3600000 * 2).toISOString(),
-        type: 'register',
-        details: 'Akun member nagha.kancil@gmail.com berhasil didaftarkan secara otomatis.',
-        device: 'Standalone Web Browser',
-        ipAddress: '125.163.12.87',
-        userId: 'user_seeded_member_001'
-      },
-      {
-        id: 'log_seed_2',
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-        type: 'login',
-        details: 'Member berhasil login ke dalam sistem.',
-        device: 'Standalone Web Browser',
-        ipAddress: '125.163.12.42',
-        userId: 'user_seeded_member_001'
-      }
-    ];
-
     // --- FIREBASE INTEGRATION & DYNAMIC CONFIGURATION ---
     const firebaseConfig = window.firebaseConfig || {
-      apiKey: "AIzaSyFakeKeyPlaceholderP421_xyz",
-      authDomain: "portal-p421.firebaseapp.com",
-      databaseURL: "https://portal-p421-default-rtdb.firebaseio.com",
-      projectId: "portal-p421",
-      storageBucket: "portal-p421.appspot.com",
+      apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
+      authDomain: "page421-b9a6c.firebaseapp.com",
+      databaseURL: "https://page421-b9a6c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "page421-b9a6c",
+      storageBucket: "page421-b9a6c.appspot.com",
       messagingSenderId: "1234567890",
       appId: "1:1234567890:web:abcdef"
     };
@@ -293,34 +255,24 @@
     function getStoredUsers() {
       const usersStr = localStorage.getItem(USERS_KEY);
       if (!usersStr) {
-        localStorage.setItem(USERS_KEY, JSON.stringify([SEEDED_MEMBER]));
-        return [SEEDED_MEMBER];
+        return [];
       }
       try {
-        let list = JSON.parse(usersStr);
-        // Clean seeded state
-        list = list.map(u => {
-          if (u.email.toLowerCase() === 'nagha.kancil@gmail.com' && (u.name.includes('Admin') || u.role === 'admin')) {
-            return { ...u, name: 'Nagha Kancil', role: 'user', bio: '' };
-          }
-          return u;
-        });
-        return list;
+        return JSON.parse(usersStr);
       } catch (e) {
-        return [SEEDED_MEMBER];
+        return [];
       }
     }
 
     function getStoredLogs() {
       const logsStr = localStorage.getItem(ACTIVITY_LOGS_KEY);
       if (!logsStr) {
-        localStorage.setItem(ACTIVITY_LOGS_KEY, JSON.stringify(SEEDED_LOGS));
-        return SEEDED_LOGS;
+        return [];
       }
       try {
         return JSON.parse(logsStr).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       } catch (e) {
-        return SEEDED_LOGS;
+        return [];
       }
     }
 
@@ -404,7 +356,7 @@
                   if (!matchedUser) {
                     matchedUser = {
                       id: fbUser.uid,
-                      name: fbUser.uid === 'user_seeded_member_001' ? 'Nagha Kancil' : (emailTrimmed.split('@')[0]),
+                      name: emailTrimmed.split('@')[0].split(/[._+-]/).map(s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '').filter(Boolean).join(' '),
                       email: emailTrimmed,
                       passwordHash: password,
                       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
