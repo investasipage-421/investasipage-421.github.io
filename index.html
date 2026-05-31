@@ -1343,18 +1343,12 @@
                   ${balance.toFixed(3)}
                 </div>
                 
-                {/* Bottom Row inside card with ≈ Rp and USR- name ID */}
-                <div className="flex items-center justify-between pt-1 text-slate-400 font-medium text-xs font-sans">
-                  <div>
-                    ≈ Rp{(balance * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
-                  </div>
-                  <div className="text-slate-500 text-[10px] font-mono font-bold tracking-widest uppercase">
-                    USR-{(currentUser.name || 'REMODD').toUpperCase().replace(/\s+/g, '')}
-                  </div>
-                </div>
-              </div>
-
+                {/* Bottom Row inside card with ≈ Rp (USR- dihapus) */}
+            <div className="pt-1 text-slate-400 font-medium text-xs font-sans">
+              ≈ Rp{(balance * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
             </div>
+          </div>
+        </div>
 
             {/* --- CIRCLE NAVIGATION SHORTCUTS (4 Circles matching mockup) --- */}
             <div className="grid grid-cols-4 gap-2 py-1">
