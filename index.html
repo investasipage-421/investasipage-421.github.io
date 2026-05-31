@@ -1115,17 +1115,32 @@
       };
 
       const handleCircleClick = (feature) => {
-        if (!isVerified && progressRatio < 100) {
-          setLockedFeatureName(feature);
-          setActiveModal('features_locked');
-          return;
-        }
-        if (feature === 'Tarik Uang') setActiveModal('withdraw');
-        else if (feature === 'Riwayat') setActiveModal('daily_checkin');
-        else if (feature === 'Upgrade Akun' || feature === 'Isi Saldo') setActiveModal('upgrade');
-        else if (feature === 'Undang Teman') setActiveModal('invite');
-      };
+  // Debug: Pastikan kita tahu apa yang diklik
+  console.log("Fitur yang diklik:", feature);
 
+  // 1. Cek kunci akses
+  if (!isVerified && progressRatio < 100) {
+    setLockedFeatureName(feature);
+    setActiveModal('features_locked');
+    return;
+  }
+
+  // 2. Normalisasi input (menghapus spasi di awal/akhir dan menyamakan format)
+  const cleanFeature = feature?.trim();
+
+  // 3. Logika Navigasi
+  if (cleanFeature === 'Tarik Uang') {
+    setActiveModal('withdraw');
+  } else if (cleanFeature === 'Riwayat') {
+    setActiveModal('daily_checkin');
+  } else if (cleanFeature === 'Upgrade Akun' || cleanFeature === 'Isi Saldo') {
+    setActiveModal('upgrade');
+  } else if (cleanFeature === 'Undang Teman') {
+    setActiveModal('invite');
+  } else {
+    console.warn("Fitur tidak terdaftar:", cleanFeature);
+  }
+};
       const handleVerifyAccount = () => {
         const hasPhoneCheck = !!currentUser.phoneNumber && currentUser.phoneNumber.trim().length > 0;
         const hasBioCheck = !!currentUser.bio && currentUser.bio.trim().length > 0;
