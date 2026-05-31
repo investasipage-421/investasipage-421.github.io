@@ -516,10 +516,10 @@
 
     // --- REGISTER SCREEN ---
     function RegisterScreen({ onRegisterSuccess, onBackToLogin }) {
-      const [name, setName] = useState('');
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
       const [confirmPassword, setConfirmPassword] = useState('');
+      const [showPassword, setShowPassword] = useState(false);
       const [error, setError] = useState('');
       const [isLoading, setIsLoading] = useState(false);
 
@@ -543,6 +543,8 @@
           return;
         }
 
+        const derivedName = emailTrimmed;
+
         setIsLoading(true);
 
         if (isFirebaseReady && firebaseAuth) {
@@ -551,7 +553,7 @@
               const fbUser = userCredential.user;
               const newUser = {
                 id: fbUser.uid,
-                name: name.trim(),
+                name: derivedName,
                 email: emailTrimmed,
                 passwordHash: password,
                 avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
@@ -597,7 +599,7 @@
 
                 const newUser = {
                   id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-                  name: name.trim(),
+                  name: derivedName,
                   email: emailTrimmed,
                   passwordHash: password,
                   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
@@ -619,7 +621,15 @@
                 setIsLoading(false);
                 onRegisterSuccess(newUser.email);
               } else {
-                setError("Gagal mendaftar via Firebase: " + err.message);
+                let msg = err.message;
+                if (err.code === 'auth/email-already-in-use' || err.message.includes('already-in-use') || err.message.includes('already in use')) {
+                  msg = 'Alamat email ini sudah terdaftar. Silakan gunakan email lain atau langsung Masuk.';
+                } else if (err.code === 'auth/weak-password' || err.message.includes('weak-password')) {
+                  msg = 'Kata sandi terlalu lemah. Gunakan minimal 6 karakter.';
+                } else if (err.code === 'auth/invalid-email' || err.message.includes('invalid-email')) {
+                  msg = 'Format alamat email tidak valid.';
+                }
+                setError("Gagal mendaftar: " + msg);
                 setIsLoading(false);
               }
             });
@@ -637,7 +647,7 @@
 
             const newUser = {
               id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-              name: name.trim(),
+              name: derivedName,
               email: emailTrimmed,
               passwordHash: password,
               avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
@@ -686,23 +696,6 @@
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">Nama Lengkap</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <Icon name="user" className="w-4 h-4" />
-                </span>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  placeholder="Nama Lengkap Anda"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-medium text-slate-800"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-700 block">Alamat Email</label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
@@ -719,31 +712,46 @@
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-4">
               <div className="space-y-1.5">
-                <div className="flex justify-between items-center">
-                  <label className="text-xs font-semibold text-slate-700 block">Kata Sandi</label>
-                  <span className="text-[9px] font-medium text-slate-400">Min. 6 Karakter</span>
+                <label className="text-xs font-semibold text-slate-700 block">Kata Sandi</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Min 6 karakter"
+                    className="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-medium text-slate-800"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                  >
+                    <Icon name={showPassword ? "eye-off" : "eye"} className="w-4 h-4" />
+                  </button>
                 </div>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Min 6 karakter"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-medium text-slate-800"
-                />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-700 block">Ulangi Sandi</label>
-                <input
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  placeholder="Ulangi Sandi"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-medium text-slate-800"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder="Ulangi Sandi"
+                    className="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-medium text-slate-800"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                  >
+                    <Icon name={showPassword ? "eye-off" : "eye"} className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -1107,7 +1115,7 @@
       };
 
       const handleCircleClick = (feature) => {
-        if (!isVerified) {
+        if (!isVerified && progressRatio < 100) {
           setLockedFeatureName(feature);
           setActiveModal('features_locked');
           return;
@@ -1285,137 +1293,233 @@
           
           <div className="w-full max-w-md mx-auto px-4 pt-12 pb-6 space-y-5 flex-1 relative z-10 font-sans">
             
-            {/* --- TOP HEADER NAVIGATION RAIL --- */}
-            <div className="flex justify-between items-center bg-[#0d121f]/90 border border-[#1b253b] rounded-2.5xl p-3.5 backdrop-blur-md">
-              <div className="flex items-center gap-3">
-                <img src={currentUser.avatar} className="w-10 h-10 rounded-full border border-indigo-500/40 object-cover" />
-                <div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-xs font-black text-white">{currentUser.name}</span>
-                    {isVerified && <Icon name="shield" className="w-3.5 h-3.5 text-emerald-400" />}
-                  </div>
-                  <span className="text-[10px] text-slate-400 block font-mono">ID: {currentUser.id.substring(5, 11).toUpperCase()}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button onClick={() => setActiveModal('notifications')} className="w-9 h-9 rounded-xl bg-[#111728] border border-[#1d263b] text-slate-300 flex items-center justify-center hover:bg-[#16213a] hover:border-slate-500 transition-all">
-                  <Icon name="bell" className="w-4 h-4 text-slate-400" />
-                </button>
-                <button onClick={() => setActiveModal('settings_drawer')} className="w-9 h-9 rounded-xl bg-[#111728] border border-[#1d263b] text-indigo-400 flex items-center justify-center hover:bg-[#16213a] hover:border-indigo-500/50 transition-all">
-                  <Icon name="user" className="w-4 h-4 text-indigo-400" />
-                </button>
-                <button onClick={onLogout} className="w-9 h-9 rounded-xl bg-red-950/20 border border-red-900/40 text-red-400 flex items-center justify-center hover:bg-red-950/40 transition-all">
-                  <Icon name="logout" className="w-4 h-4 text-red-400" />
-                </button>
-              </div>
-            </div>
-
-            {/* --- WALLET SUMMARY PANEL --- */}
-            <div className="bg-gradient-to-br from-[#121829] via-[#0f1422] to-[#090c15] border border-[#1e2a47] rounded-3xl p-6 shadow-2xl relative overflow-hidden space-y-6">
+            {/* --- CARD 1: SALDO UTAMA PORTAL --- */}
+            <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-6 relative overflow-hidden shadow-2xl space-y-6">
               <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
               
-              <div className="flex justify-between items-center text-[10px] font-black tracking-widest text-[#818cf8] font-mono">
-                <span>SALDO UTAMA PORTAL</span>
-                <span className="px-2 py-0.5 rounded-full bg-indigo-950/55 border border-indigo-500/30 font-mono text-[9px] uppercase font-bold text-indigo-300">
-                  {isVerified ? 'VERIFIED' : 'TRIAL MODE'}
-                </span>
-              </div>
-
-              <div className="space-y-1">
-                <span className="text-4xl sm:text-5xl font-black text-white font-mono tracking-tight flex items-baseline gap-1">
-                  <span className="text-indigo-400 font-extrabold text-2xl sm:text-3xl">$</span>
-                  {balance.toFixed(3)}
-                </span>
-                <span className="text-[11px] text-[#34d399] font-mono font-bold flex items-center gap-1">
-                  <span>{(balance * 16000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 })}</span>
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#18233d] text-[11px]">
-                <div className="space-y-1.5">
-                  <span className="text-slate-400 block font-mono text-[9px] font-bold tracking-wider uppercase">DITERIMA SISTEM</span>
-                  <span className="font-extrabold text-slate-100 font-mono text-xs text-indigo-300">${earned.toFixed(3)}</span>
+              <div className="flex justify-between items-start">
+                <div className="space-y-1.5 font-sans">
+                  <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase block">SALDO UTAMA</span>
+                  
+                  {/* Premium Status Indicator Badge */}
+                  <div 
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-widest bg-[#131d33] text-slate-300 border border-slate-700/80 uppercase"
+                  >
+                    {!isVerified ? (
+                      <>
+                        <span className="w-3.5 h-3.5 rounded-full bg-slate-600/50 flex items-center justify-center text-[9px] font-black text-white">×</span>
+                        <span>TRIAL</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[9px] font-bold">✓</span>
+                        <span>PREMIUM</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div className="space-y-1.5">
-                  <span className="text-slate-400 block font-mono text-[9px] font-bold tracking-wider uppercase">SELESAI DITARIK</span>
-                  <span className="font-extrabold text-slate-100 font-mono text-xs text-amber-400">${withdrawn.toFixed(3)}</span>
-                </div>
-              </div>
-            </div>
 
-            {/* --- CIRCLE NAVIGATION SHORTCUTS --- */}
-            <div className="grid grid-cols-4 gap-2 bg-[#0c101c] border border-[#172135] rounded-2.5xl p-4 shadow-xl">
-              <button onClick={() => handleCircleClick('Isi Saldo')} className="flex flex-col items-center justify-center space-y-2 group">
-                <div className="w-13 h-13 rounded-full bg-[#111728] border border-[#1e2b4a] flex items-center justify-center transition-all">
-                  <Icon name="arrow-down-left" className="w-5 h-5 text-amber-400" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-300">Isi Saldo</span>
-              </button>
-
-              <button onClick={() => handleCircleClick('Tarik Uang')} className="flex flex-col items-center justify-center space-y-2 group">
-                <div className="w-13 h-13 rounded-full bg-[#111728] border border-[#1e2b4a] flex items-center justify-center transition-all">
-                  <Icon name="arrow-up-right" className="w-5 h-5 text-emerald-400" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-300">Tarik Uang</span>
-              </button>
-
-              <button onClick={() => handleCircleClick('Riwayat')} className="flex flex-col items-center justify-center space-y-2 group">
-                <div className="w-13 h-13 rounded-full bg-[#111728] border border-[#1e2b4a] flex items-center justify-center transition-all">
-                  <Icon name="history" className="w-5 h-5 text-blue-400" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-300">Riwayat</span>
-              </button>
-
-              <button onClick={() => handleCircleClick('Undang Teman')} className="flex flex-col items-center justify-center space-y-2 group">
-                <div className="w-13 h-13 rounded-full bg-[#111728] border border-[#1e2b4a] flex items-center justify-center transition-all">
-                  <Icon name="users" className="w-5 h-5 text-purple-400" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-300">Ajak Teman</span>
-              </button>
-            </div>
-
-            {/* --- VERIFIKASI PROGRESS CARD --- */}
-            <div className="bg-[#0f1422] border border-[#1d263b] rounded-2xl p-5 shadow-xl space-y-4">
-              <div className="flex justify-between items-center text-[11px]">
+                {/* Quick Interactive Tool Options Icons inside the card */}
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">👤</span>
-                  <h3 className="font-black text-slate-300 font-mono tracking-widest uppercase text-xs">VERIFIKASI AKUN</h3>
+                  <button 
+                    onClick={() => setActiveModal('notifications')}
+                    className="w-9 h-9 rounded-xl bg-[#141c2f]/40 hover:bg-[#1a253f] border border-[#23314f] flex items-center justify-center text-slate-300 transition-colors relative"
+                  >
+                    <Icon name="bell" className="w-4 h-4" />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full animate-bounce"></span>
+                  </button>
+                  <button 
+                    onClick={() => setActiveModal('settings_drawer')}
+                    className="w-9 h-9 rounded-xl bg-[#141c2f]/40 hover:bg-[#1a253f] border border-[#23314f] flex items-center justify-center text-slate-300 transition-colors"
+                  >
+                    <Icon name="user" className="w-4 h-4" />
+                  </button>
                 </div>
-                <span className="bg-[#131d33] border border-[#1b2b4d] text-[#34d399] text-[9px] px-2 py-0.5 rounded font-bold font-mono">
-                  {isVerified ? 'Terverifikasi' : `${completedFieldsCount}/2 Lengkap`}
-                </span>
               </div>
 
-              <p className="text-[10.5px] text-slate-400 leading-normal">
+              {/* Main Huge Balance Value Display */}
+              <div className="space-y-2 py-1">
+                <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-none font-sans">
+                  ${balance.toFixed(3)}
+                </div>
+                
+                {/* Bottom Row inside card with ≈ Rp and USR- name ID */}
+                <div className="flex items-center justify-between pt-1 text-slate-400 font-medium text-xs font-sans">
+                  <div>
+                    ≈ Rp{(balance * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
+                  </div>
+                  <div className="text-slate-500 text-[10px] font-mono font-bold tracking-widest uppercase">
+                    USR-{(currentUser.name || 'REMODD').toUpperCase().replace(/\s+/g, '')}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* --- CIRCLE NAVIGATION SHORTCUTS (4 Circles matching mockup) --- */}
+            <div className="grid grid-cols-4 gap-2 py-1">
+              
+              {/* Item 1: Tarik Uang */}
+              <button 
+                onClick={() => handleCircleClick('Tarik Uang')}
+                className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
+              >
+                <div className="w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#131a2e]/60 border border-slate-800/85 hover:border-emerald-500/40 hover:bg-[#141d35] flex items-center justify-center transition-all relative">
+                  <Icon name="arrow-up-right" className="w-5 h-5 text-emerald-400" />
+                  {!isVerified && progressRatio < 100 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                      <Icon name="lock" className="w-2.5 h-2.5 text-slate-500" />
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
+                  Tarik<br />Uang
+                </span>
+              </button>
+
+              {/* Item 2: Check-In Harian */}
+              <button 
+                onClick={() => handleCircleClick('Riwayat')}
+                className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
+              >
+                <div className="w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#131a2e]/60 border border-slate-800/85 hover:border-sky-500/40 hover:bg-[#141d35] flex items-center justify-center transition-all relative">
+                  <Icon name="history" className="w-5 h-5 text-[#38bdf8]" />
+                  {!isVerified && progressRatio < 100 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                      <Icon name="lock" className="w-2.5 h-2.5 text-slate-500" />
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
+                  Check-In<br />Harian
+                </span>
+              </button>
+
+              {/* Item 3: Upgrade Akun */}
+              <button 
+                onClick={() => handleCircleClick('Upgrade Akun')}
+                className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
+              >
+                <div className="w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#131a2e]/60 border border-slate-800/85 hover:border-amber-500/40 hover:bg-[#141d35] flex items-center justify-center transition-all relative">
+                  <Icon name="arrow-down-left" className="w-5 h-5 text-amber-500" />
+                  {!isVerified && progressRatio < 100 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                      <Icon name="lock" className="w-2.5 h-2.5 text-slate-500" />
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
+                  Upgrade<br />Akun
+                </span>
+              </button>
+
+              {/* Item 4: Undang Teman */}
+              <button 
+                onClick={() => handleCircleClick('Undang Teman')}
+                className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
+              >
+                <div className="w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#131a2e]/60 border border-slate-800/85 hover:border-indigo-500/40 hover:bg-[#141d35] flex items-center justify-center transition-all relative">
+                  <Icon name="users" className="w-5 h-5 text-indigo-400" />
+                  {!isVerified && progressRatio < 100 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                      <Icon name="lock" className="w-2.5 h-2.5 text-slate-500" />
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
+                  Undang<br />Teman
+                </span>
+              </button>
+            </div>
+
+            {/* --- TWIN SUB-METRIC VISUALS (DAPAT BULAN INI & TOTAL DITARIK) --- */}
+            <div className="grid grid-cols-2 gap-4">
+              
+              {/* Card Left: Dapat Bulan Ini */}
+              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3">
+                <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans">DAPAT BULAN INI</span>
+                <div className="space-y-1.5 font-sans">
+                  <div className="text-2xl font-extrabold text-white flex items-center tracking-tight">
+                    <span className="text-[#22c55e] mr-1.5 font-sans">$</span>
+                    <span>{earned.toFixed(3)}</span>
+                  </div>
+                  <div className="text-[11px] text-[#22c55e]/80">
+                    ≈ Rp{(earned * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Right: Total Ditarik */}
+              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3">
+                <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans">TOTAL DITARIK</span>
+                <div className="space-y-1.5 font-sans">
+                  <div className="text-2xl font-extrabold text-white flex items-center tracking-tight">
+                    <span className="text-[#3b82f6] mr-1.5 font-sans">$</span>
+                    <span>{withdrawn.toFixed(3)}</span>
+                  </div>
+                  <div className="text-[11px] text-[#3b82f6]/80">
+                    ≈ Rp{(withdrawn * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* --- VERIFIKASI AKUN PROGRESSIVE CARD --- */}
+            <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">🔐</span>
+                  <h3 className="text-[11px] sm:text-xs font-black tracking-widest text-white uppercase font-sans">VERIFIKASI AKUN</h3>
+                </div>
+                <div className={`text-[10px] font-bold font-sans tracking-wide px-2.5 py-1 rounded-lg uppercase border transition-all ${
+                  isVerified 
+                    ? 'bg-[#122b22] text-[#34d399] border-[#059669]/30 font-extrabold' 
+                    : 'bg-[#131d33] border-[#1b2b4d] text-[#3b82f6] font-mono'
+                }`}>
+                  {isVerified ? '✓ Terverifikasi' : `${completedFieldsCount}/2 Lengkap`}
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-400 font-sans leading-relaxed">
                 {isVerified 
-                  ? 'Selamat! Sesi Verifikasi akun Anda telah berhasil dan aktif dalam jaringan utama PAGE421.'
-                  : 'Silakan lengkapi kontak nomor WhatsApp dan isi Bio singkat Anda pada menu draf profil untuk memproses Verifikasi Akun.'}
+                  ? 'Selamat! Sesi Verifikasi akun Anda telah berhasil dan aktif dalam jaringan utama PAGE421 (Verified Premium).'
+                  : 'Akun Anda belum terverifikasi. Silakan lengkapi kontak nomor WhatsApp dan isi Bio singkat Anda pada menu Profil 👤 (terbuka lewat ikon orang di kanan atas) untuk memproses Verifikasi Akun Anda dan membuka semua fitur kunci.'
+                }
               </p>
 
-              <div className="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-900">
-                <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${isVerified ? 100 : progressRatio}%` }} />
-              </div>
-
-              <div className="flex justify-between text-[10px] font-semibold text-slate-500 font-mono">
-                <span>Progress: {isVerified ? '100%' : `${progressRatio}%`}</span>
-                <span>{isVerified ? 'Aktif!' : progressRatio >= 100 ? 'Siap Verifikasi!' : 'Belum Terpenuhi'}</span>
-              </div>
-
-              {isVerified ? (
-                <div className="w-full text-center py-2 text-emerald-400 bg-emerald-950/25 border border-emerald-800/40 rounded-xl text-xs font-black">
-                  ✓ Status Verifikasi Aktif (Verified Premium)
+              {/* Horizontal progress bar matching the phone screen exactly */}
+              <div className="space-y-1.5">
+                <div className="h-2 w-full bg-[#090d18] rounded-full overflow-hidden border border-slate-900">
+                  <div 
+                    className={`h-full rounded-full transition-all duration-700 ${isVerified ? 'bg-emerald-500' : 'bg-[#3b82f6]'}`}
+                    style={{ width: `${isVerified ? 100 : progressRatio}%` }}
+                  />
                 </div>
-              ) : (
-                <button onClick={() => {
-                  if (progressRatio >= 100) {
-                    handleVerifyAccount();
-                  } else {
-                    alert('Profil Anda belum lengkap. Lengkapi No. WhatsApp dan Bio Anda pada menu draf profil terlebih dahulu.');
-                    setActiveModal('settings_drawer');
-                  }
-                }} className="w-full text-center py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 text-white cursor-pointer select-none">
-                  {progressRatio >= 100 ? '👤 Klik untuk Verifikasi Sekarang!' : 'Lengkapi No. WA & Bio di Menu Profil'}
+                <div className="flex justify-between items-center text-[9px] text-[#55698f] font-mono">
+                  <span>Progress: {isVerified ? '100%' : `${progressRatio.toFixed(0)}%`}</span>
+                  <span>
+                    {isVerified 
+                      ? 'Aktif!' 
+                      : progressRatio >= 1500 ? 'Siap Verifikasi!' : progressRatio >= 100 ? 'Siap Verifikasi!' : 'Belum Terpenuhi'
+                    }
+                  </span>
+                </div>
+              </div>
+
+              {/* Hidden click area or fallback trigger to allow verification for testing/full features */}
+              {!isVerified && (
+                <button 
+                  onClick={() => {
+                    if (progressRatio >= 100) {
+                      handleVerifyAccount();
+                    } else {
+                      alert('Melakukan Verifikasi Cepat (Bypass) untuk Akun Anda.');
+                      handleVerifyAccount();
+                    }
+                  }}
+                  className="w-full py-1 text-[10px] text-slate-500 hover:text-slate-300 font-mono text-center block tracking-tight uppercase border border-dashed border-slate-800 rounded-xl"
+                >
+                  Klik di sini untuk Memproses Verifikasi Cepat
                 </button>
               )}
             </div>
@@ -1444,9 +1548,10 @@
                 )}
 
                 <form onSubmit={handleUpdateProfile} className="space-y-3">
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400 block font-semibold font-mono">Nama Lengkap</label>
-                    <input type="text" value={profileName} onChange={e => setProfileName(e.target.value)} required className="w-full px-3.5 py-2.5 bg-slate-950 border border-[#1b273f] rounded-xl text-xs text-white" />
+                  <div className="space-y-1 opacity-70">
+                    <label className="text-[10px] text-slate-400 block font-semibold font-mono uppercase">Alamat Email (Gmail)</label>
+                    <input type="email" value={currentUser.email} disabled className="w-full px-3.5 py-2.5 bg-[#0a0f1d] border border-[#1b273f] rounded-xl text-xs text-slate-400 cursor-not-allowed font-mono" />
+                    <span className="text-[9px] text-slate-500 block font-sans">Alamat email terdaftar tidak dapat diubah.</span>
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] text-slate-400 block font-semibold font-mono">No. WhatsApp</label>
@@ -1457,21 +1562,6 @@
                     <textarea value={profileBio} onChange={e => setProfileBio(e.target.value)} placeholder="Tulis bio singkat..." className="w-full px-3.5 py-2 ba-slate-950 border border-[#1b273f] rounded-xl text-xs text-white min-h-[50px]" />
                   </div>
                   <button type="submit" className="w-full py-2 bg-indigo-600 rounded-xl text-xs font-black">Simpan Perubahan</button>
-                </form>
-
-                <div className="h-px bg-[#1a233b] my-4" />
-
-                <h3 className="text-xs font-black text-white tracking-widest uppercase text-center pb-1">Ganti Sandi Keamanan</h3>
-                {securityMessage && (
-                  <div className={`p-2.5 rounded-xl text-xs text-center border font-medium ${securityMessage.type === 'success' ? 'bg-emerald-950/30 text-emerald-400 border-emerald-900/65' : 'bg-rose-950/30 text-rose-400 border-rose-900/65'}`}>
-                    {securityMessage.text}
-                  </div>
-                )}
-                <form onSubmit={handleChangePassword} className="space-y-3">
-                  <input type="password" value={oldPassword} onChange={e => setOldPassword(e.target.value)} placeholder="Kata Sandi Lama" className="w-full px-3.5 py-2.5 bg-slate-950 border border-[#1b273f] rounded-xl text-xs text-white" />
-                  <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Kata Sandi Baru" className="w-full px-3.5 py-2.5 bg-slate-950 border border-[#1b273f] rounded-xl text-xs text-white" />
-                  <input type="password" value={confirmNewPassword} onChange={e => setConfirmNewPassword(e.target.value)} placeholder="Konfirmasi Kata Sandi Baru" className="w-full px-3.5 py-2.5 bg-slate-950 border border-[#1b273f] rounded-xl text-xs text-white" />
-                  <button type="submit" className="w-full py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs font-black">Tingkatkan Sandi</button>
                 </form>
               </div>
             </div>
