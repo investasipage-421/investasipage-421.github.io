@@ -1432,32 +1432,46 @@
               </button>
             </div>
 
-            {/* --- TWIN SUB-METRIC VISUALS (DAPAT BULAN INI & TOTAL DITARIK) --- */}
+           {/* --- TWIN SUB-METRIC VISUALS (DAPAT BULAN INI & TOTAL DITARIK) --- */}
             <div className="grid grid-cols-2 gap-4">
               
               {/* Card Left: Dapat Bulan Ini */}
-              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3">
-                <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans">DAPAT BULAN INI</span>
-                <div className="space-y-1.5 font-sans">
-                  <div className="text-2xl font-extrabold text-white flex items-center tracking-tight">
-                    <span className="text-[#22c55e] mr-1.5 font-sans">$</span>
-                    <span>{earned.toFixed(3)}</span>
+              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3 overflow-hidden">
+                <span className="block text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans truncate">
+                  DAPAT BULAN INI
+                </span>
+                <div className="space-y-1.5 font-sans min-w-0">
+                  <div className="text-xl sm:text-2xl font-extrabold text-white flex items-center tracking-tight min-w-0">
+                    <span className="text-[#22c55e] mr-1.5 font-sans shrink-0">$</span>
+                    <span className="truncate" title={earned.toFixed(3)}>
+                      {earned.toFixed(3)}
+                    </span>
                   </div>
-                  <div className="text-[11px] text-[#22c55e]/80">
+                  <div 
+                    className="text-[11px] text-[#22c55e]/80 truncate" 
+                    title={`≈ Rp${(earned * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}`}
+                  >
                     ≈ Rp{(earned * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
                   </div>
                 </div>
               </div>
 
               {/* Card Right: Total Ditarik */}
-              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3">
-                <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans">TOTAL DITARIK</span>
-                <div className="space-y-1.5 font-sans">
-                  <div className="text-2xl font-extrabold text-white flex items-center tracking-tight">
-                    <span className="text-[#3b82f6] mr-1.5 font-sans">$</span>
-                    <span>{withdrawn.toFixed(3)}</span>
+              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3 overflow-hidden">
+                <span className="block text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans truncate">
+                  TOTAL DITARIK
+                </span>
+                <div className="space-y-1.5 font-sans min-w-0">
+                  <div className="text-xl sm:text-2xl font-extrabold text-white flex items-center tracking-tight min-w-0">
+                    <span className="text-[#3b82f6] mr-1.5 font-sans shrink-0">$</span>
+                    <span className="truncate" title={withdrawn.toFixed(3)}>
+                      {withdrawn.toFixed(3)}
+                    </span>
                   </div>
-                  <div className="text-[11px] text-[#3b82f6]/80">
+                  <div 
+                    className="text-[11px] text-[#3b82f6]/80 truncate"
+                    title={`≈ Rp${(withdrawn * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}`}
+                  >
                     ≈ Rp{(withdrawn * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
                   </div>
                 </div>
