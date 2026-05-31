@@ -1343,12 +1343,18 @@
                   ${balance.toFixed(3)}
                 </div>
                 
-                {/* Bottom Row inside card with ≈ Rp (USR- dihapus) */}
-            <div className="pt-1 text-slate-400 font-medium text-xs font-sans">
-              ≈ Rp{(balance * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
+                {/* Bottom Row inside card with ≈ Rp and USR- name ID */}
+                <div className="flex items-center justify-between pt-1 text-slate-400 font-medium text-xs font-sans">
+                  <div>
+                    ≈ Rp{(balance * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
+                  </div>
+                  <div className="text-slate-500 text-[10px] font-mono font-bold tracking-widest uppercase">
+                    USR-{(currentUser.name || 'REMODD').toUpperCase().replace(/\s+/g, '')}
+                  </div>
+                </div>
+              </div>
+
             </div>
-          </div>
-        </div>
 
             {/* --- CIRCLE NAVIGATION SHORTCUTS (4 Circles matching mockup) --- */}
             <div className="grid grid-cols-4 gap-2 py-1">
@@ -1371,7 +1377,25 @@
                 </span>
               </button>
 
-              {/* Item 2: Check-In Harian */}
+              {/* Item 2: Depo */}
+              <button 
+                onClick={() => handleCircleClick('Depo')}
+                className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
+              >
+                <div className="w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#131a2e]/60 border border-slate-800/85 hover:border-amber-500/40 hover:bg-[#141d35] flex items-center justify-center transition-all relative">
+                  <Icon name="coins" className="w-5 h-5 text-amber-500" />
+                  {!isVerified && progressRatio < 100 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                      <Icon name="lock" className="w-2.5 h-2.5 text-slate-500" />
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
+                  Depo<br />(Isi Saldo)
+                </span>
+              </button>
+
+              {/* Item 3: Riwayat Narik & Depo */}
               <button 
                 onClick={() => handleCircleClick('Riwayat')}
                 className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
@@ -1385,25 +1409,7 @@
                   )}
                 </div>
                 <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
-                  Check-In<br />Harian
-                </span>
-              </button>
-
-              {/* Item 3: Upgrade Akun */}
-              <button 
-                onClick={() => handleCircleClick('Upgrade Akun')}
-                className="flex flex-col items-center justify-center space-y-2 group focus:outline-none cursor-pointer"
-              >
-                <div className="w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#131a2e]/60 border border-slate-800/85 hover:border-amber-500/40 hover:bg-[#141d35] flex items-center justify-center transition-all relative">
-                  <Icon name="arrow-down-left" className="w-5 h-5 text-amber-500" />
-                  {!isVerified && progressRatio < 100 && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
-                      <Icon name="lock" className="w-2.5 h-2.5 text-slate-500" />
-                    </div>
-                  )}
-                </div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wide text-center leading-tight">
-                  Upgrade<br />Akun
+                  Riwayat<br />Narik & Depo
                 </span>
               </button>
 
@@ -1426,46 +1432,32 @@
               </button>
             </div>
 
-           {/* --- TWIN SUB-METRIC VISUALS (DAPAT BULAN INI & TOTAL DITARIK) --- */}
+            {/* --- TWIN SUB-METRIC VISUALS (DAPAT BULAN INI & TOTAL DITARIK) --- */}
             <div className="grid grid-cols-2 gap-4">
               
               {/* Card Left: Dapat Bulan Ini */}
-              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3 overflow-hidden">
-                <span className="block text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans truncate">
-                  DAPAT BULAN INI
-                </span>
-                <div className="space-y-1.5 font-sans min-w-0">
-                  <div className="text-xl sm:text-2xl font-extrabold text-white flex items-center tracking-tight min-w-0">
-                    <span className="text-[#22c55e] mr-1.5 font-sans shrink-0">$</span>
-                    <span className="truncate" title={earned.toFixed(3)}>
-                      {earned.toFixed(3)}
-                    </span>
+              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3">
+                <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans">DAPAT BULAN INI</span>
+                <div className="space-y-1.5 font-sans">
+                  <div className="text-2xl font-extrabold text-white flex items-center tracking-tight">
+                    <span className="text-[#22c55e] mr-1.5 font-sans">$</span>
+                    <span>{earned.toFixed(3)}</span>
                   </div>
-                  <div 
-                    className="text-[11px] text-[#22c55e]/80 truncate" 
-                    title={`≈ Rp${(earned * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}`}
-                  >
+                  <div className="text-[11px] text-[#22c55e]/80">
                     ≈ Rp{(earned * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
                   </div>
                 </div>
               </div>
 
               {/* Card Right: Total Ditarik */}
-              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3 overflow-hidden">
-                <span className="block text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans truncate">
-                  TOTAL DITARIK
-                </span>
-                <div className="space-y-1.5 font-sans min-w-0">
-                  <div className="text-xl sm:text-2xl font-extrabold text-white flex items-center tracking-tight min-w-0">
-                    <span className="text-[#3b82f6] mr-1.5 font-sans shrink-0">$</span>
-                    <span className="truncate" title={withdrawn.toFixed(3)}>
-                      {withdrawn.toFixed(3)}
-                    </span>
+              <div className="bg-[#0f1422] border border-[#1d263b] rounded-3xl p-5 shadow-xl space-y-3">
+                <span className="text-[10px] font-black tracking-widest text-[#8a99ad] uppercase font-sans">TOTAL DITARIK</span>
+                <div className="space-y-1.5 font-sans">
+                  <div className="text-2xl font-extrabold text-white flex items-center tracking-tight">
+                    <span className="text-[#3b82f6] mr-1.5 font-sans">$</span>
+                    <span>{withdrawn.toFixed(3)}</span>
                   </div>
-                  <div 
-                    className="text-[11px] text-[#3b82f6]/80 truncate"
-                    title={`≈ Rp${(withdrawn * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}`}
-                  >
+                  <div className="text-[11px] text-[#3b82f6]/80">
                     ≈ Rp{(withdrawn * 16000).toLocaleString('id-ID', { minimumFractionDigits: 0 })}
                   </div>
                 </div>
