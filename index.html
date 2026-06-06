@@ -225,6 +225,160 @@
                     <div class="absolute -right-6 -bottom-6 opacity-15 text-9xl font-sans select-none">📊</div>
                 </div>
 
+                import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Image, Camera } from "lucide-react";
+
+export default function PromosSlider() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // Load from windows.PROMO_SLIDES fallback to clean local defaults with empty images
+  const slides = (typeof window !== "undefined" && (window as any).PROMO_SLIDES) || [
+    {
+      id: 0,
+      imageUrl: "", // Left empty so user can insert custom photo URLs later
+      link: "#",
+    },
+    {
+      id: 1,
+      imageUrl: "", // Left empty so user can insert custom photo URLs later
+      link: "#",
+    },
+    {
+      id: 2,
+      imageUrl: "", // Left empty so user can insert custom photo URLs later
+      link: "#",
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  // Handle Drag / Touch Swipe gesture
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 50; // trigger slide transition on > 50px drag
+    if (info.offset.x < -swipeThreshold) {
+      // Swiped left -> load next slide
+      setActiveSlide((prev) => (prev + 1) % slides.length);
+    } else if (info.offset.x > swipeThreshold) {
+      // Swiped right -> load previous slide
+      setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    }
+  };
+
+  const currentSlide = slides[activeSlide];
+
+  return (
+    <div className="relative group select-none">
+      <div className="flex justify-between items-center mb-2.5 px-1">
+        <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+          <Image className="w-3.5 h-3.5 text-blue-500 animate-pulse" /> SPONSOR & PROMO AKTIF
+        </span>
+      </div>
+
+      {/* Touch swipable Viewport using Framer motion */}
+      <div className="relative h-44 w-full overflow-hidden rounded-[28px] bg-slate-100 border border-slate-150 shadow-xs touch-pan-y">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSlide}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.6}
+            onDragEnd={handleDragEnd}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden"
+          >
+            {currentSlide.link && currentSlide.link !== "#" ? (
+              <a 
+                href={currentSlide.link} 
+                target={currentSlide.link.startsWith("http") ? "_blank" : "_self"}
+                rel="noreferrer"
+                className="block w-full h-full relative"
+              >
+                {currentSlide.imageUrl ? (
+                  <img 
+                    src={currentSlide.imageUrl} 
+                    alt={`promo-${activeSlide}`}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none hover:scale-102 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#118EEA] to-sky-500 flex flex-col items-center justify-center p-6 text-center select-none pointer-events-none">
+                    <Camera className="w-8 h-8 text-white/40 mb-2 animate-bounce" />
+                    <span className="text-[11px] font-black text-white uppercase tracking-widest bg-black/15 px-3 py-1 rounded-full border border-white/5">
+                      Foto Kosong
+                    </span>
+                    <p className="text-[8px] text-white/70 font-semibold mt-1">
+                      (Klik untuk gabung komunitas)
+                    </p>
+                  </div>
+                )}
+              </a>
+            ) : (
+              <div className="w-full h-full relative">
+                {currentSlide.imageUrl ? (
+                  <img 
+                    src={currentSlide.imageUrl} 
+                    alt={`promo-${activeSlide}`}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none hover:scale-102 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#118EEA] to-sky-500 flex flex-col items-center justify-center p-6 text-center select-none pointer-events-none">
+                    <Camera className="w-8 h-8 text-white/40 mb-2" />
+                    <span className="text-[11px] font-black text-white uppercase tracking-widest bg-black/15 px-3 py-1 rounded-full border border-white/5">
+                      Foto Kosong
+                    </span>
+                    <p className="text-[8px] text-white/60 font-semibold mt-1">
+                      (Masukkan URL link gambar di index.html)
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Slide Indicators */}
+      <div className="flex justify-center gap-1.5 mt-2.5">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            id={`promo-indicator-${index}`}
+            onClick={() => setActiveSlide(index)}
+            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+              index === activeSlide ? "w-5 bg-blue-600" : "w-1.5 bg-gray-300 hover:bg-gray-400"
+            }`}
+          ></button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 <div class="glass-card rounded-[24px] p-5 border border-white/5 shadow-2xl">
                     <div class="flex justify-between items-center mb-5">
                         <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
