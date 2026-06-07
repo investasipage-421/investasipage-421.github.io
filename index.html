@@ -1,1135 +1,583 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remix: Finance Dashboard - Standalone</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS Play CDN -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>InvestasiPage421.com</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        brand: '#2F66FE',
-                        darkBg: '#0f172a',
-                    },
-                    boxShadow: {
-                        'neon-blue': '0 8px 30px rgba(59, 130, 246, 0.25)',
-                        'smooth': '0 10px 40px rgba(0, 0, 0, 0.04)',
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .no-scrollbar::-webkit-scrollbar {
+        /* PROTEKSI ANTI-SELEKSI TEKS */
+        * { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body { 
+            background: radial-gradient(circle at top, #111827 0%, #070a13 100%); 
+            color: #f3f4f6; 
+            overflow-x: hidden; 
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #070a13; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
+
+        @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* EFEK GLOW MENU AKTIF */
+        .menu-active { color: #22d3ee !important; }
+        .menu-active div { background: rgba(34, 211, 238, 0.15); border-radius: 16px; box-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
+        .menu-active svg { stroke: #22d3ee !important; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .cyber-glow {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.4) !important;
+        }
+
+        #chatWidget {
             display: none;
+            position: fixed;
+            bottom: 95px;
+            right: 20px;
+            left: 20px;
+            max-width: 420px;
+            height: 65vh;
+            z-index: 9999;
+            flex-direction: column;
+            background: rgba(10, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+            margin: auto;
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        
+        #chatBtn {
+            display: none;
+            position: fixed;
+            bottom: 105px;
+            right: 20px;
+            z-index: 9990;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
-        * {
-            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        video { width: 100%; display: block; }
+
+        /* Custom SweetAlert Style */
+        .swal2-popup {
+            background: #0b0f19 !important;
+            color: #fff !important;
+            border: 1px solid rgba(6, 182, 212, 0.3) !important;
+            border-radius: 28px !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
         }
+        .swal2-title, .swal2-html-container { color: #f3f4f6 !important; }
+        .swal2-confirm { background: linear-gradient(135deg, #06b6d4, #0891b2) !important; color: #000 !important; font-weight: 800 !important; border-radius: 14px !important; padding: 12px 24px !important; }
+        .swal2-cancel { background: #1f2937 !important; color: #fff !important; border-radius: 14px !important; }
     </style>
 </head>
-<body class="min-h-screen text-slate-800 flex items-center justify-center p-0 sm:p-4">
+<body class="selection:bg-cyan-500 selection:text-black">
 
-    <!-- High-Fidelity Phone Frame Container -->
-    <div id="phone-frame" class="w-full max-w-[430px] h-[100vh] sm:h-[840px] bg-[#F8F9FD] sm:rounded-[48px] sm:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] border-0 sm:border-[12px] border-slate-950 flex flex-col overflow-hidden relative">
-        
-        <!-- iPhone Dynamic Island top bar mockup (Only visible on desktop viewports) -->
-        <div class="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-b-2xl z-50 flex items-center justify-center">
-            <div class="w-2.5 h-2.5 bg-[#1e293b] rounded-full mr-2"></div>
-            <div class="w-12 h-1 bg-[#1e293b] rounded-full"></div>
+    <!-- POPUP ANNOUNCEMENT -->
+    <div id="announcementPopup" class="fixed inset-0 bg-black/80 z-[10000] hidden items-center justify-center p-6 backdrop-blur-lg">
+        <div class="glass-card cyber-glow rounded-[32px] p-8 max-w-xs w-full text-center relative animate-up">
+            <div class="w-16 h-16 bg-cyan-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">🚀</div>
+            <h2 class="text-xl font-extrabold text-white mb-2 tracking-tight">Halo Investor!</h2>
+            <p class="text-gray-400 text-xs leading-relaxed mb-6">Selamat datang kembali. Sistem telah memperbarui profit harian secara otomatis hari ini!</p>
+            <button onclick="closePopup()" class="w-full bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-extrabold py-3.5 rounded-xl shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-xs active:scale-95 transition-all">Mulai Sekarang</button>
         </div>
-
-        <!-- APP CONTENT ROOT -->
-        <div class="flex-1 flex flex-col overflow-hidden relative">
-
-            <!-- SCREEN 1: LOGIN & AUTH (Initially Visible / Hidden if Logged In) -->
-            <div id="screen-auth" class="absolute inset-0 z-50 flex flex-col justify-between bg-slate-950 px-6 py-8 text-white overflow-y-auto no-scrollbar">
-                <!-- Top Header -->
-                <div class="pt-6 text-center flex flex-col items-center shrink-0">
-                    <div class="w-16 h-16 bg-[#2F66FE] rounded-[24px] flex items-center justify-center shadow-[0_8px_24px_rgba(47,102,254,0.35)] mb-4">
-                        <i data-lucide="landmark" class="w-8 h-8 text-white-900 text-white"></i>
-                    </div>
-                    <h2 class="text-2xl font-black tracking-tight font-sans text-white">
-                        DOMPET DANA SAKU
-                    </h2>
-                    <p id="auth-title-badge" class="text-slate-400 text-[10px] mt-1.5 font-bold uppercase tracking-wider">
-                        Akses Masuk Premium Wallet
-                    </p>
-                </div>
-
-                <!-- Styled Segmented Selector for Auths -->
-                <div class="bg-slate-900 border border-slate-800 p-1 rounded-2xl grid grid-cols-2 mt-4 mx-1 shrink-0">
-                    <button onclick="switchAuthMode('login')" id="btn-tab-login" class="py-2 px-3 text-xs font-black rounded-xl uppercase tracking-wider bg-blue-600 text-white shadow-md text-center">
-                        Masuk (Login)
-                    </button>
-                    <button onclick="switchAuthMode('register')" id="btn-tab-register" class="py-2 px-3 text-xs font-black rounded-xl uppercase tracking-wider text-slate-400 hover:text-white text-center">
-                        Daftar (Register)
-                    </button>
-                </div>
-
-                <!-- Form block -->
-                <div class="my-auto space-y-5 py-6 shrink-0">
-                    <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
-                        <!-- Email Input -->
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1.5 text-left w-full">
-                                Gmail Akun
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                    <i data-lucide="mail" class="w-4 h-4"></i>
-                                </div>
-                                <input id="input-gmail" type="email" placeholder="nama@gmail.com" required value="nagha.kancil@gmail.com"
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-xl outline-none text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 text-sm font-semibold transition-all placeholder:text-slate-600" />
-                            </div>
-                        </div>
-
-                        <!-- WhatsApp Input (Register Mode Only) -->
-                        <div id="container-wa" class="hidden">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1.5 text-left w-full">
-                                Nomor WhatsApp (No WA)
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                    <i data-lucide="phone" class="w-4 h-4"></i>
-                                </div>
-                                <input id="input-wa" type="text" placeholder="contoh: 081234567890"
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-xl outline-none text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 text-sm font-semibold transition-all placeholder:text-slate-600" />
-                            </div>
-                        </div>
-
-                        <!-- Password -->
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1.5 text-left w-full">
-                                Sandi Akun (Password)
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                    <i data-lucide="lock" class="w-4 h-4"></i>
-                                </div>
-                                <input id="input-sandi" type="text" placeholder="Masukkan sandi (min. 6 karakter)" required value="123456"
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-xl outline-none text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 text-sm font-semibold transition-all placeholder:text-slate-600" />
-                            </div>
-                            <span id="pwd-help-text" class="hidden text-[10.5px] text-amber-500/80 block mt-1.5 text-left font-medium">
-                                Sandi Akun minimal harus 6 karakter
-                            </span>
-                        </div>
-
-                        <button id="btn-submit-auth" type="submit"
-                            class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl text-xs uppercase tracking-wider transition-all border border-blue-500 hover:scale-[1.01] active:scale-[0.99] shadow-[0_6px_20px_rgba(47,102,254,0.3)] mt-2 cursor-pointer text-center">
-                            Masuk Sekarang
-                        </button>
-                    </form>
-
-                    <!-- Quick helper Toggle -->
-                    <div class="text-center pt-2">
-                        <button onclick="toggleAuthMode()" class="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center gap-1">
-                            <span id="toggle-lead-txt">Belum punya akun?</span> <span id="toggle-link-txt" class="underline font-black text-blue-500">Daftar di sini</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Footer info -->
-                <div class="pt-4 text-center shrink-0">
-                    <p class="text-[9px] text-slate-500 font-bold select-none uppercase tracking-wider">
-                        Secure Wallet Encryption • End-to-End
-                    </p>
-                </div>
-            </div>
-
-            <!-- MAIN WORKSPACE DASHBOARD (Initially Hidden) -->
-            <div id="screen-dashboard" class="hidden flex-1 flex flex-col bg-[#F8F9FD] overflow-hidden relative h-full">
-
-                <!-- MAIN SCROLLABLE WRAPPER -->
-                <div id="tab-content-container" class="flex-1 overflow-y-auto pb-24 no-scrollbar flex flex-col space-y-6">
-                    
-                    <!-- TAB 1: HOME PANEL -->
-                    <div id="panel-home" class="flex flex-col space-y-6">
-                        <!-- Header Section (Title & Profile) -->
-                        <div class="flex justify-between items-center px-6 pt-5 shrink-0">
-                            <h1 class="text-[34px] font-black text-slate-900 tracking-[-0.03em] font-sans">
-                                Dashboard
-                            </h1>
-                            <div onclick="openChangeAvatarModal()" class="relative w-[52px] h-[52px] cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-100">
-                                <div class="w-full h-full rounded-[18px] overflow-hidden border border-slate-200 shadow-md bg-slate-100 flex items-center justify-center">
-                                    <img id="dashboard-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80" alt="User Avatar" class="w-full h-full object-cover">
-                                </div>
-                                <div class="absolute -bottom-1 -right-1 w-[18px] h-[18px] bg-blue-600 text-white rounded-full flex items-center justify-center border-[1.5px] border-white shadow-sm">
-                                    <i data-lucide="plus" class="w-2.5 h-2.5 stroke-[3.5]"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Blue major budget target card -->
-                        <div class="px-6 shrink-0">
-                            <div onclick="openEditBudgetModal()" class="w-full bg-[#2F66FE] rounded-[32px] p-6 text-white shadow-[0_12px_32px_rgba(47,102,254,0.3)] cursor-pointer relative overflow-hidden group select-none hover:-translate-y-0.5 transition-transform">
-                                <div class="absolute -right-12 -top-12 w-44 h-44 bg-blue-500/25 rounded-full blur-3xl group-hover:scale-110"></div>
-                                
-                                <div class="flex justify-between items-start mb-1.5 relative z-10">
-                                    <span id="lbl-display-month" class="text-[13px] font-medium text-white/80 tracking-wide">
-                                        January
-                                    </span>
-                                    <div class="flex flex-col items-end gap-1 text-right">
-                                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-white"></i>
-                                        <span id="lbl-display-percent" class="text-[10px] font-bold text-white/95">
-                                            0%
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4 relative z-10 flex items-baseline gap-1">
-                                    <span class="text-2xl font-semibold opacity-90">$</span>
-                                    <span id="lbl-display-balance" class="text-4xl font-extrabold tracking-tight">
-                                        0
-                                    </span>
-                                </div>
-
-                                <!-- Progress Bar -->
-                                <div class="w-full h-[6px] bg-white/20 rounded-full mb-4 overflow-hidden">
-                                    <div id="progress-bar-fill" class="h-full bg-white rounded-full" style="width: 0%"></div>
-                                </div>
-
-                                <div class="text-[12.5px] font-medium text-white/90 tracking-wide relative z-10">
-                                    Daily spend target: $<span id="lbl-display-target">0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide Banner slider mockup (DANA style promo ads) -->
-                        <div class="px-6 shrink-0">
-                            <div class="relative w-full h-[105px] rounded-[24px] overflow-hidden bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-5 flex flex-col justify-between shadow-sm">
-                                <div>
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-blue-200">DANA SAKU PROMO</span>
-                                    <h3 class="text-sm font-extrabold tracking-tight mt-0.5">Suku Bunga 0% & Cashback Harian</h3>
-                                </div>
-                                <div class="flex justify-between items-center text-[10px]">
-                                    <span class="opacity-80">Aktif s/d 31 Desember 2026</span>
-                                    <span class="bg-white/20 px-2 py-0.5 rounded-full font-bold">Promo Wallet</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- SPENDS FEED section -->
-                        <div class="space-y-3 shrink-0 px-6">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
-                                    PENGELUARAN TERBARU
-                                </span>
-                                <button onclick="openSpendsListPanel()" class="text-xs font-bold text-[#2F66FE] hover:text-blue-700">
-                                    See All
-                                </button>
-                            </div>
-
-                            <!-- List of spends inside dashboard -->
-                            <div id="dashboard-spends-container" class="bg-white rounded-[28px] border border-slate-100 p-5 shadow-smooth space-y-4">
-                                <!-- Appended dynamically -->
-                                <div class="text-center py-4 text-slate-400 text-xs">Belum ada pengeluaran terbaru</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 2: WISHLIST TAB -->
-                    <div id="panel-wishlist" class="hidden flex flex-col space-y-6 px-6 pt-5">
-                        <div class="flex justify-between items-center">
-                            <h1 class="text-[34px] font-black text-slate-900 tracking-[-0.03em]">
-                                Wishlist
-                            </h1>
-                            <button onclick="openAddWishlistForm()" class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
-                                <i data-lucide="plus" class="w-5 h-5"></i>
-                            </button>
-                        </div>
-
-                        <!-- Wishlist Input Form block (Initially Hidden toggleable) -->
-                        <div id="wishlist-form-container" class="hidden bg-white p-4 rounded-3xl border border-slate-150 shadow-smooth space-y-3">
-                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider">TAMBAH KOLEKSI FOTO</h3>
-                            <input id="input-wish-title" type="text" placeholder="Nama Barang Impian..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:border-blue-500">
-                            <input id="input-wish-img" type="text" placeholder="URL Foto Unsplash/Gambar..." value="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:border-blue-500">
-                            <button onclick="submitWishlistItem()" class="w-full py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-500">
-                                Simpan Impian
-                            </button>
-                        </div>
-
-                        <!-- Grid -->
-                        <div id="wishlist-grid" class="grid grid-cols-2 gap-4">
-                            <!-- Appended dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: MAPS TAB -->
-                    <div id="panel-map" class="hidden flex flex-col space-y-6 h-full px-6 pt-5 bg-[#F8F9FD]">
-                        <h1 class="text-[34px] font-black text-slate-900 tracking-[-0.03em]">
-                            Lokasi Spends
-                        </h1>
-                        <p class="text-xs text-slate-500 -mt-2">Melacak pengeluaran Anda berdasarkan radius geografis merchant di peta.</p>
-                        
-                        <!-- Map Mockup Panel -->
-                        <div class="flex-1 min-h-[300px] bg-slate-100 rounded-[32px] border border-slate-200 shadow-inner overflow-hidden relative flex flex-col justify-between">
-                            <!-- Simulated styled background grid pattern with pins -->
-                            <div class="absolute inset-0 bg-[radial-gradient(#ccd0d8_1px,transparent_1px)] [background-size:16px_16px] opacity-60"></div>
-                            
-                            <!-- Static Pins -->
-                            <div class="absolute top-[20%] left-[30%] bg-blue-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                                <i data-lucide="map-pin" class="w-2.5 h-2.5"></i> Supermarket
-                            </div>
-                            <div class="absolute top-[55%] left-[65%] bg-[#EF4444] text-white text-[9px] font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                                <i data-lucide="map-pin" class="w-2.5 h-2.5"></i> Cafe Kopi
-                            </div>
-                            <div class="absolute top-[40%] left-[15%] bg-amber-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                                <i data-lucide="map-pin" class="w-2.5 h-2.5"></i> Mal Pembelian
-                            </div>
-
-                            <!-- Floating Map Actions UI -->
-                            <div class="absolute top-4 right-4 flex flex-col gap-2">
-                                <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 shadow-sm flex items-center justify-center cursor-pointer font-bold">+</div>
-                                <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 shadow-sm flex items-center justify-center cursor-pointer font-bold">-</div>
-                            </div>
-
-                            <!-- Bottom bar details -->
-                            <div class="mt-auto relative z-10 m-4 p-4 bg-white/90 backdrop-blur rounded-[24px] border border-slate-100/50 shadow-md">
-                                <h3 class="text-xs font-extrabold text-slate-800">Merchant Terdekat</h3>
-                                <p class="text-[10px] text-slate-500 mt-0.5">3 Merchant terdeteksi dalam jangkauan 2km domisili Anda.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 4: PROFILE & STATISTICS TAB -->
-                    <div id="panel-profile" class="hidden flex flex-col space-y-6 px-6 pt-5">
-                        <h1 class="text-[34px] font-black text-slate-900 tracking-[-0.03em]">
-                            Profil Saku
-                        </h1>
-
-                        <!-- User Profile Card -->
-                        <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-smooth flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-[22px] overflow-hidden bg-slate-200 shrink-0 border border-slate-150">
-                                <img id="profile-pane-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80" alt="Avatar" class="w-full h-full object-cover">
-                            </div>
-                            <div>
-                                <h3 id="lbl-profile-gmail" class="text-sm font-black text-slate-900">nagha.kancil@gmail.com</h3>
-                                <p id="lbl-profile-wa" class="text-[11px] text-slate-500 font-medium">No WA: 081234567890</p>
-                                <span class="inline-block mt-1 px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[9px] font-black uppercase tracking-wider">Premium Wallet</span>
-                            </div>
-                        </div>
-
-                        <!-- Statistics Panel -->
-                        <div class="bg-white p-5 rounded-[28px] border border-slate-100 shadow-smooth space-y-4">
-                            <h3 class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">LINTAS REKAPITULASI</h3>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                                    <span class="text-[9.5px] text-slate-400 font-bold uppercase block">Total Pemasukan</span>
-                                    <span id="lbl-stats-deposit" class="text-lg font-black text-emerald-600 font-mono">$0.00</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                                    <span class="text-[9.5px] text-slate-400 font-bold uppercase block">Total Penarikan</span>
-                                    <span id="lbl-stats-withdraw" class="text-lg font-black text-rose-600 font-mono">$0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Log Out Action Button -->
-                        <button onclick="handleLogout()" class="w-full py-3.5 bg-red-50 text-red-600 rounded-[20px] font-black text-xs uppercase tracking-wider hover:bg-red-100/70 cursor-pointer text-center">
-                            Keluar dari Akun (Logout)
-                        </button>
-                    </div>
-
-                </div>
-
-                <!-- FLOATING MENU BAR & PLUS "+" FAB (Absolute Bottom) -->
-                <div class="absolute bottom-0 left-0 right-0 h-22 bg-transparent select-none z-30 pointer-events-none">
-                    <!-- Bottom tabs deck -->
-                    <div class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-100/80 flex justify-between items-center px-8 pb-1 pointer-events-auto shadow-[0_-6px_25px_rgba(0,0,0,0.02)]">
-                        <!-- Tab Home -->
-                        <button onclick="switchTab('home')" id="btn-tab-home" class="flex flex-col items-center justify-center p-2 rounded-xl relative text-slate-900">
-                            <i data-lucide="home" class="w-[19px] h-[19px]"></i>
-                            <span id="indicator-tab-home" class="w-1.5 h-1.5 bg-[#2F66FE] rounded-full absolute -bottom-1"></span>
-                        </button>
-
-                        <!-- Tab Wishlist -->
-                        <button onclick="switchTab('wishlist')" id="btn-tab-wishlist" class="flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400">
-                            <i data-lucide="heart" class="w-[19px] h-[19px]"></i>
-                            <span id="indicator-tab-wishlist" class="hidden w-1.5 h-1.5 bg-[#2F66FE] rounded-full absolute -bottom-1"></span>
-                        </button>
-
-                        <!-- Empty Spacer in middle -->
-                        <div class="w-14 h-14 shrink-0"></div>
-
-                        <!-- Tab Map -->
-                        <button onclick="switchTab('map')" id="btn-tab-map" class="flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400">
-                            <i data-lucide="map-pin" class="w-[19px] h-[19px]"></i>
-                            <span id="indicator-tab-map" class="hidden w-1.5 h-1.5 bg-[#2F66FE] rounded-full absolute -bottom-1"></span>
-                        </button>
-
-                        <!-- Tab Profile -->
-                        <button onclick="switchTab('profile')" id="btn-tab-profile" class="flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400">
-                            <i data-lucide="user" class="w-[19px] h-[19px]"></i>
-                            <span id="indicator-tab-profile" class="hidden w-1.5 h-1.5 bg-[#2F66FE] rounded-full absolute -bottom-1"></span>
-                        </button>
-                    </div>
-
-                    <!-- Real FAB Button -->
-                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-auto z-40">
-                        <button onclick="openAddTransactionModal()" class="w-14 h-14 bg-[#2F66FE] text-white rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(47,102,254,0.4)] hover:bg-blue-600 border-[3px] border-white cursor-pointer active:scale-95 transition-transform duration-100">
-                            <i data-lucide="plus" class="w-[26px] h-[26px] stroke-[2.5]"></i>
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- MODAL 1: ADD TRANSACTION MODAL -->
-        <div id="modal-add-tx" class="hidden absolute inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end justify-center">
-            <div class="w-full bg-white rounded-t-[40px] p-6 space-y-4 shadow-2xl relative max-h-[85%] overflow-y-auto">
-                <button onclick="closeAddTransactionModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-                <div class="text-center pt-2">
-                    <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
-                    <h3 class="text-lg font-black text-slate-800">Catat Keuangan</h3>
-                    <p class="text-xs text-slate-400 mt-1">Gunakan form untuk menambahkan pengeluaran saku maupun tabungan masuk.</p>
-                </div>
-
-                <div class="space-y-4 pt-2 text-left">
-                    <!-- Segmented Type Selector -->
-                    <div class="bg-slate-100 p-1 rounded-2xl grid grid-cols-2">
-                        <button onclick="setTxFormType('penarikan')" id="btn-txform-withdraw" class="py-2.5 px-3 text-xs font-black rounded-xl uppercase bg-white text-slate-900 shadow-sm text-center">
-                            Penarikan (Spend)
-                        </button>
-                        <button onclick="setTxFormType('depo')" id="btn-txform-depo" class="py-2.5 px-3 text-xs font-black rounded-xl uppercase text-slate-400 text-center">
-                            Pemasukan (Depo)
-                        </button>
-                    </div>
-
-                    <!-- Title input -->
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block mb-1">Nama Transaksi / Instansi</label>
-                        <input id="input-tx-title" type="text" placeholder="Contoh: Makan Siang, Netflix, Gaji" class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs focus:border-blue-500">
-                    </div>
-
-                    <!-- Category input -->
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block mb-1">Kategori Visual</label>
-                        <select id="input-tx-cat" class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs focus:border-blue-500">
-                            <option value="food">Makanan & Minuman (Telepon)</option>
-                            <option value="net-banking">Gaji / Deposit (Surat)</option>
-                            <option value="clothes">Pakaian & Gaya Hidup (Sandi)</option>
-                            <option value="card">Lain-lain (Kartu Kredit)</option>
-                        </select>
-                    </div>
-
-                    <!-- Amount raw input -->
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block mb-1">Jumlah Nominal ($)</label>
-                        <input id="input-tx-amount" type="number" step="0.01" placeholder="0.00" class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm font-semibold focus:border-blue-500">
-                    </div>
-
-                    <button onclick="submitTransaction()" class="w-full py-3.5 bg-blue-600 text-white rounded-xl text-xs uppercase tracking-wider font-black hover:bg-blue-500">
-                        Simpan Transaksi
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL 2: EDIT BUDGET MODAL -->
-        <div id="modal-edit-budget" class="hidden absolute inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end justify-center">
-            <div class="w-full bg-white rounded-t-[40px] p-6 space-y-4 shadow-2xl relative">
-                <button onclick="closeEditBudgetModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-                <div class="text-center pt-2">
-                    <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
-                    <h3 class="text-lg font-black text-slate-800">Atur Anggaran ($)</h3>
-                    <p class="text-xs text-slate-400 mt-1">Ubah tabungan bulanan saku dan target bulanan yang aktif.</p>
-                </div>
-
-                <div class="space-y-4 pt-2 text-left">
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block mb-1">Limit Budget Bulanan ($)</label>
-                        <input id="input-budget-limit" type="number" placeholder="Atur nominal budget..." class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm font-semibold focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block mb-1">Bulan Pelaporan</label>
-                        <select id="input-budget-month" class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs focus:border-blue-500">
-                            <option value="January">Januari</option>
-                            <option value="February">Februari</option>
-                            <option value="March">Maret</option>
-                            <option value="April">April</option>
-                            <option value="May">Mei</option>
-                            <option value="June">Juni</option>
-                            <option value="July">Juli</option>
-                            <option value="August">Agustus</option>
-                            <option value="September">September</option>
-                            <option value="October">Oktober</option>
-                            <option value="November">November</option>
-                            <option value="December">Desember</option>
-                        </select>
-                    </div>
-                    <button onclick="submitUpdateBudget()" class="w-full py-3.5 bg-blue-600 text-white rounded-xl text-xs uppercase tracking-wider font-black hover:bg-blue-500">
-                        Terapkan Perubahan
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL 3: SPENDS RECAPITULATION (SEE ALL) PANEL -->
-        <div id="modal-spends-all" class="hidden absolute inset-0 z-50 bg-white flex flex-col justify-between">
-            <!-- Header bar -->
-            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
-                <button onclick="closeSpendsListPanel()" class="flex items-center gap-1.5 text-slate-600 text-xs font-bold">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Kembali
-                </button>
-                <span class="text-sm font-black text-slate-900">Riwayat Saku</span>
-                <div class="w-8"></div>
-            </div>
-
-            <!-- List content container -->
-            <div id="spends-all-history-container" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
-                <!-- Appended dynamically -->
-            </div>
-        </div>
-
-        <!-- MODAL 4: CHANGE AVATAR OPTION PLAYGROUND -->
-        <div id="modal-change-avatar" class="hidden absolute inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end justify-center">
-            <div class="w-full bg-white rounded-t-[40px] p-6 space-y-4 shadow-2xl relative">
-                <button onclick="closeChangeAvatarModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-                <div class="text-center pt-2">
-                    <h3 class="text-base font-black text-slate-800">Ubah Photo Profil</h3>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Pilih salah satu karakter visual yang cocok untuk akun Anda.</p>
-                </div>
-
-                <div class="grid grid-cols-4 gap-4 py-4 justify-items-center">
-                    <img onclick="selectAvatar('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80')" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80" alt="Av1" class="w-12 h-12 rounded-xl object-cover cursor-pointer border-2 hover:border-blue-500 scale-100 active:scale-95 transition-all">
-                    <img onclick="selectAvatar('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80')" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80" alt="Av2" class="w-12 h-12 rounded-xl object-cover cursor-pointer border-2 hover:border-blue-500 scale-100 active:scale-95 transition-all">
-                    <img onclick="selectAvatar('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=80')" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=80" alt="Av3" class="w-12 h-12 rounded-xl object-cover cursor-pointer border-2 hover:border-blue-500 scale-100 active:scale-95 transition-all">
-                    <img onclick="selectAvatar('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80')" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80" alt="Av4" class="w-12 h-12 rounded-xl object-cover cursor-pointer border-2 hover:border-blue-500 scale-100 active:scale-95 transition-all">
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- MAIN APP CONTROLLER SCRIPT (Offline Fallback & Responsive Simulation) -->
+    <!-- AUTH CONTAINER -->
+    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
+
+        <div class="absolute top-6 left-0 right-0 px-6 w-full max-w-sm mx-auto">
+        <div class="flex gap-3 w-full">
+            <div id="menuTable" onclick="bukaTab('login')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
+                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">WED</span>
+            </div>
+            
+            <div id="menuPortfolio" onclick="bukaTab('forto')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
+                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">FORTOFOLIO</span>
+            </div>
+        </div>
+    </div>
+       
+        <!-- LOGIN BOX -->
+        <div id="loginBox" class="w-full max-w-sm animate-up">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-black text-cyan-500 tracking-tighter">PAGE421</h1>
+                <p class="text-gray-500 text-xs mt-1 uppercase tracking-widest font-semibold">Investment Portal</p>
+            </div>
+            <div class="space-y-4">
+                
+                <div class="relative flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            
+            <input id="loginUser" type="email" placeholder="Alamat Email" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+        </div>
+        
+        <div class="relative flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            
+            <input id="loginPass" type="password" placeholder="Kata Sandi" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+        </div>
+                
+        <button onclick="login()" class="w-full bg-cyan-500 text-black font-extrabold p-4 rounded-2xl hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">MASUK</button>
+            </div>
+            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold">Daftar Sekarang</span></p>
+        </div>
+
+        <!-- REGISTER BOX -->
+        <div id="registerBox" class="hidden w-full max-w-sm animate-up">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-black text-white tracking-tighter">DAFTAR AKUN</h1>
+            </div>
+            <div class="space-y-4">
+                
+               <div class="relative flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            
+            <input id="regUser" type="email" placeholder="Email Baru" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+        </div>
+        
+        <div class="relative flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            
+            <input id="regPass" type="password" placeholder="Password (Min 6 Karakter)" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
+        </div>
+
+        <button onclick="register()" class="w-full bg-white text-black font-extrabold p-4 rounded-2xl hover:bg-gray-200 transition-all active:scale-95">DAFTAR SEKARANG</button>
+            </div>
+            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Sudah punya akun? <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer font-bold">Login</span></p>
+        </div>
+        <div id="halamanForto" class="hidden w-full max-w-sm animate-up mt-16">
+            <div class="bg-[#111] border border-white/10 p-6 rounded-3xl text-center">
+                <h2 class="text-2xl font-black text-white tracking-tight mb-2">PORTFOLIO PAGE421</h2>
+                <p class="text-gray-400 text-xs mb-6">Masa aktif wed</p>
+                
+                <div class="p-4 bg-black/40 border border-white/5 rounded-2xl text-left space-y-2">
+                    <p class="text-cyan-400 text-xs font-bold">Projek Aktif</p>
+                    <p class="text-gray-400 text-[11px]">22/05/2027.</p>
+                </div>
+            </div>
+        </div>
+
+        <div>helo wordl</div>
+
+    <!-- FIREBASE COMPAT SDK LINK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <script>
-        // Default Local Storage / Memory states
-        let currentUser = null;
-        let authMode = 'login';
-        let activeTab = 'home';
-        let txFormType = 'penarikan'; // penarikan or depo
+        // SCRIPT PROTEKSI FITUR ANTI-SALIN & REAKSI TEKAN LAMA (HOLD)
+        function alertAksesDitolak() {
+            Swal.fire({
+                icon: 'error',
+                title: 'AKSES DITOLAK',
+                text: 'Sistem memblokir penyalinan data pada halaman ini!',
+                confirmButtonText: 'SAYA MENGERTI',
+                timer: 2000
+            });
+        }
 
-        // Default local wallet values
-        let monthlyBudget = 1500;
-        let selectedMonth = 'January';
-        let transactions = [
-            { id: 'tx-1', title: 'Belanja Supermarket', type: 'penarikan', category: 'card', amount: 45.50, date: 'Minggu, 09 Juni', timeString: 'Minggu, 14:30', status: 'Selesai' },
-            { id: 'tx-2', title: 'Espresso & Croissant', type: 'penarikan', category: 'food', amount: 7.20, date: 'Jumat, 07 Juni', timeString: 'Jumat, 09:12', status: 'Selesai' },
-            { id: 'tx-3', title: 'Gaji Bulanan Utama', type: 'depo', category: 'net-banking', amount: 2400.00, date: 'Senin, 02 Juni', timeString: 'Senin, 08:00', status: 'Selesai' },
-            { id: 'tx-4', title: 'Pakaian Trendy', type: 'penarikan', category: 'clothes', amount: 89.90, date: 'Selasa, 28 Mei', timeString: 'Selasa, 19:30', status: 'Selesai' }
-        ];
-
-        let wishlist = [
-            { id: 'wl-1', title: 'Kopi Pagi', imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&auto=format&fit=crop&q=80', dateAdded: 'Rabu, 08:30 (Kemarin)' },
-            { id: 'wl-2', title: 'Keindahan Alam', imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&auto=format&fit=crop&q=80', dateAdded: 'Selasa, 14:15' },
-            { id: 'wl-3', title: 'Pantai Indah', imageUrl: 'https://images.unsplash.com/photo-1507524428034-b723cf961d3e?w=500&auto=format&fit=crop&q=80', dateAdded: 'Minggu, 10:00' }
-        ];
-
-        let avatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80';
-
-        // Initialize Lucide Icons
-        document.addEventListener('DOMContentLoaded', () => {
-            initSession();
-            lucide.createIcons();
+        // Blokir Klik Kanan / Tahan Lama (Hold HP)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alertAksesDitolak();
         });
 
-        function initSession() {
-            // Read from localStorage if any
-            const savedUser = localStorage.getItem('dana_user_logged_in');
-            if (savedUser) {
-                try {
-                    currentUser = JSON.parse(savedUser);
-                    loadUserData(currentUser.gmail.toLowerCase().trim());
-                    showDashboard();
-                } catch(e) {
-                    showAuth();
-                }
-            } else {
-                showAuth();
+        // Blokir Kombinasi Tombol Copy Keyboard
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 65)) {
+                e.preventDefault();
+                alertAksesDitolak();
+                return false;
             }
-        }
+        });
 
-        function loadUserData(emailKey) {
-            const sanitizedKey = emailKey.replace(/[^a-zA-Z0-9]/g, '_');
-            
-            const savedBudget = localStorage.getItem(`owner_${sanitizedKey}_monthly_budget`);
-            monthlyBudget = savedBudget ? parseFloat(savedBudget) : 1500;
-
-            const savedMonth = localStorage.getItem(`owner_${sanitizedKey}_selected_month`);
-            selectedMonth = savedMonth || 'January';
-
-            const savedTx = localStorage.getItem(`owner_${sanitizedKey}_transactions`);
-            if (savedTx) {
-                try { transactions = JSON.parse(savedTx); } catch(e) {}
-            }
-
-            const savedWishlist = localStorage.getItem(`owner_${sanitizedKey}_wishlist`);
-            if (savedWishlist) {
-                try { wishlist = JSON.parse(savedWishlist); } catch(e) {}
-            }
-
-            const savedAvatar = localStorage.getItem(`owner_${sanitizedKey}_avatar`);
-            if (savedAvatar) {
-                avatar = savedAvatar;
-            } else {
-                avatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80';
-            }
-
-            updateUIRender();
-        }
-
-        function persistUserData() {
-            if (!currentUser) return;
-            const sanitizedKey = currentUser.gmail.toLowerCase().trim().replace(/[^a-zA-Z0-9]/g, '_');
-            
-            localStorage.setItem(`owner_${sanitizedKey}_monthly_budget`, monthlyBudget.toString());
-            localStorage.setItem(`owner_${sanitizedKey}_selected_month`, selectedMonth);
-            localStorage.setItem(`owner_${sanitizedKey}_transactions`, JSON.stringify(transactions));
-            localStorage.setItem(`owner_${sanitizedKey}_wishlist`, JSON.stringify(wishlist));
-            localStorage.setItem(`owner_${sanitizedKey}_avatar`, avatar);
-        }
-
-        // Authentication Screen controls
-        function switchAuthMode(mode) {
-            authMode = mode;
-            const titleBadge = document.getElementById('auth-title-badge');
-            const containerWa = document.getElementById('container-wa');
-            const pwdHelp = document.getElementById('pwd-help-text');
-            const btnSubmit = document.getElementById('btn-submit-auth');
-            const tabLogin = document.getElementById('btn-tab-login');
-            const tabRegister = document.getElementById('btn-tab-register');
-            const toggleLead = document.getElementById('toggle-lead-txt');
-            const toggleLink = document.getElementById('toggle-link-txt');
-
-            if (mode === 'login') {
-                titleBadge.innerText = "Akses Masuk Premium Wallet";
-                containerWa.classList.add('hidden');
-                pwdHelp.classList.add('hidden');
-                btnSubmit.innerText = "Masuk Sekarang";
-                tabLogin.className = "py-2 px-3 text-xs font-black rounded-xl uppercase tracking-wider bg-blue-600 text-white shadow-md text-center";
-                tabRegister.className = "py-2 px-3 text-xs font-black rounded-xl uppercase tracking-wider text-slate-400 hover:text-white text-center";
-                toggleLead.innerText = "Belum punya akun?";
-                toggleLink.innerText = "Daftar di sini";
-            } else {
-                titleBadge.innerText = "Registrasi Akun Baru";
-                containerWa.classList.remove('hidden');
-                pwdHelp.classList.remove('hidden');
-                btnSubmit.innerText = "Daftar & Hubungkan";
-                tabLogin.className = "py-2 px-3 text-xs font-black rounded-xl uppercase tracking-wider text-slate-400 hover:text-white text-center";
-                tabRegister.className = "py-2 px-3 text-xs font-black rounded-xl uppercase tracking-wider bg-blue-600 text-white shadow-md text-center";
-                toggleLead.innerText = "Sudah punya akun?";
-                toggleLink.innerText = "Masuk di sini";
-            }
-        }
-
-        function toggleAuthMode() {
-            switchAuthMode(authMode === 'login' ? 'register' : 'login');
-        }
-
-        function handleAuthSubmit(e) {
+        // Blokir Event Copy Mekanis
+        document.addEventListener('copy', function(e) {
             e.preventDefault();
-            const gmail = document.getElementById('input-gmail').value.trim();
-            const wa = document.getElementById('input-wa').value.trim();
-            const sandi = document.getElementById('input-sandi').value.trim();
+            alertAksesDitolak();
+        });
 
-            if (!gmail || !sandi) {
-                alert('Tolong isi Gmail dan Sandi Akun.');
-                return;
-            }
+        // FIREBASE INITIALIZATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
+            authDomain: "page421-b9a6c.firebaseapp.com",
+            databaseURL: "https://page421-b9a6c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "page421-b9a6c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
 
-            if (authMode === 'register') {
-                if (!wa) {
-                    alert('Harap isi nomor Whatsapp.');
-                    return;
-                }
-                if (sandi.length < 6) {
-                    alert('Sandi minimal 6 karakter.');
-                    return;
-                }
-                
-                // Simulated Register
-                const userObj = { gmail, noWa: wa, sandi };
-                localStorage.setItem('dana_user_logged_in', JSON.stringify(userObj));
-                currentUser = userObj;
-                loadUserData(gmail);
-                showDashboard();
-                alert('Registrasi Berhasil! Selamat Datang.');
+        let balance = 0, historyInv = [], sedangDaftar = false;
+        let _lastDepo = 0, _lastTarik = 0;
+        let isSaldoHidden = false;
+
+        auth.onAuthStateChanged(user => {
+            if (sedangDaftar) return;
+            if (user) {
+                document.getElementById('authContainer').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('chatBtn').style.display = 'flex';
+                document.getElementById('emailText').innerText = user.email;
+                db.ref("users/" + user.uid + "/photo").on("value", snap => {
+                    if (snap.val()) document.getElementById('userImg').src = snap.val();
+                });
+                showPopup();
+                listenData(user.uid);
+                listenChat();
             } else {
-                // Login
-                if (gmail === 'nagha.kancil@gmail.com' && sandi === '123456') {
-                    const userObj = { gmail, noWa: '081234567890', sandi };
-                    localStorage.setItem('dana_user_logged_in', JSON.stringify(userObj));
-                    currentUser = userObj;
-                    loadUserData(gmail);
-                    showDashboard();
-                } else {
-                    // Create dynamic user for test
-                    const userObj = { gmail, noWa: '08551234567', sandi };
-                    localStorage.setItem('dana_user_logged_in', JSON.stringify(userObj));
-                    currentUser = userObj;
-                    loadUserData(gmail);
-                    showDashboard();
-                }
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('authContainer').classList.remove('hidden');
+                document.getElementById('chatBtn').style.display = 'none';
             }
-        }
+        });
 
-        function handleLogout() {
-            currentUser = null;
-            localStorage.removeItem('dana_user_logged_in');
-            document.getElementById('input-gmail').value = 'nagha.kancil@gmail.com';
-            document.getElementById('input-sandi').value = '123456';
-            switchAuthMode('login');
-            showAuth();
-        }
-
-        function showAuth() {
-            document.getElementById('screen-auth').classList.remove('hidden');
-            document.getElementById('screen-dashboard').classList.add('hidden');
-        }
-
-        function showDashboard() {
-            document.getElementById('screen-auth').classList.add('hidden');
-            document.getElementById('screen-dashboard').classList.remove('hidden');
-            updateUIRender();
-        }
-
-        // Bottom navigation panels switcher
-        function switchTab(tab) {
-            activeTab = tab;
+        function login() {
+            const email = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+            if(!email || !pass) return Swal.fire('Oops!', 'Lengkapi email dan password!', 'warning');
             
-            // Hide all tabs
-            document.getElementById('panel-home').classList.add('hidden');
-            document.getElementById('panel-wishlist').classList.add('hidden');
-            document.getElementById('panel-map').classList.add('hidden');
-            document.getElementById('panel-profile').classList.add('hidden');
-
-            // Hide all indicators
-            document.getElementById('indicator-tab-home').classList.add('hidden');
-            document.getElementById('indicator-tab-wishlist').classList.add('hidden');
-            document.getElementById('indicator-tab-map').classList.add('hidden');
-            document.getElementById('indicator-tab-profile').classList.add('hidden');
-
-            // Reset tab button colors
-            document.getElementById('btn-tab-home').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400";
-            document.getElementById('btn-tab-wishlist').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400";
-            document.getElementById('btn-tab-map').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400";
-            document.getElementById('btn-tab-profile').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-[#A5BFCF] hover:text-slate-400";
-
-            // Show active tab & indicator
-            if (tab === 'home') {
-                document.getElementById('panel-home').classList.remove('hidden');
-                document.getElementById('indicator-tab-home').classList.remove('hidden');
-                document.getElementById('btn-tab-home').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-slate-900";
-            } else if (tab === 'wishlist') {
-                document.getElementById('panel-wishlist').classList.remove('hidden');
-                document.getElementById('indicator-tab-wishlist').classList.remove('hidden');
-                document.getElementById('btn-tab-wishlist').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-slate-900";
-                renderWishlistGrid();
-            } else if (tab === 'map') {
-                document.getElementById('panel-map').classList.remove('hidden');
-                document.getElementById('indicator-tab-map').classList.remove('hidden');
-                document.getElementById('btn-tab-map').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-slate-900";
-            } else if (tab === 'profile') {
-                document.getElementById('panel-profile').classList.remove('hidden');
-                document.getElementById('indicator-tab-profile').classList.remove('hidden');
-                document.getElementById('btn-tab-profile').className = "flex flex-col items-center justify-center p-2 rounded-xl relative text-slate-900";
-            }
-        }
-
-        // Calculations & UI Renders
-        function updateUIRender() {
-            // Total deposits and withdrawals
-            let totalWithdrawals = 0;
-            let totalDeposits = 0;
-
-            transactions.forEach(t => {
-                if (t.type === 'depo') {
-                    totalDeposits += parseFloat(t.amount);
-                } else {
-                    totalWithdrawals += parseFloat(t.amount);
-                }
+            Swal.fire({
+                title: 'Menghubungkan...',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
             });
 
-            const totalMoney = monthlyBudget + totalDeposits;
-            const activeBalance = totalMoney - totalWithdrawals;
-            const spentPercent = totalMoney > 0 ? Math.min(100, Math.round((totalWithdrawals / totalMoney) * 100)) : 0;
-            const dailyTarget = (monthlyBudget / 30).toFixed(2);
-
-            // Update Labels
-            document.getElementById('lbl-display-month').innerText = selectedMonth;
-            document.getElementById('lbl-display-balance').innerText = activeBalance.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-            document.getElementById('lbl-display-percent').innerText = `${spentPercent}%`;
-            document.getElementById('lbl-display-target').innerText = dailyTarget;
-
-            document.getElementById('progress-bar-fill').style.width = `${spentPercent}%`;
-
-            // Profil panel stats labels
-            document.getElementById('lbl-stats-deposit').innerText = `$${totalDeposits.toFixed(2)}`;
-            document.getElementById('lbl-stats-withdraw').innerText = `$${totalWithdrawals.toFixed(2)}`;
-
-            if (currentUser) {
-                document.getElementById('lbl-profile-gmail').innerText = currentUser.gmail;
-                document.getElementById('lbl-profile-wa').innerText = `No WA: ${currentUser.noWa || '081234567890'}`;
-            }
-
-            // Update Avatars
-            document.getElementById('dashboard-avatar').src = avatar;
-            document.getElementById('profile-pane-avatar').src = avatar;
-
-            // Render spends lists
-            renderDashboardSpends();
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    Swal.fire({ icon: 'success', title: 'Login Berhasil', showConfirmButton: false, timer: 1500 });
+                })
+                .catch(e => {
+                    Swal.fire('Gagal Login', e.message, 'error');
+                });
         }
 
-        function renderDashboardSpends() {
-            const container = document.getElementById('dashboard-spends-container');
-            container.innerHTML = '';
+        function register() {
+            const email = document.getElementById('regUser').value.trim();
+            const pass = document.getElementById('regPass').value;
+            
+            if(!email || pass.length < 6) return Swal.fire('Data Lemah', 'Email harus valid & Password min 6 karakter!', 'warning');
 
-            const activeSpends = transactions.slice(0, 3);
-            if (activeSpends.length === 0) {
-                container.innerHTML = '<div class="text-center py-4 text-slate-400 text-xs">Belum ada pengeluaran terbaru</div>';
-                return;
+            if (!email.toLowerCase().endsWith('@gmail.com')) {
+                return Swal.fire('Email Tidak Valid', 'Pendaftaran wajib menggunakan akun @gmail.com!', 'error');
             }
 
-            activeSpends.forEach(item => {
-                const isDepo = item.type === 'depo';
-                const isSelesai = item.status === 'Selesai';
+            sedangDaftar = true;
+            Swal.fire({ title: 'Membuat Akun...', didOpen: () => { Swal.showLoading() } });
+
+            auth.createUserWithEmailAndPassword(email, pass)
+                .then(() => { 
+                    sedangDaftar=false; 
+                    Swal.fire('Sukses!', 'Akun berhasil dibuat, silakan masuk.', 'success');
+                    toggleAuth(false); 
+                    auth.signOut(); 
+                })
+                .catch(e => { 
+                    sedangDaftar=false;
+                    Swal.fire('Registrasi Gagal', e.message, 'error');
+                });
+        }
+
+        function buyInvest() {
+            if (balance < 20000) return Swal.fire('Koin Kurang', 'Koin kamu tidak cukup untuk paket ini.', 'error');
+            
+            Swal.fire({
+                title: 'Konfirmasi Pembelian',
+                text: "Koin akan terpotong 20.000 Koin untuk Paket Premium A",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Beli!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    db.ref("invest_history/" + auth.currentUser.uid).push({ tanggalBeli: Date.now() });
+                    Swal.fire('Berhasil!', 'Paket investasi aktif sekarang.', 'success');
+                }
+            });
+        }
+
+        function kirimDepo() {
+            Swal.fire({
+                title: 'Request Deposit?',
+                text: "Kamu akan mengajukan deposit sebesar 50.000 Koin",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Kirim Request'
+            }).then((res) => {
+                if(res.isConfirmed) {
+                    db.ref("topup").push({ 
+                        uid: auth.currentUser.uid, 
+                        email: auth.currentUser.email, 
+                        nominal: 50000, 
+                        status: "pending", 
+                        timestamp: Date.now() 
+                    });
+                    Swal.fire('Terkirim!', 'Silakan tunggu konfirmasi admin.', 'success');
+                }
+            });
+        }
+
+        function kirimTarik() {
+            let nom = parseInt(document.getElementById('nominalTarik').value.replace(/\./g, ''));
+            if (nom < 50000) return Swal.fire('Gagal', 'Minimal penarikan 50.000 Koin!', 'warning');
+            if (balance < (nom + 2500)) return Swal.fire('Koin kurang', 'Koin tidak cukup untuk nominal + biaya admin.', 'error');
+            
+            Swal.fire({
+                title: 'Konfirmasi Penarikan',
+                text: `Tarik ${nom.toLocaleString()} Koin? (Biaya Admin 2.500 Koin)`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Tarik!'
+            }).then((res) => {
+                if(res.isConfirmed) {
+                    db.ref("penarikan").push({ 
+                        uid: auth.currentUser.uid, 
+                        email: auth.currentUser.email, 
+                        nominal: nom, 
+                        biaya_admin: 2500, 
+                        status: "pending", 
+                        timestamp: Date.now() 
+                    });
+                    Swal.fire('Berhasil!', 'Permintaan WD diproses.', 'success');
+                }
+            });
+        }
+
+        function listenData(uid) {
+            db.ref("topup").on("value", snap => {
+                let h = "", total = 0;
+                snap.forEach(c => {
+                    const d = c.val();
+                    if (d.uid === uid) {
+                        if (d.status === 'selesai') total += Number(d.nominal);
+                        const time = new Date(d.timestamp || d.t).toLocaleTimeString('id-ID');
+                        
+                        let badgeColor = d.status === 'selesai' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400';
+                        if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
+
+                        h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
+                            <div><div class="font-extrabold text-white">${Number(d.nominal).toLocaleString()} Koin</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
+                            <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
+                        </div>`;
+                    }
+                });
+                document.getElementById('listDepo').innerHTML = h || "<p class='text-[10px] text-center text-gray-600 py-4 italic'>Belum ada riwayat deposit</p>";
+                _lastDepo = total; hitungSaldo();
+            });
+
+            db.ref("penarikan").on("value", snap => {
+                let h = "", total = 0;
+                snap.forEach(c => {
+                    const d = c.val();
+                    if (d.uid === uid) {
+                        if (d.status === 'selesai') total += Number(d.nominal);
+                        const time = new Date(d.timestamp || d.t).toLocaleTimeString('id-ID');
+                        
+                        let badgeColor = d.status === 'selesai' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400';
+                        if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
+
+                        h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
+                            <div><div class="font-extrabold text-white">${Number(d.nominal).toLocaleString()} Koin</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
+                            <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
+                        </div>`;
+                    }
+                });
+                document.getElementById('listTarik').innerHTML = h || "<p class='text-[10px] text-center text-gray-600 py-4 italic'>Belum ada riwayat penarikan</p>";
+                _lastTarik = total; hitungSaldo();
+            });
+
+            db.ref("invest_history/" + uid).on("value", snap => {
+                historyInv = []; snap.forEach(c => historyInv.push(c.val()));
+                hitungSaldo();
+            });
+        }
+
+        function hitungSaldo() {
+            let cost = 0, profit = 0, aktif = false, sekarang = Date.now();
+            historyInv.forEach(h => {
+                cost += 20000;
+                let diff = Math.floor((sekarang - h.tanggalBeli) / 86400000);
+                profit += (Math.min(diff, 60) * 500);
+                if (diff < 60) {
+                    aktif = true;
+                    document.getElementById('timerA').innerText = "KONTRAK BERJALAN: " + (60 - diff) + " HARI TERSISA";
+                }
+            });
+            balance = _lastDepo - cost + profit - _lastTarik;
+            updateSaldoDisplay();
+            document.getElementById('labelPaketA').style.display = aktif ? "inline" : "none";
+            document.getElementById('btnBeliA').disabled = aktif;
+            document.getElementById('timerA').style.display = aktif ? "block" : "none";
+        }
+
+        function updateSaldoDisplay() {
+            const formatted = balance.toLocaleString('id-ID') + " Koin";
+            document.getElementById('balanceText').innerText = isSaldoHidden ? "••••• Koin" : formatted;
+            document.getElementById('saldoTarik').innerText = "SALDO: " + (isSaldoHidden ? "••••• Koin" : formatted);
+        }
+
+        function toggleHideSaldo() {
+            isSaldoHidden = !isSaldoHidden;
+            const eyeIcon = document.getElementById('eyeIcon');
+            if(isSaldoHidden) {
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>`;
+            } else {
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
+            }
+            updateSaldoDisplay();
+        }
+
+        function logout() { auth.signOut().then(() => location.reload()); }
+        function bukaTab(namaTab) {
+            const loginBox = document.getElementById('loginBox');
+            const registerBox = document.getElementById('registerBox');
+            const halamanForto = document.getElementById('halamanForto');
+            
+            const menuTable = document.getElementById('menuTable');
+            const menuPortfolio = document.getElementById('menuPortfolio');
+            const textWED = document.getElementById('textWED');
+            const textForto = document.getElementById('textForto');
+
+            // Sembunyikan semua box konten
+            if (loginBox) loginBox.classList.add('hidden');
+            if (registerBox) registerBox.classList.add('hidden');
+            if (halamanForto) halamanForto.classList.add('hidden');
+
+            // Reset semua style tombol navbar atas ke kondisi tidak aktif
+            if (menuTable) { menuTable.classList.replace('border-cyan-500/30', 'border-white/10'); }
+            if (menuPortfolio) { menuPortfolio.classList.replace('border-cyan-500/30', 'border-white/10'); }
+            if (textWED) { textWED.classList.replace('text-cyan-400', 'text-gray-500'); textWED.classList.replace('font-black', 'font-bold'); }
+            if (textForto) { textForto.classList.replace('text-cyan-400', 'text-gray-500'); textForto.classList.replace('font-black', 'font-bold'); }
+
+            // Nyalakan box dan ubah style menu sesuai tab yang dipilih
+            if (namaTab === 'login') {
+                if (loginBox) loginBox.classList.remove('hidden');
+                if (menuTable) menuTable.classList.replace('border-white/10', 'border-cyan-500/30');
+                if (textWED) { textWED.classList.replace('text-gray-500', 'text-cyan-400'); textWED.classList.replace('font-bold', 'font-black'); }
+            } else if (namaTab === 'register') {
+                if (registerBox) registerBox.classList.remove('hidden');
+                if (menuTable) menuTable.classList.replace('border-white/10', 'border-cyan-500/30');
+                if (textWED) { textWED.classList.replace('text-gray-500', 'text-cyan-400'); textWED.classList.replace('font-bold', 'font-black'); }
+            } else if (namaTab === 'forto') {
+                if (halamanForto) halamanForto.classList.remove('hidden');
+                if (menuPortfolio) menuPortfolio.classList.replace('border-white/10', 'border-cyan-500/30');
+                if (textForto) { textForto.classList.replace('text-gray-500', 'text-cyan-400'); textForto.classList.replace('font-bold', 'font-black'); }
+            }
+        }
+        function toggleAuth(isRegister) {
+            if (isRegister) {
+                bukaTab('register');
+            } else {
+                bukaTab('login');
+            }
+        }
+        function showSection(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
+            el.classList.add('menu-active');
+        }
+        function toggleChat() {
+            const w = document.getElementById('chatWidget');
+            w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
+        }
+        function sendChat() {
+            const inp = document.getElementById('chatInput');
+            if (!inp.value.trim()) return;
+            db.ref("global_chats").push({ m: inp.value.trim(), t: Date.now(), uid: auth.currentUser.uid });
+            inp.value = "";
+        }
+        function listenChat() {
+            db.ref("global_chats").limitToLast(15).on("value", snap => {
+                const box = document.getElementById('chatContent');
+                let h = "";
+                snap.forEach(c => {
+                    const d = c.val();
+                    const isMe = d.uid === auth.currentUser.uid;
+                    h += `<div class="flex flex-col ${isMe ? 'items-end' : 'items-start'} w-full animate-up">
+                        <div class="${isMe ? 'bg-cyan-400 text-black rounded-l-2xl rounded-br-2xl font-semibold' : 'bg-white/10 text-white rounded-r-2xl rounded-bl-2xl'} p-3 px-4 text-xs max-w-[85%] break-words">
+                            ${d.m}
+                        </div>
+                    </div>`;
+                });
+                box.innerHTML = h;
+                box.scrollTop = box.scrollHeight;
+            });
+        }
+        function uploadFoto() {
+            const f = document.getElementById('fileInput').files[0];
+            const rd = new FileReader();
+            rd.onload = e => db.ref("users/" + auth.currentUser.uid).update({ photo: e.target.result });
+            rd.readAsDataURL(f);
+        }
+        function openGallery() { document.getElementById('fileInput').click(); }
+        function showPopup() { document.getElementById('announcementPopup').style.display = "flex"; }
+        function closePopup() { document.getElementById('announcementPopup').style.display = "none"; }
+    
+        (function() {
+            let basePrice = 2824687;
+            function formatKoin(angka) {
+                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
+            }
+            setInterval(function() {
+                let change = Math.floor(Math.random() * 15000) - 5000; 
+                basePrice += change;
+                if(basePrice < 2500000) basePrice = 2800000;
+                let textChange = Math.abs(change);
+
+                const priceEl = document.getElementById('stockPrice');
+                const changeEl = document.getElementById('stockChange');
                 
-                let iconName = 'credit-card';
-                let iconClass = 'bg-blue-50 text-blue-600';
-                if (item.category === 'net-banking') {
-                    iconName = 'mail';
-                    iconClass = 'bg-[#FFEDED] text-[#EF4444]';
-                } else if (item.category === 'food') {
-                    iconName = 'phone';
-                    iconClass = 'bg-[#EAF9F2] text-[#10B981]';
-                } else if (item.category === 'clothes') {
-                    iconName = 'lock';
-                    iconClass = 'bg-[#FEF5E7] text-[#F59E0B]';
+                if(priceEl) priceEl.innerText = formatKoin(basePrice);
+                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+                let p1 = Math.floor(Math.random() * 40) + 30;
+                let p2 = Math.floor(Math.random() * 50) + 60;
+                let p3 = Math.floor(Math.random() * 40) + 40;
+                let p4 = Math.floor(Math.random() * 50) + 50;
+
+                let newD = `M 0 80 Q 100 ${p1} 200 ${p2} T 400 ${p3} L 500 ${p4}`;
+                let newArea = `${newD} L 500 150 L 0 150 Z`;
+
+                const gLine = document.getElementById('graphLine');
+                const gArea = document.getElementById('graphArea');
+                const gDot = document.getElementById('graphDot');
+
+                if(gLine) gLine.setAttribute('d', newD);
+                if(gArea) gArea.setAttribute('d', newArea);
+                if(gDot) {
+                    gDot.setAttribute('cx', '500');
+                    gDot.setAttribute('cy', p4);
                 }
-
-                const itemHtml = `
-                    <div class="flex justify-between items-center py-1 border-b border-slate-50 last:border-b-0">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-11 h-11 rounded-[16px] flex items-center justify-center shrink-0 ${iconClass}">
-                                <i data-lucide="${iconName}" class="w-[18px] h-[18px]"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-1.5 flex-wrap">
-                                    <h4 class="text-[13.5px] font-extrabold text-slate-800 tracking-tight leading-none">${item.title}</h4>
-                                    <span class="text-[8px] font-black uppercase px-1 py-0.5 rounded border tracking-wide leading-none select-none ${isSelesai ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' : 'bg-amber-50 text-amber-700 border-amber-200/60'}">
-                                        ${item.status || 'Selesai'}
-                                    </span>
-                                </div>
-                                <p class="text-[12px] font-black font-mono mt-1 ${isDepo ? 'text-emerald-600' : 'text-rose-600'}">
-                                    ${isDepo ? '+' : '-'}$${item.amount.toFixed(2)}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="text-right flex flex-col items-end gap-1">
-                            <span class="text-[11px] font-bold text-[#8EB0DF] tracking-tight">${item.date}</span>
-                            <span class="text-[9px] text-slate-450 font-bold font-mono">${item.timeString ? item.timeString.split(', ')[1] : '00:00'}</span>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', itemHtml);
-            });
-
-            lucide.createIcons();
-        }
-
-        // Render Riwayat Saku list in modal riwayat
-        function renderAllSpendsRecap() {
-            const container = document.getElementById('spends-all-history-container');
-            container.innerHTML = '';
-
-            if (transactions.length === 0) {
-                container.innerHTML = '<div class="text-center py-12 text-slate-400 text-xs">Belum ada pengeluaran sama sekali</div>';
-                return;
-            }
-
-            transactions.forEach(item => {
-                const isDepo = item.type === 'depo';
-                let iconName = 'credit-card';
-                let iconClass = 'bg-blue-50 text-blue-600';
-                if (item.category === 'net-banking') {
-                    iconName = 'mail';
-                    iconClass = 'bg-[#FFEDED] text-[#EF4444]';
-                } else if (item.category === 'food') {
-                    iconName = 'phone';
-                    iconClass = 'bg-[#EAF9F2] text-[#10B981]';
-                } else if (item.category === 'clothes') {
-                    iconName = 'lock';
-                    iconClass = 'bg-[#FEF5E7] text-[#F59E0B]';
-                }
-
-                const itemHtml = `
-                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-center relative group">
-                        <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 rounded-2px rounded-[16px] flex items-center justify-center shrink-0 ${iconClass}">
-                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-black text-slate-800">${item.title}</h4>
-                                <span class="text-[10px] font-mono text-slate-400">${item.date} • ${item.timeString ? item.timeString.split(', ')[1] : '00:00'}</span>
-                            </div>
-                        </div>
-                        <div class="text-right flex items-center gap-3">
-                            <div class="text-right">
-                                <span class="text-sm font-black font-mono block ${isDepo ? 'text-emerald-600' : 'text-rose-600'}">
-                                    ${isDepo ? '+' : '-'}$${item.amount.toFixed(2)}
-                                </span>
-                                <span class="text-[8px] font-black uppercase text-slate-400">${item.status || 'Selesai'}</span>
-                            </div>
-                            <!-- Delete button -->
-                            <button onclick="deleteTransaction('${item.id}')" class="w-7 h-7 bg-red-50 text-red-500 rounded-full flex items-center justify-center hover:bg-red-100 transition-colors">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', itemHtml);
-            });
-
-            lucide.createIcons();
-        }
-
-        function deleteTransaction(id) {
-            if (confirm('Hapus transaksi ini?')) {
-                transactions = transactions.filter(t => t.id !== id);
-                persistUserData();
-                updateUIRender();
-                renderAllSpendsRecap();
-            }
-        }
-
-        // Add Transaction Modal controls
-        function openAddTransactionModal() {
-            document.getElementById('modal-add-tx').classList.remove('hidden');
-        }
-
-        function closeAddTransactionModal() {
-            document.getElementById('modal-add-tx').classList.add('hidden');
-        }
-
-        function setTxFormType(type) {
-            txFormType = type;
-            const btnWithdraw = document.getElementById('btn-txform-withdraw');
-            const btnDepo = document.getElementById('btn-txform-depo');
-            if (type === 'penarikan') {
-                btnWithdraw.className = "py-2.5 px-3 text-xs font-black rounded-xl uppercase bg-white text-slate-900 shadow-sm text-center";
-                btnDepo.className = "py-2.5 px-3 text-xs font-black rounded-xl uppercase text-slate-400 text-center";
-            } else {
-                btnWithdraw.className = "py-2.5 px-3 text-xs font-black rounded-xl uppercase text-slate-400 text-center";
-                btnDepo.className = "py-2.5 px-3 text-xs font-black rounded-xl uppercase bg-white text-slate-900 shadow-sm text-center";
-            }
-        }
-
-        function submitTransaction() {
-            const titleInput = document.getElementById('input-tx-title');
-            const catInput = document.getElementById('input-tx-cat');
-            const amountInput = document.getElementById('input-tx-amount');
-
-            const title = titleInput.value.trim();
-            const category = catInput.value;
-            const amount = parseFloat(amountInput.value) || 0;
-
-            if (!title) {
-                alert('Tolong masukkan judul transaksi.');
-                return;
-            }
-            if (amount <= 0) {
-                alert('Tolong masukkan nominal di atas $0.');
-                return;
-            }
-
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const now = new Date();
-            const dayName = days[now.getDay()];
-            const monthName = months[now.getMonth()];
-            const dateStr = `${dayName}, ${now.getDate()} ${monthName}`;
-            const timeStr = `${dayName}, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-            const newTx = {
-                id: 'tx-' + Date.now(),
-                title,
-                type: txFormType,
-                category,
-                amount,
-                date: dateStr,
-                timeString: timeStr,
-                status: 'Selesai'
-            };
-
-            transactions.unshift(newTx);
-            persistUserData();
-            updateUIRender();
-
-            // Reset Form Values
-            titleInput.value = '';
-            amountInput.value = '';
-            closeAddTransactionModal();
-            alert('Transaksi saku berhasil ditambahkan!');
-        }
-
-        // Edit Budget targets controls
-        function openEditBudgetModal() {
-            document.getElementById('modal-edit-budget').classList.remove('hidden');
-            document.getElementById('input-budget-limit').value = monthlyBudget;
-            document.getElementById('input-budget-month').value = selectedMonth;
-        }
-
-        function closeEditBudgetModal() {
-            document.getElementById('modal-edit-budget').classList.add('hidden');
-        }
-
-        function submitUpdateBudget() {
-            const limit = parseFloat(document.getElementById('input-budget-limit').value) || 0;
-            const month = document.getElementById('input-budget-month').value;
-
-            monthlyBudget = limit;
-            selectedMonth = month;
-            persistUserData();
-            updateUIRender();
-            closeEditBudgetModal();
-            alert('Anggaran bulan ' + month + ' berhasil diubah menjadi $' + limit);
-        }
-
-        // Spends Modal rip list
-        function openSpendsListPanel() {
-            document.getElementById('modal-spends-all').classList.remove('hidden');
-            renderAllSpendsRecap();
-        }
-
-        function closeSpendsListPanel() {
-            document.getElementById('modal-spends-all').classList.add('hidden');
-        }
-
-        // Change avatar panel
-        function openChangeAvatarModal() {
-            document.getElementById('modal-change-avatar').classList.remove('hidden');
-        }
-
-        function closeChangeAvatarModal() {
-            document.getElementById('modal-change-avatar').classList.add('hidden');
-        }
-
-        function selectAvatar(url) {
-            avatar = url;
-            persistUserData();
-            updateUIRender();
-            closeChangeAvatarModal();
-        }
-
-        // Wishlist management codes
-        function openAddWishlistForm() {
-            const form = document.getElementById('wishlist-form-container');
-            if (form.classList.contains('hidden')) {
-                form.classList.remove('hidden');
-            } else {
-                form.classList.add('hidden');
-            }
-        }
-
-        function submitWishlistItem() {
-            const titleInput = document.getElementById('input-wish-title');
-            const imgInput = document.getElementById('input-wish-img');
-
-            const title = titleInput.value.trim();
-            const imageUrl = imgInput.value.trim();
-
-            if (!title || !imageUrl) {
-                alert('Tolong lengkapi nama impian dan link gambar.');
-                return;
-            }
-
-            const now = new Date();
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const formattedTime = `${days[now.getDay()]}, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-            const item = {
-                id: 'wl-' + Date.now(),
-                title,
-                imageUrl,
-                dateAdded: formattedTime
-            };
-
-            wishlist.unshift(item);
-            persistUserData();
-            renderWishlistGrid();
-
-            titleInput.value = '';
-            document.getElementById('wishlist-form-container').classList.add('hidden');
-            alert('Sukses menambah ke daftar impian!');
-        }
-
-        function deleteWishItem(id) {
-            if (confirm('Hapus item impian?')) {
-                wishlist = wishlist.filter(i => i.id !== id);
-                persistUserData();
-                renderWishlistGrid();
-            }
-        }
-
-        function renderWishlistGrid() {
-            const grid = document.getElementById('wishlist-grid');
-            grid.innerHTML = '';
-
-            if (wishlist.length === 0) {
-                grid.innerHTML = '<div class="col-span-2 text-center py-12 text-slate-400 text-xs">Belum ada barang impian</div>';
-                return;
-            }
-
-            wishlist.forEach(item => {
-                const card = `
-                    <div class="bg-white rounded-[24px] border border-slate-100 overflow-hidden shadow-smooth relative group hover:scale-[1.02] duration-200">
-                        <div class="h-32 bg-slate-100 overflow-hidden relative">
-                            <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover">
-                            <!-- delete icon floating -->
-                            <button onclick="deleteWishItem('${item.id}')" class="absolute top-2 right-2 w-7 h-7 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-red-500 hover:bg-white shadow">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </div>
-                        <div class="p-3 text-left">
-                            <h4 class="text-xs font-black text-slate-800 leading-tight">${item.title}</h4>
-                            <span class="text-[9px] text-[#A5BFCF] font-semibold mt-1 block">${item.dateAdded}</span>
-                        </div>
-                    </div>
-                `;
-                grid.insertAdjacentHTML('beforeend', card);
-            });
-
-            lucide.createIcons();
-        }
+            }, 2000);
+        })();
+    
     </script>
 </body>
 </html>
