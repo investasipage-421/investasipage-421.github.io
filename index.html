@@ -288,7 +288,7 @@
           </div>
         </div>
  
-       <button class="btn-primary" onclick="registerSuccess()">Sign Up</button>
+        <button class="btn-primary" onclick="go('s-verify')">Sign Up</button>
  
         <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
  
@@ -426,11 +426,6 @@
       for (let i = 0; i < score; i++) segs[i].classList.add(cls);
     }
  
-    function registerSuccess() {
-      alert('Account created successfully!');
-      go('s-login');
-    }
-    
     function savePassword() {
       const np = document.getElementById('np').value;
       const cp = document.getElementById('cp').value;
