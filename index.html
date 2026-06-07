@@ -1,873 +1,1310 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>InvestasiPage421.com</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        /* PROTEKSI ANTI-SELEKSI TEKS */
-        * { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        body { 
-            background: radial-gradient(circle at top, #111827 0%, #070a13 100%); 
-            color: #f3f4f6; 
-            overflow-x: hidden; 
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #070a13; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Tracker Workspace - Premium UI Rebuild</title>
+  
+  <!-- Tailwind CSS Play CDN (loaded safely for pure HTML) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Outfit & JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS for specific effects -->
+  <link rel="stylesheet" href="./style.css">
 
-        @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .animate-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        /* EFEK GLOW MENU AKTIF */
-        .menu-active { color: #22d3ee !important; }
-        .menu-active div { background: rgba(34, 211, 238, 0.15); border-radius: 16px; box-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
-        .menu-active svg { stroke: #22d3ee !important; }
-
-        .glass-card {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Outfit", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
         }
-
-        .cyber-glow {
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
-            border: 1px solid rgba(6, 182, 212, 0.4) !important;
-        }
-
-        #chatWidget {
-            display: none;
-            position: fixed;
-            bottom: 95px;
-            right: 20px;
-            left: 20px;
-            max-width: 420px;
-            height: 65vh;
-            z-index: 9999;
-            flex-direction: column;
-            background: rgba(10, 15, 26, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 28px;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
-            margin: auto;
-        }
-        
-        #chatBtn {
-            display: none;
-            position: fixed;
-            bottom: 105px;
-            right: 20px;
-            z-index: 9990;
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            border-radius: 24px;
-            overflow: hidden;
-            background: #000;
-            border: 1px solid rgba(34, 211, 238, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-        video { width: 100%; display: block; }
-
-        /* Custom SweetAlert Style */
-        .swal2-popup {
-            background: #0b0f19 !important;
-            color: #fff !important;
-            border: 1px solid rgba(6, 182, 212, 0.3) !important;
-            border-radius: 28px !important;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
-        }
-        .swal2-title, .swal2-html-container { color: #f3f4f6 !important; }
-        .swal2-confirm { background: linear-gradient(135deg, #06b6d4, #0891b2) !important; color: #000 !important; font-weight: 800 !important; border-radius: 14px !important; padding: 12px 24px !important; }
-        .swal2-cancel { background: #1f2937 !important; color: #fff !important; border-radius: 14px !important; }
-    </style>
+      }
+    }
+  </script>
 </head>
-<body class="selection:bg-cyan-500 selection:text-black">
+<body class="bg-[#090a0c] text-white font-sans min-h-screen overflow-x-hidden select-none custom-scroll">
 
-    <!-- POPUP ANNOUNCEMENT -->
-    <div id="announcementPopup" class="fixed inset-0 bg-black/80 z-[10000] hidden items-center justify-center p-6 backdrop-blur-lg">
-        <div class="glass-card cyber-glow rounded-[32px] p-8 max-w-xs w-full text-center relative animate-up">
-            <div class="w-16 h-16 bg-cyan-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">🚀</div>
-            <h2 class="text-xl font-extrabold text-white mb-2 tracking-tight">Halo Investor!</h2>
-            <p class="text-gray-400 text-xs leading-relaxed mb-6">Selamat datang kembali. Sistem telah memperbarui profit harian secara otomatis hari ini!</p>
-            <button onclick="closePopup()" class="w-full bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-extrabold py-3.5 rounded-xl shadow-lg shadow-cyan-500/20 uppercase tracking-wider text-xs active:scale-95 transition-all">Mulai Sekarang</button>
-        </div>
-    </div>
+  <!-- Main Split Presentation Workspace -->
+  <div class="flex min-h-screen desktop-layout">
 
-    <!-- AUTH CONTAINER -->
-    <div id="authContainer" class="fixed inset-0 flex items-center justify-center p-6 z-[100] bg-black">
+    <!-- LEFT COLUMN: High Fidelity Interactive Simulator -->
+    <div class="flex-1 lg:max-w-[55%] xl:max-w-[48%] flex flex-col items-center justify-center p-4 md:p-8 border-r border-[#1a1c20] bg-gradient-to-br from-[#0c0d10] to-[#121419] simulator-container relative">
+      
+      <!-- Ambient Decorative background glow behind the phone -->
+      <div class="absolute w-[280px] h-[280px] rounded-full bg-[#1df26b]/10 blur-[80px] -top-10 -left-10 pointer-events-none"></div>
+      <div class="absolute w-[300px] h-[300px] rounded-full bg-orange-500/5 blur-[100px] bottom-10 right-10 pointer-events-none"></div>
 
-        <div class="absolute top-6 left-0 right-0 px-6 w-full max-w-sm mx-auto">
-        <div class="flex gap-3 w-full">
-            <div id="menuTable" onclick="bukaTab('login')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
-                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">WED</span>
-            </div>
-            
-            <div id="menuPortfolio" onclick="bukaTab('forto')" class="flex-1 bg-[#111] border border-white/10 p-3 rounded-2xl text-center shadow-md flex flex-col justify-center min-h-[48px] cursor-pointer active:scale-95 transition-all">
-                <span class="text-[8px] text-cyan-400 font-bold uppercase tracking-wider block mb-0.5">FORTOFOLIO</span>
-            </div>
-        </div>
-    </div>
-       
-        <!-- LOGIN BOX -->
-        <div id="loginBox" class="w-full max-w-sm animate-up">
-            <div class="text-center mb-10">
-                <h1 class="text-4xl font-black text-cyan-500 tracking-tighter">PAGE421</h1>
-                <p class="text-gray-500 text-xs mt-1 uppercase tracking-widest font-semibold">Investment Portal</p>
-            </div>
-            <div class="space-y-4">
-                
-                <div class="relative flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            
-            <input id="loginUser" type="email" placeholder="Alamat Email" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
-        </div>
+      <!-- Header title for desktop only -->
+      <div class="text-center mb-5 hidden lg:block">
+        <h2 class="text-lg font-bold text-white tracking-tight flex items-center justify-center gap-1.5 leading-none">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#1df26b] animate-ping"></span>
+          Interactable iPhone Simulator
+        </h2>
+        <p class="text-xs text-zinc-500 mt-1">Tap elements inside the phone to trigger active views!</p>
+      </div>
+
+      <!-- THE IPHONE PHONE SHELL -->
+      <div class="iphone-frame" id="iphone-simulator-wrapper">
         
-        <div class="relative flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            
-            <input id="loginPass" type="password" placeholder="Kata Sandi" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
-        </div>
-                
-        <button onclick="login()" class="w-full bg-cyan-500 text-black font-extrabold p-4 rounded-2xl hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 active:scale-95">MASUK</button>
+        <!-- iPhone Dynamic Island -->
+        <div class="dynamic-island" id="iphone-dynamic-island">
+          <div class="dynamic-island-default flex items-center justify-between w-full">
+            <span class="w-2.5 h-2.5 rounded-full bg-zinc-800"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-zinc-900 mr-2"></span>
+          </div>
+          <!-- Hover-Expanded display inside Dynamic Island -->
+          <div class="dynamic-island-expanded flex items-center justify-between w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#1df26b] animate-pulse"></span>
+              <span class="font-bold tracking-tight text-[10px] text-[#1df26b]">DELIVERING</span>
             </div>
-            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Belum punya akun? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer font-bold">Daftar Sekarang</span></p>
+            <span class="text-[9px] text-zinc-400 font-mono">AWB-A425HYJ8 (2d)</span>
+          </div>
         </div>
 
-        <!-- REGISTER BOX -->
-        <div id="registerBox" class="hidden w-full max-w-sm animate-up">
-            <div class="text-center mb-10">
-                <h1 class="text-3xl font-black text-white tracking-tighter">DAFTAR AKUN</h1>
-            </div>
-            <div class="space-y-4">
-                
-               <div class="relative flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            
-            <input id="regUser" type="email" placeholder="Email Baru" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
-        </div>
-        
-        <div class="relative flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 text-gray-500 w-5 h-5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            
-            <input id="regPass" type="password" placeholder="Password (Min 6 Karakter)" class="w-full bg-[#111] border border-white/5 pt-4 pb-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-cyan-500 text-sm transition-all text-white">
-        </div>
+        <!-- Phone Glare Highlight -->
+        <div class="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none z-30 rounded-t-[36px]"></div>
 
-        <button onclick="register()" class="w-full bg-white text-black font-extrabold p-4 rounded-2xl hover:bg-gray-200 transition-all active:scale-95">DAFTAR SEKARANG</button>
+        <!-- Phone Content Area -->
+        <div class="flex-1 bg-[#0c0d0f] px-5 pt-8 overflow-y-auto custom-scroll flex flex-col relative pb-24">
+          
+          <!-- Mobile Status Bar Spacers -->
+          <div class="mobile-top-spacer h-6"></div>
+          
+          <!-- Top StatusBar Text (iPhone Replica) -->
+          <div class="flex items-center justify-between text-[11px] font-semibold text-white px-1.5 mb-5 select-none shrink-0">
+            <span class="font-mono">9:41</span>
+            <div class="flex items-center gap-1 text-[10px]">
+              <i data-lucide="signal" class="w-3.5 h-3.5"></i>
+              <span>5G</span>
+              <div class="w-5 h-2.5 border border-white/20 rounded-[4px] p-[1px] flex items-center">
+                <div class="h-full w-[85%] bg-[#1df26b] rounded-[2px]"></div>
+              </div>
             </div>
-            <p class="mt-8 text-center text-xs text-gray-500 font-medium">Sudah punya akun? <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer font-bold">Login</span></p>
-        </div>
-        <div id="halamanForto" class="hidden w-full max-w-sm animate-up mt-16">
-            <div class="bg-[#111] border border-white/10 p-6 rounded-3xl text-center">
-                <h2 class="text-2xl font-black text-white tracking-tight mb-2">PORTFOLIO PAGE421</h2>
-                <p class="text-gray-400 text-xs mb-6">Masa aktif wed</p>
-                
-                <div class="p-4 bg-black/40 border border-white/5 rounded-2xl text-left space-y-2">
-                    <p class="text-cyan-400 text-xs font-bold">Projek Aktif</p>
-                    <p class="text-gray-400 text-[11px]">22/05/2027.</p>
+          </div>
+
+          <!-- 1. USER PROFILE ROW HEADER & MAIN CONTENT WRAPPER -->
+          <div id="dashboard-view-content" class="flex flex-col flex-grow">
+            
+            <div class="flex items-center justify-between mb-4 mt-2 shrink-0 select-none">
+              
+              <!-- Left Info (Stive Kote) -->
+              <div class="flex items-center gap-2.5 cursor-pointer hover:opacity-90 active:scale-95 transition" id="profile-header-widget">
+                <!-- Custom high contrast avatar placeholder -->
+                <div class="w-11 h-11 bg-zinc-800 rounded-full border-2 border-zinc-700 overflow-hidden flex items-center justify-center p-0.5 shadow-md">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-full h-full object-cover rounded-full" referrerpolicy="no-referrer">
                 </div>
-            </div>
-        </div>
-
-    <!-- MAIN DASHBOARD -->
-    </div> <div id="dashboard" class="hidden h-screen flex flex-col pb-24">
-        <!-- TOP NAVBAR -->
-        <div class="p-5 flex justify-between items-center bg-[#070a13]/60 backdrop-blur-xl sticky top-0 z-50 border-b border-white/5">
-            <div class="flex items-center gap-3.5">
-                <div class="relative group cursor-pointer" onclick="openGallery()">
-                    <div class="w-12 h-12 rounded-2xl border border-cyan-500/40 overflow-hidden shadow-lg">
-                        <img id="userImg" src="https://i.imgur.com/8Km9tLL.png" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute -bottom-1 -right-1 bg-cyan-400 text-black rounded-lg w-5 h-5 flex items-center justify-center text-[10px] font-black border border-[#070a13] shadow">+</div>
-                </div>
-                <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="uploadFoto()">
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h2 id="balanceText" class="text-xl font-extrabold text-white tracking-tight">0 Koin</h2>
-                        <button onclick="toggleHideSaldo()" class="opacity-50 hover:opacity-100 transition-opacity">
-                            <svg id="eyeIcon" class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        </button>
-                    </div>
-                    <p id="emailText" class="text-[10px] text-gray-500 font-medium tracking-wide">user@mail.com</p>
+                  <h4 class="text-xs font-extrabold text-white leading-tight font-sans tracking-wide" id="profile-widget-name">Stive Kote</h4>
+                  <p class="text-[10px] text-zinc-400 mt-0.5 font-medium">17 Jan, 2026</p>
                 </div>
+              </div>
+
+              <!-- Right Coins indicator -->
+              <div class="bg-[#1c1d21] border border-zinc-800 rounded-full py-1.5 px-3 flex items-center gap-1.5 shadow-sm hover:border-[#1df26b]/30 cursor-pointer active:scale-95 transition-all" id="coin-indicator-pill">
+                <div class="w-2 h-2 rounded-full bg-[#1df26b] animate-ping"></div>
+                <span class="text-xs font-bold text-[#1df26b] tracking-tight coins-display-text">872 Coins</span>
+              </div>
+
             </div>
-            <button onclick="logout()" class="p-2.5 px-4 bg-red-500/10 border border-red-500/20 rounded-xl text-[10px] font-extrabold text-red-400 uppercase tracking-wider hover:bg-red-500 hover:text-black transition-all">Logout</button>
-        </div>
 
-        <!-- MAIN SCROLLABLE CONTENT -->
-        <main class="flex-1 overflow-y-auto p-5 custom-scrollbar">
-            
-            <!-- SECTION BERITA/HOME -->
-            <div id="newsBox" class="section space-y-6 anonymity animate-up">
-                <div class="bg-gradient-to-br from-cyan-500 to-blue-600 p-6 rounded-[28px] text-black shadow-xl relative overflow-hidden">
-                    <div class="relative z-10">
-                        <span class="bg-black/10 text-black text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">Official Partner</span>
-                        <h3 class="text-2xl font-black mt-3 mb-1.5 leading-tight uppercase tracking-tight">Mulai Investasi,<br>Raih Profitmu!</h3>
-                        <p class="text-black/80 text-xs font-medium max-w-[80%]">Nikmati profit otomatis setiap 24 jam bersama sistem Page421.</p>
-                        <a href="https://chat.whatsapp.com/CYbrANKs7GZ8uzOwqw20MG" target="_blank" class="inline-block text-[9px] mt-4 font-bold bg-black text-white px-3 py-1.5 rounded-xl shadow-md break-all">
-                            Join Grup WhatsApp ↗
-                       </a>
-                    </div>
-                    <div class="absolute -right-6 -bottom-6 opacity-15 text-9xl font-sans select-none">📊</div>
-                </div>
-
-                <div class="glass-card rounded-[24px] p-5 border border-white/5 shadow-2xl">
-                    <div class="flex justify-between items-center mb-5">
-                        <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                            Pilihan Layanan Cerdas
-                        </h3>
-                        <a href="#" class="text-[10px] font-bold text-cyan-400 flex items-center gap-0.5 hover:underline">
-                            Lihat Semua <span class="text-xs">→</span>
-                        </a>
-                    </div>
-                    <div class="grid grid-cols-4 gap-y-5 gap-x-2">
-                        <div onclick="showSection('investBox', document.querySelectorAll('.menu-item')[2])" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 active:scale-90 transition-all">
-                                <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold text-white text-center mt-2.5 leading-tight tracking-tight">Portofolio</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'info', title:'PAGE Saham', text:'Fitur ini segera hadir!', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">PAGE Saham</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'info', title:'Alokasi Emas', text:'Fitur investasi emas sedang dikonfigurasi.', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">Alokasi Emas</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'info', title:'Target Investasi', text:'Fitur target capaian profit modal.', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">PAGE Goals</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'info', title:'Aktivitas Sahabat', text:'Kosong. Belum ada aktivitas rujukan.', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">PAGE Feed</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'success', title:'Klaim Koin Hadiah', text:'Selamat! Anda memeriksa amplop harian.', confirmButtonText:'AMBIL'})" class="flex flex-col items-center cursor-pointer group relative">
-                            <span class="absolute -top-1.5 bg-red-500 text-white text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase scale-90 animate-bounce tracking-wide z-10">HOT</span>
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 0h4m-4 0H8m12 3v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9m16 0H4"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">PAGE Kaget</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'warning', title:'Mode Gelap Terkunci', text:'Sistem dioptimalkan khusus dalam tema Gelap Cyberpunk.', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">Mode Terang</span>
-                        </div>
-                        <div onclick="Swal.fire({icon:'info', title:'Tabungan Bersama', text:'Fitur Pool Investasi kelompok.', confirmButtonText:'OK'})" class="flex flex-col items-center cursor-pointer group">
-                            <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center active:scale-90 transition-all hover:bg-white/10">
-                                <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-medium text-gray-300 text-center mt-2.5 leading-tight tracking-tight">Tabungan Bersama</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- 2. TRACK YOUR PACKAGE SEARCH CONTAINER -->
+            <div class="mb-5 shrink-0 select-none">
+              <div class="relative flex items-center">
+                <i data-lucide="search" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                <input 
+                  type="text" 
+                  id="track-input" 
+                  placeholder="Track Your Package" 
+                  class="w-full bg-[#18191c] hover:bg-[#1f2024] focus:bg-[#1f2024] border border-zinc-800/40 focus:border-[#1df26b]/30 rounded-full py-3.5 pl-11 pr-12 text-xs font-bold text-white placeholder-zinc-500 tracking-wide outline-none shadow-inner transition duration-200"
+                  autocomplete="off"
+                >
                 
-                <div class="glass-card rounded-[24px] p-5 border border-white/10 shadow-2xl relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <span class="text-[9px] font-bold text-gray-500 tracking-wider block uppercase">Kode Saham</span>
-                            <h2 class="text-xl font-extrabold text-white tracking-tight mt-0.5">PAGE421</h2>
-                        </div>
-                        <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 tracking-wider shadow-inner">
-                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> LIVE MARKET
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-end mb-4">
-                        <div>
-                            <span class="text-[9px] font-bold text-gray-500 tracking-wider block uppercase">Harga Berjalan</span>
-                            <h1 id="stockPrice" class="text-2xl font-black text-white tracking-tight mt-0.5 font-mono">2.824.687</h1>
-
-                            <span class="text-lg font-bold text-gray-400 block mt-1">Koin</span>
-                        </div>
-                        <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-extrabold text-xs px-2.5 py-1.5 rounded-xl font-mono mb-0.5 shadow-sm">
-                            <span id="stockChange">+10.624</span>
-                        </div>
-                    </div>
-                    <div class="mt-2 rounded-xl bg-black/20 p-2 border border-white/5" style="background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 15px 15px;">
-                        <svg viewBox="0 0 500 150" class="w-full h-auto block">
-                            <defs>
-                                <linearGradient id="graphGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
-                                    <stop offset="100%" stop-color="#10b981" stop-opacity="0.0"/>
-                                </linearGradient>
-                            </defs>
-                            <path id="graphArea" d="M 0 150 L 0 80 Q 100 40 200 90 T 400 60 L 500 70 L 500 150 Z" fill="url(#graphGradient)" />
-                            <path id="graphLine" d="M 0 80 Q 100 40 200 90 T 400 60 L 500 70" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
-                            <circle id="graphDot" cx="500" cy="70" r="4.5" fill="#10b981" stroke="#070a13" stroke-width="2" />
-                        </svg>
-                    </div>
+                <!-- Action Button & Scanner Indicator -->
+                <button 
+                  id="scanner-btn" 
+                  class="absolute right-4 text-zinc-500 hover:text-[#1df26b] active:scale-90 transition p-0.5"
+                  title="Scan Barcode"
+                >
+                  <i data-lucide="scan-barcode" class="w-5 h-5"></i>
+                </button>
+              </div>
+              
+              <div class="flex items-center justify-between px-3 mt-2.5">
+                <span class="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Default Trackable Codes:</span>
+                <div class="flex gap-1.5 font-mono text-[9px]">
+                  <button onclick="document.getElementById('track-input').value='A425HYJ8'" class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 hover:bg-zinc-700 active:scale-95 transition">A425HYJ8</button>
+                  <button onclick="document.getElementById('track-input').value='A153KOJ2'" class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 hover:bg-zinc-700 active:scale-95 transition">A153KOJ2</button>
                 </div>
-
-                <div class="grid grid-cols-2 gap-3.5">
-                    <div class="glass-card p-4 rounded-2xl border border-white/5">
-                        <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Investor Aktif</p>
-                        <h4 class="text-base font-extrabold text-white mt-1">15 <span class="text-[9px] text-teal-400 font-medium">● Live</span></h4>
-                    </div>
-                    <div class="glass-card p-4 rounded-2xl border border-white/5">
-                        <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Server Uptime</p>
-                        <h4 class="text-base font-extrabold text-white mt-1">99.98% <span class="text-[9px] text-cyan-400 font-medium">Stable</span></h4>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black text-cyan-400 uppercase tracking-widest flex items-center gap-2">
-                        <span class="w-2 h-2 bg-cyan-400 rounded-full animate-ping"></span> Video Edukasi Page421
-                    </h3>
-                    <div class="video-container">
-                        <video controls poster="https://images.unsplash.com/photo-1611974714652-960201dc8394?q=80&w=800&auto=format&fit=crop">
-                            <source src="https://files.catbox.moe/ke70c6.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
+              </div>
             </div>
 
-            <!-- SECTION SOSMED -->
-            <div id="quizBox" class="section hidden space-y-5 animate-up">
-                <h3 class="text-sm font-extrabold flex items-center gap-2 tracking-tight">
-                    <span class="w-1.5 h-5 bg-cyan-500 rounded-full"></span> Sosial Media Page421
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <a href="https://www.tiktok.com/@page421_official" target="_blank" class="group">
-                        <div class="glass-card p-5 rounded-2xl border border-white/5 hover:border-cyan-500/40 transition-all text-center">
-                            <div class="text-3xl mb-2.5">📱</div>
-                            <h4 class="text-sm font-bold text-white">TikTok</h4>
-                            <p class="text-[10px] text-cyan-400 font-semibold mt-0.5">@page421_official</p>
-                        </div>
-                    </a>
-                    <div class="glass-card p-5 rounded-2xl border border-white/5 text-center">
-                        <div class="text-3xl mb-2.5">📷</div>
-                        <h4 class="text-sm font-bold text-white">Instagram</h4>
-                        <p class="text-[10px] text-gray-400 font-semibold mt-0.5">@page421</p>
-                    </div>
+            <!-- 3. GRADIENT DISCOUNT CARD -->
+            <div class="rounded-3xl bg-gradient-to-br from-[#1df26b] via-[#22c55e] to-[#15803d] p-5 relative overflow-hidden shadow-lg select-none shrink-0 mb-5 border border-emerald-500/30 animate-float" id="discount-teaser-box">
+              
+              <!-- Abstract background shape overlay -->
+              <div class="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-emerald-400/20 blur-xl pointer-events-none"></div>
+
+              <div class="relative z-10 w-[55%] flex flex-col justify-between h-[105px]">
+                <div>
+                  <p class="text-[11px] font-bold text-[#022c0f] uppercase tracking-widest opacity-80">Discount</p>
+                  <h3 class="text-2xl font-extrabold text-white tracking-tighter leading-none mt-1">20% OFF</h3>
                 </div>
+                <button 
+                  id="get-discount-promocard-btn"
+                  class="bg-[#090a0c] hover:bg-[#16181b] active:scale-95 text-[10px] font-extrabold text-white py-2.5 px-4 rounded-xl shadow-md uppercase tracking-wider transition-all border border-zinc-800 w-fit shrink-0 mt-3"
+                >
+                  Get Discount
+                </button>
+              </div>
+
+              <!-- Crisp Styled Cardboard Boxes Custom SVGs -->
+              <div class="absolute right-3 bottom-3 w-[150px] height-[100px] z-20 pointer-events-none">
+                <svg viewBox="0 0 150 100" class="w-full h-full drop-shadow-xl" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Large cardboard box -->
+                  <g filter="url(#drop-shadow-box)">
+                    <!-- Left Face -->
+                    <path d="M45 42 L15 54 L15 76 L45 64 Z" fill="#d99962" />
+                    <!-- Right Face -->
+                    <path d="M45 64 L75 52 L75 30 L45 42 Z" fill="#b17643" />
+                    <!-- Top Face -->
+                    <path d="M45 42 L75 30 L45 18 L15 30 Z" fill="#eaad77" />
+                    <!-- Top Crease tape dark brown -->
+                    <path d="M45 42 L60 36 L30 24 L15 30 Z" fill="#885324" opacity="0.3" id="box-tape" />
+                    <path d="M43 43 L47 41 L47 63 L43 65 Z" fill="#905a2a" />
+                  </g>
+                  <!-- Small cardboard box -->
+                  <g>
+                    <!-- Left Face -->
+                    <path d="M85 64 L65 72 L65 87 L85 79 Z" fill="#b17643" />
+                    <!-- Right Face -->
+                    <path d="M85 79 L105 71 L105 56 L85 64 Z" fill="#885324" />
+                    <!-- Top Face -->
+                    <path d="M85 64 L105 56 L85 48 L65 56 Z" fill="#d99962" />
+                    <path d="M84 64.5 L86 63.5 L86 78.5 L84 79.5 Z" fill="#724118" />
+                  </g>
+                  <defs>
+                    <filter id="drop-shadow-box" x="0" y="5" width="90" height="90" filterUnits="userSpaceOnUse">
+                      <feDropShadow dx="2" dy="5" stdDeviation="4" flood-opacity="0.3"/>
+                    </filter>
+                  </defs>
+                </svg>
+              </div>
+
             </div>
 
-            <!-- SECTION INVESTASI -->
-            <div id="investBox" class="section hidden animate-up">
-                <div class="glass-card rounded-[28px] p-6 border border-cyan-500/20 shadow-xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
-                    <div class="flex justify-between items-start mb-5">
-                        <div>
-                            <h3 class="text-lg font-extrabold text-white tracking-tight">Paket Premium A</h3>
-                            <p class="text-[11px] text-gray-400">Kontrak Berjalan 60 Hari</p>
-                        </div>
-                        <span id="labelPaketA" class="hidden bg-cyan-400 text-black text-[9px] px-2.5 py-1 rounded-lg font-black tracking-wider shadow">ACTIVE</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3.5 mb-5">
-                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Harga Paket</p>
-                            <p class="text-base font-extrabold text-white">20.000 Koin</p>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                            <p class="text-[9px] text-teal-400 font-bold uppercase tracking-wider mb-0.5">Estimasi Profit</p>
-                            <p class="text-base font-extrabold text-teal-400">500 Koin <span class="text-[10px] font-medium text-gray-400">/hari</span></p>
-                        </div>
-                    </div>
-                    <div id="timerA" class="hidden mb-5 text-center text-[10px] font-mono text-cyan-400 bg-cyan-500/10 py-3 rounded-xl border border-cyan-500/20 tracking-wider"></div>
-                    <button id="btnBeliA" onclick="buyInvest()" class="w-full bg-white text-black font-black py-3.5 rounded-xl active:scale-95 transition-all shadow-xl disabled:bg-gray-800 disabled:text-gray-500 font-bold">BELI PAKET SEKARANG</button>
+            <!-- 4. UTILITIES BUTTON GRID (Price, Point, News, Info) -->
+            <div class="grid grid-cols-4 gap-2 mb-6 shrink-0 select-none">
+              
+              <!-- Price Calculator -->
+              <button id="app-btn-price" class="flex flex-col items-center group cursor-pointer">
+                <div class="w-13 h-13 rounded-2xl bg-zinc-900 group-hover:bg-[#1df26b]/10 group-hover:text-[#1df26b] border border-transparent group-hover:border-[#1df26b]/20 flex items-center justify-center transition active:scale-95 duration-200">
+                  <i data-lucide="calculator" class="w-5.5 h-5.5 text-zinc-300 group-hover:text-[#1df26b]"></i>
                 </div>
+                <span class="text-[11px] font-bold text-zinc-400 mt-2 tracking-wide group-hover:text-white">Price</span>
+              </button>
+
+              <!-- Point rewards -->
+              <button id="app-btn-point" class="flex flex-col items-center group cursor-pointer">
+                <div class="w-13 h-13 rounded-2xl bg-zinc-900 group-hover:bg-[#1df26b]/10 group-hover:text-[#1df26b] border border-transparent group-hover:border-[#1df26b]/20 flex items-center justify-center transition active:scale-95 duration-200">
+                  <i data-lucide="gift" class="w-5.5 h-5.5 text-zinc-300 group-hover:text-[#1df26b]"></i>
+                </div>
+                <span class="text-[11px] font-bold text-zinc-400 mt-2 tracking-wide group-hover:text-white">Point</span>
+              </button>
+
+              <!-- News logistics -->
+              <button id="app-btn-news" class="flex flex-col items-center group cursor-pointer">
+                <div class="w-13 h-13 rounded-2xl bg-zinc-900 group-hover:bg-[#1df26b]/10 group-hover:text-[#1df26b] border border-transparent group-hover:border-[#1df26b]/20 flex items-center justify-center transition active:scale-95 duration-200">
+                  <i data-lucide="newspaper" class="w-5.5 h-5.5 text-zinc-300 group-hover:text-[#1df26b]"></i>
+                </div>
+                <span class="text-[11px] font-bold text-zinc-400 mt-2 tracking-wide group-hover:text-white">News</span>
+              </button>
+
+              <!-- Info Guide -->
+              <button id="app-btn-info" class="flex flex-col items-center group cursor-pointer">
+                <div class="w-13 h-13 rounded-2xl bg-zinc-900 group-hover:bg-[#1df26b]/10 group-hover:text-[#1df26b] border border-transparent group-hover:border-[#1df26b]/20 flex items-center justify-center transition active:scale-95 duration-200">
+                  <i data-lucide="info" class="w-5.5 h-5.5 text-zinc-300 group-hover:text-[#1df26b]"></i>
+                </div>
+                <span class="text-[11px] font-bold text-zinc-400 mt-2 tracking-wide group-hover:text-white">Info</span>
+              </button>
+
             </div>
 
-            <!-- SECTION DEPOSIT -->
-            <div id="depoBox" class="section hidden space-y-5 animate-up">
-                <div class="glass-card rounded-[28px] p-6 border border-white/5 text-center relative overflow-hidden">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Fixed Deposit Amount</p>
-                    <h1 class="text-4xl font-black my-4 text-white tracking-tight">Rp 50.000</h1>
-                    <button onclick="kirimDepo()" class="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 text-black font-black py-4 rounded-xl active:scale-95 transition-all shadow-lg shadow-cyan-500/10">REQUEST SEKARANG</button>
-                </div>
-                <div id="listDepo" class="space-y-3"></div>
+            <!-- 5. RECENT SHIPPING TITLE AREA -->
+            <div class="flex items-center justify-between mb-3 shrink-0 select-none">
+              <h3 class="text-sm font-extrabold text-white tracking-wide">Recent Shipping</h3>
+              <button id="see-all-shipping" class="text-xs font-bold text-zinc-500 hover:text-[#1df26b] flex items-center gap-0.5 tracking-tight transition active:scale-95">
+                See all <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
 
-            <!-- SECTION PENARIKAN -->
-            <div id="tarikBox" class="section hidden space-y-5 animate-up">
-                <div class="glass-card rounded-[28px] p-6 border border-white/5 text-center">
-                    <p id="saldoTarik" class="text-[10px] font-bold text-cyan-400 mb-2 font-mono tracking-wider">SALDO: Rp 0</p>
-                    <input id="nominalTarik" type="text" value="50.000" class="w-full bg-black/30 border border-white/5 text-center text-3xl font-black outline-none p-3.5 rounded-2xl mb-3 text-white focus:border-red-500 transition-colors">
-                    <div class="flex flex-col gap-1 mb-5">
-                        <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider">Biaya Admin Vendor: 2.500 Koin</p>
-                        <p class="text-[9px] text-gray-500 italic font-medium">Batas minimal penarikan berkala: 50.000 Koin</p>
-                    </div>
-                    <button onclick="kirimTarik()" class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white font-black py-4 rounded-xl shadow-lg active:scale-95 transition-all">REQUEST PENARIKAN</button>
-                </div>
-                <div id="listTarik" class="space-y-3"></div>
+            <!-- Recent Shipping Cards container rendered by script -->
+            <div class="space-y-2.5 flex-1 select-none" id="recent-shipping-list">
+               <!-- Populated dynamically by script.js -->
             </div>
-        </main>
 
-        <!-- BOTTOM NAV BAR (MENGGUNAKAN SVG NATIVE INTERNAL - ANTI ERROR/RUSAK) -->
-        <nav class="fixed bottom-0 left-0 right-0 bg-[#070a13]/80 backdrop-blur-2xl border-t border-white/5 px-4 py-3 flex justify-between items-center z-[9000]">
-            <!-- BERITA -->
-            <button onclick="showSection('newsBox', this)" class="menu-item menu-active flex flex-col items-center gap-1 flex-1">
-                <div class="p-2 px-4 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6m-6 4h3"/></svg>
-                </div>
-                <span class="text-[9px] font-bold opacity-80">Berita</span>
-            </button>
-            <!-- SOSMED -->
-            <button onclick="showSection('quizBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
-                <div class="p-2 px-4 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-                </div>
-                <span class="text-[9px] font-bold opacity-80">Sosmed</span>
-            </button>
-            <!-- INVEST -->
-            <button onclick="showSection('investBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
-                <div class="p-2 px-4 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span class="text-[9px] font-bold opacity-80">Invest</span>
-            </button>
-            <!-- DEPO -->
-            <button onclick="showSection('depoBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
-                <div class="p-2 px-4 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                </div>
-                <span class="text-[9px] font-bold opacity-80">Depo</span>
-            </button>
-            <!-- TARIK -->
-            <button onclick="showSection('tarikBox', this)" class="menu-item flex flex-col items-center gap-1 flex-1">
-                <div class="p-2 px-4 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                </div>
-                <span class="text-[9px] font-bold opacity-80">Tarik</span>
-            </button>
-        </nav>
+          </div> <!-- End Dashboard View Content Wrapper -->
 
-        <!-- GLOBAL CHAT FLOATING BUTTON -->
-        <button id="chatBtn" onclick="toggleChat()" class="w-14 h-14 bg-gradient-to-tr from-cyan-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20 active:scale-90 transition-all">
-            <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L1 17l1.338-3.123C1.393 12.572 1 11.341 1 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>
+
+          <!-- ============================================== -->
+          <!-- AUTH VIEWS CONTAINER (SITS WITHIN IPHONE BODY)  -->
+          <!-- ============================================== -->
+          <div id="auth-view-content" class="hidden flex flex-col flex-1 select-none mt-2">
+            
+            <!-- SCREEN 1: LOGIN (Welcome Back) -->
+            <div id="auth-screen-login" class="flex-1 flex flex-col justify-start">
+              <div class="flex flex-col items-center text-center mb-6 mt-1.5 select-none">
+                <div class="w-14 h-14 bg-emerald-500/10 border border-[#1df26b]/30 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(29,242,107,0.1)] mb-3 animate-float-slow">
+                  <i data-lucide="package-check" class="w-8 h-8 text-[#1df26b]"></i>
+                </div>
+                <h2 class="text-base font-black tracking-tight text-white uppercase font-sans">Welcome Back</h2>
+                <p class="text-[9.5px] text-zinc-500 mt-1 uppercase font-bold tracking-wider leading-none">Access ShipTrack Deluxe Space</p>
+              </div>
+
+              <div class="space-y-4">
+                <!-- Email field -->
+                <div class="space-y-1.5">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">Email Address</label>
+                  <div class="relative flex items-center">
+                    <i data-lucide="mail" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="email" 
+                      id="auth-input-login-email" 
+                      placeholder="stive.kote@gmail.com" 
+                      value="stive.kote@gmail.com"
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3.5 pl-11 pr-4 text-xs font-bold text-white placeholder-zinc-600 outline-none transition duration-200"
+                    >
+                  </div>
+                </div>
+
+                <!-- Password field -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center px-1">
+                    <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider">Password</label>
+                    <button id="auth-btn-goto-forgot" class="text-[9.5px] text-[#1df26b] font-black hover:underline select-none">Forgot Password?</button>
+                  </div>
+                  <div class="relative flex items-center font-sans">
+                    <i data-lucide="lock" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="password" 
+                      id="auth-input-login-pass" 
+                      placeholder="password123" 
+                      value="password123"
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3.5 pl-11 pr-12 text-xs font-bold tracking-widest text-white placeholder-zinc-650 outline-none transition duration-200"
+                    >
+                    <button class="absolute right-4 text-zinc-550 hover:text-white transition p-0.5 password-toggle-btn" data-target="auth-input-login-pass" type="button">
+                      <i data-lucide="eye" class="toggle-eye-icon w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Alert error box -->
+                <div id="auth-login-error" class="hidden text-[10px] bg-red-950/20 border border-red-900/30 text-rose-400 p-3 rounded-xl flex items-center gap-2">
+                  <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                  <span id="auth-login-error-txt" class="font-semibold">Invalid credentials entered!</span>
+                </div>
+
+                <button 
+                  id="auth-btn-login-submit" 
+                  class="w-full bg-[#1df26b] hover:bg-emerald-400 text-black font-black py-4 rounded-2xl uppercase tracking-wider text-[11px] hover:shadow-[0_0_15px_rgba(29,242,107,0.3)] transition active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  Sign In Securely <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </button>
+
+                <div class="text-center pt-3 select-none">
+                  <p class="text-[11px] text-zinc-500 font-medium tracking-wide">New to ShipTrack?  
+                    <button id="auth-btn-goto-signup" class="text-[#1df26b] font-black hover:underline select-none pl-0.5" type="button">Create Account</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 2: SIGN UP -->
+            <div id="auth-screen-signup" class="hidden flex-1 flex flex-col justify-start">
+              <div class="flex flex-col items-center text-center mb-5 mt-1 select-none">
+                <div class="w-13 h-13 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center p-2 shadow-md mb-3">
+                  <i data-lucide="user-plus" class="w-6.5 h-6.5 text-[#1df26b]"></i>
+                </div>
+                <h2 class="text-base font-extrabold tracking-tight text-white uppercase font-sans">Create Account</h2>
+                <p class="text-[9.5px] text-zinc-500 mt-1 uppercase font-bold tracking-wider leading-none">Start tracking &amp; get rewards</p>
+              </div>
+
+              <div class="space-y-3">
+                <!-- Name Field -->
+                <div class="space-y-1">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">Full Name</label>
+                  <div class="relative flex items-center">
+                    <i data-lucide="user" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="text" 
+                      id="auth-input-signup-name" 
+                      placeholder="e.g., Stive Kote" 
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3 pl-11 pr-4 text-xs font-bold text-white placeholder-zinc-600 outline-none transition duration-200"
+                    >
+                  </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="space-y-1">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">Email Address</label>
+                  <div class="relative flex items-center">
+                    <i data-lucide="mail" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="email" 
+                      id="auth-input-signup-email" 
+                      placeholder="stive.kote@gmail.com" 
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3 pl-11 pr-4 text-xs font-bold text-white placeholder-zinc-650 outline-none transition duration-200"
+                    >
+                  </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-1">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">Password</label>
+                  <div class="relative flex items-center">
+                    <i data-lucide="lock" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="password" 
+                      id="auth-input-signup-pass" 
+                      placeholder="Min. 8 characters" 
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3 pl-11 pr-12 text-xs font-bold tracking-widest text-white placeholder-zinc-650 outline-none transition duration-200"
+                    >
+                    <button class="absolute right-4 text-zinc-550 hover:text-white transition p-0.5 password-toggle-btn" data-target="auth-input-signup-pass" type="button">
+                      <i data-lucide="eye" class="toggle-eye-icon w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Agree Terms -->
+                <div class="flex items-start gap-2 pt-1 font-sans">
+                  <input type="checkbox" id="auth-signup-check-terms" class="mt-0.5 accent-[#1df26b] w-4 h-4 bg-zinc-900 border-zinc-800 rounded cursor-pointer">
+                  <label for="auth-signup-check-terms" class="text-[10px] text-zinc-400 font-semibold leading-normal cursor-pointer select-none pl-1">
+                    I agree to the Premium Terms &amp; Conditions
+                  </label>
+                </div>
+
+                <!-- Alert error box -->
+                <div id="auth-signup-error" class="hidden text-[10px] bg-red-950/20 border border-red-900/30 text-rose-400 p-2.5 rounded-xl flex items-center gap-2">
+                  <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                  <span id="auth-signup-error-txt" class="font-semibold">Please complete all forms correctly</span>
+                </div>
+
+                <button 
+                  id="auth-btn-signup-submit" 
+                  class="w-full bg-[#1df26b] hover:bg-emerald-400 text-black font-black py-3.5 rounded-2xl uppercase tracking-wider text-[11px] transition active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  Sign Up &amp; Claim 150 Coins <i data-lucide="award" class="w-4 h-4"></i>
+                </button>
+
+                <div class="text-center select-none pt-2">
+                  <p class="text-[11px] text-zinc-500 font-medium">Already have an account? 
+                    <button id="auth-btn-goto-login-one" class="text-[#1df26b] font-black hover:underline select-none pl-0.5" type="button">Sign In</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: FORGOT PASSWORD -->
+            <div id="auth-screen-forgot" class="hidden flex-1 flex flex-col justify-start">
+              <div class="flex flex-col items-center text-center mt-4 mb-6 select-none">
+                <div class="w-13 h-13 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center shadow-lg mb-4 animate-float">
+                  <i data-lucide="key-round" class="w-7 h-7 text-[#1df26b]"></i>
+                </div>
+                <h2 class="text-base font-black tracking-tight text-white uppercase font-sans">Forgot Password</h2>
+                <p class="text-[9.5px] text-zinc-500 mt-2 max-w-[210px] leading-normal uppercase font-bold tracking-wider text-center">
+                  Request security verification OTP
+                </p>
+              </div>
+
+              <div class="space-y-4">
+                <div class="space-y-1.5">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">Registered Email Address</label>
+                  <div class="relative flex items-center">
+                    <i data-lucide="mail" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="email" 
+                      id="auth-input-forgot-email" 
+                      placeholder="stive.kote@gmail.com" 
+                      value="stive.kote@gmail.com"
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3.5 pl-11 pr-4 text-xs font-bold text-white placeholder-zinc-650 outline-none transition duration-200"
+                    >
+                  </div>
+                </div>
+
+                <!-- Alert error box -->
+                <div id="auth-forgot-error" class="hidden text-[10px] bg-red-950/20 border border-red-900/30 text-rose-400 p-2.5 rounded-xl flex items-center gap-2">
+                  <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                  <span id="auth-forgot-error-txt" class="font-semibold">Email address not registered!</span>
+                </div>
+
+                <button 
+                  id="auth-btn-forgot-submit" 
+                  class="w-full bg-[#1df26b] hover:bg-emerald-400 text-black font-black py-3.5 rounded-2xl uppercase tracking-wider text-[11px] transition active:scale-[0.98] cursor-pointer"
+                >
+                  Send OTP Verification Code ➔
+                </button>
+
+                <div class="text-center select-none pt-2">
+                  <button id="auth-btn-goto-login-two" class="text-zinc-500 hover:text-white transition tracking-wide uppercase text-[10px] font-black flex items-center justify-center gap-1.5 mx-auto py-2" type="button">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to login
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 4: VERIFY OTP -->
+            <div id="auth-screen-otp" class="hidden flex-1 flex flex-col justify-start">
+              <div class="flex flex-col items-center text-center mt-3 mb-5 select-none">
+                <div class="w-12 h-12 bg-emerald-500/10 border border-[#1df26b]/20 rounded-full flex items-center justify-center mb-3">
+                  <i data-lucide="smartphone" class="w-5.5 h-5.5 text-[#1df26b]"></i>
+                </div>
+                <h2 class="text-base font-black tracking-tight text-white uppercase font-sans">Verify Identity</h2>
+                <p class="text-[9.5px] text-zinc-500 mt-1 max-w-[200px] leading-relaxed font-bold tracking-wider uppercase text-center" id="otp-header-subtitle">
+                  Sent to stive.kote@gmail.com
+                </p>
+              </div>
+
+              <div class="space-y-4 font-sans">
+                <div class="space-y-1.5 text-center">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block mb-2">Enter 4-Digit Security Code</label>
+                  
+                  <!-- OTP boxes -->
+                  <div class="flex justify-center gap-3 py-1 select-none">
+                    <input type="text" maxlength="1" id="otp-box-1" class="w-12 h-12 bg-[#16171a] border border-zinc-800 rounded-2xl text-center text-lg font-black text-white focus:border-[#1df26b]/50 focus:bg-[#1a1b1f] outline-none transition duration-150 font-mono shadow-inner select-none" autocomplete="off" pattern="[0-9]*" inputmode="numeric">
+                    <input type="text" maxlength="1" id="otp-box-2" class="w-12 h-12 bg-[#16171a] border border-zinc-800 rounded-2xl text-center text-lg font-black text-white focus:border-[#1df26b]/50 focus:bg-[#1a1b1f] outline-none transition duration-150 font-mono shadow-inner select-none" autocomplete="off" pattern="[0-9]*" inputmode="numeric">
+                    <input type="text" maxlength="1" id="otp-box-3" class="w-12 h-12 bg-[#16171a] border border-zinc-800 rounded-2xl text-center text-lg font-black text-white focus:border-[#1df26b]/50 focus:bg-[#1a1b1f] outline-none transition duration-150 font-mono shadow-inner select-none" autocomplete="off" pattern="[0-9]*" inputmode="numeric">
+                    <input type="text" maxlength="1" id="otp-box-4" class="w-12 h-12 bg-[#16171a] border border-zinc-800 rounded-2xl text-center text-lg font-black text-white focus:border-[#1df26b]/50 focus:bg-[#1a1b1f] outline-none transition duration-150 font-mono shadow-inner select-none" autocomplete="off" pattern="[0-9]*" inputmode="numeric">
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between px-1 text-[10px] font-semibold text-zinc-500">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Expires in 5:00</span>
+                  <button id="auth-btn-resend-otp" class="text-zinc-500 hover:text-[#1df26b] transition select-none font-bold" type="button">Resend Code</button>
+                </div>
+
+                <!-- Alert error box -->
+                <div id="auth-otp-error" class="hidden text-[10px] bg-red-950/20 border border-red-900/30 text-rose-400 p-2.5 rounded-xl flex items-center gap-2">
+                  <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                  <span id="auth-otp-error-txt" class="font-semibold">Wrong code! Tip: Enter '1234' on developer mock</span>
+                </div>
+
+                <button 
+                  id="auth-btn-otp-submit" 
+                  class="w-full bg-[#1df26b] hover:bg-emerald-400 text-black font-black py-3.5 rounded-2xl uppercase tracking-wider text-[11px] transition active:scale-[0.98] mt-2 cursor-pointer"
+                >
+                  Verify Code &amp; Continue ➔
+                </button>
+
+                <div class="text-center select-none pt-1">
+                  <button id="auth-btn-goto-login-three" class="text-zinc-500 font-extrabold hover:text-white transition tracking-wide uppercase text-[10px] py-1 select-none" type="button">
+                    Cancel &amp; Go Back
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 5: CREATE NEW PASSWORD -->
+            <div id="auth-screen-reset" class="hidden flex-1 flex flex-col justify-start">
+              <div class="flex flex-col items-center text-center mb-5 mt-1 select-none">
+                <div class="w-12 h-12 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center p-2.5 shadow-md mb-3">
+                  <i data-lucide="lock" class="w-5.5 h-5.5 text-[#1df26b]"></i>
+                </div>
+                <h2 class="text-base font-extrabold tracking-tight text-white uppercase font-sans">New Password</h2>
+                <p class="text-[9.5px] text-zinc-500 mt-1 uppercase font-bold tracking-wider leading-none">Choose strong new password credentials</p>
+              </div>
+
+              <div class="space-y-3.5">
+                <!-- New Password Field -->
+                <div class="space-y-1 my-1">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">New Secure Password</label>
+                  <div class="relative flex items-center font-sans">
+                    <i data-lucide="lock" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="password" 
+                      id="auth-input-new-pass" 
+                      placeholder="Min. 8 characters" 
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3 pl-11 pr-12 text-xs font-bold tracking-widest text-white placeholder-zinc-650 outline-none transition duration-200"
+                    >
+                    <button class="absolute right-4 text-zinc-550 hover:text-white transition p-0.5 password-toggle-btn" data-target="auth-input-new-pass" type="button">
+                      <i data-lucide="eye" class="toggle-eye-icon w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="space-y-1 my-1">
+                  <label class="text-[9px] text-zinc-500 font-extrabold uppercase tracking-wider block pl-1">Confirm New Password</label>
+                  <div class="relative flex items-center font-sans">
+                    <i data-lucide="lock" class="absolute left-4 w-4 h-4 text-zinc-500"></i>
+                    <input 
+                      type="password" 
+                      id="auth-input-new-confirm" 
+                      placeholder="Retype password" 
+                      class="w-full bg-[#16171a] hover:bg-[#1a1b1f] focus:bg-[#1a1b1f] border border-zinc-800/80 focus:border-[#1df26b]/30 rounded-2xl py-3 pl-11 pr-12 text-xs font-bold tracking-widest text-white placeholder-zinc-650 outline-none transition duration-200"
+                    >
+                    <button class="absolute right-4 text-zinc-550 hover:text-white transition p-0.5 password-toggle-btn" data-target="auth-input-new-confirm" type="button">
+                      <i data-lucide="eye" class="toggle-eye-icon w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Alert error box -->
+                <div id="auth-reset-error" class="hidden text-[10px] bg-red-950/20 border border-red-900/30 text-rose-400 p-2.5 rounded-xl flex items-center gap-2">
+                  <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                  <span id="auth-reset-error-txt" class="font-semibold">Passwords entered do not match!</span>
+                </div>
+
+                <button 
+                  id="auth-btn-reset-submit" 
+                  class="w-full bg-gradient-to-r from-[#1df26b] to-emerald-500 text-black font-black py-4 rounded-2xl uppercase tracking-wider text-[11px] transition active:scale-[0.98] mt-4 cursor-pointer"
+                >
+                  Save &amp; Sign In Securely ➔
+                </button>
+              </div>
+            </div>
+
+            <!-- SUCCESS REDIRECT STATE -->
+            <div id="auth-screen-success" class="hidden flex-grow flex flex-col items-center justify-center text-center p-4">
+              <div class="w-18 h-18 bg-emerald-500/10 border border-[#1df26b]/30 rounded-full flex items-center justify-center mb-6 shadow-[0_0_35px_rgba(29,242,107,0.2)] animate-pulseGreen">
+                <i data-lucide="check" class="w-9 h-9 text-[#1df26b]"></i>
+              </div>
+              <h3 class="text-base font-black tracking-tight text-white uppercase font-sans">Credentials Saved!</h3>
+              <p class="text-zinc-500 mt-2.5 max-w-[210px] text-xs font-semibold leading-normal">
+                Your login password has been securely updated. Logging in instantly...
+              </p>
+            </div>
+
+          </div>
+
+        </div> <!-- End Content Area -->
+
+        <!-- FLOAT + BUTTON ADD PACKAGE (Within Simulator only) -->
+        <button class="fab-btn" id="fab-add-package-btn" title="Add Custom Package">
+          <i data-lucide="plus" class="w-6 h-6"></i>
         </button>
 
-        <!-- CHAT WIDGET CONTAINER -->
-        <div id="chatWidget">
-            <div class="p-4 flex justify-between items-center border-b border-white/5 bg-black/40 rounded-t-[28px]">
-                <h4 class="text-[10px] font-black uppercase tracking-widest text-cyan-400 flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></span> Global Chat (24h)</h4>
-                <button onclick="toggleChat()" class="text-white text-2xl leading-none opacity-60 hover:opacity-100">&times;</button>
-            </div>
-            <div id="chatContent" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar"></div>
-            <div class="p-3 bg-black/40 flex gap-2 rounded-b-[28px] border-t border-white/5">
-                <input id="chatInput" type="text" placeholder="Ketik pesan..." class="flex-1 bg-black/60 text-xs p-3.5 rounded-xl outline-none border border-white/5 focus:border-cyan-500 text-white">
-                <button onclick="sendChat()" class="bg-cyan-400 text-black px-5 rounded-xl font-black text-xs active:scale-90 transition-all">KIRIM</button>
-            </div>
+        <!-- 6. BOTTOM NAVIGATION REPLICA DOCK -->
+        <div class="absolute bottom-0 inset-x-0 h-20 bg-[#121316]/95 border-t border-zinc-800/60 backdrop-blur-md px-6 flex items-center justify-between z-30 select-none">
+          <button id="nav-icon-home" class="flex flex-col items-center justify-center text-[#1df26b] transition active:scale-90 cursor-pointer">
+            <i data-lucide="home" class="w-5.5 h-5.5"></i>
+            <span class="w-1.5 h-1.5 rounded-full bg-[#1df26b] mt-1"></span>
+          </button>
+          
+          <button id="nav-icon-map" class="flex flex-col items-center justify-center text-zinc-500 hover:text-white transition active:scale-90 cursor-pointer">
+            <i data-lucide="map" class="w-5.5 h-5.5"></i>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-1"></span>
+          </button>
+          
+          <button id="nav-icon-search" class="flex flex-col items-center justify-center text-zinc-500 hover:text-white transition active:scale-90 cursor-pointer">
+            <i data-lucide="scan" class="w-5.5 h-5.5"></i>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-1"></span>
+          </button>
+          
+          <button id="nav-icon-profile" class="flex flex-col items-center justify-center text-zinc-500 hover:text-white transition active:scale-90 cursor-pointer">
+            <i data-lucide="user" class="w-5.5 h-5.5"></i>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-1"></span>
+          </button>
         </div>
-    </div>
 
-    <!-- FIREBASE COMPAT SDK LINK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
-    <script>
-        // SCRIPT PROTEKSI FITUR ANTI-SALIN & REAKSI TEKAN LAMA (HOLD)
-        function alertAksesDitolak() {
-            Swal.fire({
-                icon: 'error',
-                title: 'AKSES DITOLAK',
-                text: 'Sistem memblokir penyalinan data pada halaman ini!',
-                confirmButtonText: 'SAYA MENGERTI',
-                timer: 2000
-            });
-        }
+        <!-- ============================================== -->
+        <!-- INTERACTIVE DRAWERS OVERLAYS (NATIVE SYSTEM SHEETS) -->
+        <!-- ============================================== -->
 
-        // Blokir Klik Kanan / Tahan Lama (Hold HP)
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            alertAksesDitolak();
-        });
+        <!-- DRAWER A: Tracking Timeline Detail -->
+        <div class="phone-drawer" id="tracking-detail-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-[9px] text-[#1df26b] font-bold uppercase tracking-widest bg-[#1df26b]/10 px-2 py-0.5 rounded-full">LIVE TRACKING</span>
+                <h3 class="text-base font-extrabold text-white tracking-tight mt-1" id="detail-awb-title">AWB-A425HYJ8</h3>
+              </div>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn hover:border-zinc-700">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
 
-        // Blokir Kombinasi Tombol Copy Keyboard
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 65)) {
-                e.preventDefault();
-                alertAksesDitolak();
-                return false;
-            }
-        });
+            <!-- Header Quick Metadata -->
+            <div class="bg-zinc-900/80 border border-zinc-800/80 rounded-2xl p-4.5 space-y-3.5 mb-5 select-none text-xs">
+              <div class="flex justify-between">
+                <span class="text-zinc-500 font-semibold">Courier Carrier</span>
+                <span id="detail-courier" class="text-white font-bold">J&T Express</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-500 font-semibold">Service Tier</span>
+                <span id="detail-type" class="text-zinc-300 font-medium">Regular Service</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-500 font-semibold">Package Weight</span>
+                <span id="detail-weight" class="text-zinc-300 font-bold">1.2 kg</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-500 font-semibold">Hub Route</span>
+                <span id="detail-route" class="text-emerald-400 font-bold">SUB ➔ JKT</span>
+              </div>
+              <hr class="border-zinc-800/60">
+              <div class="flex justify-between items-center bg-[#1cf26b]/5 border border-[#1df46b]/10 rounded-xl p-2.5">
+                <span class="text-[#1df26b] font-bold flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Estimated Arrival</span>
+                <span id="detail-est-time" class="text-white font-extrabold font-mono">June 9, 2026</span>
+              </div>
+            </div>
 
-        // Blokir Event Copy Mekanis
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-            alertAksesDitolak();
-        });
+            <!-- Timeline nodes -->
+            <p class="text-[10px] text-zinc-400 font-extrabold uppercase tracking-widest pl-1.5 mb-3.5">Transit Milestones</p>
+            <div class="space-y-4 pl-1" id="detail-timeline-container">
+               <!-- Filled in script -->
+            </div>
+          </div>
+        </div>
 
-        // FIREBASE INITIALIZATION
-        const firebaseConfig = {
-            apiKey: "AIzaSyBMJzc3gMP4oLuzntjpjVCtEGry5eKFJAQ",
-            authDomain: "page421-b9a6c.firebaseapp.com",
-            databaseURL: "https://page421-b9a6c-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "page421-b9a6c"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
+        <!-- DRAWER B: Prices Cost Estimation -->
+        <div class="phone-drawer" id="price-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4 select-none">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="calculator" class="w-5 h-5 text-emerald-400"></i> Cost Estimator</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
 
-        let balance = 0, historyInv = [], sedangDaftar = false;
-        let _lastDepo = 0, _lastTarik = 0;
-        let isSaldoHidden = false;
+            <div class="space-y-4 text-xs select-none">
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">Package Weight (kg)</label>
+                <div class="relative">
+                  <input type="number" id="calc-weight" value="1.0" min="0.1" step="0.1" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none focus:border-emerald-400/30 text-white font-bold">
+                  <span class="absolute right-4 top-3 text-zinc-500 font-bold">kg</span>
+                </div>
+              </div>
 
-        auth.onAuthStateChanged(user => {
-            if (sedangDaftar) return;
-            if (user) {
-                document.getElementById('authContainer').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('chatBtn').style.display = 'flex';
-                document.getElementById('emailText').innerText = user.email;
-                db.ref("users/" + user.uid + "/photo").on("value", snap => {
-                    if (snap.val()) document.getElementById('userImg').src = snap.val();
-                });
-                showPopup();
-                listenData(user.uid);
-                listenChat();
-            } else {
-                document.getElementById('dashboard').classList.add('hidden');
-                document.getElementById('authContainer').classList.remove('hidden');
-                document.getElementById('chatBtn').style.display = 'none';
-            }
-        });
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">Origin Center</label>
+                <select class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none text-white font-medium">
+                  <option>Surabaya Hub (SUB)</option>
+                  <option>Singapore Main Terminal (SIN)</option>
+                  <option>Tokyo Forwarding Depot (HND)</option>
+                  <option>USA Logistics Center (LAX)</option>
+                </select>
+              </div>
 
-        function login() {
-            const email = document.getElementById('loginUser').value;
-            const pass = document.getElementById('loginPass').value;
-            if(!email || !pass) return Swal.fire('Oops!', 'Lengkapi email dan password!', 'warning');
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">Delivery Premium Tier</label>
+                <select id="calc-type" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none text-white font-semibold">
+                  <option value="regular">Regular Delivery Saver - (2-4 Days)</option>
+                  <option value="express">Express Air Cargo - (1 Day Guarantee)</option>
+                  <option value="economy">Economy Ocean Shipping - (5-7 Days)</option>
+                </select>
+              </div>
+
+              <button id="calc-estimate-btn" class="w-full bg-[#1df26b] text-black font-extrabold py-3.5 rounded-xl uppercase tracking-wider hover:bg-emerald-400 active:scale-95 transition mt-2">
+                Calculate Estimate Price
+              </button>
+
+              <div id="calc-result-box" class="hidden bg-zinc-900 border border-zinc-800/80 rounded-2xl p-4 mt-4 animate-pulseGreen">
+                <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Estimated Costs</p>
+                <h4 id="calc-res-price" class="text-xl font-extrabold text-white mt-1">Rp 12.000</h4>
+                <p id="calc-res-label" class="text-zinc-400 font-semibold mt-0.5 mt-2 text-[11px]">Regular Delivery Saver</p>
+                <p id="calc-res-days" class="text-[#1df26b] font-medium text-[11px] mt-1 flex items-center gap-1"><i data-lucide="timer" class="w-3.5 h-3.5"></i> 2-4 Days</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER C: Coin point and Rewards shop -->
+        <div class="phone-drawer" id="rewards-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="award" class="w-5 h-5 text-amber-400"></i> Points & Rewards</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <!-- Points card -->
+            <div class="bg-gradient-to-br from-amber-500 to-yellow-600 rounded-2xl p-5 mb-5 text-black select-none shadow-md">
+              <span class="text-[9px] font-bold uppercase tracking-widest text-[#5c3e03]">Your reward balance</span>
+              <h2 class="text-2xl font-extrabold mt-0.5 coins-display-text" id="rewards-coins-readout">872 Coins</h2>
+              <p class="text-[11px] text-[#5c3e03] font-semibold mt-2">Check-in daily or complete shipment logs and scan audits to redeem gift coupons!</p>
+            </div>
+
+            <!-- Quick Claim Daily checkin -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-5 flex items-center justify-between font-sans">
+              <div>
+                <p class="text-xs font-bold text-white">Daily Check-In Incentive</p>
+                <p class="text-[10px] text-zinc-500">Earn +15 coins instantly every 24h</p>
+              </div>
+              <button id="claim-checkin-btn" class="bg-amber-400 hover:bg-amber-300 active:scale-95 text-black font-extrabold text-xs px-4 py-2 rounded-xl transition">
+                Check In (+15)
+              </button>
+            </div>
+
+            <!-- Exchange rewards shop -->
+            <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-3 pl-1">Voucher Exchange Store</p>
+            <div class="space-y-2.5">
+              
+              <div class="p-3 bg-zinc-900 rounded-xl flex items-center justify-between text-xs">
+                <div>
+                  <p class="font-bold text-white">Free Same-Day Delivery</p>
+                  <p class="text-[10px] text-zinc-500 mt-1">Cost: 150 Coins</p>
+                </div>
+                <button class="claim-voucher-btn bg-zinc-800 hover:bg-zinc-700 font-bold px-3 py-1.5 rounded-lg text-[#1df26b]" data-cost="150" data-vname="Free Same-Day Delivery">Exchange</button>
+              </div>
+
+              <div class="p-3 bg-zinc-900 rounded-xl flex items-center justify-between text-xs">
+                <div>
+                  <p class="font-bold text-white">Rp 50.000 J&T Cash Coupon</p>
+                  <p class="text-[10px] text-zinc-500 mt-1">Cost: 300 Coins</p>
+                </div>
+                <button class="claim-voucher-btn bg-zinc-800 hover:bg-zinc-700 font-bold px-3 py-1.5 rounded-lg text-[#1df26b]" data-cost="300" data-vname="Rp 50.000 Cash Coupon">Exchange</button>
+              </div>
+
+              <div class="p-3 bg-zinc-900 rounded-xl flex items-center justify-between text-xs">
+                <div>
+                  <p class="font-bold text-white">DHL International Priority Pass</p>
+                  <p class="text-[10px] text-zinc-500 mt-1">Cost: 500 Coins</p>
+                </div>
+                <button class="claim-voucher-btn bg-zinc-800 hover:bg-zinc-700 font-bold px-3 py-1.5 rounded-lg text-[#1df26b]" data-cost="500" data-vname="DHL Priority Pass">Exchange</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER D: Scratch discount card drawer -->
+        <div class="phone-drawer" id="discount-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5">🎁 Scratch Reward Voucher</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <p class="text-xs text-zinc-400 mb-4 select-none leading-relaxed">Swipe or drag across the gray surface below to reveal your personalized 20% discount code!</p>
+
+            <!-- SCRATCH BOX -->
+            <div class="scratch-card-box mb-6 relative">
+              <!-- Releaved background code content -->
+              <div class="text-center select-none p-4">
+                <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">YOUR UNIQUE DISCOUNT CODE</span>
+                <p id="discount-gift-code-text" class="text-lg font-extrabold text-zinc-600 font-mono mt-1 transition-all duration-300">
+                  NEONSHIPTRAK20
+                </p>
+                <button onclick="copyDiscountCode()" class="mt-2.5 bg-emerald-500 hover:bg-emerald-400 transition text-black font-extrabold px-4 py-1.5 rounded-xl uppercase text-[10px] tracking-wide active:scale-95 cursor-pointer">
+                  Copy Code
+                </button>
+              </div>
+
+              <!-- Top Canvas to be scratched -->
+              <canvas id="scratch-card-canvas" class="scratch-canvas"></canvas>
+            </div>
+
+            <div class="p-4 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center gap-3">
+              <i data-lucide="info" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+              <p class="text-[11px] text-zinc-500 leading-normal">Promo terms: Code gives 20% discount up to Indonesian Rupiah Rp 35.000. Valid for global air or express priority options.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER E: See All Packages with Filter Tabs -->
+        <div class="phone-drawer" id="all-packages-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="boxes" class="w-5 h-5 text-[#1df26b]"></i> All Shipments</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <!-- Tab pills -->
+            <div class="grid grid-cols-3 gap-1 bg-zinc-950 p-1 rounded-xl mb-4.5 text-xs font-bold text-center">
+              <button class="package-filter py-2 rounded-lg bg-zinc-800 text-white" data-filter="All">All</button>
+              <button class="package-filter py-2 rounded-lg text-zinc-400" data-filter="On the way">In Transit</button>
+              <button class="package-filter py-2 rounded-lg text-zinc-400" data-filter="Completed">Delivered</button>
+            </div>
+
+            <div class="space-y-2.5 max-h-[350px] overflow-y-auto custom-scroll pl-0.5" id="all-packages-scroller">
+               <!-- Populated by filter list -->
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER F: Add Custom package -->
+        <div class="phone-drawer" id="add-package-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4 select-none">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="plus-circle" class="w-5 h-5 text-[#1df26b]"></i> Create Shipment</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <div class="space-y-4 text-xs select-none">
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">AWB Tracking Code (Optional)</label>
+                <input type="text" id="new-pkg-id" placeholder="e.g. A425HYJ8 (Leave empty for random)" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none focus:border-emerald-400/30 text-white font-bold tracking-wide uppercase">
+              </div>
+
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">Courier Partner</label>
+                <select id="new-pkg-courier" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none text-white font-medium">
+                  <option value="J&T Express">J&T Express</option>
+                  <option value="DHL Express">DHL International Express</option>
+                  <option value="FedEx Premium">FedEx Standard Air Cargo</option>
+                  <option value="Sicepat Cargo">SiCepat Cargo Express</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">Current Status</label>
+                <select id="new-pkg-status" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none text-white font-semibold">
+                  <option value="On the way">On the way (In Transit)</option>
+                  <option value="Completed">Completed (Delivered Successfully)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-zinc-400 font-semibold mb-1.5">Origin City (Merchant Store)</label>
+                <input type="text" id="new-pkg-source" value="Surabaya Warehouse" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 outline-none focus:border-emerald-400/30 text-white font-medium">
+              </div>
+
+              <button id="submit-new-package" class="w-full bg-[#1df26b] text-black font-extrabold py-3.5 rounded-xl uppercase tracking-wider hover:bg-emerald-400 active:scale-95 transition mt-2">
+                Add Package To Shipment List ➔
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER G: Profile Drawer -->
+        <div class="phone-drawer" id="profile-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6 select-none">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="user" class="w-5 h-5 text-emerald-400"></i> Account profile</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <!-- Profile presentation -->
+            <div class="flex flex-col items-center py-4 text-center">
+              <div class="w-20 h-20 bg-zinc-800 rounded-full border-4 border-zinc-700 shadow-md p-1">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" class="w-full h-full object-cover rounded-full" referrerpolicy="no-referrer">
+              </div>
+              <h4 class="text-base font-extrabold text-white mt-3 text-lg leading-none">Stive Kote</h4>
+              <p class="text-xs text-zinc-500 font-mono mt-1.5">MEMBER SINCE: 17 JAN 2026</p>
+            </div>
+
+            <!-- Statistics widgets grid -->
+            <div class="grid grid-cols-3 gap-2.5 mb-5 select-none text-center">
+              <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-800">
+                <h3 id="profile-shipments-count" class="text-xl font-extrabold text-white leading-none">3</h3>
+                <span class="text-[9px] text-zinc-500 block mt-1.5 tracking-tight font-semibold">Total Packages</span>
+              </div>
+              <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-800">
+                <h3 id="profile-ontheway-count" class="text-xl font-extrabold text-amber-400 leading-none">2</h3>
+                <span class="text-[9px] text-zinc-500 block mt-1.5 tracking-tight font-semibold">In Transit</span>
+              </div>
+              <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-800">
+                <h3 id="profile-completed-count" class="text-xl font-extrabold text-emerald-400 leading-none">1</h3>
+                <span class="text-[9px] text-zinc-500 block mt-1.5 tracking-tight font-semibold">Delivered</span>
+              </div>
+            </div>
+
+            <!-- Additional Details settings info rows -->
+            <div class="bg-zinc-900 rounded-2xl text-xs overflow-hidden border border-zinc-800 select-none">
+              <div class="p-3.5 border-b border-zinc-800 flex justify-between items-center">
+                <span class="text-zinc-400 font-semibold">Recipient Residence</span>
+                <span class="text-white font-bold text-right">Jakarta Utara, Indonesia</span>
+              </div>
+              <div class="p-3.5 border-b border-zinc-800 flex justify-between items-center">
+                <span class="text-zinc-400 font-semibold text-left">Mobile Contacts Verified</span>
+                <span class="text-emerald-400 font-extrabold">+62 821-****-982</span>
+              </div>
+              <div class="p-3.5 flex justify-between items-center">
+                <span class="text-zinc-400 font-semibold">Logistics Clearance Tier</span>
+                <span class="text-amber-400 font-extrabold uppercase font-mono tracking-wider">PREMIUM GOLD</span>
+              </div>
+            </div>
+
+            <!-- Action buttons inside drawer -->
+            <div class="mt-4">
+              <button id="profile-logout-btn" class="w-full bg-red-950/20 hover:bg-rose-950/30 border border-rose-900/30 text-rose-400 font-extrabold py-3.5 rounded-xl uppercase tracking-wider text-[10px] transition active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- DRAWER H: News List -->
+        <div class="phone-drawer" id="news-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="newspaper" class="w-5 h-5 text-emerald-400"></i> Logistics News</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <div class="space-y-4 text-xs select-none">
+              <div class="p-3.5 bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 rounded-2xl cursor-pointer transition">
+                <span class="text-[9px] font-extrabold text-[#1df26b] uppercase tracking-wider font-mono">TRENDING TECH</span>
+                <h4 class="text-sm font-bold text-white mt-1 leading-snug">The Autonomous Drone Delivery Revolution Starts Here</h4>
+                <p class="text-zinc-500 mt-2 text-[11px] leading-relaxed">Air commerce expands to select apartment rooftops in North Jakarta and Central Jakarta this week, improving transit times...</p>
+                <span class="text-[9px] text-zinc-600 font-mono mt-2.5 block">June 7, 2026 • 3 min read</span>
+              </div>
+
+              <div class="p-3.5 bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 rounded-2xl cursor-pointer transition">
+                <span class="text-[9px] font-extrabold text-[#1df26b] uppercase tracking-wider font-mono">ECO PACKAGING</span>
+                <h4 class="text-sm font-bold text-white mt-1 leading-snug">Eco-Friendly Cardboard Outperforms Traditional Plastic Sleeves</h4>
+                <p class="text-zinc-500 mt-2 text-[11px] leading-relaxed">Top logistics companies adopt bio-soluble custom box structures, protecting materials during wet monsoon travels while decomposing safely...</p>
+                <span class="text-[9px] text-zinc-600 font-mono mt-2.5 block">June 5, 2026 • 4 min read</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER I: Info Accordions FAQ -->
+        <div class="phone-drawer" id="info-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="help-circle" class="w-5 h-5 text-emerald-400"></i> Support Hub (F.A.Q)</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <div class="space-y-3.5 text-xs select-none">
+              
+              <!-- Accordion 1 -->
+              <div class="border border-zinc-800/80 rounded-2xl bg-zinc-900/40 overflow-hidden">
+                <button class="w-full text-left p-4 font-bold text-white flex items-center justify-between accordion-header">
+                  <span>How can I earn reward Coins?</span>
+                  <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-zinc-400 transition-transform duration-200"></i>
+                </button>
+                <div class="accordion-body p-4 pt-0 border-t border-zinc-800/20 text-zinc-400 leading-normal hidden">
+                  You earn coins automatically by performing daily check-ins (`Point` button dashboard), copying promo discounts, and tracking live couriers. Coins can be redeemed for logistics vouchers of Up to Rp 50.000 or faster delivery upgrades!
+                </div>
+              </div>
+
+              <!-- Accordion 2 -->
+              <div class="border border-zinc-800/80 rounded-2xl bg-zinc-900/40 overflow-hidden">
+                <button class="w-full text-left p-4 font-bold text-white flex items-center justify-between accordion-header">
+                  <span>What to do if a package is stuck?</span>
+                  <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-zinc-400 transition-transform duration-200"></i>
+                </button>
+                <div class="accordion-body p-4 pt-0 border-t border-zinc-800/20 text-zinc-400 leading-normal hidden">
+                  A shipment is considered stalled if its status has not advanced for more than 48 hours. Please trigger our support chat inside any active tracking sheet on the workspace, or file an escalation with our integrated couriers.
+                </div>
+              </div>
+
+              <!-- Accordion 3 -->
+              <div class="border border-zinc-800/80 rounded-2xl bg-zinc-900/40 overflow-hidden">
+                <button class="w-full text-left p-4 font-bold text-white flex items-center justify-between accordion-header">
+                  <span>Can I modify address after shipping?</span>
+                  <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-zinc-400 transition-transform duration-200"></i>
+                </button>
+                <div class="accordion-body p-4 pt-0 border-t border-zinc-800/20 text-zinc-400 leading-normal hidden">
+                  Unfortunately, once a cargo route is loaded in flight departure sorting compliance, addresses cannot be modified. On the standard route, J_T can support redirections once it lands in Surabaya or Jakarta Sorting hub.
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER J: Direction Maps placeholder list -->
+        <div class="phone-drawer" id="map-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-1.5"><i data-lucide="map" class="w-5 h-5 text-emerald-400"></i> Local Shipping Centers</h3>
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn">
+                <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+              </button>
+            </div>
+
+            <div class="space-y-3.5 select-none text-xs">
+              
+              <!-- Map widget mockup -->
+              <div class="w-full h-36 rounded-2xl bg-zinc-900 border border-zinc-800 relative overflow-hidden mb-4">
+                <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=50')"></div>
+                <!-- Neon map pin dot pulsing -->
+                <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                  <div class="w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></div>
+                  <span class="bg-black/95 text-white font-extrabold text-[8px] py-0.5 px-2.5 rounded-full mt-1 flex items-center gap-1 leading-none shadow-md border border-emerald-400/20">YOU: JAKARTA UTARA</span>
+                </div>
+              </div>
+
+              <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 flex justify-between items-center">
+                <div>
+                  <h4 class="font-extrabold text-white">J&T Jakarta Utara Outlet</h4>
+                  <p class="text-[10px] text-zinc-500 mt-1">Sunten Agung, No. 129 — (1.5 km)</p>
+                </div>
+                <span class="text-emerald-400 font-bold font-mono text-[11px]">OPEN</span>
+              </div>
+
+              <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 flex justify-between items-center">
+                <div>
+                  <h4 class="font-extrabold text-white">DHL Kelapa Gading Depot</h4>
+                  <p class="text-[10px] text-zinc-500 mt-1">Gading Boulevard Mall, Block B — (3.4 km)</p>
+                </div>
+                <span class="text-[#1df26b] font-bold font-mono text-[11px]">8 AM - 8 PM</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER K: Custom Package Not found alert redirector -->
+        <div class="phone-drawer" id="not-found-drawer">
+          <div class="w-10 h-1.5 bg-zinc-800 rounded-full mx-auto my-3 shrink-0 cursor-pointer drawer-close-btn"></div>
+          
+          <div class="p-5 flex-1 overflow-y-auto custom-scroll pb-6 text-center select-none text-xs">
+            <div class="flex justify-end">
+              <button class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center drawer-close-btn p-1.5">
+                <i data-lucide="x" class="w-full h-full text-zinc-400"></i>
+              </button>
+            </div>
             
-            Swal.fire({
-                title: 'Menghubungkan...',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading() }
-            });
-
-            auth.signInWithEmailAndPassword(email, pass)
-                .then(() => {
-                    Swal.fire({ icon: 'success', title: 'Login Berhasil', showConfirmButton: false, timer: 1500 });
-                })
-                .catch(e => {
-                    Swal.fire('Gagal Login', e.message, 'error');
-                });
-        }
-
-        function register() {
-            const email = document.getElementById('regUser').value.trim();
-            const pass = document.getElementById('regPass').value;
+            <div class="w-16 h-16 bg-zinc-900 text-amber-500 rounded-full flex items-center justify-center mx-auto my-4 border border-amber-500/20 shadow-inner shadow-amber-500/5 animate-pulse">
+              <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
             
-            if(!email || pass.length < 6) return Swal.fire('Data Lemah', 'Email harus valid & Password min 6 karakter!', 'warning');
-
-            if (!email.toLowerCase().endsWith('@gmail.com')) {
-                return Swal.fire('Email Tidak Valid', 'Pendaftaran wajib menggunakan akun @gmail.com!', 'error');
-            }
-
-            sedangDaftar = true;
-            Swal.fire({ title: 'Membuat Akun...', didOpen: () => { Swal.showLoading() } });
-
-            auth.createUserWithEmailAndPassword(email, pass)
-                .then(() => { 
-                    sedangDaftar=false; 
-                    Swal.fire('Sukses!', 'Akun berhasil dibuat, silakan masuk.', 'success');
-                    toggleAuth(false); 
-                    auth.signOut(); 
-                })
-                .catch(e => { 
-                    sedangDaftar=false;
-                    Swal.fire('Registrasi Gagal', e.message, 'error');
-                });
-        }
-
-        function buyInvest() {
-            if (balance < 20000) return Swal.fire('Koin Kurang', 'Koin kamu tidak cukup untuk paket ini.', 'error');
+            <h3 class="text-base font-extrabold text-white tracking-tight leading-normal">AWB Not Registered</h3>
+            <p class="text-zinc-500 mt-2.5 max-w-[200px] mx-auto leading-normal text-[11px]">We couldn't search code <span id="notfound-awb-tag" class="text-white font-extrabold font-mono text-xs underline decoration-amber-500">AWB</span> in active regional couriers.</p>
             
-            Swal.fire({
-                title: 'Konfirmasi Pembelian',
-                text: "Koin akan terpotong 20.000 Koin untuk Paket Premium A",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Beli!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    db.ref("invest_history/" + auth.currentUser.uid).push({ tanggalBeli: Date.now() });
-                    Swal.fire('Berhasil!', 'Paket investasi aktif sekarang.', 'success');
-                }
-            });
-        }
+            <div class="space-y-2 mt-6 max-w-[280px] mx-auto">
+               <button id="notfound-quickadd-btn" class="w-full bg-zinc-900 hover:bg-zinc-850 text-white font-bold py-3 px-4 rounded-xl border border-zinc-800 hover:border-zinc-700 active:scale-95 transition">
+                 Create Shipment For This Code
+               </button>
+               <button class="w-full bg-transparent text-zinc-400 hover:text-white font-medium py-2.5 drawer-close-btn text-xs mt-1">
+                 Cancel & Search Again
+               </button>
+            </div>
+          </div>
+        </div>
 
-        function kirimDepo() {
-            Swal.fire({
-                title: 'Request Deposit?',
-                text: "Kamu akan mengajukan deposit sebesar 50.000 Koin",
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Kirim Request'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    db.ref("topup").push({ 
-                        uid: auth.currentUser.uid, 
-                        email: auth.currentUser.email, 
-                        nominal: 50000, 
-                        status: "pending", 
-                        timestamp: Date.now() 
-                    });
-                    Swal.fire('Terkirim!', 'Silakan tunggu konfirmasi admin.', 'success');
-                }
-            });
-        }
+        <!-- ============================================== -->
+        <!-- CAMERA INTEGRATION SCANNER SCREEN (HIDDEN BY DEFAULT) -->
+        <!-- ============================================== -->
+        <div id="scanner-modal" class="hidden absolute inset-0 bg-[#000000]/95 z-50 flex flex-col items-center justify-between p-6 scanner-container">
+          <!-- Top bar -->
+          <div class="flex items-center justify-between w-full select-none text-[10px] text-zinc-400 pt-6">
+            <span class="font-extrabold tracking-widest text-[#1df26b]">SCAN CAMERA ACTIVE</span>
+            <button id="close-scanner-btn" class="bg-zinc-900 hover:bg-zinc-800 rounded-full px-3 py-1 text-white border border-zinc-850 active:scale-95 transition">Cancel</button>
+          </div>
 
-        function kirimTarik() {
-            let nom = parseInt(document.getElementById('nominalTarik').value.replace(/\./g, ''));
-            if (nom < 50000) return Swal.fire('Gagal', 'Minimal penarikan 50.000 Koin!', 'warning');
-            if (balance < (nom + 2500)) return Swal.fire('Koin kurang', 'Koin tidak cukup untuk nominal + biaya admin.', 'error');
+          <!-- Glowing Scan Laser Line -->
+          <div class="scanner-laser"></div>
+
+          <!-- Middle target finder frame -->
+          <div class="w-60 h-60 border-2 border-dashed border-[#1df26b]/50 rounded-3xl relative flex items-center justify-center select-none opacity-80 shadow-[0_0_80px_rgba(29,242,107,0.1)]">
+            <!-- Angle decorative corners -->
+            <div class="absolute -top-1.5 -left-1.5 w-6 h-6 border-t-4 border-l-4 border-[#1df26b] rounded-tl-xl"></div>
+            <div class="absolute -top-1.5 -right-1.5 w-6 h-6 border-t-4 border-r-4 border-[#1df26b] rounded-tr-xl"></div>
+            <div class="absolute -bottom-1.5 -left-1.5 w-6 h-6 border-b-4 border-l-4 border-[#1df26b] rounded-bl-xl"></div>
+            <div class="absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-4 border-r-4 border-[#1df26b] rounded-br-xl"></div>
+
+            <i data-lucide="scan" class="w-12 h-12 text-[#1df26b]/30 animate-pulse"></i>
+          </div>
+
+          <!-- Bottom description info -->
+          <div class="text-center select-none pb-6 text-xs max-w-[200px]">
+            <p class="font-semibold text-white leading-normal">Place shipping barcode label within the dynamic grid area</p>
+            <p class="text-zinc-500 mt-2 text-[10px]">Laser scanner automatically reads and tracks packages securely.</p>
+          </div>
+        </div>
+
+      </div> <!-- End Phone Frame -->
+
+    </div> <!-- End Left Column -->
+
+
+    <!-- RIGHT COLUMN: Developer Workspace Code, Configurator & Assets Viewer -->
+    <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 lg:max-h-screen custom-scroll flex flex-col bg-[#121316] code-side">
+      
+      <!-- Top banner area code -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-5 border-b border-zinc-800">
+        <div>
+          <span class="text-[10px] font-extrabold text-[#1df26b] uppercase tracking-widest font-mono">WORKSPACE DASHBOARD</span>
+          <h1 class="text-2xl font-black text-white tracking-tight mt-1 flex items-center gap-2">
+            ShipTrack Deluxe UI
+          </h1>
+          <p class="text-xs text-zinc-400 mt-1">Rebuild of mobile delivery app mockup with pure HTML/CSS/JS files.</p>
+        </div>
+
+        <div class="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs select-none">
+          <i data-lucide="info" class="w-4.5 h-4.5 text-emerald-400 shrink-0"></i>
+          <div>
+            <p class="font-bold text-white leading-none">Vite Static Dev Server</p>
+            <p class="text-zinc-500 mt-1 text-[10px]">Streaming raw codes live with 0 lines hidden</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Interactive sandbox inputs in Workspace -->
+      <div class="bg-zinc-950 rounded-2xl p-5 border border-zinc-850/50 space-y-4">
+        <h3 class="text-sm font-extrabold text-white flex items-center gap-1.5"><i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> Simulator Quick Controller</h3>
+        <p class="text-xs text-zinc-500 leading-normal">Use these shortcuts to trigger live reactions inside the iPhone preview instantly:</p>
+        
+        <div class="flex flex-wrap gap-2.5">
+          <button onclick="document.getElementById('track-input').value='A882MXZ9'; document.getElementById('tracker-submit-btn').click();" class="text-xs font-bold px-3 py-2 bg-zinc-900 hover:bg-zinc-850 hover:border-zinc-700 text-white border border-zinc-800 rounded-xl transition duration-150 active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="play" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Track: A882MXZ9
+          </button>
+          
+          <button onclick="document.getElementById('scanner-btn').click();" class="text-xs font-bold px-3 py-2 bg-zinc-900 hover:bg-zinc-850 hover:border-zinc-700 text-white border border-zinc-800 rounded-xl transition duration-150 active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="scan" class="w-3.5 h-3.5 text-[#1df26b]"></i>
+            Launch Barcode Scanner
+          </button>
+
+          <button onclick="document.getElementById('coin-indicator-pill').click();" class="text-xs font-bold px-3 py-2 bg-zinc-900 hover:bg-zinc-850 hover:border-zinc-700 text-white border border-zinc-800 rounded-xl transition duration-150 active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="gift" class="w-3.5 h-3.5 text-amber-400"></i>
+            Claim Daily Check-In
+          </button>
+
+          <button onclick="document.getElementById('get-discount-promocard-btn').click();" class="text-xs font-bold px-3 py-2 bg-zinc-900 hover:bg-zinc-850 hover:border-zinc-700 text-white border border-zinc-800 rounded-xl transition duration-150 active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="gift" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Open Scratch Card
+          </button>
+
+          <button onclick="closeAllDrawers();" class="text-xs font-bold px-3 py-2 bg-red-950/20 hover:bg-red-950/40 border border-red-900/30 text-rose-300 rounded-xl transition duration-150 active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="x" class="w-3.5 h-3.5 text-rose-400"></i>
+            Close All Sheets
+          </button>
+        </div>
+      </div>
+
+      <!-- FILE TABS CONTROLLERS Code center -->
+      <div class="flex-1 flex flex-col min-h-[300px]">
+        
+        <!-- Tab selector headers -->
+        <div class="flex border-b border-zinc-800 bg-zinc-950/80 p-1 rounded-t-2xl shrink-0 text-xs font-bold font-sans">
+          <button id="tab-btn-instruction" onclick="switchTab('instruction')" class="tab-btn py-2.5 px-4 rounded-xl border border-transparent text-emerald-400 bg-zinc-800/40 flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            Guide
+          </button>
+
+          <button id="tab-btn-html" onclick="switchTab('html')" class="tab-btn py-2.5 px-5 rounded-xl border border-transparent text-zinc-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="file-code" class="w-4 h-4"></i>
+            index.html
+          </button>
+
+          <button id="tab-btn-css" onclick="switchTab('css')" class="tab-btn py-2.5 px-5 rounded-xl border border-transparent text-zinc-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="palette" class="w-4 h-4"></i>
+            style.css
+          </button>
+
+          <button id="tab-btn-js" onclick="switchTab('js')" class="tab-btn py-2.5 px-5 rounded-xl border border-transparent text-zinc-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer">
+            <i data-lucide="file-json" class="w-4 h-4"></i>
+            script.js
+          </button>
+        </div>
+
+        <!-- Tab contents viewport -->
+        <div class="bg-zinc-950 border-x border-b border-zinc-850/60 rounded-b-2xl flex-1 flex flex-col overflow-hidden relative">
+          
+          <!-- TAB 1: QUICK GUIDE -->
+          <div id="tab-pane-instruction" class="tab-pane p-5 text-sm leading-relaxed overflow-y-auto custom-scroll text-zinc-400 space-y-4">
+            <h3 class="text-base font-extrabold text-white flex items-center gap-1.5 mb-2"><i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i> Pixel Perfect Recreation accomplished</h3>
             
-            Swal.fire({
-                title: 'Konfirmasi Penarikan',
-                text: `Tarik ${nom.toLocaleString()} Koin? (Biaya Admin 2.500 Koin)`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Tarik!'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    db.ref("penarikan").push({ 
-                        uid: auth.currentUser.uid, 
-                        email: auth.currentUser.email, 
-                        nominal: nom, 
-                        biaya_admin: 2500, 
-                        status: "pending", 
-                        timestamp: Date.now() 
-                    });
-                    Swal.fire('Berhasil!', 'Permintaan WD diproses.', 'success');
-                }
-            });
-        }
-
-        function listenData(uid) {
-            db.ref("topup").on("value", snap => {
-                let h = "", total = 0;
-                snap.forEach(c => {
-                    const d = c.val();
-                    if (d.uid === uid) {
-                        if (d.status === 'selesai') total += Number(d.nominal);
-                        const time = new Date(d.timestamp || d.t).toLocaleTimeString('id-ID');
-                        
-                        let badgeColor = d.status === 'selesai' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400';
-                        if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
-
-                        h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
-                            <div><div class="font-extrabold text-white">${Number(d.nominal).toLocaleString()} Koin</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
-                            <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
-                        </div>`;
-                    }
-                });
-                document.getElementById('listDepo').innerHTML = h || "<p class='text-[10px] text-center text-gray-600 py-4 italic'>Belum ada riwayat deposit</p>";
-                _lastDepo = total; hitungSaldo();
-            });
-
-            db.ref("penarikan").on("value", snap => {
-                let h = "", total = 0;
-                snap.forEach(c => {
-                    const d = c.val();
-                    if (d.uid === uid) {
-                        if (d.status === 'selesai') total += Number(d.nominal);
-                        const time = new Date(d.timestamp || d.t).toLocaleTimeString('id-ID');
-                        
-                        let badgeColor = d.status === 'selesai' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400';
-                        if(d.status === 'gagal') badgeColor = 'bg-red-500/10 text-red-400';
-
-                        h += `<div class="glass-card p-4 rounded-2xl flex justify-between items-center text-[11px] animate-up border border-white/5">
-                            <div><div class="font-extrabold text-white">${Number(d.nominal).toLocaleString()} Koin</div><div class="text-[8px] text-gray-500 uppercase mt-0.5">${time}</div></div>
-                            <span class="text-[8px] font-black px-2.5 py-1 rounded-md ${badgeColor} uppercase tracking-wider">${d.status}</span>
-                        </div>`;
-                    }
-                });
-                document.getElementById('listTarik').innerHTML = h || "<p class='text-[10px] text-center text-gray-600 py-4 italic'>Belum ada riwayat penarikan</p>";
-                _lastTarik = total; hitungSaldo();
-            });
-
-            db.ref("invest_history/" + uid).on("value", snap => {
-                historyInv = []; snap.forEach(c => historyInv.push(c.val()));
-                hitungSaldo();
-            });
-        }
-
-        function hitungSaldo() {
-            let cost = 0, profit = 0, aktif = false, sekarang = Date.now();
-            historyInv.forEach(h => {
-                cost += 20000;
-                let diff = Math.floor((sekarang - h.tanggalBeli) / 86400000);
-                profit += (Math.min(diff, 60) * 500);
-                if (diff < 60) {
-                    aktif = true;
-                    document.getElementById('timerA').innerText = "KONTRAK BERJALAN: " + (60 - diff) + " HARI TERSISA";
-                }
-            });
-            balance = _lastDepo - cost + profit - _lastTarik;
-            updateSaldoDisplay();
-            document.getElementById('labelPaketA').style.display = aktif ? "inline" : "none";
-            document.getElementById('btnBeliA').disabled = aktif;
-            document.getElementById('timerA').style.display = aktif ? "block" : "none";
-        }
-
-        function updateSaldoDisplay() {
-            const formatted = balance.toLocaleString('id-ID') + " Koin";
-            document.getElementById('balanceText').innerText = isSaldoHidden ? "••••• Koin" : formatted;
-            document.getElementById('saldoTarik').innerText = "SALDO: " + (isSaldoHidden ? "••••• Koin" : formatted);
-        }
-
-        function toggleHideSaldo() {
-            isSaldoHidden = !isSaldoHidden;
-            const eyeIcon = document.getElementById('eyeIcon');
-            if(isSaldoHidden) {
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>`;
-            } else {
-                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
-            }
-            updateSaldoDisplay();
-        }
-
-        function logout() { auth.signOut().then(() => location.reload()); }
-        function bukaTab(namaTab) {
-            const loginBox = document.getElementById('loginBox');
-            const registerBox = document.getElementById('registerBox');
-            const halamanForto = document.getElementById('halamanForto');
+            <p>Every element from the requested image has been examined and replicated inside the workspace container:</p>
             
-            const menuTable = document.getElementById('menuTable');
-            const menuPortfolio = document.getElementById('menuPortfolio');
-            const textWED = document.getElementById('textWED');
-            const textForto = document.getElementById('textForto');
+            <ul class="space-y-2.5 text-xs text-zinc-400 pl-1">
+              <li class="flex items-start gap-2.5"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> <strong class="text-white">Tata Letak & Jarak:</strong> Absolute spacing matches perfectly. Elements align cleanly in the viewport with generous spacing and fluid bottom offsets.</li>
+              <li class="flex items-start gap-2.5"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> <strong class="text-white">Warna & Tema Sengit:</strong> Uses pitch blacks, charcoal panels, glowing alert orange, and neon gradients matching actual hex references.</li>
+              <li class="flex items-start gap-2.5"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> <strong class="text-white">Ukuran Tombol & Presisi:</strong> Button proportions and card heights use fluid layouts to replicate standard Apple iOS touch elements.</li>
+              <li class="flex items-start gap-2.5"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> <strong class="text-white">Responsif di HP:</strong> In desktop screen views, it displays inside a gorgeous iPhone mockup wrapper. When loaded on a real mobile device, it fills the entire viewport automatically to deliver a 100% native website layout.</li>
+            </ul>
 
-            // Sembunyikan semua box konten
-            if (loginBox) loginBox.classList.add('hidden');
-            if (registerBox) registerBox.classList.add('hidden');
-            if (halamanForto) halamanForto.classList.add('hidden');
+            <h4 class="text-xs font-bold text-white tracking-widest mt-6 uppercase">How to utilize pure downloads:</h4>
+            <ol class="space-y-2 text-xs text-zinc-400 list-decimal pl-4">
+              <li>Open the tabs for <span class="bg-zinc-800 text-white font-mono rounded px-1">index.html</span>, <span class="bg-zinc-800 text-white font-mono rounded px-1">style.css</span>, and <span class="bg-zinc-800 text-white font-mono rounded px-1">script.js</span>.</li>
+              <li>Click <span class="font-semibold text-emerald-400">"Copy to Clipboard"</span> in the tab to instantly copy codes.</li>
+              <li>Make the files locally on your machine, place them in the same folder, and double click <span class="font-semibold text-white">index.html</span>. It runs natively in any environment (Chrome, Safari, Firefox) without compiling!</li>
+            </ol>
+          </div>
 
-            // Reset semua style tombol navbar atas ke kondisi tidak aktif
-            if (menuTable) { menuTable.classList.replace('border-cyan-500/30', 'border-white/10'); }
-            if (menuPortfolio) { menuPortfolio.classList.replace('border-cyan-500/30', 'border-white/10'); }
-            if (textWED) { textWED.classList.replace('text-cyan-400', 'text-gray-500'); textWED.classList.replace('font-black', 'font-bold'); }
-            if (textForto) { textForto.classList.replace('text-cyan-400', 'text-gray-500'); textForto.classList.replace('font-black', 'font-bold'); }
+          <!-- TAB 2: index.html block -->
+          <div id="tab-pane-html" class="tab-pane hidden flex-1 flex flex-col overflow-hidden">
+            <div class="bg-zinc-900 border-b border-zinc-800 p-2 px-4.5 flex justify-between items-center select-none text-[11px] shrink-0">
+              <span class="text-zinc-500 font-mono">FILE: index.html</span>
+              <button onclick="copySourceCode('html-code')" class="bg-[#1df26b]/5 hover:bg-[#1df26b]/20 text-[#1df26b] font-bold py-1 px-3.5 border border-[#1df46b]/20 rounded-md transition duration-150 active:scale-95 cursor-pointer flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy to Clipboard
+              </button>
+            </div>
+            <pre class="flex-1 p-4 overflow-auto custom-scroll text-zinc-300 font-mono"><code id="html-code" class="text-[13px] leading-relaxed">Loading index.html content...</code></pre>
+          </div>
 
-            // Nyalakan box dan ubah style menu sesuai tab yang dipilih
-            if (namaTab === 'login') {
-                if (loginBox) loginBox.classList.remove('hidden');
-                if (menuTable) menuTable.classList.replace('border-white/10', 'border-cyan-500/30');
-                if (textWED) { textWED.classList.replace('text-gray-500', 'text-cyan-400'); textWED.classList.replace('font-bold', 'font-black'); }
-            } else if (namaTab === 'register') {
-                if (registerBox) registerBox.classList.remove('hidden');
-                if (menuTable) menuTable.classList.replace('border-white/10', 'border-cyan-500/30');
-                if (textWED) { textWED.classList.replace('text-gray-500', 'text-cyan-400'); textWED.classList.replace('font-bold', 'font-black'); }
-            } else if (namaTab === 'forto') {
-                if (halamanForto) halamanForto.classList.remove('hidden');
-                if (menuPortfolio) menuPortfolio.classList.replace('border-white/10', 'border-cyan-500/30');
-                if (textForto) { textForto.classList.replace('text-gray-500', 'text-cyan-400'); textForto.classList.replace('font-bold', 'font-black'); }
-            }
-        }
-        function toggleAuth(isRegister) {
-            if (isRegister) {
-                bukaTab('register');
-            } else {
-                bukaTab('login');
-            }
-        }
-        function showSection(id, el) {
-            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('menu-active'));
-            el.classList.add('menu-active');
-        }
-        function toggleChat() {
-            const w = document.getElementById('chatWidget');
-            w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
-        }
-        function sendChat() {
-            const inp = document.getElementById('chatInput');
-            if (!inp.value.trim()) return;
-            db.ref("global_chats").push({ m: inp.value.trim(), t: Date.now(), uid: auth.currentUser.uid });
-            inp.value = "";
-        }
-        function listenChat() {
-            db.ref("global_chats").limitToLast(15).on("value", snap => {
-                const box = document.getElementById('chatContent');
-                let h = "";
-                snap.forEach(c => {
-                    const d = c.val();
-                    const isMe = d.uid === auth.currentUser.uid;
-                    h += `<div class="flex flex-col ${isMe ? 'items-end' : 'items-start'} w-full animate-up">
-                        <div class="${isMe ? 'bg-cyan-400 text-black rounded-l-2xl rounded-br-2xl font-semibold' : 'bg-white/10 text-white rounded-r-2xl rounded-bl-2xl'} p-3 px-4 text-xs max-w-[85%] break-words">
-                            ${d.m}
-                        </div>
-                    </div>`;
-                });
-                box.innerHTML = h;
-                box.scrollTop = box.scrollHeight;
-            });
-        }
-        function uploadFoto() {
-            const f = document.getElementById('fileInput').files[0];
-            const rd = new FileReader();
-            rd.onload = e => db.ref("users/" + auth.currentUser.uid).update({ photo: e.target.result });
-            rd.readAsDataURL(f);
-        }
-        function openGallery() { document.getElementById('fileInput').click(); }
-        function showPopup() { document.getElementById('announcementPopup').style.display = "flex"; }
-        function closePopup() { document.getElementById('announcementPopup').style.display = "none"; }
-    
-        (function() {
-            let basePrice = 2824687;
-            function formatKoin(angka) {
-                return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
-            }
-            setInterval(function() {
-                let change = Math.floor(Math.random() * 15000) - 5000; 
-                basePrice += change;
-                if(basePrice < 2500000) basePrice = 2800000;
-                let textChange = Math.abs(change);
+          <!-- TAB 3: style.css block -->
+          <div id="tab-pane-css" class="tab-pane hidden flex-1 flex flex-col overflow-hidden">
+            <div class="bg-zinc-900 border-b border-zinc-800 p-2 px-4.5 flex justify-between items-center select-none text-[11px] shrink-0">
+              <span class="text-zinc-500 font-mono">FILE: style.css</span>
+              <button onclick="copySourceCode('css-code')" class="bg-[#1df26b]/5 hover:bg-[#1df26b]/20 text-[#1df26b] font-bold py-1 px-3.5 border border-[#1df46b]/20 rounded-md transition duration-150 active:scale-95 cursor-pointer flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy to Clipboard
+              </button>
+            </div>
+            <pre class="flex-1 p-4 overflow-auto custom-scroll text-zinc-300 font-mono"><code id="css-code" class="text-[13px] leading-relaxed">Loading style.css content...</code></pre>
+          </div>
 
-                const priceEl = document.getElementById('stockPrice');
-                const changeEl = document.getElementById('stockChange');
-                
-                if(priceEl) priceEl.innerText = formatKoin(basePrice);
-                if(changeEl) changeEl.innerText = '+' + textChange.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+          <!-- TAB 4: script.js block -->
+          <div id="tab-pane-js" class="tab-pane hidden flex-1 flex flex-col overflow-hidden">
+            <div class="bg-zinc-900 border-b border-zinc-800 p-2 px-4.5 flex justify-between items-center select-none text-[11px] shrink-0">
+              <span class="text-zinc-500 font-mono">FILE: script.js</span>
+              <button onclick="copySourceCode('js-code')" class="bg-[#1df26b]/5 hover:bg-[#1df26b]/20 text-[#1df26b] font-bold py-1 px-3.5 border border-[#1df46b]/20 rounded-md transition duration-150 active:scale-95 cursor-pointer flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy to Clipboard
+              </button>
+            </div>
+            <pre class="flex-1 p-4 overflow-auto custom-scroll text-zinc-300 font-mono"><code id="js-code" class="text-[13px] leading-relaxed">Loading script.js content...</code></pre>
+          </div>
 
-                let p1 = Math.floor(Math.random() * 40) + 30;
-                let p2 = Math.floor(Math.random() * 50) + 60;
-                let p3 = Math.floor(Math.random() * 40) + 40;
-                let p4 = Math.floor(Math.random() * 50) + 50;
+        </div> <!-- End Tab contents view -->
+      </div> <!-- End code selection area -->
 
-                let newD = `M 0 80 Q 100 ${p1} 200 ${p2} T 400 ${p3} L 500 ${p4}`;
-                let newArea = `${newD} L 500 150 L 0 150 Z`;
+    </div> <!-- End Right Column -->
 
-                const gLine = document.getElementById('graphLine');
-                const gArea = document.getElementById('graphArea');
-                const gDot = document.getElementById('graphDot');
+  </div> <!-- End Layout row -->
 
-                if(gLine) gLine.setAttribute('d', newD);
-                if(gArea) gArea.setAttribute('d', newArea);
-                if(gDot) {
-                    gDot.setAttribute('cx', '500');
-                    gDot.setAttribute('cy', p4);
-                }
-            }, 2000);
-        })();
-    
-    </script>
+
+  <!-- RE-MAP HTML CONTROLLER TRICGERS -->
+  <div class="hidden">
+     <!-- Submission Form invisible trigger proxy anchor -->
+     <button id="tracker-submit-btn"></button>
+  </div>
+
+
+  <!-- Lucide icons CDN library loads -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // Initialize standard lucide vector icons
+    lucide.createIcons();
+  </script>
+
+  <!-- Core Javascript mechanics -->
+  <script src="./script.js"></script>
 </body>
 </html>
