@@ -68,7 +68,7 @@
     .switch-text { font-size: 13px; color: #444; text-align: center; margin-top: 20px; }
     .switch-text button { color: #888; text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 13px; font-family: 'DM Sans', sans-serif; transition: color .2s; padding: 0; }
     .switch-text button:hover { color: var(--white); }
-    .otp-row { display: flex; gap: 12px; margin: 28px 0 24px; }
+    .otp-row { display: flex; gap: 12px; margin: 28px 0 16px; }
     .otp-box { flex: 1; aspect-ratio: 1; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; transition: border-color .2s; }
     .otp-box.filled { border-color: #555; }
     .otp-box input { background: transparent; border: none; outline: none; width: 100%; height: 100%; text-align: center; font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); caret-color: var(--accent); }
@@ -94,6 +94,11 @@
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .dashboard-avatar { width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--accent); margin: 0 auto 16px; display: block; object-fit: cover; background: var(--card); }
+    .dashboard-name { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); text-align: center; margin-bottom: 4px; }
+    .dashboard-email { font-size: 13px; color: var(--text-sec); text-align: center; margin-bottom: 28px; }
+    .btn-logout { width: 100%; background: transparent; color: #e74c3c; border: 1px solid #e74c3c; border-radius: var(--radius); padding: 13px; font-size: 13px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s, color .2s; margin-top: 8px; }
+    .btn-logout:hover { background: #e74c3c; color: #fff; }
   </style>
 </head>
 <body>
@@ -127,9 +132,9 @@
         <div class="err-msg" id="l-pass-err"></div>
       </div>
       <button class="forgot-link" onclick="go('s-forgot')">Forget password?</button>
-      <button class="btn-primary" onclick="doLogin()">Sign In</button>
+      <button class="btn-primary" onclick="doEmailLogin()">Sign In</button>
       <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
-      <button class="btn-social">
+      <button class="btn-social" onclick="doGoogleLogin()">
         <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Continue with Google
       </button>
@@ -174,7 +179,7 @@
       </div>
       <button class="btn-primary" onclick="doRegister()">Sign Up</button>
       <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
-      <button class="btn-social">
+      <button class="btn-social" onclick="doGoogleRegister()">
         <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Continue with Google
       </button>
@@ -202,14 +207,14 @@
     </div>
   </div>
 
-  <!-- VERIFY EMAIL -->
+  <!-- VERIFY EMAIL (OTP) -->
   <div class="screen" id="s-verify">
     <div class="card">
-      <button class="back-btn" onclick="go('s-forgot')">
+      <button class="back-btn" id="verify-back-btn" onclick="go('s-forgot')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
       <h1 class="title">Verify<br>Your Email</h1>
-      <p class="subtitle">Masukkan 4 digit kode yang dikirim ke email kamu</p>
+      <p class="subtitle" id="verify-subtitle">Masukkan 4 digit kode yang dikirim ke email kamu</p>
       <div class="otp-row" id="otp-row">
         <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
         <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
@@ -232,8 +237,8 @@
       <button class="back-btn" onclick="go('s-forgot')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
-      <h1 class="title">Create<br>New Password</h1>
-      <p class="subtitle">Your new password must be different from previously used password</p>
+      <h1 class="title" id="newpass-title">Create<br>New Password</h1>
+      <p class="subtitle" id="newpass-subtitle">Your new password must be different from previously used password</p>
       <div class="input-group">
         <div class="input-wrap" id="nw-pass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -260,32 +265,75 @@
     </div>
   </div>
 
+  <!-- DASHBOARD -->
+  <div class="screen" id="s-dashboard">
+    <div class="card">
+      <h1 class="title" style="font-size:24px;margin-bottom:24px;">Dashboard</h1>
+      <img id="dash-avatar" class="dashboard-avatar" src="" alt="avatar"/>
+      <div class="dashboard-name" id="dash-name">—</div>
+      <div class="dashboard-email" id="dash-email">—</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:11px;color:#444;margin-bottom:6px;">Login method</div>
+        <div style="font-size:13px;color:#888;" id="dash-method">—</div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
 </div>
 
-<script>
-  function go(id) {
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signOut, signInWithPopup,
+    GoogleAuthProvider, signInWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
+    authDomain: "orbitxy-6e79c.firebaseapp.com",
+    projectId: "orbitxy-6e79c",
+    storageBucket: "orbitxy-6e79c.firebasestorage.app",
+    messagingSenderId: "1064037228597",
+    appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+  googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+  let currentOtp = '';
+  let verifyMode = 'forgot';
+  let pendingGoogleCred = null;
+  let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
+  function saveAccounts() { localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts)); }
+
+  onAuthStateChanged(auth, user => { if (user) showDashboard(user, 'Google'); });
+
+  window.go = id => {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0, 0);
-  }
-  function showToast(msg, isErr) {
+  };
+  window.showToast = (msg, isErr) => {
     const t = document.getElementById('toast');
     document.getElementById('toast-msg').textContent = msg;
     t.classList.toggle('toast-err', !!isErr);
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
-  }
-  function setErr(wrapId, errId, msg) {
+  };
+  window.setErr = (wrapId, errId, msg) => {
     if (wrapId) { const w = document.getElementById(wrapId); if (w) w.classList.toggle('err', !!msg); }
     const e = document.getElementById(errId); if (e) e.textContent = msg || '';
     return !!msg;
-  }
-  function togglePass(id, btn) {
+  };
+  window.togglePass = (id, btn) => {
     const inp = document.getElementById(id);
     inp.type = inp.type === 'password' ? 'text' : 'password';
     btn.style.color = inp.type === 'text' ? '#bbb' : '';
-  }
-  function checkStrength(val, prefix) {
+  };
+  window.checkStrength = (val, prefix) => {
     const segs = [1,2,3,4].map(i => document.getElementById(prefix+i));
     segs.forEach(s => s.className = 'strength-segment');
     if (!val) return;
@@ -296,13 +344,9 @@
     if (/[^A-Za-z0-9]/.test(val)) score++;
     const cls = score <= 1 ? 'weak' : score <= 3 ? 'medium' : 'strong';
     for (let i = 0; i < score; i++) segs[i].classList.add(cls);
-  }
-  const validDomains = [
-    'gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
-    'icloud.com','me.com','mac.com','protonmail.com','proton.me',
-    'mail.com','zoho.com','yandex.com','aol.com','live.com',
-    'msn.com','googlemail.com','rocketmail.com','inbox.com'
-  ];
+  };
+
+  const validDomains = ['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com','icloud.com','me.com','mac.com','protonmail.com','proton.me','mail.com','zoho.com','yandex.com','aol.com','live.com','msn.com','googlemail.com','rocketmail.com','inbox.com'];
   function checkEmail(email) {
     if (!email) return 'Email wajib diisi';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
@@ -310,25 +354,7 @@
     if (!validDomains.includes(domain)) return 'Gunakan email valid (contoh: @gmail.com, @yahoo.com)';
     return '';
   }
-  function doLogin() {
-    const email = document.getElementById('l-email').value.trim();
-    const pass = document.getElementById('l-pass').value;
-    let hasErr = false;
-    hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
-    hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
-    if (!hasErr) showToast('Login berhasil! Selamat datang 👋');
-  }
-  function doRegister() {
-    const email = document.getElementById('r-email').value.trim();
-    const pass = document.getElementById('r-pass').value;
-    const cpass = document.getElementById('r-cpass').value;
-    let hasErr = false;
-    hasErr = setErr('rw-email','r-email-err', checkEmail(email)) || hasErr;
-    hasErr = setErr('rw-pass','r-pass-err', !pass ? 'Password wajib diisi' : pass.length < 8 ? 'Password minimal 8 karakter' : '') || hasErr;
-    hasErr = setErr('rw-cpass','r-cpass-err', !cpass ? 'Konfirmasi password wajib diisi' : pass !== cpass ? 'Password tidak cocok!' : '') || hasErr;
-    if (!hasErr) { showToast('Akun berhasil dibuat! Silakan login 🎉'); setTimeout(() => go('s-login'), 1800); }
-  }
-  let currentOtp = '';
+
   function generateOtp() {
     currentOtp = String(Math.floor(1000 + Math.random() * 9000));
     document.getElementById('otp-display').textContent = currentOtp;
@@ -345,12 +371,101 @@
     });
     inputs[0].focus();
   }
-  function doForgot() {
-    const email = document.getElementById('f-email').value.trim();
-    const hasErr = setErr('fw-email','f-email-err', checkEmail(email));
-    if (!hasErr) setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
+
+  window.resendOtp = () => { generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
+
+  function showDashboard(user, method) {
+    document.getElementById('dash-name').textContent = user.displayName || user.email;
+    document.getElementById('dash-email').textContent = user.email;
+    document.getElementById('dash-method').textContent = method;
+    const avatar = document.getElementById('dash-avatar');
+    avatar.src = user.photoURL || ''; avatar.style.display = user.photoURL ? 'block' : 'none';
+    go('s-dashboard');
   }
-  function doVerify() {
+
+  window.doLogout = async () => {
+    try { await signOut(auth); } catch(e) {}
+    go('s-login'); showToast('Berhasil logout 👋');
+  };
+
+  window.doEmailLogin = async () => {
+    const email = document.getElementById('l-email').value.trim();
+    const pass  = document.getElementById('l-pass').value;
+    let hasErr = false;
+    hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
+    hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
+    if (hasErr) return;
+    const acc = registeredAccounts[email];
+    if (acc) {
+      if (acc.password !== pass) { setErr('lw-pass','l-pass-err','Password salah!'); return; }
+      showToast('Login berhasil! Selamat datang 👋');
+      showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
+      return;
+    }
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, pass);
+      showToast('Login berhasil! Selamat datang 👋');
+      showDashboard(result.user, 'Email & Password');
+    } catch(e) {
+      const msg = (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') ? 'Akun belum terdaftar atau password salah!' : 'Login gagal: ' + e.message;
+      setErr('lw-pass','l-pass-err', msg);
+    }
+  };
+
+  window.doGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      if (!registeredAccounts[user.email]) {
+        showToast('Akun belum terdaftar. Silakan Sign Up dulu.', true);
+        await signOut(auth); return;
+      }
+      showToast('Login berhasil! Selamat datang 👋');
+      showDashboard(user, 'Google');
+    } catch(e) {
+      if (e.code !== 'auth/popup-closed-by-user') showToast('Login Google gagal: ' + e.message, true);
+    }
+  };
+
+  window.doRegister = () => {
+    const email = document.getElementById('r-email').value.trim();
+    const pass  = document.getElementById('r-pass').value;
+    const cpass = document.getElementById('r-cpass').value;
+    let hasErr = false;
+    hasErr = setErr('rw-email','r-email-err', checkEmail(email)) || hasErr;
+    hasErr = setErr('rw-pass','r-pass-err', !pass ? 'Password wajib diisi' : pass.length < 8 ? 'Password minimal 8 karakter' : '') || hasErr;
+    hasErr = setErr('rw-cpass','r-cpass-err', !cpass ? 'Konfirmasi password wajib diisi' : pass !== cpass ? 'Password tidak cocok!' : '') || hasErr;
+    if (hasErr) return;
+    if (registeredAccounts[email]) { setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.'); return; }
+    pendingGoogleCred = { email, password: pass, type: 'email' };
+    verifyMode = 'register-email';
+    document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode verifikasi';
+    document.getElementById('verify-back-btn').onclick = () => go('s-register');
+    go('s-verify'); generateOtp();
+  };
+
+  window.doGoogleRegister = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      if (registeredAccounts[user.email]) {
+        showToast('Akun sudah ada, langsung login ✅');
+        showDashboard(user, 'Google'); return;
+      }
+      pendingGoogleCred = { email: user.email, displayName: user.displayName, photoURL: user.photoURL, type: 'google' };
+      await signOut(auth);
+      verifyMode = 'register-google';
+      document.getElementById('verify-subtitle').textContent = 'Verifikasi akun Google kamu';
+      document.getElementById('verify-back-btn').onclick = () => go('s-register');
+      document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
+      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login manual nantinya';
+      go('s-verify'); generateOtp();
+    } catch(e) {
+      if (e.code !== 'auth/popup-closed-by-user') showToast('Google gagal: ' + e.message, true);
+    }
+  };
+
+  window.doVerify = () => {
     const inputs = document.querySelectorAll('#otp-row input');
     const entered = Array.from(inputs).map(i => i.value).join('');
     if (entered.length < 4) { document.getElementById('otp-err').textContent = 'Masukkan 4 digit kode terlebih dahulu'; return; }
@@ -361,17 +476,52 @@
     }
     document.getElementById('otp-err').textContent = '';
     showToast('Kode benar! ✅');
-    setTimeout(() => go('s-newpass'), 1000);
-  }
-  function resendOtp() { generateOtp(); showToast('Kode baru telah dikirim ulang 🔄'); }
-  function doSavePass() {
+    if (verifyMode === 'forgot') {
+      document.getElementById('newpass-title').innerHTML = 'Create<br>New Password';
+      document.getElementById('newpass-subtitle').textContent = 'Your new password must be different from previously used password';
+      setTimeout(() => go('s-newpass'), 800);
+    } else {
+      setTimeout(() => go('s-newpass'), 800);
+    }
+  };
+
+  window.doForgot = () => {
+    const email = document.getElementById('f-email').value.trim();
+    const hasErr = setErr('fw-email','f-email-err', checkEmail(email));
+    if (!hasErr) {
+      verifyMode = 'forgot';
+      document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode yang dikirim ke email kamu';
+      document.getElementById('verify-back-btn').onclick = () => go('s-forgot');
+      setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
+    }
+  };
+
+  window.doSavePass = () => {
     const np = document.getElementById('n-pass').value;
     const cp = document.getElementById('n-cpass').value;
     let hasErr = false;
     hasErr = setErr('nw-pass','n-pass-err', !np ? 'Password baru wajib diisi' : np.length < 8 ? 'Minimal 8 karakter' : '') || hasErr;
     hasErr = setErr('nw-cpass','n-cpass-err', !cp ? 'Konfirmasi password wajib diisi' : np !== cp ? 'Password tidak cocok!' : '') || hasErr;
-    if (!hasErr) { showToast('Password berhasil disimpan! Redirecting…'); setTimeout(() => go('s-login'), 2000); }
-  }
+    if (hasErr) return;
+    if (verifyMode === 'forgot') {
+      showToast('Password berhasil diubah! Silakan login 🔐');
+      setTimeout(() => go('s-login'), 1800);
+    } else if (verifyMode === 'register-email') {
+      const { email } = pendingGoogleCred;
+      registeredAccounts[email] = { password: np, name: email.split('@')[0], method: 'email' };
+      saveAccounts();
+      showToast('Registrasi berhasil! Silakan login 🎉');
+      pendingGoogleCred = null;
+      setTimeout(() => go('s-login'), 1800);
+    } else if (verifyMode === 'register-google') {
+      const { email, displayName, photoURL } = pendingGoogleCred;
+      registeredAccounts[email] = { password: np, name: displayName || email.split('@')[0], photoURL, method: 'google' };
+      saveAccounts();
+      showToast('Registrasi berhasil! Silakan login 🎉');
+      pendingGoogleCred = null;
+      setTimeout(() => go('s-login'), 1800);
+    }
+  };
 </script>
 
 </body>
