@@ -297,11 +297,24 @@
     const cls = score <= 1 ? 'weak' : score <= 3 ? 'medium' : 'strong';
     for (let i = 0; i < score; i++) segs[i].classList.add(cls);
   }
+  const validDomains = [
+    'gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
+    'icloud.com','me.com','mac.com','protonmail.com','proton.me',
+    'mail.com','zoho.com','yandex.com','aol.com','live.com',
+    'msn.com','googlemail.com','rocketmail.com','inbox.com'
+  ];
+  function checkEmail(email) {
+    if (!email) return 'Email wajib diisi';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
+    const domain = email.split('@')[1].toLowerCase();
+    if (!validDomains.includes(domain)) return 'Gunakan email valid (contoh: @gmail.com, @yahoo.com)';
+    return '';
+  }
   function doLogin() {
     const email = document.getElementById('l-email').value.trim();
     const pass = document.getElementById('l-pass').value;
     let hasErr = false;
-    hasErr = setErr('lw-email','l-email-err', !email ? 'Email wajib diisi' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'Format email tidak valid' : '') || hasErr;
+    hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
     hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
     if (!hasErr) showToast('Login berhasil! Selamat datang 👋');
   }
@@ -310,7 +323,7 @@
     const pass = document.getElementById('r-pass').value;
     const cpass = document.getElementById('r-cpass').value;
     let hasErr = false;
-    hasErr = setErr('rw-email','r-email-err', !email ? 'Email wajib diisi' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'Format email tidak valid' : '') || hasErr;
+    hasErr = setErr('rw-email','r-email-err', checkEmail(email)) || hasErr;
     hasErr = setErr('rw-pass','r-pass-err', !pass ? 'Password wajib diisi' : pass.length < 8 ? 'Password minimal 8 karakter' : '') || hasErr;
     hasErr = setErr('rw-cpass','r-cpass-err', !cpass ? 'Konfirmasi password wajib diisi' : pass !== cpass ? 'Password tidak cocok!' : '') || hasErr;
     if (!hasErr) { showToast('Akun berhasil dibuat! Silakan login 🎉'); setTimeout(() => go('s-login'), 1800); }
@@ -334,7 +347,7 @@
   }
   function doForgot() {
     const email = document.getElementById('f-email').value.trim();
-    const hasErr = setErr('fw-email','f-email-err', !email ? 'Email wajib diisi' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'Format email tidak valid' : '');
+    const hasErr = setErr('fw-email','f-email-err', checkEmail(email));
     if (!hasErr) setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
   }
   function doVerify() {
