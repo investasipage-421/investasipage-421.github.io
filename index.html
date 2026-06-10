@@ -94,7 +94,7 @@
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
-
+ 
     /* Dashboard screen */
     .dashboard-avatar {
       width: 72px; height: 72px; border-radius: 50%;
@@ -120,14 +120,14 @@
   </style>
 </head>
 <body>
-
+ 
 <div id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
   <span id="toast-msg">Berhasil!</span>
 </div>
-
+ 
 <div id="app">
-
+ 
   <!-- LOGIN -->
   <div class="screen active" id="s-login">
     <div class="card">
@@ -154,7 +154,7 @@
       <p class="switch-text">Don't have an account? <button onclick="go('s-register')">Sign up</button></p>
     </div>
   </div>
-
+ 
   <!-- REGISTER -->
   <div class="screen" id="s-register">
     <div class="card">
@@ -199,7 +199,7 @@
       <p class="switch-text">Already have an account? <button onclick="go('s-login')">Login</button></p>
     </div>
   </div>
-
+ 
   <!-- FORGOT PASSWORD -->
   <div class="screen" id="s-forgot">
     <div class="card">
@@ -219,7 +219,7 @@
       <p class="switch-text" style="margin-top:24px">Remember your password? <button onclick="go('s-login')">Sign in</button></p>
     </div>
   </div>
-
+ 
   <!-- VERIFY EMAIL (OTP) -->
   <div class="screen" id="s-verify">
     <div class="card">
@@ -243,7 +243,7 @@
       <button class="btn-primary" onclick="doVerify()">Verify</button>
     </div>
   </div>
-
+ 
   <!-- CREATE NEW PASSWORD -->
   <div class="screen" id="s-newpass">
     <div class="card">
@@ -277,7 +277,7 @@
       <button class="btn-primary" onclick="doSavePass()">Save</button>
     </div>
   </div>
-
+ 
   <!-- DASHBOARD (setelah login) -->
   <div class="screen" id="s-dashboard">
     <div class="card">
@@ -292,9 +292,9 @@
       <button class="btn-logout" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
-
+ 
 </div>
-
+ 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
@@ -307,7 +307,7 @@
     signInWithEmailAndPassword,
     deleteUser
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+ 
   const firebaseConfig = {
     apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
     authDomain: "orbitxy-6e79c.firebaseapp.com",
@@ -316,23 +316,23 @@
     messagingSenderId: "1064037228597",
     appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
   };
-
+ 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: 'select_account' });
-
+ 
   // ─── State ───────────────────────────────────────────────
   let currentOtp = '';
   let verifyMode = 'forgot'; // 'forgot' | 'register-google'
   let pendingGoogleCred = null;
   let pendingForgotEmail = null;
   let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
-
+ 
   function saveAccounts() {
     localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts));
   }
-
+ 
   // ─── Auth state listener ──────────────────────────────────
   onAuthStateChanged(auth, async user => {
     if (user) {
@@ -354,14 +354,14 @@
       }
     }
   });
-
+ 
   // ─── Helpers ──────────────────────────────────────────────
   window.go = function(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0, 0);
   };
-
+ 
   window.showToast = function(msg, isErr) {
     const t = document.getElementById('toast');
     document.getElementById('toast-msg').textContent = msg;
@@ -369,19 +369,19 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   };
-
+ 
   window.setErr = function(wrapId, errId, msg) {
     if (wrapId) { const w = document.getElementById(wrapId); if (w) w.classList.toggle('err', !!msg); }
     const e = document.getElementById(errId); if (e) e.textContent = msg || '';
     return !!msg;
   };
-
+ 
   window.togglePass = function(id, btn) {
     const inp = document.getElementById(id);
     inp.type = inp.type === 'password' ? 'text' : 'password';
     btn.style.color = inp.type === 'text' ? '#bbb' : '';
   };
-
+ 
   window.checkStrength = function(val, prefix) {
     const segs = [1,2,3,4].map(i => document.getElementById(prefix+i));
     segs.forEach(s => s.className = 'strength-segment');
@@ -394,14 +394,14 @@
     const cls = score <= 1 ? 'weak' : score <= 3 ? 'medium' : 'strong';
     for (let i = 0; i < score; i++) segs[i].classList.add(cls);
   };
-
+ 
   const validDomains = [
     'gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
     'icloud.com','me.com','mac.com','protonmail.com','proton.me',
     'mail.com','zoho.com','yandex.com','aol.com','live.com',
     'msn.com','googlemail.com','rocketmail.com','inbox.com'
   ];
-
+ 
   function checkEmail(email) {
     if (!email) return 'Email wajib diisi';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
@@ -409,7 +409,7 @@
     if (!validDomains.includes(domain)) return 'Gunakan email valid (contoh: @gmail.com, @yahoo.com)';
     return '';
   }
-
+ 
   function generateOtp() {
     currentOtp = String(Math.floor(1000 + Math.random() * 9000));
     document.getElementById('otp-display').textContent = currentOtp;
@@ -426,12 +426,12 @@
     });
     inputs[0].focus();
   }
-
+ 
   window.resendOtp = function() {
     generateOtp();
     showToast('Kode baru dikirim ulang 🔄');
   };
-
+ 
   function showDashboard(user, method) {
     document.getElementById('dash-name').textContent = user.displayName || user.email;
     document.getElementById('dash-email').textContent = user.email;
@@ -445,7 +445,7 @@
     }
     go('s-dashboard');
   }
-
+ 
   // ─── LOGOUT ───────────────────────────────────────────────
   window.doLogout = async function() {
     try {
@@ -454,7 +454,7 @@
     go('s-login');
     showToast('Berhasil logout 👋');
   };
-
+ 
   // ─── LOGIN (Email) ────────────────────────────────────────
   window.doEmailLogin = async function() {
     const email = document.getElementById('l-email').value.trim();
@@ -463,27 +463,27 @@
     hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
     hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
     if (hasErr) return;
-
+ 
     const acc = registeredAccounts[email];
-
+ 
     // Tidak ada di lokal → belum registrasi
     if (!acc) {
       setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.');
       return;
     }
-
-    // Cek password lokal dulu
+ 
+    // Cek password lokal
     if (acc.password !== pass) {
       setErr('lw-pass','l-pass-err','Password salah!');
       return;
     }
-
-    // Coba login ke Firebase untuk cek apakah akun masih ada
+ 
+    // Verifikasi ke Firebase — cek apakah akun masih ada (belum dihapus admin)
     try {
       const result = await signInWithEmailAndPassword(auth, email, pass);
-      // Berhasil → masuk
+      await signOut(auth); // sign out dari Firebase, session kita pakai lokal
       showToast('Login berhasil! Selamat datang 👋');
-      showDashboard(result.user, 'Email & Password');
+      showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
     } catch(e) {
       if (
         e.code === 'auth/user-not-found' ||
@@ -491,22 +491,29 @@
         e.code === 'auth/invalid-credential' ||
         e.code === 'auth/invalid-login-credentials'
       ) {
-        // Akun dihapus di Firebase → hapus data lokal juga
+        // Akun dihapus di Firebase → hapus lokal juga
         delete registeredAccounts[email];
         saveAccounts();
         setErr('lw-email','l-email-err','Akun telah dihapus. Silakan registrasi ulang.');
+      } else if (e.code === 'auth/network-request-failed') {
+        // Tidak ada koneksi → tetap izinkan login pakai data lokal
+        showToast('Login berhasil! Selamat datang 👋');
+        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
       } else {
-        setErr('lw-pass','l-pass-err','Login gagal: ' + e.message);
+        // Error lain (misal email/password auth belum diaktifkan di Firebase)
+        // Tetap login pakai lokal
+        showToast('Login berhasil! Selamat datang 👋');
+        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
       }
     }
   };
-
+ 
   // ─── LOGIN Google (halaman login) ─────────────────────────
   window.doGoogleLogin = async function() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-
+ 
       // Belum registrasi di app → hapus akun Firebase yang baru dibuat, arahkan ke Register
       if (!registeredAccounts[user.email]) {
         try { await deleteUser(user); } catch(e) {}
@@ -524,7 +531,7 @@
         }, 1000);
         return;
       }
-
+ 
       // Sudah registrasi → verifikasi token
       try {
         await user.getIdToken(true);
@@ -540,7 +547,7 @@
         }, 1000);
         return;
       }
-
+ 
       showToast('Login berhasil! Selamat datang 👋');
       showDashboard(user, 'Google');
     } catch(e) {
@@ -552,9 +559,8 @@
       }
     }
   };
-
+ 
   // ─── REGISTER (Email manual) ──────────────────────────────
-  window.doRegister = async function() {
   window.doRegister = async function() {
     const email = document.getElementById('r-email').value.trim();
     const pass  = document.getElementById('r-pass').value;
@@ -564,12 +570,12 @@
     hasErr = setErr('rw-pass','r-pass-err', !pass ? 'Password wajib diisi' : pass.length < 8 ? 'Password minimal 8 karakter' : '') || hasErr;
     hasErr = setErr('rw-cpass','r-cpass-err', !cpass ? 'Konfirmasi password wajib diisi' : pass !== cpass ? 'Password tidak cocok!' : '') || hasErr;
     if (hasErr) return;
-
+ 
     if (registeredAccounts[email]) {
       setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.');
       return;
     }
-
+ 
     // Simpan sementara termasuk password, arahkan ke OTP
     pendingGoogleCred = { email, password: pass, type: 'email' };
     verifyMode = 'register-email';
@@ -578,14 +584,14 @@
     go('s-verify');
     generateOtp();
   };
-
+ 
   // ─── REGISTER Google ──────────────────────────────────────
   window.doGoogleRegister = async function() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       const email = user.email;
-
+ 
       // Sudah terdaftar → sign out, arahkan ke login
       if (registeredAccounts[email]) {
         await signOut(auth);
@@ -593,7 +599,7 @@
         setTimeout(() => go('s-login'), 1000);
         return;
       }
-
+ 
       // Belum terdaftar → hapus dari Firebase, simpan data, lanjut OTP + buat PW
       pendingGoogleCred = {
         email,
@@ -602,7 +608,7 @@
         type: 'google'
       };
       try { await deleteUser(user); } catch(e) {}
-
+ 
       verifyMode = 'register-google';
       document.getElementById('verify-subtitle').textContent = 'Verifikasi akun Google kamu';
       document.getElementById('verify-back-btn').onclick = () => go('s-register');
@@ -610,14 +616,14 @@
       document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login ke akun kamu';
       go('s-verify');
       generateOtp();
-
+ 
     } catch(e) {
       if (e.code !== 'auth/popup-closed-by-user') {
         showToast('Google gagal: ' + e.message, true);
       }
     }
   };
-
+ 
   // ─── VERIFY OTP ───────────────────────────────────────────
   window.doVerify = async function() {
     const inputs = document.querySelectorAll('#otp-row input');
@@ -634,27 +640,30 @@
     }
     document.getElementById('otp-err').textContent = '';
     showToast('Kode benar! ✅');
-
+ 
     if (verifyMode === 'forgot') {
       document.getElementById('newpass-title').innerHTML = 'Create<br>New Password';
       document.getElementById('newpass-subtitle').textContent = 'Your new password must be different from previously used password';
       document.getElementById('n-pass').value = '';
       document.getElementById('n-cpass').value = '';
       setTimeout(() => go('s-newpass'), 800);
-
+ 
     } else if (verifyMode === 'register-email') {
-      // Password sudah ada di pendingGoogleCred — langsung selesaikan registrasi
       const { email, password } = pendingGoogleCred;
+      // Coba buat di Firebase, kalau gagal tetap simpan lokal
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const uc = await createUserWithEmailAndPassword(auth, email, password);
         await signOut(auth);
-      } catch(e) { /* sudah ada di Firebase, tidak apa-apa */ }
+      } catch(e) {
+        // Email sudah ada di Firebase atau error lain — tetap lanjut simpan lokal
+        console.log('Firebase register note:', e.code);
+      }
       registeredAccounts[email] = { password, name: email.split('@')[0], method: 'email' };
       saveAccounts();
       pendingGoogleCred = null;
       showToast('Registrasi berhasil! Silakan login 🎉');
       setTimeout(() => go('s-login'), 1800);
-
+ 
     } else if (verifyMode === 'register-google') {
       document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
       document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login ke akun kamu';
@@ -663,7 +672,7 @@
       setTimeout(() => go('s-newpass'), 800);
     }
   };
-
+ 
   // ─── FORGOT PASSWORD ──────────────────────────────────────
   window.doForgot = function() {
     const email = document.getElementById('f-email').value.trim();
@@ -682,7 +691,7 @@
       setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
     }
   };
-
+ 
   // ─── SAVE PASSWORD (setelah OTP) ─────────────────────────
   window.doSavePass = async function() {
     const np = document.getElementById('n-pass').value;
@@ -691,7 +700,7 @@
     hasErr = setErr('nw-pass','n-pass-err', !np ? 'Password baru wajib diisi' : np.length < 8 ? 'Minimal 8 karakter' : '') || hasErr;
     hasErr = setErr('nw-cpass','n-cpass-err', !cp ? 'Konfirmasi password wajib diisi' : np !== cp ? 'Password tidak cocok!' : '') || hasErr;
     if (hasErr) return;
-
+ 
     if (verifyMode === 'forgot') {
       if (pendingForgotEmail && registeredAccounts[pendingForgotEmail]) {
         registeredAccounts[pendingForgotEmail].password = np;
@@ -700,7 +709,7 @@
       pendingForgotEmail = null;
       showToast('Password berhasil diubah! Silakan login 🔐');
       setTimeout(() => go('s-login'), 1800);
-
+ 
     } else if (verifyMode === 'register-google') {
       const { email, displayName, photoURL } = pendingGoogleCred;
       registeredAccounts[email] = { password: np, name: displayName || email.split('@')[0], photoURL, method: 'google' };
@@ -710,8 +719,8 @@
       setTimeout(() => go('s-login'), 1800);
     }
   };
-
+ 
 </script>
-
+ 
 </body>
 </html>
