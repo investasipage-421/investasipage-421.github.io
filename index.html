@@ -309,7 +309,8 @@
     signInWithPopup,
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    fetchSignInMethodsForEmail
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
  
   const firebaseConfig = {
@@ -443,6 +444,16 @@
     showToast('Berhasil logout 👋');
   };
  
+  // ─── Cek apakah akun masih ada di Firebase ───────────────
+  async function isAccountInFirebase(email) {
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+      return methods.length > 0;
+    } catch(e) {
+      return false;
+    }
+  }
+ 
   // ─── LOGIN (Email) ────────────────────────────────────────
   window.doEmailLogin = async function() {
     const email = document.getElementById('l-email').value.trim();
@@ -452,15 +463,23 @@
     hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
     if (hasErr) return;
  
-    // Cek akun lokal (registrasi manual)
     const acc = registeredAccounts[email];
     if (acc) {
+      // Cek dulu apakah akun masih ada di Firebase
+      const stillExists = await isAccountInFirebase(email);
+      if (!stillExists) {
+        // Akun sudah dihapus di Firebase → hapus data lokal
+        delete registeredAccounts[email];
+        saveAccounts();
+        setErr('lw-email','l-email-err','Akun ini sudah dihapus. Silakan registrasi ulang.');
+        return;
+      }
       if (acc.password !== pass) {
         setErr('lw-pass','l-pass-err','Password salah!');
         return;
       }
       showToast('Login berhasil! Selamat datang 👋');
-      showDashboard({ displayName: acc.name || email, email, photoURL: null }, 'Email & Password');
+      showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
       return;
     }
  
@@ -484,8 +503,9 @@
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
  
-      // Belum registrasi → sign out dulu, simpan data, arahkan ke Register
+      // Cek apakah akun lokal ada
       if (!registeredAccounts[user.email]) {
+        // Belum registrasi sama sekali → arahkan ke Register
         await signOut(auth);
         pendingGoogleCred = {
           email: user.email,
@@ -496,14 +516,29 @@
         showToast('Akun belum ada, daftar dulu ya 👇', true);
         setTimeout(() => {
           go('s-register');
-          // Auto-isi email di form register
           const rEmail = document.getElementById('r-email');
           if (rEmail) rEmail.value = user.email;
         }, 1000);
         return;
       }
  
-      // Sudah registrasi → langsung masuk
+      // Akun lokal ada → cek apakah masih ada di Firebase
+      const stillExists = await isAccountInFirebase(user.email);
+      if (!stillExists) {
+        // Sudah dihapus di Firebase → hapus data lokal, paksa registrasi ulang
+        delete registeredAccounts[user.email];
+        saveAccounts();
+        await signOut(auth);
+        showToast('Akun ini sudah dihapus. Silakan registrasi ulang.', true);
+        setTimeout(() => {
+          go('s-register');
+          const rEmail = document.getElementById('r-email');
+          if (rEmail) rEmail.value = user.email;
+        }, 1200);
+        return;
+      }
+ 
+      // Aman → langsung masuk
       showToast('Login berhasil! Selamat datang 👋');
       showDashboard(user, 'Google');
     } catch(e) {
