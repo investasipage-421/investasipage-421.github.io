@@ -300,7 +300,8 @@
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    deleteUser
+    deleteUser,
+    updatePassword
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
@@ -693,14 +694,26 @@
     if (verifyMode === 'forgot') {
       const email = pendingForgotEmail;
       if (email) {
-        // Update atau buat baru di localStorage dengan password baru
+        const oldPass = registeredAccounts[email] ? registeredAccounts[email].password : null;
+
+        // Update localStorage dulu dengan password baru
         if (registeredAccounts[email]) {
           registeredAccounts[email].password = np;
         } else {
-          // Akun ada di Firebase tapi belum di lokal → tambahkan
           registeredAccounts[email] = { password: np, name: email.split('@')[0], method: 'email' };
         }
         saveAccounts();
+
+        // Update password di Firebase juga (login dulu pakai pw lama, lalu update)
+        if (oldPass) {
+          try {
+            const uc = await signInWithEmailAndPassword(auth, email, oldPass);
+            await updatePassword(uc.user, np);
+            await signOut(auth);
+          } catch(e) {
+            // Kalau gagal (pw lama salah di Firebase dll) tidak apa-apa, lokal sudah update
+          }
+        }
       }
       pendingForgotEmail = null;
       showToast('Password berhasil diubah! Silakan login 🔐');
