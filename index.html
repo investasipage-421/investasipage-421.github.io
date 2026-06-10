@@ -473,30 +473,27 @@
       return;
     }
 
-    // Verifikasi ke Firebase — cek apakah akun masih ada (belum dihapus admin)
+    // Verifikasi ke Firebase
     try {
       const result = await signInWithEmailAndPassword(auth, email, pass);
-      await signOut(auth); // sign out dari Firebase, session kita pakai lokal
+      await signOut(auth);
       showToast('Login berhasil! Selamat datang 👋');
       showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
     } catch(e) {
-      if (
+      if (e.code === 'auth/user-disabled') {
+        // Akun ditangguhkan — JANGAN hapus lokal, beri tahu user
+        setErr('lw-email','l-email-err','Akun kamu sedang ditangguhkan. Hubungi admin.');
+      } else if (
         e.code === 'auth/user-not-found' ||
-        e.code === 'auth/user-disabled' ||
         e.code === 'auth/invalid-credential' ||
         e.code === 'auth/invalid-login-credentials'
       ) {
-        // Akun dihapus di Firebase → hapus lokal juga
+        // Akun benar-benar dihapus → hapus lokal
         delete registeredAccounts[email];
         saveAccounts();
         setErr('lw-email','l-email-err','Akun telah dihapus. Silakan registrasi ulang.');
-      } else if (e.code === 'auth/network-request-failed') {
-        // Tidak ada koneksi → tetap izinkan login pakai data lokal
-        showToast('Login berhasil! Selamat datang 👋');
-        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
       } else {
-        // Error lain (misal email/password auth belum diaktifkan di Firebase)
-        // Tetap login pakai lokal
+        // Firebase error lain (network, auth belum aktif, dll) → tetap login lokal
         showToast('Login berhasil! Selamat datang 👋');
         showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
       }
