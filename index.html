@@ -670,15 +670,12 @@
     const email = document.getElementById('f-email').value.trim();
     const hasErr = setErr('fw-email','f-email-err', checkEmail(email));
     if (!hasErr) {
-      // Cek apakah email terdaftar
-      if (!registeredAccounts[email]) {
-        setErr('fw-email','f-email-err','Email belum terdaftar. Silakan Sign Up dulu.');
-        return;
-      }
       // Simpan email untuk dipakai saat save password
       pendingForgotEmail = email;
       verifyMode = 'forgot';
-      document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode yang dikirim ke email kamu';
+      document.getElementById('newpass-title').innerHTML = 'Create<br>New Password';
+      document.getElementById('newpass-subtitle').textContent = 'Your new password must be different from previously used password';
+      document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode verifikasi';
       document.getElementById('verify-back-btn').onclick = () => go('s-forgot');
       setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
     }
@@ -694,8 +691,15 @@
     if (hasErr) return;
 
     if (verifyMode === 'forgot') {
-      if (pendingForgotEmail && registeredAccounts[pendingForgotEmail]) {
-        registeredAccounts[pendingForgotEmail].password = np;
+      const email = pendingForgotEmail;
+      if (email) {
+        // Update atau buat baru di localStorage dengan password baru
+        if (registeredAccounts[email]) {
+          registeredAccounts[email].password = np;
+        } else {
+          // Akun ada di Firebase tapi belum di lokal → tambahkan
+          registeredAccounts[email] = { password: np, name: email.split('@')[0], method: 'email' };
+        }
         saveAccounts();
       }
       pendingForgotEmail = null;
