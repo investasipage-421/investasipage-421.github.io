@@ -555,6 +555,7 @@
 
   // ─── REGISTER (Email manual) ──────────────────────────────
   window.doRegister = async function() {
+  window.doRegister = async function() {
     const email = document.getElementById('r-email').value.trim();
     const pass  = document.getElementById('r-pass').value;
     const cpass = document.getElementById('r-cpass').value;
@@ -569,7 +570,7 @@
       return;
     }
 
-    // Simpan sementara, arahkan ke OTP verify dulu
+    // Simpan sementara termasuk password, arahkan ke OTP
     pendingGoogleCred = { email, password: pass, type: 'email' };
     verifyMode = 'register-email';
     document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode verifikasi';
@@ -618,7 +619,7 @@
   };
 
   // ─── VERIFY OTP ───────────────────────────────────────────
-  window.doVerify = function() {
+  window.doVerify = async function() {
     const inputs = document.querySelectorAll('#otp-row input');
     const entered = Array.from(inputs).map(i => i.value).join('');
     if (entered.length < 4) {
@@ -635,16 +636,30 @@
     showToast('Kode benar! ✅');
 
     if (verifyMode === 'forgot') {
+      document.getElementById('newpass-title').innerHTML = 'Create<br>New Password';
+      document.getElementById('newpass-subtitle').textContent = 'Your new password must be different from previously used password';
+      document.getElementById('n-pass').value = '';
+      document.getElementById('n-cpass').value = '';
       setTimeout(() => go('s-newpass'), 800);
+
     } else if (verifyMode === 'register-email') {
-      // Langsung ke buat password (sudah punya password, konfirmasi saja)
-      document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
-      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk akun kamu';
-      setTimeout(() => go('s-newpass'), 800);
+      // Password sudah ada di pendingGoogleCred — langsung selesaikan registrasi
+      const { email, password } = pendingGoogleCred;
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        await signOut(auth);
+      } catch(e) { /* sudah ada di Firebase, tidak apa-apa */ }
+      registeredAccounts[email] = { password, name: email.split('@')[0], method: 'email' };
+      saveAccounts();
+      pendingGoogleCred = null;
+      showToast('Registrasi berhasil! Silakan login 🎉');
+      setTimeout(() => go('s-login'), 1800);
+
     } else if (verifyMode === 'register-google') {
-      // Google register: langsung ke buat password
       document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
-      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login manual nantinya';
+      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login ke akun kamu';
+      document.getElementById('n-pass').value = '';
+      document.getElementById('n-cpass').value = '';
       setTimeout(() => go('s-newpass'), 800);
     }
   };
@@ -678,28 +693,12 @@
     if (hasErr) return;
 
     if (verifyMode === 'forgot') {
-      // Update password di registeredAccounts — password lama langsung diganti
       if (pendingForgotEmail && registeredAccounts[pendingForgotEmail]) {
         registeredAccounts[pendingForgotEmail].password = np;
         saveAccounts();
       }
       pendingForgotEmail = null;
       showToast('Password berhasil diubah! Silakan login 🔐');
-      setTimeout(() => go('s-login'), 1800);
-
-    } else if (verifyMode === 'register-email') {
-      const { email, password } = pendingGoogleCred;
-      // Buat akun di Firebase supaya bisa cek apakah dihapus nanti
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        await signOut(auth);
-      } catch(e) {
-        // Kalau sudah ada di Firebase tidak apa-apa, lanjut saja
-      }
-      registeredAccounts[email] = { password, name: email.split('@')[0], method: 'email' };
-      saveAccounts();
-      showToast('Registrasi berhasil! Silakan login 🎉');
-      pendingGoogleCred = null;
       setTimeout(() => go('s-login'), 1800);
 
     } else if (verifyMode === 'register-google') {
