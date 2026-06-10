@@ -465,18 +465,40 @@
     if (hasErr) return;
 
     const acc = registeredAccounts[email];
-    if (acc) {
-      if (acc.password !== pass) {
-        setErr('lw-pass','l-pass-err','Password salah!');
-        return;
-      }
-      showToast('Login berhasil! Selamat datang 👋');
-      showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
+
+    // Tidak ada di lokal → belum registrasi
+    if (!acc) {
+      setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.');
       return;
     }
 
-    // Tidak ada di lokal → belum registrasi
-    setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.');
+    // Cek password lokal dulu
+    if (acc.password !== pass) {
+      setErr('lw-pass','l-pass-err','Password salah!');
+      return;
+    }
+
+    // Coba login ke Firebase untuk cek apakah akun masih ada
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, pass);
+      // Berhasil → masuk
+      showToast('Login berhasil! Selamat datang 👋');
+      showDashboard(result.user, 'Email & Password');
+    } catch(e) {
+      if (
+        e.code === 'auth/user-not-found' ||
+        e.code === 'auth/user-disabled' ||
+        e.code === 'auth/invalid-credential' ||
+        e.code === 'auth/invalid-login-credentials'
+      ) {
+        // Akun dihapus di Firebase → hapus data lokal juga
+        delete registeredAccounts[email];
+        saveAccounts();
+        setErr('lw-email','l-email-err','Akun telah dihapus. Silakan registrasi ulang.');
+      } else {
+        setErr('lw-pass','l-pass-err','Login gagal: ' + e.message);
+      }
+    }
   };
 
   // ─── LOGIN Google (halaman login) ─────────────────────────
@@ -666,8 +688,15 @@
       setTimeout(() => go('s-login'), 1800);
 
     } else if (verifyMode === 'register-email') {
-      const { email } = pendingGoogleCred;
-      registeredAccounts[email] = { password: np, name: email.split('@')[0], method: 'email' };
+      const { email, password } = pendingGoogleCred;
+      // Buat akun di Firebase supaya bisa cek apakah dihapus nanti
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        await signOut(auth);
+      } catch(e) {
+        // Kalau sudah ada di Firebase tidak apa-apa, lanjut saja
+      }
+      registeredAccounts[email] = { password, name: email.split('@')[0], method: 'email' };
       saveAccounts();
       showToast('Registrasi berhasil! Silakan login 🎉');
       pendingGoogleCred = null;
