@@ -326,6 +326,7 @@
   let currentOtp = '';
   let verifyMode = 'forgot'; // 'forgot' | 'register-google'
   let pendingGoogleCred = null;
+  let pendingForgotEmail = null;
   let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
 
   function saveAccounts() {
@@ -631,6 +632,13 @@
     const email = document.getElementById('f-email').value.trim();
     const hasErr = setErr('fw-email','f-email-err', checkEmail(email));
     if (!hasErr) {
+      // Cek apakah email terdaftar
+      if (!registeredAccounts[email]) {
+        setErr('fw-email','f-email-err','Email belum terdaftar. Silakan Sign Up dulu.');
+        return;
+      }
+      // Simpan email untuk dipakai saat save password
+      pendingForgotEmail = email;
       verifyMode = 'forgot';
       document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode yang dikirim ke email kamu';
       document.getElementById('verify-back-btn').onclick = () => go('s-forgot');
@@ -648,6 +656,12 @@
     if (hasErr) return;
 
     if (verifyMode === 'forgot') {
+      // Update password di registeredAccounts — password lama langsung diganti
+      if (pendingForgotEmail && registeredAccounts[pendingForgotEmail]) {
+        registeredAccounts[pendingForgotEmail].password = np;
+        saveAccounts();
+      }
+      pendingForgotEmail = null;
       showToast('Password berhasil diubah! Silakan login 🔐');
       setTimeout(() => go('s-login'), 1800);
 
