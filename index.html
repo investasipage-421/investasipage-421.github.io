@@ -335,21 +335,21 @@
   // ─── Auth state listener ──────────────────────────────────
   onAuthStateChanged(auth, async user => {
     if (user) {
-      // Verifikasi token masih valid (akun belum dihapus)
+      // Kalau sedang dalam proses registrasi, jangan auto-login
+      if (pendingGoogleCred) return;
       try {
         await user.getIdToken(true);
-        // Cek juga apakah ada di registeredAccounts
         if (registeredAccounts[user.email]) {
           showDashboard(user, 'Google');
+        } else {
+          await signOut(auth);
         }
       } catch(e) {
-        // Token tidak valid = akun sudah dihapus
         await signOut(auth);
         if (registeredAccounts[user.email]) {
           delete registeredAccounts[user.email];
           saveAccounts();
         }
-        go('s-login');
       }
     }
   });
@@ -661,14 +661,8 @@
 
     } else if (verifyMode === 'register-google') {
       const { email, displayName, photoURL } = pendingGoogleCred;
-      // Simpan ke localStorage
       registeredAccounts[email] = { password: np, name: displayName || email.split('@')[0], photoURL, method: 'google' };
       saveAccounts();
-      // Re-login Google popup agar akun muncul kembali di Firebase console
-      try {
-        const result = await signInWithPopup(auth, googleProvider);
-        await signOut(auth); // sign out lagi, user harus login manual
-      } catch(e) { /* tidak apa-apa jika user tutup popup */ }
       showToast('Registrasi berhasil! Silakan login 🎉');
       pendingGoogleCred = null;
       setTimeout(() => go('s-login'), 1800);
