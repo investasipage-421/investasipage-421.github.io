@@ -94,7 +94,7 @@
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
- 
+
     /* Dashboard screen */
     .dashboard-avatar {
       width: 72px; height: 72px; border-radius: 50%;
@@ -120,14 +120,14 @@
   </style>
 </head>
 <body>
- 
+
 <div id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
   <span id="toast-msg">Berhasil!</span>
 </div>
- 
+
 <div id="app">
- 
+
   <!-- LOGIN -->
   <div class="screen active" id="s-login">
     <div class="card">
@@ -151,15 +151,10 @@
       </div>
       <button class="forgot-link" onclick="go('s-forgot')">Forget password?</button>
       <button class="btn-primary" onclick="doEmailLogin()">Sign In</button>
-      <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
-      <button class="btn-social" onclick="doGoogleLogin()">
-        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Continue with Google
-      </button>
       <p class="switch-text">Don't have an account? <button onclick="go('s-register')">Sign up</button></p>
     </div>
   </div>
- 
+
   <!-- REGISTER -->
   <div class="screen" id="s-register">
     <div class="card">
@@ -199,12 +194,12 @@
       <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
       <button class="btn-social" onclick="doGoogleRegister()">
         <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Continue with Google
+        Register with Google
       </button>
       <p class="switch-text">Already have an account? <button onclick="go('s-login')">Login</button></p>
     </div>
   </div>
- 
+
   <!-- FORGOT PASSWORD -->
   <div class="screen" id="s-forgot">
     <div class="card">
@@ -224,7 +219,7 @@
       <p class="switch-text" style="margin-top:24px">Remember your password? <button onclick="go('s-login')">Sign in</button></p>
     </div>
   </div>
- 
+
   <!-- VERIFY EMAIL (OTP) -->
   <div class="screen" id="s-verify">
     <div class="card">
@@ -248,7 +243,7 @@
       <button class="btn-primary" onclick="doVerify()">Verify</button>
     </div>
   </div>
- 
+
   <!-- CREATE NEW PASSWORD -->
   <div class="screen" id="s-newpass">
     <div class="card">
@@ -282,7 +277,7 @@
       <button class="btn-primary" onclick="doSavePass()">Save</button>
     </div>
   </div>
- 
+
   <!-- DASHBOARD (setelah login) -->
   <div class="screen" id="s-dashboard">
     <div class="card">
@@ -297,9 +292,9 @@
       <button class="btn-logout" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
- 
+
 </div>
- 
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
@@ -312,7 +307,7 @@
     signInWithEmailAndPassword,
     deleteUser
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
- 
+
   const firebaseConfig = {
     apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
     authDomain: "orbitxy-6e79c.firebaseapp.com",
@@ -321,22 +316,22 @@
     messagingSenderId: "1064037228597",
     appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
   };
- 
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: 'select_account' });
- 
+
   // ─── State ───────────────────────────────────────────────
   let currentOtp = '';
   let verifyMode = 'forgot'; // 'forgot' | 'register-google'
   let pendingGoogleCred = null;
   let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
- 
+
   function saveAccounts() {
     localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts));
   }
- 
+
   // ─── Auth state listener ──────────────────────────────────
   onAuthStateChanged(auth, async user => {
     if (user) {
@@ -358,14 +353,14 @@
       }
     }
   });
- 
+
   // ─── Helpers ──────────────────────────────────────────────
   window.go = function(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0, 0);
   };
- 
+
   window.showToast = function(msg, isErr) {
     const t = document.getElementById('toast');
     document.getElementById('toast-msg').textContent = msg;
@@ -373,19 +368,19 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   };
- 
+
   window.setErr = function(wrapId, errId, msg) {
     if (wrapId) { const w = document.getElementById(wrapId); if (w) w.classList.toggle('err', !!msg); }
     const e = document.getElementById(errId); if (e) e.textContent = msg || '';
     return !!msg;
   };
- 
+
   window.togglePass = function(id, btn) {
     const inp = document.getElementById(id);
     inp.type = inp.type === 'password' ? 'text' : 'password';
     btn.style.color = inp.type === 'text' ? '#bbb' : '';
   };
- 
+
   window.checkStrength = function(val, prefix) {
     const segs = [1,2,3,4].map(i => document.getElementById(prefix+i));
     segs.forEach(s => s.className = 'strength-segment');
@@ -398,14 +393,14 @@
     const cls = score <= 1 ? 'weak' : score <= 3 ? 'medium' : 'strong';
     for (let i = 0; i < score; i++) segs[i].classList.add(cls);
   };
- 
+
   const validDomains = [
     'gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
     'icloud.com','me.com','mac.com','protonmail.com','proton.me',
     'mail.com','zoho.com','yandex.com','aol.com','live.com',
     'msn.com','googlemail.com','rocketmail.com','inbox.com'
   ];
- 
+
   function checkEmail(email) {
     if (!email) return 'Email wajib diisi';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
@@ -413,7 +408,7 @@
     if (!validDomains.includes(domain)) return 'Gunakan email valid (contoh: @gmail.com, @yahoo.com)';
     return '';
   }
- 
+
   function generateOtp() {
     currentOtp = String(Math.floor(1000 + Math.random() * 9000));
     document.getElementById('otp-display').textContent = currentOtp;
@@ -430,12 +425,12 @@
     });
     inputs[0].focus();
   }
- 
+
   window.resendOtp = function() {
     generateOtp();
     showToast('Kode baru dikirim ulang 🔄');
   };
- 
+
   function showDashboard(user, method) {
     document.getElementById('dash-name').textContent = user.displayName || user.email;
     document.getElementById('dash-email').textContent = user.email;
@@ -449,7 +444,7 @@
     }
     go('s-dashboard');
   }
- 
+
   // ─── LOGOUT ───────────────────────────────────────────────
   window.doLogout = async function() {
     try {
@@ -458,7 +453,7 @@
     go('s-login');
     showToast('Berhasil logout 👋');
   };
- 
+
   // ─── LOGIN (Email) ────────────────────────────────────────
   window.doEmailLogin = async function() {
     const email = document.getElementById('l-email').value.trim();
@@ -467,7 +462,7 @@
     hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
     hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
     if (hasErr) return;
- 
+
     const acc = registeredAccounts[email];
     if (acc) {
       if (acc.password !== pass) {
@@ -478,17 +473,17 @@
       showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
       return;
     }
- 
+
     // Tidak ada di lokal → belum registrasi
     setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.');
   };
- 
+
   // ─── LOGIN Google (halaman login) ─────────────────────────
   window.doGoogleLogin = async function() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
- 
+
       // Belum registrasi di app → hapus akun Firebase yang baru dibuat, arahkan ke Register
       if (!registeredAccounts[user.email]) {
         try { await deleteUser(user); } catch(e) {}
@@ -506,7 +501,7 @@
         }, 1000);
         return;
       }
- 
+
       // Sudah registrasi → verifikasi token
       try {
         await user.getIdToken(true);
@@ -522,7 +517,7 @@
         }, 1000);
         return;
       }
- 
+
       showToast('Login berhasil! Selamat datang 👋');
       showDashboard(user, 'Google');
     } catch(e) {
@@ -534,7 +529,7 @@
       }
     }
   };
- 
+
   // ─── REGISTER (Email manual) ──────────────────────────────
   window.doRegister = async function() {
     const email = document.getElementById('r-email').value.trim();
@@ -545,12 +540,12 @@
     hasErr = setErr('rw-pass','r-pass-err', !pass ? 'Password wajib diisi' : pass.length < 8 ? 'Password minimal 8 karakter' : '') || hasErr;
     hasErr = setErr('rw-cpass','r-cpass-err', !cpass ? 'Konfirmasi password wajib diisi' : pass !== cpass ? 'Password tidak cocok!' : '') || hasErr;
     if (hasErr) return;
- 
+
     if (registeredAccounts[email]) {
       setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.');
       return;
     }
- 
+
     // Simpan sementara, arahkan ke OTP verify dulu
     pendingGoogleCred = { email, password: pass, type: 'email' };
     verifyMode = 'register-email';
@@ -559,48 +554,46 @@
     go('s-verify');
     generateOtp();
   };
- 
+
   // ─── REGISTER Google ──────────────────────────────────────
   window.doGoogleRegister = async function() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       const email = user.email;
- 
-      // Sudah terdaftar di app → langsung login
+
+      // Sudah terdaftar → sign out, arahkan ke login
       if (registeredAccounts[email]) {
-        showToast('Akun sudah ada, langsung login ✅');
-        showDashboard(user, 'Google');
+        await signOut(auth);
+        showToast('Akun sudah ada, silakan login 👇', true);
+        setTimeout(() => go('s-login'), 1000);
         return;
       }
- 
-      // Belum terdaftar → simpan data, HAPUS dari Firebase dulu
-      // (biar tidak muncul di Firebase console sebelum registrasi selesai)
+
+      // Belum terdaftar → hapus dari Firebase, simpan data, lanjut OTP + buat PW
       pendingGoogleCred = {
         email,
         displayName: user.displayName,
         photoURL: user.photoURL,
         type: 'google'
       };
- 
       try { await deleteUser(user); } catch(e) {}
-      // deleteUser sudah otomatis sign out
- 
+
       verifyMode = 'register-google';
       document.getElementById('verify-subtitle').textContent = 'Verifikasi akun Google kamu';
       document.getElementById('verify-back-btn').onclick = () => go('s-register');
       document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
-      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login manual nantinya';
+      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login ke akun kamu';
       go('s-verify');
       generateOtp();
- 
+
     } catch(e) {
       if (e.code !== 'auth/popup-closed-by-user') {
         showToast('Google gagal: ' + e.message, true);
       }
     }
   };
- 
+
   // ─── VERIFY OTP ───────────────────────────────────────────
   window.doVerify = function() {
     const inputs = document.querySelectorAll('#otp-row input');
@@ -617,7 +610,7 @@
     }
     document.getElementById('otp-err').textContent = '';
     showToast('Kode benar! ✅');
- 
+
     if (verifyMode === 'forgot') {
       setTimeout(() => go('s-newpass'), 800);
     } else if (verifyMode === 'register-email') {
@@ -632,7 +625,7 @@
       setTimeout(() => go('s-newpass'), 800);
     }
   };
- 
+
   // ─── FORGOT PASSWORD ──────────────────────────────────────
   window.doForgot = function() {
     const email = document.getElementById('f-email').value.trim();
@@ -644,7 +637,7 @@
       setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
     }
   };
- 
+
   // ─── SAVE PASSWORD (setelah OTP) ─────────────────────────
   window.doSavePass = async function() {
     const np = document.getElementById('n-pass').value;
@@ -653,11 +646,11 @@
     hasErr = setErr('nw-pass','n-pass-err', !np ? 'Password baru wajib diisi' : np.length < 8 ? 'Minimal 8 karakter' : '') || hasErr;
     hasErr = setErr('nw-cpass','n-cpass-err', !cp ? 'Konfirmasi password wajib diisi' : np !== cp ? 'Password tidak cocok!' : '') || hasErr;
     if (hasErr) return;
- 
+
     if (verifyMode === 'forgot') {
       showToast('Password berhasil diubah! Silakan login 🔐');
       setTimeout(() => go('s-login'), 1800);
- 
+
     } else if (verifyMode === 'register-email') {
       const { email } = pendingGoogleCred;
       registeredAccounts[email] = { password: np, name: email.split('@')[0], method: 'email' };
@@ -665,7 +658,7 @@
       showToast('Registrasi berhasil! Silakan login 🎉');
       pendingGoogleCred = null;
       setTimeout(() => go('s-login'), 1800);
- 
+
     } else if (verifyMode === 'register-google') {
       const { email, displayName, photoURL } = pendingGoogleCred;
       // Simpan ke localStorage
@@ -681,8 +674,8 @@
       setTimeout(() => go('s-login'), 1800);
     }
   };
- 
+
 </script>
- 
+
 </body>
 </html>
