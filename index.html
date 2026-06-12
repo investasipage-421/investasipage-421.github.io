@@ -95,9 +95,17 @@
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-    /* ───────── DASHBOARD (NEW DARK VERSION) ───────── */
-    #s-dashboard .card {
-      padding: 28px 22px 24px;
+    /* ───────── DASHBOARD (FULL SCREEN, EDGE-TO-EDGE) ───────── */
+    #s-dashboard {
+      position: fixed; inset: 0; z-index: 50;
+      background: var(--black);
+      overflow-y: auto;
+    }
+    #s-dashboard .dash-inner {
+      width: 100%; max-width: 480px; margin: 0 auto;
+      min-height: 100%;
+      padding: max(24px, env(safe-area-inset-top)) 18px 28px;
+      display: flex; flex-direction: column;
     }
     .dash-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -129,8 +137,8 @@
     /* Balance card (kosong, isi gambar penuh via setBalanceImage) */
     .balance-card {
       border-radius: 18px;
-      min-height: 190px;
-      margin-bottom: 18px;
+      min-height: 170px;
+      margin-bottom: 16px;
       background: var(--card);
       background-size: cover; background-position: center; background-repeat: no-repeat;
       overflow: hidden;
@@ -140,7 +148,7 @@
     .slider-wrap {
       position: relative; border-radius: 18px; overflow: hidden;
       background: var(--card);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .slider-track {
       display: flex; width: 100%;
@@ -184,7 +192,7 @@
     /* Bottom nav */
     .bottom-nav {
       display: flex; align-items: center; justify-content: space-between;
-      margin-top: 4px; padding-top: 4px;
+      margin-top: auto; padding-top: 16px;
     }
     .nav-item {
       flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -375,7 +383,7 @@
 
   <!-- DASHBOARD (setelah login) — VERSI BARU GELAP -->
   <div class="screen" id="s-dashboard">
-    <div class="card">
+    <div class="dash-inner">
 
       <!-- Header -->
       <div class="dash-header">
