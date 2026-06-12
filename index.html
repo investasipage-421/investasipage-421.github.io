@@ -213,18 +213,6 @@
     }
     .nav-fab svg { width: 24px; height: 24px; }
 
-    .dash-greeting {
-      font-size: 13px; color: var(--text-sec); text-align: center;
-      margin-top: 16px;
-    }
-    .btn-logout {
-      width: 100%; background: transparent; color: #e74c3c;
-      border: 1px solid #e74c3c; border-radius: var(--radius);
-      padding: 12px; font-size: 13px; font-weight: 600;
-      font-family: 'DM Sans', sans-serif; cursor: pointer;
-      transition: background .2s, color .2s; margin-top: 18px;
-    }
-    .btn-logout:hover { background: #e74c3c; color: #fff; }
   </style>
 </head>
 <body>
@@ -458,8 +446,6 @@
         </div>
       </div>
 
-      <div class="dash-greeting" id="dash-greeting">—</div>
-      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
 
@@ -1019,8 +1005,6 @@
 
   // ─── Show Dashboard (override dengan inisialisasi slider) ──
   function showDashboard(user, method) {
-    document.getElementById('dash-greeting').textContent =
-      'Login sebagai ' + (user.displayName || user.email) + ' • ' + method;
     const avatar = document.getElementById('dash-avatar');
     if (user.photoURL) {
       avatar.src = user.photoURL;
