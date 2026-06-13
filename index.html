@@ -96,12 +96,12 @@
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     /* ───────── DASHBOARD & ACCOUNT (FULL SCREEN, EDGE-TO-EDGE) ───────── */
-    #s-dashboard, #s-account {
+    #s-dashboard, #s-account, #s-send {
       position: fixed; inset: 0; z-index: 50;
       background: var(--black);
       overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner {
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
       padding: max(24px, env(safe-area-inset-top)) 18px 90px;
@@ -345,6 +345,58 @@
     .acc-menu-text { display: flex; flex-direction: column; gap: 4px; }
     .acc-menu-sub { font-size: 12.5px; color: var(--text-sec); font-weight: 400; }
 
+    /* ───────── SEND PAGE ───────── */
+    .send-page-header {
+      display: flex; align-items: center; margin-bottom: 18px;
+    }
+    .circle-back-btn {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); cursor: pointer; transition: border-color .2s;
+      padding: 0;
+    }
+    .circle-back-btn:hover { border-color: #444; }
+    .circle-back-btn svg { width: 20px; height: 20px; }
+    .send-recipients {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 20px; max-height: 320px; overflow-y: auto;
+    }
+    .send-recipient {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 12px 14px;
+      cursor: pointer; transition: border-color .2s;
+    }
+    .send-recipient:hover { border-color: #444; }
+    .send-recipient.selected { border-color: var(--accent); }
+    .send-recipient-avatar {
+      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+      object-fit: cover; background: var(--input-bg); border: 1px solid var(--input-border);
+    }
+    .send-recipient-info { flex: 1; min-width: 0; }
+    .send-recipient-name {
+      font-size: 14px; font-weight: 600; color: var(--white);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .send-recipient-email {
+      font-size: 12px; color: var(--text-sec);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .send-recipient-check {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      border: 1px solid var(--input-border); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .send-recipient-check svg { width: 13px; height: 13px; opacity: 0; transition: opacity .15s; }
+    .send-recipient.selected .send-recipient-check { border-color: var(--accent); }
+    .send-recipient.selected .send-recipient-check svg { opacity: 1; }
+    .send-empty {
+      font-size: 13px; color: var(--text-sec); text-align: center;
+      padding: 28px 0; background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
     /* ───────── SEND ANIMATION (paper plane zigzag, speed = koneksi) ───────── */
     .send-anim-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -546,7 +598,7 @@
 
       <!-- Action buttons: Send / Receive / Swap -->
       <div class="action-row">
-        <div class="action-btn" onclick="playSendAnimation(); showToast('Send')">
+        <div class="action-btn" onclick="playSendAnimation(openSendPage)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           Send
         </div>
@@ -678,6 +730,42 @@
     </div>
   </div>
 
+  <!-- SEND PAGE -->
+  <div class="screen" id="s-send">
+    <div class="dash-inner">
+
+      <div class="send-page-header">
+        <button class="circle-back-btn" onclick="go('s-dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+      </div>
+
+      <h1 class="title" style="font-size:30px;margin-bottom:8px;">Send</h1>
+      <p class="subtitle" style="margin-top:0;margin-bottom:20px;">Kirim ke pengguna PulseUp lain yang sudah terdaftar &amp; login</p>
+
+      <div class="send-recipients" id="send-recipients">
+        <!-- diisi via JS: loadSendRecipients() -->
+      </div>
+
+      <div class="input-group">
+        <div class="input-wrap" id="sw-amount">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M9 9.5a2.5 2.5 0 0 1 2.5-2.5h1A2.5 2.5 0 0 1 15 9.5c0 1.4-1.1 2.5-2.5 2.5h-1A2.5 2.5 0 0 0 9 14.5 2.5 2.5 0 0 0 11.5 17h1A2.5 2.5 0 0 0 15 14.5" stroke-linecap="round"/></svg>
+          <input type="number" placeholder="Jumlah ($)" id="send-amount" min="0" step="0.01"/>
+        </div>
+        <div class="err-msg" id="send-amount-err"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-wrap" id="sw-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+          <input type="text" placeholder="Catatan (opsional)" id="send-note"/>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="doSendToUser()">Send</button>
+    </div>
+  </div>
+
   <!-- Bottom nav (untuk dashboard) -->
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
@@ -739,6 +827,8 @@
   let pendingGoogleCred = null;
   let pendingForgotEmail = null;
   let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
+  let currentUserEmail = null;
+  let selectedRecipient = null;
 
   function saveAccounts() {
     localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts));
@@ -813,7 +903,7 @@
     return Math.max(f, 0.12); // tetap jalan walau pelan
   }
 
-  window.playSendAnimation = function() {
+  window.playSendAnimation = function(onDone) {
     const w = window.innerWidth;
     const h = window.innerHeight;
     const midY = h / 2;
@@ -899,6 +989,7 @@
       } else {
         if (conn && conn.removeEventListener) conn.removeEventListener('change', onConnChange);
         overlay.remove();
+        if (typeof onDone === 'function') onDone();
       }
     }
 
@@ -965,6 +1056,72 @@
   window.resendOtp = function() {
     generateOtp();
     showToast('Kode baru dikirim ulang 🔄');
+  };
+
+  // ════════════════════════════════════════════════════════════
+  //  SEND PAGE: kirim ke pengguna lain yang sudah terdaftar/login
+  // ════════════════════════════════════════════════════════════
+  window.openSendPage = function() {
+    go('s-send');
+    loadSendRecipients();
+  };
+
+  window.loadSendRecipients = function() {
+    const container = document.getElementById('send-recipients');
+    container.innerHTML = '';
+    selectedRecipient = null;
+    setErr('sw-amount', 'send-amount-err', '');
+    document.getElementById('send-amount').value = '';
+    document.getElementById('send-note').value = '';
+
+    const entries = Object.entries(registeredAccounts).filter(([email]) => email !== currentUserEmail);
+
+    if (entries.length === 0) {
+      container.innerHTML = '<div class="send-empty">Belum ada pengguna lain yang terdaftar &amp; login</div>';
+      return;
+    }
+
+    entries.forEach(([email, acc]) => {
+      const item = document.createElement('div');
+      item.className = 'send-recipient';
+      item.dataset.email = email;
+      const avatarSrc = acc.photoURL || DEFAULT_AVATAR;
+      const name = acc.name || email.split('@')[0];
+      item.innerHTML = `
+        <img class="send-recipient-avatar" src="${avatarSrc}" alt=""/>
+        <div class="send-recipient-info">
+          <div class="send-recipient-name">${name}</div>
+          <div class="send-recipient-email">${email}</div>
+        </div>
+        <div class="send-recipient-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      `;
+      item.addEventListener('click', () => {
+        container.querySelectorAll('.send-recipient').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedRecipient = email;
+      });
+      container.appendChild(item);
+    });
+  };
+
+  window.doSendToUser = function() {
+    const amountInput = document.getElementById('send-amount');
+    const amount = parseFloat(amountInput.value);
+
+    if (!selectedRecipient) {
+      showToast('Pilih penerima terlebih dahulu', true);
+      return;
+    }
+    const hasErr = setErr('sw-amount', 'send-amount-err', (!amountInput.value || isNaN(amount) || amount <= 0) ? 'Masukkan jumlah yang valid' : '');
+    if (hasErr) return;
+
+    const recipient = registeredAccounts[selectedRecipient];
+    const recipientName = (recipient && recipient.name) || selectedRecipient.split('@')[0];
+
+    showToast(`Berhasil kirim $${amount.toFixed(2)} ke ${recipientName} 🎉`);
+    setTimeout(() => go('s-dashboard'), 1200);
   };
 
   // ════════════════════════════════════════════════════════════
@@ -1434,6 +1591,7 @@
 
   // ─── Show Dashboard (override dengan inisialisasi slider) ──
   function showDashboard(user, method) {
+    currentUserEmail = user.email || null;
     const avatar = document.getElementById('dash-avatar');
     if (user.photoURL) {
       avatar.src = user.photoURL;
