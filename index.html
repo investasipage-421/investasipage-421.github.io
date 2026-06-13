@@ -345,37 +345,43 @@
     .acc-menu-text { display: flex; flex-direction: column; gap: 4px; }
     .acc-menu-sub { font-size: 12.5px; color: var(--text-sec); font-weight: 400; }
 
-    /* ───────── SEND ANIMATION (paper plane + dashed line) ───────── */
+    /* ───────── SEND ANIMATION (paper plane zigzag on black overlay) ───────── */
     .send-anim-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
+      background: var(--black);
+      opacity: 0;
+      animation: send-fade-bg 1.4s ease forwards;
     }
-    .send-anim-line {
-      position: absolute; top: 50%; left: 0; width: 100%; height: 0;
-      border-top: 2px dashed var(--accent);
-      transform: translateY(-50%) scaleX(0);
-      transform-origin: left center;
-      animation: send-draw-line .9s ease forwards;
+    .send-anim-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    }
+    .send-anim-path {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-dasharray: 8 8;
     }
     .send-anim-plane {
-      position: absolute; top: 50%; left: 0;
-      width: 34px; height: 34px;
+      position: absolute; top: 0; left: 0;
+      width: 36px; height: 36px;
       color: var(--accent);
-      transform: translate(-50%, -50%) rotate(0deg);
-      animation: send-fly-plane .9s cubic-bezier(.42,0,.58,1) forwards;
+      opacity: 0;
+      offset-rotate: auto;
+      animation: send-fly-plane 1.4s cubic-bezier(.42,0,.58,1) forwards;
     }
     .send-anim-plane svg { width: 100%; height: 100%; }
-    @keyframes send-draw-line {
-      from { transform: translateY(-50%) scaleX(0); }
-      to   { transform: translateY(-50%) scaleX(1); }
+    @keyframes send-fade-bg {
+      0%   { opacity: 0; }
+      12%  { opacity: 1; }
+      82%  { opacity: 1; }
+      100% { opacity: 0; }
     }
     @keyframes send-fly-plane {
-      0%   { left: 0%;   opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.6); }
-      10%  { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-      50%  { transform: translate(-50%, -60%) rotate(8deg) scale(1.05); }
-      90%  { opacity: 1; }
-      100% { left: 100%; opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.6); }
+      0%   { offset-distance: 0%;   opacity: 0; transform: scale(.6); }
+      10%  { opacity: 1; transform: scale(1); }
+      88%  { opacity: 1; transform: scale(1); }
+      100% { offset-distance: 100%; opacity: 0; transform: scale(.6); }
     }
 
   </style>
@@ -819,12 +825,31 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   };
 
-  // ─── Animasi kirim (pesawat kertas + garis putus-putus) ──
+  // ─── Animasi kirim (layar hitam + pesawat kertas zig-zag) ──
   window.playSendAnimation = function() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const midY = h / 2;
+    const amp = Math.min(h * 0.16, 90);
+    const segs = 6;
+
+    let points = [];
+    for (let i = 0; i <= segs; i++) {
+      const x = (w * i) / segs;
+      let y;
+      if (i === 0 || i === segs) y = midY;
+      else y = midY + (i % 2 === 1 ? -amp : amp);
+      points.push([x, y]);
+    }
+    let d = `M ${points[0][0]} ${points[0][1]}`;
+    for (let i = 1; i < points.length; i++) d += ` L ${points[i][0]} ${points[i][1]}`;
+
     const overlay = document.createElement('div');
     overlay.className = 'send-anim-overlay';
     overlay.innerHTML = `
-      <div class="send-anim-line"></div>
+      <svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+        <path class="send-anim-path" d="${d}"></path>
+      </svg>
       <div class="send-anim-plane">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
           <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
@@ -832,7 +857,20 @@
       </div>
     `;
     document.body.appendChild(overlay);
-    setTimeout(() => overlay.remove(), 950);
+
+    const path = overlay.querySelector('.send-anim-path');
+    const plane = overlay.querySelector('.send-anim-plane');
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    plane.style.offsetPath = `path('${d}')`;
+
+    requestAnimationFrame(() => {
+      path.style.transition = 'stroke-dashoffset 1.4s ease';
+      path.style.strokeDashoffset = '0';
+    });
+
+    setTimeout(() => overlay.remove(), 1450);
   };
 
   window.setErr = function(wrapId, errId, msg) {
