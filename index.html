@@ -141,39 +141,15 @@
     .dash-avatar-add svg { width: 10px; height: 10px; }
 
     /* Total balance */
-    .balance-section { margin-bottom: 18px; }
-    .balance-top-row {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 10px; margin-bottom: 6px;
+    /* Banner kecil di bawah header (kosong, isi via setTopBannerImage) */
+    .top-banner {
+      border-radius: 14px;
+      aspect-ratio: 2.4 / 1;
+      margin-bottom: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      background-size: cover; background-position: center; background-repeat: no-repeat;
     }
-    .balance-label { font-size: 13px; color: var(--text-sec); margin-bottom: 6px; }
-    .balance-amount {
-      font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800;
-      color: var(--white); letter-spacing: -.01em; line-height: 1.1;
-    }
-    .balance-change {
-      font-size: 13px; color: var(--accent); margin-top: 6px;
-      display: flex; align-items: center; gap: 4px;
-    }
-    .balance-change svg { width: 13px; height: 13px; }
-
-    /* Wallet selector pill */
-    .wallet-pill {
-      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 30px; padding: 8px 14px;
-      cursor: pointer; max-width: 150px;
-    }
-    .wallet-pill-text { display: flex; flex-direction: column; min-width: 0; }
-    .wallet-pill-name {
-      font-size: 12px; font-weight: 600; color: var(--white);
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .wallet-pill-addr {
-      font-size: 10px; color: var(--muted);
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .wallet-pill svg { width: 14px; height: 14px; color: var(--muted); flex-shrink: 0; }
 
     /* Action buttons: Send / Receive / Swap */
     .action-row {
@@ -470,26 +446,8 @@
         </div>
       </div>
 
-      <!-- Total balance + wallet selector -->
-      <div class="balance-section">
-        <div class="balance-top-row">
-          <div>
-            <div class="balance-label">Total balance</div>
-            <div class="balance-amount" id="balance-amount">$0.00</div>
-            <div class="balance-change" id="balance-change">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 15 12 9 18 15"/></svg>
-              <span id="balance-change-text">$0 (0%)</span>
-            </div>
-          </div>
-          <div class="wallet-pill" onclick="showToast('Pilih wallet')">
-            <div class="wallet-pill-text">
-              <div class="wallet-pill-name" id="wallet-name">Home wallet 1</div>
-              <div class="wallet-pill-addr" id="wallet-addr">0x0000...000</div>
-            </div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
-        </div>
-      </div>
+      <!-- Banner kecil (kosong, isi gambar via setTopBannerImage) -->
+      <div class="top-banner" id="top-banner"></div>
 
       <!-- Action buttons: Send / Receive / Swap -->
       <div class="action-row">
@@ -757,32 +715,11 @@
     document.getElementById('dash-greeting-name').textContent = name + '!';
   };
 
-  // --- Total balance ---
-  // Contoh: setTotalBalance(23980.90, 4900, 49.9)
-  window.setTotalBalance = function(amount, changeAmount, changePercent) {
-    document.getElementById('balance-amount').textContent =
-      '$' + Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const changeEl = document.getElementById('balance-change');
-    const changeText = document.getElementById('balance-change-text');
-    if (changeAmount === undefined || changeAmount === null) {
-      changeEl.style.display = 'none';
-      return;
-    }
-    changeEl.style.display = 'flex';
-    const isNeg = changeAmount < 0;
-    changeEl.style.color = isNeg ? '#e74c3c' : 'var(--accent)';
-    changeEl.querySelector('svg').innerHTML = isNeg
-      ? '<polyline points="6 9 12 15 18 9"/>'
-      : '<polyline points="6 15 12 9 18 15"/>';
-    changeText.textContent = '$' + Math.abs(changeAmount).toLocaleString('en-US') +
-      ' (' + Math.abs(changePercent) + '%)';
-  };
-
-  // --- Wallet selector pill ---
-  // Contoh: setWallet('Home wallet 1', '0x3567...989')
-  window.setWallet = function(name, address) {
-    document.getElementById('wallet-name').textContent = name;
-    document.getElementById('wallet-addr').textContent = address;
+  // --- Banner kecil di bawah header ---
+  // Contoh: setTopBannerImage('https://url-banner.jpg')
+  window.setTopBannerImage = function(url) {
+    const banner = document.getElementById('top-banner');
+    banner.style.backgroundImage = `url('${url}')`;
   };
 
   // --- Activity list ---
