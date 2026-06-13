@@ -963,6 +963,8 @@
     function onConnChange() { /* faktor dibaca tiap frame, tidak perlu state tambahan */ }
     if (conn && conn.addEventListener) conn.addEventListener('change', onConnChange);
 
+    let doneTriggered = false;
+
     function frame(t) {
       if (lastTime === null) lastTime = t;
       const dt = t - lastTime;
@@ -984,12 +986,17 @@
       overlay.style.opacity = String(opacity);
       plane.style.opacity = String(opacity);
 
+      // Pindah halaman saat pesawat sudah setengah jalan, overlay tetap lanjut di atasnya
+      if (!doneTriggered && progress >= 0.5) {
+        doneTriggered = true;
+        if (typeof onDone === 'function') onDone();
+      }
+
       if (progress < 1) {
         rafId = requestAnimationFrame(frame);
       } else {
         if (conn && conn.removeEventListener) conn.removeEventListener('change', onConnChange);
         overlay.remove();
-        if (typeof onDone === 'function') onDone();
       }
     }
 
