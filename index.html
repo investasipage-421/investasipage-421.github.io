@@ -851,11 +851,17 @@
     const last = points[points.length - 1];
     d += ` L ${last[0]} ${last[1]}`;
 
+    const animId = 'send-anim-' + Date.now();
     const overlay = document.createElement('div');
     overlay.className = 'send-anim-overlay';
     overlay.innerHTML = `
       <svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-        <path class="send-anim-path" d="${d}"></path>
+        <defs>
+          <clipPath id="${animId}-clip">
+            <rect x="0" y="0" width="0" height="${h}"></rect>
+          </clipPath>
+        </defs>
+        <path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path>
       </svg>
       <div class="send-anim-plane">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -867,8 +873,7 @@
 
     const path = overlay.querySelector('.send-anim-path');
     const plane = overlay.querySelector('.send-anim-plane');
-    const len = path.getTotalLength();
-    path.style.strokeDasharray = len;
+    const clipRect = overlay.querySelector(`#${animId}-clip rect`);
     plane.style.offsetPath = `path('${d}')`;
 
     const baseDuration = 1400; // ms pada koneksi normal/cepat
@@ -889,8 +894,8 @@
       progress += (dt / baseDuration) * factor;
       if (progress > 1) progress = 1;
 
-      // Garis & pesawat
-      path.style.strokeDashoffset = String(len * (1 - progress));
+      // Garis (putus-putus, terungkap progresif) & pesawat
+      clipRect.setAttribute('width', String(w * progress));
       plane.style.offsetDistance = (progress * 100) + '%';
 
       // Fade overlay & pesawat
@@ -909,7 +914,6 @@
       }
     }
 
-    path.style.strokeDashoffset = String(len);
     rafId = requestAnimationFrame(frame);
   };
 
