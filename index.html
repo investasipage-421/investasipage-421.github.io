@@ -256,12 +256,14 @@
 
     /* ───────── ACCOUNT SCREEN ───────── */
     .acc-header {
-      display: flex; align-items: flex-start; justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       gap: 12px; margin-bottom: 22px;
     }
+    .acc-header-text { flex: 1; min-width: 0; }
     .acc-name {
-      font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800;
+      font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em; margin-bottom: 8px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     .acc-rating {
       display: inline-flex; align-items: center; gap: 6px;
@@ -591,7 +593,7 @@
 
       <!-- Header: nama + rating + avatar -->
       <div class="acc-header">
-        <div>
+        <div class="acc-header-text">
           <div class="acc-name" id="acc-name">User</div>
           <div class="acc-rating">
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
