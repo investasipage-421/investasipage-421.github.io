@@ -345,6 +345,39 @@
     .acc-menu-text { display: flex; flex-direction: column; gap: 4px; }
     .acc-menu-sub { font-size: 12.5px; color: var(--text-sec); font-weight: 400; }
 
+    /* ───────── SEND ANIMATION (paper plane + dashed line) ───────── */
+    .send-anim-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .send-anim-line {
+      position: absolute; top: 50%; left: 0; width: 100%; height: 0;
+      border-top: 2px dashed var(--accent);
+      transform: translateY(-50%) scaleX(0);
+      transform-origin: left center;
+      animation: send-draw-line .9s ease forwards;
+    }
+    .send-anim-plane {
+      position: absolute; top: 50%; left: 0;
+      width: 34px; height: 34px;
+      color: var(--accent);
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: send-fly-plane .9s cubic-bezier(.42,0,.58,1) forwards;
+    }
+    .send-anim-plane svg { width: 100%; height: 100%; }
+    @keyframes send-draw-line {
+      from { transform: translateY(-50%) scaleX(0); }
+      to   { transform: translateY(-50%) scaleX(1); }
+    }
+    @keyframes send-fly-plane {
+      0%   { left: 0%;   opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.6); }
+      10%  { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+      50%  { transform: translate(-50%, -60%) rotate(8deg) scale(1.05); }
+      90%  { opacity: 1; }
+      100% { left: 100%; opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(.6); }
+    }
+
   </style>
 </head>
 <body>
@@ -521,7 +554,7 @@
 
       <!-- Action buttons: Send / Receive / Swap -->
       <div class="action-row">
-        <div class="action-btn" onclick="showToast('Send')">
+        <div class="action-btn" onclick="playSendAnimation(); showToast('Send')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           Send
         </div>
@@ -784,6 +817,22 @@
     t.classList.toggle('toast-err', !!isErr);
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
+  };
+
+  // ─── Animasi kirim (pesawat kertas + garis putus-putus) ──
+  window.playSendAnimation = function() {
+    const overlay = document.createElement('div');
+    overlay.className = 'send-anim-overlay';
+    overlay.innerHTML = `
+      <div class="send-anim-line"></div>
+      <div class="send-anim-plane">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+        </svg>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.remove(), 950);
   };
 
   window.setErr = function(wrapId, errId, msg) {
