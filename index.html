@@ -397,6 +397,21 @@
       border-radius: 14px;
     }
 
+    /* Keluhan / complaint list */
+    .complaint-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 12px 14px;
+    }
+    .complaint-avatar {
+      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+      object-fit: cover; background: var(--input-bg); border: 1px solid var(--input-border);
+    }
+    .complaint-body { flex: 1; min-width: 0; }
+    .complaint-name { font-size: 13px; font-weight: 700; color: var(--white); }
+    .complaint-text { font-size: 13px; color: var(--text-sec); margin-top: 4px; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
+    .complaint-time { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
     /* ───────── SEND ANIMATION (paper plane zigzag, speed = koneksi) ───────── */
     .send-anim-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -599,8 +614,8 @@
       <!-- Action buttons: Send / Receive / Swap -->
       <div class="action-row">
         <div class="action-btn" onclick="playSendAnimation(openSendPage)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Send
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Keluhan
         </div>
         <div class="action-btn" onclick="showToast('Receive')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
@@ -730,7 +745,7 @@
     </div>
   </div>
 
-  <!-- SEND PAGE -->
+  <!-- KELUHAN PAGE -->
   <div class="screen" id="s-send">
     <div class="dash-inner">
 
@@ -740,36 +755,25 @@
         </button>
       </div>
 
-      <h1 class="title" style="font-size:30px;margin-bottom:8px;">Send</h1>
-      <p class="subtitle" style="margin-top:0;margin-bottom:20px;">Kirim ke pengguna PulseUp lain yang sudah terdaftar &amp; login</p>
+      <h1 class="title" style="font-size:30px;margin-bottom:8px;">Keluhan</h1>
+      <p class="subtitle" style="margin-top:0;margin-bottom:20px;">Sampaikan keluhan atau masukan kamu tentang aplikasi ini</p>
 
       <div class="input-group">
-        <div class="input-wrap" id="sw-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Cari nama atau email pengguna" id="send-search" oninput="onSendSearchInput(this.value)" autocomplete="off"/>
+        <div class="input-wrap" id="cw-text" style="align-items:flex-start;padding:14px 16px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin-top:2px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <textarea id="complaint-text" placeholder="Tulis keluhan kamu di sini..." rows="3" style="background:transparent;border:none;outline:none;width:100%;resize:vertical;font-size:14px;font-family:'DM Sans',sans-serif;color:#ccc;padding:0;line-height:1.6;"></textarea>
         </div>
+        <div class="err-msg" id="complaint-err"></div>
       </div>
 
-      <div class="send-recipients" id="send-recipients">
-        <!-- diisi via JS: renderSendRecipients() -->
-      </div>
+      <button class="btn-primary" onclick="submitComplaint()">Kirim Keluhan</button>
 
-      <div class="input-group">
-        <div class="input-wrap" id="sw-amount">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M9 9.5a2.5 2.5 0 0 1 2.5-2.5h1A2.5 2.5 0 0 1 15 9.5c0 1.4-1.1 2.5-2.5 2.5h-1A2.5 2.5 0 0 0 9 14.5 2.5 2.5 0 0 0 11.5 17h1A2.5 2.5 0 0 0 15 14.5" stroke-linecap="round"/></svg>
-          <input type="number" placeholder="Jumlah ($)" id="send-amount" min="0" step="0.01"/>
-        </div>
-        <div class="err-msg" id="send-amount-err"></div>
+      <div class="activity-header" style="margin-top:28px;">
+        <div class="activity-title">Keluhan Pengguna</div>
       </div>
-
-      <div class="input-group">
-        <div class="input-wrap" id="sw-note">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
-          <input type="text" placeholder="Catatan (opsional)" id="send-note"/>
-        </div>
+      <div class="send-recipients" id="complaint-list" style="max-height:none;">
+        <!-- diisi via JS: renderComplaints() -->
       </div>
-
-      <button class="btn-primary" onclick="doSendToUser()">Send</button>
     </div>
   </div>
 
@@ -835,7 +839,21 @@
   let pendingForgotEmail = null;
   let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
   let currentUserEmail = null;
-  let selectedRecipient = null;
+  let complaintsList = JSON.parse(localStorage.getItem('pu_complaints') || '[]');
+
+  function saveComplaints() {
+    localStorage.setItem('pu_complaints', JSON.stringify(complaintsList));
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
 
   function saveAccounts() {
     localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts));
@@ -1073,88 +1091,62 @@
   };
 
   // ════════════════════════════════════════════════════════════
-  //  SEND PAGE: kirim ke pengguna lain yang sudah terdaftar/login
+  //  KELUHAN: setiap akun bisa komentar/keluhan.
+  //  Email TIDAK ditampilkan, nama (depan/belakang) ditampilkan,
+  //  avatar selalu pakai avatar default.
   // ════════════════════════════════════════════════════════════
   window.openSendPage = function() {
     go('s-send');
-    const searchInput = document.getElementById('send-search');
-    if (searchInput) searchInput.value = '';
-    selectedRecipient = null;
-    setErr('sw-amount', 'send-amount-err', '');
-    document.getElementById('send-amount').value = '';
-    document.getElementById('send-note').value = '';
-    renderSendRecipients('');
+    const textarea = document.getElementById('complaint-text');
+    if (textarea) textarea.value = '';
+    setErr('cw-text', 'complaint-err', '');
+    renderComplaints();
   };
 
-  window.onSendSearchInput = function(value) {
-    renderSendRecipients(value);
-  };
+  window.submitComplaint = function() {
+    const textarea = document.getElementById('complaint-text');
+    const text = textarea.value.trim();
 
-  window.renderSendRecipients = function(query) {
-    const container = document.getElementById('send-recipients');
-    container.innerHTML = '';
-    selectedRecipient = null;
-
-    const q = (query || '').trim().toLowerCase();
-
-    // Belum mengetik apa pun → jangan tampilkan daftar
-    if (!q) {
-      container.innerHTML = '<div class="send-empty">Cari nama atau email pengguna untuk mengirim</div>';
-      return;
-    }
-
-    const entries = Object.entries(registeredAccounts).filter(([email, acc]) => {
-      if (email === currentUserEmail) return false;
-      const name = (acc.name || email.split('@')[0]).toLowerCase();
-      return name.includes(q) || email.toLowerCase().includes(q);
-    });
-
-    if (entries.length === 0) {
-      container.innerHTML = '<div class="send-empty">Pengguna belum tersedia</div>';
-      return;
-    }
-
-    entries.forEach(([email, acc]) => {
-      const item = document.createElement('div');
-      item.className = 'send-recipient';
-      item.dataset.email = email;
-      const avatarSrc = acc.photoURL || DEFAULT_AVATAR;
-      const name = acc.name || email.split('@')[0];
-      item.innerHTML = `
-        <img class="send-recipient-avatar" src="${avatarSrc}" alt=""/>
-        <div class="send-recipient-info">
-          <div class="send-recipient-name">${name}</div>
-          <div class="send-recipient-email">${email}</div>
-        </div>
-        <div class="send-recipient-check">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-      `;
-      item.addEventListener('click', () => {
-        container.querySelectorAll('.send-recipient').forEach(el => el.classList.remove('selected'));
-        item.classList.add('selected');
-        selectedRecipient = email;
-      });
-      container.appendChild(item);
-    });
-  };
-
-  window.doSendToUser = function() {
-    const amountInput = document.getElementById('send-amount');
-    const amount = parseFloat(amountInput.value);
-
-    if (!selectedRecipient) {
-      showToast('Pilih penerima terlebih dahulu', true);
-      return;
-    }
-    const hasErr = setErr('sw-amount', 'send-amount-err', (!amountInput.value || isNaN(amount) || amount <= 0) ? 'Masukkan jumlah yang valid' : '');
+    const hasErr = setErr('cw-text', 'complaint-err', !text ? 'Tulis keluhan terlebih dahulu' : '');
     if (hasErr) return;
 
-    const recipient = registeredAccounts[selectedRecipient];
-    const recipientName = (recipient && recipient.name) || selectedRecipient.split('@')[0];
+    const acc = registeredAccounts[currentUserEmail] || {};
+    const name = acc.name || (currentUserEmail ? currentUserEmail.split('@')[0] : 'User');
 
-    showToast(`Berhasil kirim $${amount.toFixed(2)} ke ${recipientName} 🎉`);
-    setTimeout(() => go('s-dashboard'), 1200);
+    complaintsList.unshift({
+      name,
+      text,
+      time: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+    });
+    saveComplaints();
+
+    textarea.value = '';
+    showToast('Keluhan berhasil dikirim, terima kasih! 🙏');
+    renderComplaints();
+  };
+
+  window.renderComplaints = function() {
+    const container = document.getElementById('complaint-list');
+    container.innerHTML = '';
+
+    if (complaintsList.length === 0) {
+      container.innerHTML = '<div class="send-empty">Belum ada keluhan dari pengguna</div>';
+      return;
+    }
+
+    complaintsList.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'complaint-item';
+      item.innerHTML = `
+        <img class="complaint-avatar" src="${DEFAULT_AVATAR}" alt=""/>
+        <div class="complaint-body">
+          <div class="complaint-name">${escapeHtml(c.name)}</div>
+          <div class="complaint-text">${escapeHtml(c.text)}</div>
+          <div class="complaint-time">${escapeHtml(c.time)}</div>
+        </div>
+      `;
+      container.appendChild(item);
+    });
   };
 
   // ════════════════════════════════════════════════════════════
