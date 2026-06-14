@@ -108,6 +108,25 @@
       display: flex; flex-direction: column;
     }
 
+    /* Chat: header tetap diam, hanya area pesan yang bisa di-scroll */
+    #s-chat { overflow: hidden; }
+    #s-chat .dash-inner {
+      height: 100%; min-height: 0;
+      padding-bottom: 0;
+      overflow: hidden;
+    }
+    .chat-header-bar {
+      flex-shrink: 0;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .chat-scroll {
+      flex: 1; min-height: 0;
+      overflow-y: auto;
+      margin: 0 -18px;
+      padding: 0 18px;
+    }
+
     /* Header: greeting */
     .dash-header {
       display: flex; align-items: flex-start; justify-content: space-between;
@@ -447,7 +466,7 @@
     .chat-header-avatar svg { width: 20px; height: 20px; }
     .chat-messages {
       flex: 1; display: flex; flex-direction: column; gap: 10px;
-      padding-top: 6px; padding-bottom: 16px;
+      padding-top: 14px; padding-bottom: 84px;
     }
     .chat-bubble {
       max-width: 78%; padding: 10px 14px; border-radius: 16px;
@@ -877,7 +896,7 @@
   <div class="screen" id="s-chat">
     <div class="dash-inner">
 
-      <div class="send-page-header">
+      <div class="send-page-header chat-header-bar">
         <button class="circle-back-btn" onclick="go('s-account')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
@@ -890,8 +909,10 @@
         </div>
       </div>
 
-      <div class="chat-messages" id="chat-messages">
-        <!-- diisi via JS: renderChatMessages() -->
+      <div class="chat-scroll" id="chat-scroll">
+        <div class="chat-messages" id="chat-messages">
+          <!-- diisi via JS: renderChatMessages() -->
+        </div>
       </div>
     </div>
 
@@ -1405,7 +1426,8 @@
       bubble.innerHTML = `${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
       container.appendChild(bubble);
     });
-    container.scrollTop = container.scrollHeight;
+    const scroller = document.getElementById('chat-scroll');
+    scroller.scrollTop = scroller.scrollHeight;
   };
 
   function getBotReply(text) {
@@ -1459,12 +1481,13 @@
 
     // Tampilkan indikator "sedang mengetik" lalu balas otomatis seperti bot
     const container = document.getElementById('chat-messages');
+    const scroller = document.getElementById('chat-scroll');
     const typing = document.createElement('div');
     typing.className = 'chat-typing';
     typing.id = 'chat-typing-indicator';
     typing.innerHTML = '<span></span><span></span><span></span>';
     container.appendChild(typing);
-    container.scrollTop = container.scrollHeight;
+    scroller.scrollTop = scroller.scrollHeight;
 
     setTimeout(() => {
       const ind = document.getElementById('chat-typing-indicator');
