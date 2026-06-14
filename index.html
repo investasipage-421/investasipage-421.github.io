@@ -973,6 +973,26 @@
     localStorage.setItem('pu_complaints', JSON.stringify(complaintsList));
   }
 
+  // Pastikan setiap keluhan punya id unik (untuk migrasi data lama)
+  complaintsList.forEach(c => {
+    if (!c.id) c.id = 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+    if (typeof c.likes !== 'number') c.likes = 0;
+    if (typeof c.dislikes !== 'number') c.dislikes = 0;
+    delete c.myVote; // vote sekarang disimpan per-akun, bukan global
+  });
+  saveComplaints();
+
+  // ─── Vote per akun (like/dislike beda-beda per akun) ──────
+  function votesStorageKey() {
+    return 'pu_votes_' + (currentUserEmail || 'guest');
+  }
+  function loadMyVotes() {
+    return JSON.parse(localStorage.getItem(votesStorageKey()) || '{}');
+  }
+  function saveMyVotes(votes) {
+    localStorage.setItem(votesStorageKey(), JSON.stringify(votes));
+  }
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
@@ -1242,12 +1262,12 @@
     if (hasErr) return;
 
     complaintsList.unshift({
+      id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
       name: 'Anonim',
       text,
       time: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
       likes: 0,
-      dislikes: 0,
-      myVote: null
+      dislikes: 0
     });
     saveComplaints();
 
@@ -1256,24 +1276,28 @@
     renderComplaints();
   };
 
-  window.voteComplaint = function(index, type) {
-    const c = complaintsList[index];
+  window.voteComplaint = function(id, type) {
+    const c = complaintsList.find(item => item.id === id);
     if (!c) return;
     c.likes = c.likes || 0;
     c.dislikes = c.dislikes || 0;
 
-    if (c.myVote === type) {
-      // batalkan vote
+    const votes = loadMyVotes();
+    const current = votes[id] || null;
+
+    if (current === type) {
+      // batalkan vote akun ini
       if (type === 'like') c.likes--; else c.dislikes--;
-      c.myVote = null;
+      delete votes[id];
     } else {
-      if (c.myVote === 'like') c.likes--;
-      if (c.myVote === 'dislike') c.dislikes--;
+      if (current === 'like') c.likes--;
+      if (current === 'dislike') c.dislikes--;
       if (type === 'like') c.likes++; else c.dislikes++;
-      c.myVote = type;
+      votes[id] = type;
     }
 
     saveComplaints();
+    saveMyVotes(votes);
     renderComplaints();
   };
 
@@ -1287,10 +1311,12 @@
     }
 
     const thumbPath = '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>';
+    const myVotes = loadMyVotes();
 
-    complaintsList.forEach((c, i) => {
+    complaintsList.forEach((c) => {
       const likes = c.likes || 0;
       const dislikes = c.dislikes || 0;
+      const myVote = myVotes[c.id] || null;
       const item = document.createElement('div');
       item.className = 'complaint-item';
       item.innerHTML = `
@@ -1300,11 +1326,11 @@
           <div class="complaint-text">${escapeHtml(c.text)}</div>
           <div class="complaint-time">${escapeHtml(c.time)}</div>
           <div class="complaint-actions">
-            <button class="complaint-vote-btn like${c.myVote === 'like' ? ' active' : ''}" onclick="voteComplaint(${i},'like')">
+            <button class="complaint-vote-btn like${myVote === 'like' ? ' active' : ''}" onclick="voteComplaint('${c.id}','like')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${thumbPath}</svg>
               <span>${likes}</span>
             </button>
-            <button class="complaint-vote-btn dislike${c.myVote === 'dislike' ? ' active' : ''}" onclick="voteComplaint(${i},'dislike')">
+            <button class="complaint-vote-btn dislike${myVote === 'dislike' ? ' active' : ''}" onclick="voteComplaint('${c.id}','dislike')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="transform:rotate(180deg)">${thumbPath}</svg>
               <span>${dislikes}</span>
             </button>
