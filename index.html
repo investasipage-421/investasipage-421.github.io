@@ -96,12 +96,12 @@
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     /* ───────── DASHBOARD & ACCOUNT (FULL SCREEN, EDGE-TO-EDGE) ───────── */
-    #s-dashboard, #s-account, #s-send {
+    #s-dashboard, #s-account, #s-send, #s-chat {
       position: fixed; inset: 0; z-index: 50;
       background: var(--black);
       overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner {
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
       padding: max(24px, env(safe-area-inset-top)) 18px 90px;
@@ -412,6 +412,90 @@
     .complaint-text { font-size: 13px; color: var(--text-sec); margin-top: 4px; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
     .complaint-time { font-size: 11px; color: var(--muted); margin-top: 6px; }
 
+    /* ───────── CHAT ADMIN (BOT) ───────── */
+    .chat-header-info { flex: 1; min-width: 0; margin-left: 4px; }
+    .chat-header-name {
+      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800;
+      color: var(--white); letter-spacing: -.01em;
+    }
+    .chat-header-status {
+      font-size: 12px; color: var(--accent); margin-top: 2px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .chat-header-status::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); display: inline-block;
+    }
+    .chat-header-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+    }
+    .chat-header-avatar svg { width: 20px; height: 20px; }
+    .chat-messages {
+      flex: 1; display: flex; flex-direction: column; gap: 10px;
+      padding-top: 6px; padding-bottom: 16px;
+    }
+    .chat-bubble {
+      max-width: 78%; padding: 10px 14px; border-radius: 16px;
+      font-size: 13.5px; line-height: 1.55; word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .chat-bubble.bot {
+      align-self: flex-start; background: var(--card);
+      border: 1px solid var(--border); color: #ddd;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-bubble.user {
+      align-self: flex-end; background: var(--white); color: #000;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-bubble-time {
+      font-size: 10px; color: var(--muted); margin-top: 4px;
+    }
+    .chat-bubble.user .chat-bubble-time { text-align: right; color: #999; }
+    .chat-typing {
+      align-self: flex-start; display: flex; gap: 4px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; border-bottom-left-radius: 4px;
+      padding: 12px 16px;
+    }
+    .chat-typing span {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--muted);
+      animation: chatTypingBounce 1.2s infinite ease-in-out;
+    }
+    .chat-typing span:nth-child(2) { animation-delay: .15s; }
+    .chat-typing span:nth-child(3) { animation-delay: .3s; }
+    @keyframes chatTypingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: .4; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+    .chat-input-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 51;
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 10px 14px max(10px, env(safe-area-inset-bottom));
+      display: flex; justify-content: center;
+    }
+    .chat-input-row {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; max-width: 480px;
+    }
+    .chat-input-row input {
+      flex: 1; background: var(--input-bg); border: 1px solid var(--input-border);
+      border-radius: 24px; padding: 12px 18px; color: #ccc;
+      outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    }
+    .chat-input-row input:focus { border-color: #444; }
+    .chat-send-btn {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: var(--white); color: #000; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s;
+    }
+    .chat-send-btn:hover { background: #e8e8e8; }
+    .chat-send-btn svg { width: 18px; height: 18px; }
+
     /* ───────── SEND ANIMATION (paper plane zigzag, speed = koneksi) ───────── */
     .send-anim-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -721,7 +805,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </div>
-        <div class="acc-menu-item" onclick="showToast('Messages')">
+        <div class="acc-menu-item" onclick="playSendAnimation(openChatPage, '#ff3b3b')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span>Messages</span>
         </div>
@@ -773,6 +857,38 @@
       </div>
       <div class="send-recipients" id="complaint-list" style="max-height:none;">
         <!-- diisi via JS: renderComplaints() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT ADMIN (BOT) -->
+  <div class="screen" id="s-chat">
+    <div class="dash-inner">
+
+      <div class="send-page-header">
+        <button class="circle-back-btn" onclick="go('s-account')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="chat-header-info">
+          <div class="chat-header-name">Admin Support</div>
+          <div class="chat-header-status">Online</div>
+        </div>
+        <div class="chat-header-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="8.5" cy="16" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="16" r="1.2" fill="currentColor" stroke="none"/><path d="M12 11V7"/><circle cx="12" cy="5" r="1.5"/><path d="M7 11V9a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <!-- diisi via JS: renderChatMessages() -->
+      </div>
+    </div>
+
+    <div class="chat-input-bar">
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Tulis pesan ke admin..." autocomplete="off" onkeydown="if(event.key==='Enter')sendChatMessage()"/>
+        <button class="chat-send-btn" onclick="sendChatMessage()">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -928,12 +1044,13 @@
     return Math.max(f, 0.12); // tetap jalan walau pelan
   }
 
-  window.playSendAnimation = function(onDone) {
+  window.playSendAnimation = function(onDone, color) {
     const w = window.innerWidth;
     const h = window.innerHeight;
     const midY = h / 2;
     const amp = Math.min(h * 0.07, 40); // lengkungan tidak terlalu besar
     const segs = 4;
+    const animColor = color || 'var(--accent)';
 
     let points = [];
     for (let i = 0; i <= segs; i++) {
@@ -978,6 +1095,8 @@
     const plane = overlay.querySelector('.send-anim-plane');
     const clipRect = overlay.querySelector(`#${animId}-clip rect`);
     plane.style.offsetPath = `path('${d}')`;
+    path.style.stroke = animColor;
+    plane.style.color = animColor;
 
     const baseDuration = 1400; // ms pada koneksi normal/cepat
     let progress = 0;
@@ -1147,6 +1266,112 @@
       `;
       container.appendChild(item);
     });
+  };
+
+  // ════════════════════════════════════════════════════════════
+  //  CHAT ADMIN (BOT): chat sederhana dengan auto-reply bot admin
+  // ════════════════════════════════════════════════════════════
+  function chatStorageKey() {
+    return 'pu_chat_' + (currentUserEmail || 'guest');
+  }
+
+  function loadChatMessages() {
+    return JSON.parse(localStorage.getItem(chatStorageKey()) || '[]');
+  }
+
+  function saveChatMessages(msgs) {
+    localStorage.setItem(chatStorageKey(), JSON.stringify(msgs));
+  }
+
+  function chatTimeNow() {
+    return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  window.openChatPage = function() {
+    go('s-chat');
+    let msgs = loadChatMessages();
+    if (msgs.length === 0) {
+      msgs.push({
+        sender: 'bot',
+        text: 'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',
+        time: chatTimeNow()
+      });
+      saveChatMessages(msgs);
+    }
+    renderChatMessages(msgs);
+  };
+
+  window.renderChatMessages = function(msgs) {
+    const container = document.getElementById('chat-messages');
+    container.innerHTML = '';
+    (msgs || loadChatMessages()).forEach(m => {
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble ' + (m.sender === 'user' ? 'user' : 'bot');
+      bubble.innerHTML = `${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
+      container.appendChild(bubble);
+    });
+    container.scrollTop = container.scrollHeight;
+  };
+
+  function getBotReply(text) {
+    const t = text.toLowerCase();
+    if (/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) {
+      return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun, saldo, atau transaksi?';
+    }
+    if (/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) {
+      return 'Terima kasih sudah melaporkan. Keluhan kamu sudah kami catat dan akan ditindaklanjuti oleh tim kami secepatnya 🙏. Kamu juga bisa mengirim keluhan lewat menu "Keluhan" di halaman utama.';
+    }
+    if (/(saldo|balance|dana|uang)/.test(t)) {
+      return 'Untuk melihat saldo dan riwayat transaksi, silakan buka halaman Home di tab bawah ya.';
+    }
+    if (/(password|kata sandi|lupa)/.test(t)) {
+      return 'Kalau lupa password, kamu bisa reset lewat halaman login menggunakan tombol "Forget password?".';
+    }
+    if (/(akun|profil|email)/.test(t)) {
+      return 'Untuk pengaturan akun dan profil, silakan buka menu Account di tab bawah.';
+    }
+    if (/(terima kasih|makasih|thanks|thx)/.test(t)) {
+      return 'Sama-sama! Senang bisa membantu 😊 Ada hal lain yang bisa saya bantu?';
+    }
+    if (/(bye|sampai jumpa|dadah)/.test(t)) {
+      return 'Sampai jumpa! Jangan ragu untuk chat lagi kalau butuh bantuan ya 👋';
+    }
+    const fallback = [
+      'Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.',
+      'Terima kasih atas pesannya. Apakah ada detail tambahan yang bisa kamu berikan?',
+      'Pesan kamu sudah kami terima. Mohon ditunggu, kami akan segera membalas.'
+    ];
+    return fallback[Math.floor(Math.random() * fallback.length)];
+  }
+
+  window.sendChatMessage = function() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    let msgs = loadChatMessages();
+    msgs.push({ sender: 'user', text, time: chatTimeNow() });
+    saveChatMessages(msgs);
+    renderChatMessages(msgs);
+    input.value = '';
+
+    // Tampilkan indikator "sedang mengetik" lalu balas otomatis seperti bot
+    const container = document.getElementById('chat-messages');
+    const typing = document.createElement('div');
+    typing.className = 'chat-typing';
+    typing.id = 'chat-typing-indicator';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+
+    setTimeout(() => {
+      const ind = document.getElementById('chat-typing-indicator');
+      if (ind) ind.remove();
+      let m = loadChatMessages();
+      m.push({ sender: 'bot', text: getBotReply(text), time: chatTimeNow() });
+      saveChatMessages(m);
+      renderChatMessages(m);
+    }, 900 + Math.random() * 700);
   };
 
   // ════════════════════════════════════════════════════════════
