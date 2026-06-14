@@ -1360,6 +1360,28 @@
     return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
   }
 
+  // ─── Filter kata kasar (sensor otomatis) ──────────────────
+  const BAD_WORDS = [
+    'anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','kntol','memek','mmk',
+    'tai','taik','goblok','gblk','tolol','tlol','bego','bgo','babi','jancok','jancuk',
+    'kampret','brengsek','bgsk','sialan','silan','pantek','pntek','kunyuk','bajingan',
+    'bjingan','keparat','kprt','pepek','ngentot','entot','pukimak','kimak','lonte',
+    'jembut','peler','dancuk','cuk','tete','perek','bencong','banci',
+    'fuck','fck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'
+  ];
+
+  function censorText(str) {
+    let result = str;
+    BAD_WORDS.forEach(word => {
+      const regex = new RegExp('\\b(' + word + ')(\\w*)', 'gi');
+      result = result.replace(regex, (match) => {
+        if (match.length <= 1) return '*';
+        return match[0] + '*'.repeat(match.length - 1);
+      });
+    });
+    return result;
+  }
+
   window.openChatPage = function() {
     go('s-chat');
     let msgs = loadChatMessages();
@@ -1419,14 +1441,21 @@
 
   window.sendChatMessage = function() {
     const input = document.getElementById('chat-input');
-    const text = input.value.trim();
-    if (!text) return;
+    const raw = input.value.trim();
+    if (!raw) return;
+
+    const text = censorText(raw);
+    const wasCensored = text !== raw;
 
     let msgs = loadChatMessages();
     msgs.push({ sender: 'user', text, time: chatTimeNow() });
     saveChatMessages(msgs);
     renderChatMessages(msgs);
     input.value = '';
+
+    if (wasCensored) {
+      showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐', true);
+    }
 
     // Tampilkan indikator "sedang mengetik" lalu balas otomatis seperti bot
     const container = document.getElementById('chat-messages');
@@ -1441,7 +1470,10 @@
       const ind = document.getElementById('chat-typing-indicator');
       if (ind) ind.remove();
       let m = loadChatMessages();
-      m.push({ sender: 'bot', text: getBotReply(text), time: chatTimeNow() });
+      const reply = wasCensored
+        ? 'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu masalah kamu.'
+        : getBotReply(text);
+      m.push({ sender: 'bot', text: reply, time: chatTimeNow() });
       saveChatMessages(m);
       renderChatMessages(m);
     }, 900 + Math.random() * 700);
