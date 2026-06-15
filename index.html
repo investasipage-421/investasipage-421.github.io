@@ -992,6 +992,87 @@
   // ─── Default avatar (ghost icon) ──────────────────────────
   const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e1e1e'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23555'/%3E%3Cpath d='M50 60c-22 0-34 12-34 28v12h68V88c0-16-12-28-34-28z' fill='%23555'/%3E%3C/svg%3E";
 
+  // ═══════════════════════════════════════════════════════════════
+  //  ⚠️ KONFIGURASI AI UNTUK ADMIN SUPPORT (CHAT)
+  //  -----------------------------------------------------------
+  //  PENTING - BACA INI:
+  //  Jangan pernah menaruh API key OpenAI asli langsung di file HTML
+  //  yang dibuka di browser (kode ini bisa dilihat siapa saja lewat
+  //  "View Source" / DevTools). Siapapun yang menemukan key kamu
+  //  bisa memakainya dan membuat tagihan ke akun OpenAI kamu.
+  //
+  //  Cara aman: buat endpoint backend kecil (misalnya Cloudflare
+  //  Worker / Vercel Function / server Node.js) yang menyimpan API
+  //  key di server, lalu app ini cukup memanggil endpoint tersebut
+  //  (AI_CONFIG.endpoint di bawah). Backend itu yang akan menambahkan
+  //  Authorization header ke OpenAI, bukan browser.
+  //
+  //  Kalau hanya untuk uji coba/demo pribadi (bukan publik), kamu
+  //  bisa isi apiKey di bawah, TAPI jangan upload/host file ini ke
+  //  tempat yang bisa diakses orang lain.
+  // ═══════════════════════════════════════════════════════════════
+  const AI_CONFIG = {
+    enabled: true,               // set false untuk balik ke balasan template biasa
+    // Jika punya backend proxy sendiri, isi URL-nya di sini dan kosongkan apiKey:
+    // endpoint: 'https://your-worker.example.com/chat',
+    endpoint: 'https://api.openai.com/v1/chat/completions',
+    apiKey: 'MASUKKAN_API_KEY_DI_SINI', // ⚠️ lihat catatan keamanan di atas
+    model: 'gpt-4o-mini',
+    maxTokens: 300,
+    systemPrompt:
+      'Kamu adalah "Admin Support" untuk aplikasi PulseUp/OrbitXY (aplikasi mirip dompet digital). ' +
+      'Jawablah pertanyaan pengguna dengan ramah, singkat, sopan, dan dalam Bahasa Indonesia. ' +
+      'Jika pengguna melaporkan masalah/bug, sampaikan bahwa laporannya sudah dicatat dan akan ' +
+      'ditindaklanjuti tim. Jangan membuat klaim palsu tentang saldo, transaksi, atau data akun ' +
+      'spesifik karena kamu tidak memiliki akses ke data tersebut.'
+  };
+
+  // Panggil OpenAI Chat Completions API berdasarkan riwayat chat.
+  // Mengembalikan teks balasan, atau null kalau gagal (supaya bisa fallback).
+  async function fetchAIReply(history) {
+    if (!AI_CONFIG.enabled) return null;
+    if (!AI_CONFIG.apiKey || AI_CONFIG.apiKey === 'MASUKKAN_API_KEY_DI_SINI') return null;
+
+    const messages = [
+      { role: 'system', content: AI_CONFIG.systemPrompt },
+      ...history.slice(-10).map(m => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        content: m.text
+      }))
+    ];
+
+    try {
+      const res = await fetch(AI_CONFIG.endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Header ini hanya diperlukan jika memanggil OpenAI langsung dari
+          // browser (tidak disarankan). Kalau pakai backend proxy sendiri,
+          // backend kamu yang menambahkan Authorization, jadi baris ini
+          // bisa dihapus.
+          'Authorization': `Bearer ${AI_CONFIG.apiKey}`
+        },
+        body: JSON.stringify({
+          model: AI_CONFIG.model,
+          messages,
+          max_tokens: AI_CONFIG.maxTokens
+        })
+      });
+
+      if (!res.ok) {
+        console.error('AI request failed:', res.status, await res.text());
+        return null;
+      }
+
+      const data = await res.json();
+      const reply = data?.choices?.[0]?.message?.content?.trim();
+      return reply || null;
+    } catch (e) {
+      console.error('AI request error:', e);
+      return null;
+    }
+  }
+
   // ─── State ───────────────────────────────────────────────
   let currentOtp = '';
   let verifyMode = 'forgot'; // 'forgot' | 'register-google'
@@ -1472,7 +1553,7 @@
     return fallback[Math.floor(Math.random() * fallback.length)];
   }
 
-  window.sendChatMessage = function() {
+  window.sendChatMessage = async function() {
     const input = document.getElementById('chat-input');
     const raw = input.value.trim();
     if (!raw) return;
@@ -1500,17 +1581,25 @@
     container.appendChild(typing);
     scroller.scrollTop = scroller.scrollHeight;
 
-    setTimeout(() => {
-      const ind = document.getElementById('chat-typing-indicator');
-      if (ind) ind.remove();
-      let m = loadChatMessages();
-      const reply = wasCensored
-        ? 'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu masalah kamu.'
-        : getBotReply(text);
-      m.push({ sender: 'bot', text: reply, time: chatTimeNow() });
-      saveChatMessages(m);
-      renderChatMessages(m);
-    }, 900 + Math.random() * 700);
+    let reply;
+    if (wasCensored) {
+      reply = 'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu masalah kamu.';
+    } else {
+      // Coba balasan dari AI dulu; kalau gagal/tidak dikonfigurasi, fallback ke template
+      const aiReply = await fetchAIReply(loadChatMessages());
+      reply = aiReply || getBotReply(text);
+    }
+
+    // Pastikan delay minimal agar animasi "mengetik" terasa natural
+    const minDelay = 700 + Math.random() * 500;
+    await new Promise(r => setTimeout(r, minDelay));
+
+    const ind = document.getElementById('chat-typing-indicator');
+    if (ind) ind.remove();
+    let m = loadChatMessages();
+    m.push({ sender: 'bot', text: reply, time: chatTimeNow() });
+    saveChatMessages(m);
+    renderChatMessages(m);
   };
 
   // ════════════════════════════════════════════════════════════
