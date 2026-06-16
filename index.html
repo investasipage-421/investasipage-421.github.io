@@ -789,7 +789,7 @@
   <!-- CREATE NEW PASSWORD -->
   <div class="screen" id="s-newpass">
     <div class="card">
-      <button class="back-btn" onclick="go('s-forgot')">
+      <button class="back-btn" id="newpass-back-btn" onclick="go('s-forgot')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
       <h1 class="title" id="newpass-title">Create<br>New Password</h1>
@@ -827,7 +827,7 @@
       <div class="dash-header">
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</div>
-          <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!">User!</div>
+          <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!" onclick="triggerGreetingGlitch()" style="cursor:pointer;">User!</div>
         </div>
       </div>
 
@@ -1060,7 +1060,7 @@
       </div>
 
       <div class="acc-menu" style="margin-bottom:8px;">
-        <div class="acc-menu-item" onclick="go('s-newpass'); document.getElementById('newpass-title').innerHTML='Ganti<br>Password'; document.getElementById('newpass-subtitle').textContent='Masukkan password baru untuk akun kamu'; document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';">
+        <div class="acc-menu-item" onclick="openChangePasswordPage()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span>Ubah password</span>
         </div>
@@ -1214,6 +1214,8 @@
     window.scrollTo(0, 0);
     // Pause/play video when navigating
     manageSlideVideo(id);
+    // Re-trigger name glitch effect setiap kali kembali ke Home
+    if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
   };
 
   // Kelola autoplay video saat navigasi
@@ -1409,6 +1411,18 @@
     document.getElementById('ma-status-label').textContent = (acc && acc.deactivated) ? 'Nonaktif' : 'Aktif';
     document.getElementById('ma-method-label').textContent = acc && acc.method === 'google' ? 'Google' : 'Email';
     document.getElementById('ma-since-label').textContent = acc && acc.createdYear ? acc.createdYear : '2026';
+  };
+
+  window.openChangePasswordPage = function() {
+    verifyMode = 'change-from-manage';
+    document.getElementById('newpass-title').innerHTML = 'Ganti<br>Password';
+    document.getElementById('newpass-subtitle').textContent = 'Masukkan password baru untuk akun kamu';
+    document.getElementById('n-pass').value = '';
+    document.getElementById('n-cpass').value = '';
+    setErr('nw-pass','n-pass-err',''); setErr('nw-cpass','n-cpass-err','');
+    const backBtn = document.getElementById('newpass-back-btn');
+    if (backBtn) backBtn.onclick = () => openManageAccountPage();
+    go('s-newpass');
   };
 
   window.openModal = function(id) { const m = document.getElementById(id); if (m) m.classList.add('show'); };
@@ -1725,6 +1739,17 @@
       const { email, displayName, photoURL } = pendingGoogleCred;
       registeredAccounts[email] = {password:np, name:displayName||email.split('@')[0], photoURL, method:'google'};
       saveAccounts(); showToast('Registrasi berhasil! Silakan login 🎉'); pendingGoogleCred=null; setTimeout(() => go('s-login'), 1800);
+    } else if (verifyMode === 'change-from-manage') {
+      const email = currentUserEmail;
+      if (email) {
+        const oldPass = registeredAccounts[email] ? registeredAccounts[email].password : null;
+        if (registeredAccounts[email]) registeredAccounts[email].password = np;
+        else registeredAccounts[email] = {password:np, name:email.split('@')[0], method:'email'};
+        saveAccounts();
+        if (oldPass) { try { const uc = await signInWithEmailAndPassword(auth, email, oldPass); await updatePassword(uc.user, np); await signOut(auth); } catch(e) {} }
+      }
+      showToast('Password berhasil diubah! 🔐');
+      setTimeout(() => openManageAccountPage(), 900);
     }
   };
 
