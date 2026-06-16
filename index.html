@@ -1048,7 +1048,7 @@
       <div class="acc-quick-row" style="margin-bottom:22px;">
         <div class="acc-quick-card" style="cursor:default;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
-          <span id="ma-status-label">Aktif</span>
+          <span id="ma-status-label">Aman</span>
         </div>
         <div class="acc-quick-card" style="cursor:default;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -1410,7 +1410,7 @@
     go('s-manage-account');
     const email = currentUserEmail;
     const acc = email ? registeredAccounts[email] : null;
-    document.getElementById('ma-status-label').textContent = (acc && acc.deactivated) ? 'Nonaktif' : 'Aktif';
+    document.getElementById('ma-status-label').textContent = 'Aman';
     document.getElementById('ma-method-label').textContent = acc && acc.method === 'google' ? 'Google' : 'Email';
     document.getElementById('ma-since-label').textContent = acc && acc.createdYear ? acc.createdYear : '2026';
   };
