@@ -96,12 +96,12 @@
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     /* ───────── DASHBOARD & ACCOUNT (FULL SCREEN, EDGE-TO-EDGE) ───────── */
-    #s-dashboard, #s-account, #s-send, #s-chat {
+    #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account {
       position: fixed; inset: 0; z-index: 50;
       background: var(--black);
       overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner {
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
       padding: max(24px, env(safe-area-inset-top)) 18px 90px;
@@ -139,75 +139,70 @@
       font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      position: relative; display: inline-block;
-    }
-
-    /* ───────── GLITCH EFFECT (nama, trigger saat ditekan) ───────── */
-    .glitch-name {
       position: relative;
       display: inline-block;
-      cursor: pointer;
-      user-select: none;
     }
-    .glitch-name::before,
-    .glitch-name::after {
-      content: attr(data-glitch);
+
+    /* ───────── GLITCH NAME EFFECT ───────── */
+    .dash-greeting-name.glitching {
+      animation: glitchSkew 2.2s ease-in-out;
+    }
+    .dash-greeting-name.glitching::before,
+    .dash-greeting-name.glitching::after {
+      content: attr(data-glitch-text);
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      left: 0; top: 0;
+      width: 100%;
       overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
-      background: transparent;
-      pointer-events: none;
-      opacity: 0;
+      background: var(--black);
     }
-    .glitch-name::before { color: #ff2860; mix-blend-mode: lighten; }
-    .glitch-name::after  { color: #00e5ff; mix-blend-mode: lighten; }
-
-    .glitch-name.glitching {
-      animation: glitchSkew .5s linear;
+    .dash-greeting-name.glitching::before {
+      color: #ff2e63;
+      animation: glitchBefore 2.2s ease-in-out;
+      mix-blend-mode: screen;
     }
-    .glitch-name.glitching::before {
-      animation: glitchBefore .5s linear;
-    }
-    .glitch-name.glitching::after {
-      animation: glitchAfter .5s linear;
-    }
-
-    @keyframes glitchBefore {
-      0%   { opacity: 0; clip-path: inset(0 0 0 0);    transform: translate(0,0); }
-      8%   { opacity: 1; clip-path: inset(10% 0 70% 0); transform: translate(-3px,-1px); }
-      18%  { opacity: 1; clip-path: inset(65% 0 5% 0);  transform: translate(3px,1px); }
-      28%  { opacity: 1; clip-path: inset(30% 0 40% 0); transform: translate(-2px,0); }
-      40%  { opacity: 1; clip-path: inset(70% 0 10% 0); transform: translate(3px,1px); }
-      55%  { opacity: 1; clip-path: inset(15% 0 60% 0); transform: translate(-2px,-1px); }
-      70%  { opacity: 1; clip-path: inset(45% 0 25% 0); transform: translate(2px,0); }
-      85%  { opacity: .4; clip-path: inset(0 0 0 0);    transform: translate(0,0); }
-      100% { opacity: 0; clip-path: inset(0 0 0 0);    transform: translate(0,0); }
-    }
-    @keyframes glitchAfter {
-      0%   { opacity: 0; clip-path: inset(0 0 0 0);    transform: translate(0,0); }
-      6%   { opacity: 1; clip-path: inset(55% 0 15% 0); transform: translate(3px,1px); }
-      16%  { opacity: 1; clip-path: inset(8% 0 70% 0);  transform: translate(-3px,-1px); }
-      27%  { opacity: 1; clip-path: inset(40% 0 35% 0); transform: translate(2px,0); }
-      38%  { opacity: 1; clip-path: inset(5% 0 75% 0);  transform: translate(-3px,1px); }
-      53%  { opacity: 1; clip-path: inset(60% 0 10% 0); transform: translate(3px,-1px); }
-      68%  { opacity: 1; clip-path: inset(20% 0 55% 0); transform: translate(-2px,0); }
-      85%  { opacity: .4; clip-path: inset(0 0 0 0);    transform: translate(0,0); }
-      100% { opacity: 0; clip-path: inset(0 0 0 0);    transform: translate(0,0); }
+    .dash-greeting-name.glitching::after {
+      color: #00ff88;
+      animation: glitchAfter 2.2s ease-in-out;
+      mix-blend-mode: screen;
     }
     @keyframes glitchSkew {
-      0%   { transform: translate(0,0) skew(0deg); }
-      8%   { transform: translate(-2px,0) skew(2deg); }
-      18%  { transform: translate(2px,0) skew(-2deg); }
-      28%  { transform: translate(-1px,0) skew(1deg); }
-      40%  { transform: translate(2px,0) skew(-1.5deg); }
-      55%  { transform: translate(-2px,0) skew(1deg); }
-      70%  { transform: translate(1px,0) skew(-0.5deg); }
-      85%  { transform: translate(0,0) skew(0deg); }
-      100% { transform: translate(0,0) skew(0deg); }
+      0%, 100% { transform: skewX(0deg); opacity: 1; }
+      4%  { transform: skewX(4deg) translateX(-2px); opacity: .9; }
+      8%  { transform: skewX(-3deg) translateX(2px); opacity: 1; }
+      12% { transform: skewX(0deg); opacity: .85; }
+      16% { transform: skewX(2deg); opacity: 1; }
+      40% { transform: skewX(0deg); opacity: 1; }
+      42% { transform: skewX(-2deg) translateX(1px); opacity: .9; }
+      45% { transform: skewX(0deg); opacity: 1; }
+      70% { transform: skewX(0deg); }
+      72% { transform: skewX(3deg) translateX(-1px); opacity: .9; }
+      75% { transform: skewX(0deg); opacity: 1; }
     }
-
+    @keyframes glitchBefore {
+      0%, 100%   { clip-path: inset(0 0 100% 0); transform: translate(0,0); opacity: 0; }
+      3%, 7%     { clip-path: inset(10% 0 60% 0); transform: translate(-3px,-1px); opacity: .8; }
+      4%, 6%     { opacity: 0; }
+      8%         { clip-path: inset(0 0 100% 0); opacity: 0; }
+      40%        { opacity: 0; }
+      41%, 44%   { clip-path: inset(40% 0 20% 0); transform: translate(2px,1px); opacity: .75; }
+      45%        { opacity: 0; }
+      71%, 74%   { clip-path: inset(70% 0 5% 0); transform: translate(-2px,0); opacity: .8; }
+      76%        { opacity: 0; }
+    }
+    @keyframes glitchAfter {
+      0%, 100%   { clip-path: inset(100% 0 0 0); transform: translate(0,0); opacity: 0; }
+      3%, 7%     { clip-path: inset(55% 0 15% 0); transform: translate(3px,1px); opacity: .8; }
+      4%, 6%     { opacity: 0; }
+      8%         { clip-path: inset(100% 0 0 0); opacity: 0; }
+      40%        { opacity: 0; }
+      41%, 44%   { clip-path: inset(15% 0 50% 0); transform: translate(-2px,-1px); opacity: .75; }
+      45%        { opacity: 0; }
+      71%, 74%   { clip-path: inset(5% 0 70% 0); transform: translate(2px,0); opacity: .8; }
+      76%        { opacity: 0; }
+    }
 
     .top-banner {
       border-radius: 14px;
@@ -359,25 +354,22 @@
 
     /* ───────── ACCOUNT SCREEN ───────── */
     .acc-header {
-      display: flex; align-items: flex-start; justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       gap: 12px; margin-bottom: 22px;
     }
-    .acc-header-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .acc-header-text { flex: 1; min-width: 0; }
     .acc-name {
       font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em; margin-bottom: 8px;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      max-width: 100%;
     }
     .acc-rating {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--card); border: 1px solid var(--border);
       border-radius: 20px; padding: 5px 12px;
       font-size: 13px; font-weight: 600; color: var(--white);
-      align-self: flex-start;
-      white-space: nowrap;
     }
-    .acc-rating svg { width: 13px; height: 13px; color: var(--accent); flex-shrink: 0; }
+    .acc-rating svg { width: 13px; height: 13px; color: var(--accent); }
 
     .dash-avatar-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
     .dash-avatar {
@@ -633,6 +625,44 @@
       offset-rotate: auto;
     }
     .send-anim-plane svg { width: 100%; height: 100%; }
+
+    /* ───────── MANAGE ACCOUNT: CONFIRM MODALS ───────── */
+    .confirm-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7);
+      display: none; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .confirm-overlay.show { display: flex; animation: fadeIn .2s ease; }
+    .confirm-card {
+      width: 100%; max-width: 340px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px 24px;
+      text-align: center;
+    }
+    .confirm-icon {
+      width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 16px;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white);
+    }
+    .confirm-icon svg { width: 24px; height: 24px; }
+    .confirm-icon.danger { color: #ff5c5c; border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.08); }
+    .confirm-title {
+      font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 800;
+      color: var(--white); margin-bottom: 10px; line-height: 1.3;
+    }
+    .confirm-desc { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
+    .btn-ghost-cancel {
+      width: 100%; background: none; border: none; cursor: pointer;
+      color: var(--text-sec); font-size: 13.5px; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; padding: 13px; margin-top: 6px;
+      transition: color .2s;
+    }
+    .btn-ghost-cancel:hover { color: var(--white); }
+    .btn-primary.btn-danger { background: #ff5c5c; color: #1a0000; }
+    .btn-primary.btn-danger:hover { background: #ff7a7a; }
+    #ma-status-label, #ma-method-label, #ma-since-label { font-size: 12.5px; }
   </style>
 </head>
 <body>
@@ -797,7 +827,7 @@
       <div class="dash-header">
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</div>
-          <div class="dash-greeting-name glitch-name" id="dash-greeting-name" data-glitch="User!">User!</div>
+          <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!">User!</div>
         </div>
       </div>
 
@@ -871,7 +901,7 @@
 
       <div class="acc-header">
         <div class="acc-header-text">
-          <div class="acc-name glitch-name" id="acc-name" data-glitch="User">User</div>
+          <div class="acc-name" id="acc-name">User</div>
           <div class="acc-rating">
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <span id="acc-rating-val">5.00</span>
@@ -926,7 +956,7 @@
             <div class="acc-menu-sub">Automate work travel &amp; meal expenses</div>
           </div>
         </div>
-        <div class="acc-menu-item" onclick="showToast('Uber account')">
+        <div class="acc-menu-item" onclick="playSendAnimation(openManageAccountPage, '#ffffff')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>Manage Uber account</span>
         </div>
@@ -998,6 +1028,92 @@
           <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- MANAGE ACCOUNT PAGE -->
+  <div class="screen" id="s-manage-account">
+    <div class="dash-inner">
+
+      <div class="send-page-header">
+        <button class="circle-back-btn" onclick="go('s-account')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+      </div>
+
+      <h1 class="title" style="font-size:30px;margin-bottom:6px;">Manage<br>Account</h1>
+      <p class="subtitle" style="margin-top:0;margin-bottom:24px;">Kelola data, keamanan, dan status akun kamu</p>
+
+      <div class="acc-quick-row" style="margin-bottom:22px;">
+        <div class="acc-quick-card" style="cursor:default;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          <span id="ma-status-label">Aktif</span>
+        </div>
+        <div class="acc-quick-card" style="cursor:default;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span id="ma-method-label">Email</span>
+        </div>
+        <div class="acc-quick-card" style="cursor:default;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="ma-since-label">2026</span>
+        </div>
+      </div>
+
+      <div class="acc-menu" style="margin-bottom:8px;">
+        <div class="acc-menu-item" onclick="go('s-newpass'); document.getElementById('newpass-title').innerHTML='Ganti<br>Password'; document.getElementById('newpass-subtitle').textContent='Masukkan password baru untuk akun kamu'; document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Ubah password</span>
+        </div>
+        <div class="acc-menu-item acc-menu-item-sub" onclick="downloadAccountData()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <div class="acc-menu-text">
+            <span>Unduh data akun</span>
+            <div class="acc-menu-sub">Ekspor info profil &amp; riwayat aktivitas kamu</div>
+          </div>
+        </div>
+        <div class="acc-menu-item" onclick="openDeactivateModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          <span>Nonaktifkan sementara</span>
+        </div>
+        <div class="acc-menu-item" style="border-bottom:none;" onclick="openDeleteModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          <span>Hapus akun</span>
+        </div>
+      </div>
+
+      <p class="hint" style="text-align:center;margin-top:18px;">Punya pertanyaan sebelum menghapus akun? <span style="text-decoration:underline;color:#aaa;cursor:pointer;" onclick="playSendAnimation(openChatPage, '#ff3b3b')">Chat admin dulu</span></p>
+
+    </div>
+  </div>
+
+  <!-- DEACTIVATE CONFIRM MODAL -->
+  <div class="confirm-overlay" id="modal-deactivate">
+    <div class="confirm-card">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+      </div>
+      <div class="confirm-title">Nonaktifkan akun sementara?</div>
+      <div class="confirm-desc">Profil dan riwayat kamu akan disembunyikan. Kamu bisa mengaktifkannya kembali kapan saja dengan login ulang.</div>
+      <button class="btn-primary" style="margin-top:18px;" onclick="confirmDeactivate()">Ya, nonaktifkan</button>
+      <button class="btn-ghost-cancel" onclick="closeModal('modal-deactivate')">Batal</button>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="confirm-overlay" id="modal-delete">
+    <div class="confirm-card">
+      <div class="confirm-icon danger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </div>
+      <div class="confirm-title">Hapus akun secara permanen?</div>
+      <div class="confirm-desc">Semua data kamu — profil, riwayat keluhan, dan pesan chat — akan dihapus dan tidak dapat dikembalikan.</div>
+      <div class="input-group" style="margin-top:14px;text-align:left;">
+        <div class="input-wrap" id="del-confirm-wrap">
+          <input type="text" placeholder='Ketik "HAPUS" untuk konfirmasi' id="del-confirm-input" oninput="this.parentElement.classList.remove('err')"/>
+        </div>
+      </div>
+      <button class="btn-primary btn-danger" style="margin-top:6px;" onclick="confirmDelete()">Hapus akun saya</button>
+      <button class="btn-ghost-cancel" onclick="closeModal('modal-delete')">Batal</button>
     </div>
   </div>
 
@@ -1285,6 +1401,73 @@
     renderChatMessages(msgs);
   };
 
+  // ───────── MANAGE ACCOUNT PAGE ─────────
+  window.openManageAccountPage = function() {
+    go('s-manage-account');
+    const email = currentUserEmail;
+    const acc = email ? registeredAccounts[email] : null;
+    document.getElementById('ma-status-label').textContent = (acc && acc.deactivated) ? 'Nonaktif' : 'Aktif';
+    document.getElementById('ma-method-label').textContent = acc && acc.method === 'google' ? 'Google' : 'Email';
+    document.getElementById('ma-since-label').textContent = acc && acc.createdYear ? acc.createdYear : '2026';
+  };
+
+  window.openModal = function(id) { const m = document.getElementById(id); if (m) m.classList.add('show'); };
+  window.closeModal = function(id) { const m = document.getElementById(id); if (m) m.classList.remove('show'); };
+
+  window.openDeactivateModal = function() { openModal('modal-deactivate'); };
+  window.openDeleteModal = function() {
+    const input = document.getElementById('del-confirm-input');
+    if (input) { input.value = ''; document.getElementById('del-confirm-wrap').classList.remove('err'); }
+    openModal('modal-delete');
+  };
+
+  window.confirmDeactivate = function() {
+    closeModal('modal-deactivate');
+    const email = currentUserEmail;
+    if (email && registeredAccounts[email]) { registeredAccounts[email].deactivated = true; saveAccounts(); }
+    showToast('Akun berhasil dinonaktifkan sementara 😴');
+    setTimeout(async () => { try { await signOut(auth); } catch(e) {} go('s-login'); }, 1200);
+  };
+
+  window.confirmDelete = function() {
+    const input = document.getElementById('del-confirm-input');
+    const val = (input.value || '').trim().toUpperCase();
+    if (val !== 'HAPUS') {
+      document.getElementById('del-confirm-wrap').classList.add('err');
+      showToast('Ketik "HAPUS" untuk konfirmasi', true);
+      return;
+    }
+    const email = currentUserEmail;
+    closeModal('modal-delete');
+    if (email) {
+      delete registeredAccounts[email]; saveAccounts();
+      localStorage.removeItem('pu_chat_' + email);
+      localStorage.removeItem('pu_votes_' + email);
+      (async () => { try { if (auth.currentUser && auth.currentUser.email === email) await deleteUser(auth.currentUser); } catch(e) {} })();
+    }
+    showToast('Akun berhasil dihapus secara permanen 🗑️');
+    setTimeout(() => { go('s-login'); }, 1200);
+  };
+
+  window.downloadAccountData = function() {
+    const email = currentUserEmail || 'guest';
+    const acc = registeredAccounts[email] || {};
+    const data = {
+      email: email,
+      name: acc.name || (email.split('@')[0]),
+      method: acc.method || 'email',
+      complaints: complaintsList.filter(c => true).length,
+      exportedAt: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'account-data-' + email.split('@')[0] + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    showToast('Data akun berhasil diunduh 📥');
+  };
+
   window.renderChatMessages = function(msgs) {
     const container = document.getElementById('chat-messages'); container.innerHTML = '';
     (msgs || loadChatMessages()).forEach(m => {
@@ -1329,40 +1512,32 @@
     const reader = new FileReader(); reader.onload = e => setAvatar(e.target.result); reader.readAsDataURL(file);
   };
 
-  // ─── Glitch effect: trigger saat nama ditekan ──────────────
-  window.triggerGlitch = function(el) {
-    el.classList.remove('glitching');
-    // restart animasi
-    void el.offsetWidth;
-    el.classList.add('glitching');
-    clearTimeout(el._glitchTimeout);
-    el._glitchTimeout = setTimeout(() => el.classList.remove('glitching'), 520);
-  };
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.glitch-name').forEach(el => {
-      el.addEventListener('click', () => triggerGlitch(el));
-    });
-  });
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    document.querySelectorAll('.glitch-name').forEach(el => {
-      el.addEventListener('click', () => triggerGlitch(el));
-    });
-  }
-
   function getGreetingByTime() {
     const h = new Date().getHours();
     if (h < 11) return 'Good Morning'; if (h < 15) return 'Good Afternoon'; if (h < 19) return 'Good Evening'; return 'Good Night';
   }
+
+  let glitchTimer = null;
   window.setGreetingName = function(name) {
     const el = document.getElementById('dash-greeting-name');
-    el.textContent = name + '!';
-    el.setAttribute('data-glitch', name + '!');
+    const finalText = name + '!';
+    el.textContent = finalText;
+    el.setAttribute('data-glitch-text', finalText);
+    triggerGreetingGlitch();
   };
-  window.setAccountName = function(name) {
-    const el = document.getElementById('acc-name');
-    el.textContent = name;
-    el.setAttribute('data-glitch', name);
+
+  window.triggerGreetingGlitch = function() {
+    const el = document.getElementById('dash-greeting-name');
+    if (!el) return;
+    el.classList.remove('glitching');
+    // restart animation
+    void el.offsetWidth;
+    el.classList.add('glitching');
+    if (glitchTimer) clearTimeout(glitchTimer);
+    glitchTimer = setTimeout(() => el.classList.remove('glitching'), 2300);
   };
+
+  window.setAccountName = function(name) { document.getElementById('acc-name').textContent = name; };
   window.setAccountRating = function(rating) { document.getElementById('acc-rating-val').textContent = Number(rating).toFixed(2); };
   window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage = `url('${url}')`; };
 
@@ -1560,7 +1735,7 @@
     document.getElementById('dash-greeting-sub').textContent = getGreetingByTime();
     const displayName = (user.displayName || user.email || 'User').split('@')[0];
     setGreetingName(displayName);
-    setAccountName(displayName);
+    document.getElementById('acc-name').textContent = displayName;
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
     go('s-dashboard'); initSlider();
