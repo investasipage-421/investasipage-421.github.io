@@ -144,11 +144,11 @@
     }
 
     /* ───────── GLITCH NAME EFFECT ───────── */
-    .dash-greeting-name.glitching {
+    .glitching {
       animation: glitchSkew 2.2s ease-in-out;
     }
-    .dash-greeting-name.glitching::before,
-    .dash-greeting-name.glitching::after {
+    .glitching::before,
+    .glitching::after {
       content: attr(data-glitch-text);
       position: absolute;
       left: 0; top: 0;
@@ -158,12 +158,12 @@
       white-space: nowrap;
       background: var(--black);
     }
-    .dash-greeting-name.glitching::before {
+    .glitching::before {
       color: #ff2e63;
       animation: glitchBefore 2.2s ease-in-out;
       mix-blend-mode: screen;
     }
-    .dash-greeting-name.glitching::after {
+    .glitching::after {
       color: #00ff88;
       animation: glitchAfter 2.2s ease-in-out;
       mix-blend-mode: screen;
@@ -362,6 +362,7 @@
       font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em; margin-bottom: 8px;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      position: relative; display: inline-block; max-width: 100%;
     }
     .acc-rating {
       display: inline-flex; align-items: center; gap: 6px;
@@ -901,7 +902,7 @@
 
       <div class="acc-header">
         <div class="acc-header-text">
-          <div class="acc-name" id="acc-name">User</div>
+          <div class="acc-name" id="acc-name" data-glitch-text="User" onclick="triggerAccountNameGlitch()" style="cursor:pointer;">User</div>
           <div class="acc-rating">
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <span id="acc-rating-val">5.00</span>
@@ -1214,8 +1215,9 @@
     window.scrollTo(0, 0);
     // Pause/play video when navigating
     manageSlideVideo(id);
-    // Re-trigger name glitch effect setiap kali kembali ke Home
+    // Re-trigger name glitch effect setiap kali kembali ke Home atau Account
     if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
+    if (id === 's-account' && typeof triggerAccountNameGlitch === 'function') triggerAccountNameGlitch();
   };
 
   // Kelola autoplay video saat navigasi
@@ -1531,27 +1533,34 @@
     if (h < 11) return 'Good Morning'; if (h < 15) return 'Good Afternoon'; if (h < 19) return 'Good Evening'; return 'Good Night';
   }
 
-  let glitchTimer = null;
-  window.setGreetingName = function(name) {
-    const el = document.getElementById('dash-greeting-name');
-    const finalText = name + '!';
-    el.textContent = finalText;
-    el.setAttribute('data-glitch-text', finalText);
-    triggerGreetingGlitch();
-  };
-
-  window.triggerGreetingGlitch = function() {
-    const el = document.getElementById('dash-greeting-name');
+  const glitchTimers = {};
+  window.triggerNameGlitch = function(elId) {
+    const el = document.getElementById(elId);
     if (!el) return;
     el.classList.remove('glitching');
     // restart animation
     void el.offsetWidth;
     el.classList.add('glitching');
-    if (glitchTimer) clearTimeout(glitchTimer);
-    glitchTimer = setTimeout(() => el.classList.remove('glitching'), 2300);
+    if (glitchTimers[elId]) clearTimeout(glitchTimers[elId]);
+    glitchTimers[elId] = setTimeout(() => el.classList.remove('glitching'), 2300);
   };
 
-  window.setAccountName = function(name) { document.getElementById('acc-name').textContent = name; };
+  window.setGreetingName = function(name) {
+    const el = document.getElementById('dash-greeting-name');
+    const finalText = name + '!';
+    el.textContent = finalText;
+    el.setAttribute('data-glitch-text', finalText);
+    triggerNameGlitch('dash-greeting-name');
+  };
+
+  window.triggerGreetingGlitch = function() { triggerNameGlitch('dash-greeting-name'); };
+  window.triggerAccountNameGlitch = function() { triggerNameGlitch('acc-name'); };
+
+  window.setAccountName = function(name) {
+    const el = document.getElementById('acc-name');
+    el.textContent = name;
+    el.setAttribute('data-glitch-text', name);
+  };
   window.setAccountRating = function(rating) { document.getElementById('acc-rating-val').textContent = Number(rating).toFixed(2); };
   window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage = `url('${url}')`; };
 
@@ -1760,7 +1769,7 @@
     document.getElementById('dash-greeting-sub').textContent = getGreetingByTime();
     const displayName = (user.displayName || user.email || 'User').split('@')[0];
     setGreetingName(displayName);
-    document.getElementById('acc-name').textContent = displayName;
+    setAccountName(displayName);
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
     go('s-dashboard'); initSlider();
