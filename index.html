@@ -108,7 +108,6 @@
       display: flex; flex-direction: column;
     }
 
-    /* Chat: header tetap diam, hanya area pesan yang bisa di-scroll */
     #s-chat { overflow: hidden; }
     #s-chat .dash-inner {
       height: 100%; min-height: 0;
@@ -127,7 +126,6 @@
       padding: 0 18px;
     }
 
-    /* Header: greeting */
     .dash-header {
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 12px;
@@ -143,8 +141,6 @@
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
 
-    /* Total balance */
-    /* Banner kecil di bawah header (kosong, isi via setTopBannerImage) */
     .top-banner {
       border-radius: 14px;
       aspect-ratio: 16 / 7;
@@ -154,7 +150,6 @@
       background-size: cover; background-position: center; background-repeat: no-repeat;
     }
 
-    /* Action buttons: Send / Receive / Swap */
     .action-row {
       display: flex; gap: 10px; margin-bottom: 20px;
     }
@@ -170,7 +165,7 @@
     .action-btn svg { width: 16px; height: 16px; }
     .action-btn.icon-only { flex: 0 0 48px; padding: 13px 0; }
 
-    /* Promo slider */
+    /* ───────── SLIDER PROMO ───────── */
     .slider-wrap {
       position: relative; border-radius: 16px; overflow: hidden;
       background: var(--card); border: 1px solid var(--border);
@@ -218,13 +213,26 @@
     }
     .slider-dot.active { background: var(--accent); width: 20px; }
 
-    /* Footer kecil di bawah slider */
+    /* ───────── SLIDE VIDEO ───────── */
+    .slide-video {
+      padding: 0;
+      overflow: hidden;
+    }
+    .slide-video-el {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
     .dash-footer {
       text-align: center; font-size: 11.5px; color: var(--muted);
       margin-top: auto; padding-top: 24px; padding-bottom: 8px;
     }
 
-    /* Activity */
     .activity-header {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 12px;
@@ -263,7 +271,6 @@
     .activity-amount.positive { color: var(--accent); }
     .activity-usdt { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-    /* Bottom nav */
     .bottom-nav-wrap {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 51;
       background: var(--surface); border-top: 1px solid var(--border);
@@ -301,7 +308,6 @@
     }
     .acc-rating svg { width: 13px; height: 13px; color: var(--accent); }
 
-    /* Avatar (dipakai di Account screen) */
     .dash-avatar-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
     .dash-avatar {
       width: 52px; height: 52px; border-radius: 50%;
@@ -319,7 +325,6 @@
     }
     .dash-avatar-add svg { width: 10px; height: 10px; }
 
-    /* Quick action cards */
     .acc-quick-row {
       display: flex; gap: 10px; margin-bottom: 16px;
     }
@@ -333,7 +338,6 @@
     .acc-quick-card svg { width: 22px; height: 22px; color: var(--white); }
     .acc-quick-card span { font-size: 13px; font-weight: 600; color: var(--white); }
 
-    /* Privacy checkup banner */
     .acc-privacy-banner {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       background: var(--card); border: 1px solid var(--border);
@@ -355,7 +359,6 @@
     }
     .acc-privacy-icon svg { width: 22px; height: 22px; }
 
-    /* Menu list */
     .acc-menu {
       display: flex; flex-direction: column;
       border-top: 1px solid var(--border);
@@ -425,7 +428,6 @@
       border-radius: 14px;
     }
 
-    /* Keluhan / complaint list */
     .complaint-item {
       display: flex; align-items: flex-start; gap: 12px;
       background: var(--card); border: 1px solid var(--border);
@@ -536,7 +538,7 @@
     .chat-send-btn:hover { background: #e8e8e8; }
     .chat-send-btn svg { width: 18px; height: 18px; }
 
-    /* ───────── SEND ANIMATION (paper plane zigzag, speed = koneksi) ───────── */
+    /* ───────── SEND ANIMATION ───────── */
     .send-anim-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: auto; z-index: 9999;
@@ -560,7 +562,6 @@
       offset-rotate: auto;
     }
     .send-anim-plane svg { width: 100%; height: 100%; }
-
   </style>
 </head>
 <body>
@@ -718,11 +719,10 @@
     </div>
   </div>
 
-  <!-- DASHBOARD (setelah login) — CRYPTO WALLET STYLE, DARK -->
+  <!-- DASHBOARD -->
   <div class="screen" id="s-dashboard">
     <div class="dash-inner">
 
-      <!-- Header: greeting -->
       <div class="dash-header">
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</div>
@@ -732,10 +732,8 @@
 
       <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="setAvatarFromFile(this)"/>
 
-      <!-- Banner kecil (kosong, isi gambar via setTopBannerImage) -->
       <div class="top-banner" id="top-banner" style="background-image:url('https://i.ibb.co.com/wht8b4FG/Hello-20260613-121636-0000.jpg')"></div>
 
-      <!-- Action buttons: Send / Receive / Swap -->
       <div class="action-row">
         <div class="action-btn" onclick="playSendAnimation(openSendPage)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -750,7 +748,7 @@
         </div>
       </div>
 
-      <!-- Promo slider (3 gambar, auto + swipe, format banner horizontal) -->
+      <!-- Promo slider: slide 0 = gambar, slide 1 = VIDEO, slide 2 = placeholder -->
       <div class="slider-wrap">
         <div class="slider-track" id="slider-track">
           <div class="slide has-img" data-index="0" style="background-image:url('https://i.ibb.co.com/d4hRH6Wj/orbitxy-com-20260614-075731-0000.jpg')">
@@ -759,17 +757,20 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
               </div>
               <div class="slide-title">Promo Banner #1</div>
-              <div class="slide-desc">Slide ke-1 (Ganti gambar ini dengan promo Anda sendiri nanti)</div>
+              <div class="slide-desc">Slide ke-1</div>
             </div>
           </div>
-          <div class="slide" data-index="1">
-            <div class="slide-content">
-              <div class="slide-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </div>
-              <div class="slide-title">Promo Banner #2</div>
-              <div class="slide-desc">Slide ke-2 (Ganti gambar ini dengan promo Anda sendiri nanti)</div>
-            </div>
+          <!-- SLIDE 2: VIDEO -->
+          <div class="slide slide-video" data-index="1">
+            <video
+              class="slide-video-el"
+              src="https://files.catbox.moe/byyqm3.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+            ></video>
           </div>
           <div class="slide" data-index="2">
             <div class="slide-content">
@@ -797,7 +798,6 @@
   <div class="screen" id="s-account">
     <div class="dash-inner">
 
-      <!-- Header: nama + rating + avatar -->
       <div class="acc-header">
         <div class="acc-header-text">
           <div class="acc-name" id="acc-name">User</div>
@@ -814,7 +814,6 @@
         </div>
       </div>
 
-      <!-- Quick action cards: Help / Wallet / Activity -->
       <div class="acc-quick-row">
         <div class="acc-quick-card" onclick="showToast('Help')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
@@ -830,7 +829,6 @@
         </div>
       </div>
 
-      <!-- Privacy checkup banner -->
       <div class="acc-privacy-banner" onclick="showToast('Privacy checkup')">
         <div class="acc-privacy-text">
           <div class="acc-privacy-title">Privacy checkup</div>
@@ -841,7 +839,6 @@
         </div>
       </div>
 
-      <!-- Menu list -->
       <div class="acc-menu">
         <div class="acc-menu-item" onclick="showToast('Settings')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -897,9 +894,7 @@
       <div class="activity-header" style="margin-top:28px;">
         <div class="activity-title">Keluhan Pengguna</div>
       </div>
-      <div class="send-recipients" id="complaint-list" style="max-height:none;">
-        <!-- diisi via JS: renderComplaints() -->
-      </div>
+      <div class="send-recipients" id="complaint-list" style="max-height:none;"></div>
     </div>
   </div>
 
@@ -921,9 +916,7 @@
       </div>
 
       <div class="chat-scroll" id="chat-scroll">
-        <div class="chat-messages" id="chat-messages">
-          <!-- diisi via JS: renderChatMessages() -->
-        </div>
+        <div class="chat-messages" id="chat-messages"></div>
       </div>
     </div>
 
@@ -937,7 +930,7 @@
     </div>
   </div>
 
-  <!-- Bottom nav (untuk dashboard) -->
+  <!-- Bottom nav -->
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
       <div class="nav-item active" id="nav-home" onclick="goDashTab('home')">
@@ -964,15 +957,8 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
-    getAuth,
-    onAuthStateChanged,
-    signOut,
-    signInWithPopup,
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    deleteUser,
-    updatePassword
+    getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser, updatePassword
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
@@ -989,101 +975,78 @@
   const googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-  // ─── Default avatar (ghost icon) ──────────────────────────
   const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e1e1e'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23555'/%3E%3Cpath d='M50 60c-22 0-34 12-34 28v12h68V88c0-16-12-28-34-28z' fill='%23555'/%3E%3C/svg%3E";
 
-  // ─── State ───────────────────────────────────────────────
   let currentOtp = '';
-  let verifyMode = 'forgot'; // 'forgot' | 'register-google'
+  let verifyMode = 'forgot';
   let pendingGoogleCred = null;
   let pendingForgotEmail = null;
   let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
   let currentUserEmail = null;
   let complaintsList = JSON.parse(localStorage.getItem('pu_complaints') || '[]');
 
-  function saveComplaints() {
-    localStorage.setItem('pu_complaints', JSON.stringify(complaintsList));
-  }
+  function saveComplaints() { localStorage.setItem('pu_complaints', JSON.stringify(complaintsList)); }
 
-  // Pastikan setiap keluhan punya id unik (untuk migrasi data lama)
   complaintsList.forEach(c => {
     if (!c.id) c.id = 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
     if (typeof c.likes !== 'number') c.likes = 0;
     if (typeof c.dislikes !== 'number') c.dislikes = 0;
-    delete c.myVote; // vote sekarang disimpan per-akun, bukan global
+    delete c.myVote;
   });
   saveComplaints();
 
-  // ─── Vote per akun (like/dislike beda-beda per akun) ──────
-  function votesStorageKey() {
-    return 'pu_votes_' + (currentUserEmail || 'guest');
-  }
-  function loadMyVotes() {
-    return JSON.parse(localStorage.getItem(votesStorageKey()) || '{}');
-  }
-  function saveMyVotes(votes) {
-    localStorage.setItem(votesStorageKey(), JSON.stringify(votes));
-  }
+  function votesStorageKey() { return 'pu_votes_' + (currentUserEmail || 'guest'); }
+  function loadMyVotes() { return JSON.parse(localStorage.getItem(votesStorageKey()) || '{}'); }
+  function saveMyVotes(votes) { localStorage.setItem(votesStorageKey(), JSON.stringify(votes)); }
 
   function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
+  function saveAccounts() { localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts)); }
 
-  function saveAccounts() {
-    localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts));
-  }
-
-  // ─── Auth state listener ──────────────────────────────────
   onAuthStateChanged(auth, async user => {
     if (user) {
-      // Kalau sedang dalam proses registrasi, jangan auto-login
       if (pendingGoogleCred) return;
       try {
         await user.getIdToken(true);
-        if (registeredAccounts[user.email]) {
-          showDashboard(user, 'Google');
-        } else {
-          await signOut(auth);
-        }
+        if (registeredAccounts[user.email]) { showDashboard(user, 'Google'); }
+        else { await signOut(auth); }
       } catch(e) {
         await signOut(auth);
-        if (registeredAccounts[user.email]) {
-          delete registeredAccounts[user.email];
-          saveAccounts();
-        }
+        if (registeredAccounts[user.email]) { delete registeredAccounts[user.email]; saveAccounts(); }
       }
     }
   });
 
-  // ─── Helpers ──────────────────────────────────────────────
   window.go = function(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const dashNav = document.getElementById('dash-bottom-nav');
     if (dashNav) dashNav.style.display = (id === 's-dashboard' || id === 's-account') ? 'flex' : 'none';
     window.scrollTo(0, 0);
+    // Pause/play video when navigating
+    manageSlideVideo(id);
   };
 
-  // Navigasi bottom nav dashboard: home, history, cards, account
+  // Kelola autoplay video saat navigasi
+  function manageSlideVideo(screenId) {
+    const vid = document.querySelector('.slide-video-el');
+    if (!vid) return;
+    if (screenId === 's-dashboard') {
+      vid.play().catch(() => {});
+    } else {
+      vid.pause();
+    }
+  }
+
   window.goDashTab = function(tab) {
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     const navEl = document.getElementById('nav-' + tab);
     if (navEl) navEl.classList.add('active');
-
-    if (tab === 'home') {
-      go('s-dashboard');
-      initSlider();
-    } else if (tab === 'account') {
-      go('s-account');
-    } else {
-      showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)');
-    }
+    if (tab === 'home') { go('s-dashboard'); initSlider(); }
+    else if (tab === 'account') { go('s-account'); }
+    else { showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)'); }
   };
 
   window.showToast = function(msg, isErr) {
@@ -1094,155 +1057,82 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   };
 
-  // ─── Animasi kirim (layar hitam + pesawat kertas zig-zag, speed = sinyal HP) ──
   function getConnSpeedFactor() {
     const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (!conn) return 1;
     const map = { '4g': 1, '3g': 0.5, '2g': 0.25, 'slow-2g': 0.12 };
     let f = map[conn.effectiveType] !== undefined ? map[conn.effectiveType] : 1;
-    // Kalau ada info downlink (Mbps), pertimbangkan juga
     if (typeof conn.downlink === 'number' && conn.downlink > 0) {
-      const downlinkFactor = Math.min(1, conn.downlink / 5); // 5 Mbps ≈ kecepatan penuh
+      const downlinkFactor = Math.min(1, conn.downlink / 5);
       f = Math.min(f, Math.max(downlinkFactor, 0.12));
     }
-    return Math.max(f, 0.12); // tetap jalan walau pelan
+    return Math.max(f, 0.12);
   }
 
   window.playSendAnimation = function(onDone, color) {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const midY = h / 2;
-    const amp = Math.min(h * 0.07, 40); // lengkungan tidak terlalu besar
-    const segs = 4;
+    const w = window.innerWidth, h = window.innerHeight;
+    const midY = h / 2, amp = Math.min(h * 0.07, 40), segs = 4;
     const animColor = color || 'var(--accent)';
-
     let points = [];
     for (let i = 0; i <= segs; i++) {
       const x = (w * i) / segs;
-      let y;
-      if (i === 0 || i === segs) y = midY;
-      else y = midY + (i % 2 === 1 ? -amp : amp);
+      let y = (i === 0 || i === segs) ? midY : midY + (i % 2 === 1 ? -amp : amp);
       points.push([x, y]);
     }
-
-    // Bangun path melengkung halus melalui titik-titik (smooth wave)
     let d = `M ${points[0][0]} ${points[0][1]}`;
     for (let i = 1; i < points.length - 1; i++) {
-      const midX = (points[i][0] + points[i + 1][0]) / 2;
-      const midY2 = (points[i][1] + points[i + 1][1]) / 2;
-      d += ` Q ${points[i][0]} ${points[i][1]} ${midX} ${midY2}`;
+      const mx = (points[i][0] + points[i+1][0]) / 2, my = (points[i][1] + points[i+1][1]) / 2;
+      d += ` Q ${points[i][0]} ${points[i][1]} ${mx} ${my}`;
     }
     const last = points[points.length - 1];
     d += ` L ${last[0]} ${last[1]}`;
-
     const animId = 'send-anim-' + Date.now();
     const overlay = document.createElement('div');
     overlay.className = 'send-anim-overlay';
-    overlay.innerHTML = `
-      <svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-        <defs>
-          <clipPath id="${animId}-clip">
-            <rect x="0" y="0" width="0" height="${h}"></rect>
-          </clipPath>
-        </defs>
-        <path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path>
-      </svg>
-      <div class="send-anim-plane">
-        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-          <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
-        </svg>
-      </div>
-    `;
+    overlay.innerHTML = `<svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><clipPath id="${animId}-clip"><rect x="0" y="0" width="0" height="${h}"></rect></clipPath></defs><path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path></svg><div class="send-anim-plane"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>`;
     document.body.appendChild(overlay);
-
     const path = overlay.querySelector('.send-anim-path');
     const plane = overlay.querySelector('.send-anim-plane');
     const clipRect = overlay.querySelector(`#${animId}-clip rect`);
     plane.style.offsetPath = `path('${d}')`;
     path.style.stroke = animColor;
     plane.style.color = animColor;
-
-    const baseDuration = 1400; // ms pada koneksi normal/cepat
-    let progress = 0;
-    let lastTime = null;
-    let rafId = null;
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-
-    function onConnChange() { /* faktor dibaca tiap frame, tidak perlu state tambahan */ }
-    if (conn && conn.addEventListener) conn.addEventListener('change', onConnChange);
-
-    let doneTriggered = false;
-
+    const baseDuration = 1400;
+    let progress = 0, lastTime = null, doneTriggered = false;
     function frame(t) {
       if (lastTime === null) lastTime = t;
-      const dt = t - lastTime;
-      lastTime = t;
-
-      const factor = getConnSpeedFactor();
-      progress += (dt / baseDuration) * factor;
+      const dt = t - lastTime; lastTime = t;
+      progress += (dt / baseDuration) * getConnSpeedFactor();
       if (progress > 1) progress = 1;
-
-      // Garis (putus-putus, terungkap progresif) & pesawat
       clipRect.setAttribute('width', String(w * progress));
       plane.style.offsetDistance = (progress * 100) + '%';
-
-      // Fade overlay & pesawat
-      let opacity;
-      if (progress < 0.12) opacity = progress / 0.12;
-      else if (progress > 0.85) opacity = (1 - progress) / 0.15;
-      else opacity = 1;
+      let opacity = progress < 0.12 ? progress / 0.12 : progress > 0.85 ? (1 - progress) / 0.15 : 1;
       overlay.style.opacity = String(opacity);
       plane.style.opacity = String(opacity);
-
-      // Pindah halaman saat pesawat sudah setengah jalan, overlay tetap lanjut di atasnya
-      if (!doneTriggered && progress >= 0.5) {
-        doneTriggered = true;
-        if (typeof onDone === 'function') onDone();
-      }
-
-      if (progress < 1) {
-        rafId = requestAnimationFrame(frame);
-      } else {
-        if (conn && conn.removeEventListener) conn.removeEventListener('change', onConnChange);
-        overlay.remove();
-      }
+      if (!doneTriggered && progress >= 0.5) { doneTriggered = true; if (typeof onDone === 'function') onDone(); }
+      if (progress < 1) requestAnimationFrame(frame); else overlay.remove();
     }
-
-    rafId = requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
   };
 
   window.setErr = function(wrapId, errId, msg) {
     if (wrapId) { const w = document.getElementById(wrapId); if (w) w.classList.toggle('err', !!msg); }
-    const e = document.getElementById(errId); if (e) e.textContent = msg || '';
-    return !!msg;
+    const e = document.getElementById(errId); if (e) e.textContent = msg || ''; return !!msg;
   };
-
   window.togglePass = function(id, btn) {
-    const inp = document.getElementById(id);
-    inp.type = inp.type === 'password' ? 'text' : 'password';
-    btn.style.color = inp.type === 'text' ? '#bbb' : '';
+    const inp = document.getElementById(id); inp.type = inp.type === 'password' ? 'text' : 'password'; btn.style.color = inp.type === 'text' ? '#bbb' : '';
   };
-
   window.checkStrength = function(val, prefix) {
     const segs = [1,2,3,4].map(i => document.getElementById(prefix+i));
     segs.forEach(s => s.className = 'strength-segment');
     if (!val) return;
     let score = 0;
-    if (val.length >= 8) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+    if (val.length >= 8) score++; if (/[A-Z]/.test(val)) score++; if (/[0-9]/.test(val)) score++; if (/[^A-Za-z0-9]/.test(val)) score++;
     const cls = score <= 1 ? 'weak' : score <= 3 ? 'medium' : 'strong';
     for (let i = 0; i < score; i++) segs[i].classList.add(cls);
   };
 
-  const validDomains = [
-    'gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
-    'icloud.com','me.com','mac.com','protonmail.com','proton.me',
-    'mail.com','zoho.com','yandex.com','aol.com','live.com',
-    'msn.com','googlemail.com','rocketmail.com','inbox.com'
-  ];
-
+  const validDomains = ['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com','icloud.com','me.com','mac.com','protonmail.com','proton.me','mail.com','zoho.com','yandex.com','aol.com','live.com','msn.com','googlemail.com','rocketmail.com','inbox.com'];
   function checkEmail(email) {
     if (!email) return 'Email wajib diisi';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
@@ -1258,26 +1148,13 @@
     const inputs = document.querySelectorAll('#otp-row input');
     inputs.forEach((inp, i) => {
       inp.value = ''; inp.parentElement.classList.remove('filled');
-      inp.oninput = () => {
-        inp.value = inp.value.replace(/[^0-9]/g, '');
-        inp.parentElement.classList.toggle('filled', !!inp.value);
-        if (inp.value && i < inputs.length - 1) inputs[i+1].focus();
-      };
+      inp.oninput = () => { inp.value = inp.value.replace(/[^0-9]/g,''); inp.parentElement.classList.toggle('filled', !!inp.value); if (inp.value && i < inputs.length - 1) inputs[i+1].focus(); };
       inp.onkeydown = e => { if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i-1].focus(); };
     });
     inputs[0].focus();
   }
+  window.resendOtp = function() { generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
 
-  window.resendOtp = function() {
-    generateOtp();
-    showToast('Kode baru dikirim ulang 🔄');
-  };
-
-  // ════════════════════════════════════════════════════════════
-  //  KELUHAN: setiap akun bisa komentar/keluhan.
-  //  Email TIDAK ditampilkan, nama (depan/belakang) ditampilkan,
-  //  avatar selalu pakai avatar default.
-  // ════════════════════════════════════════════════════════════
   window.openSendPage = function() {
     go('s-send');
     const textarea = document.getElementById('complaint-text');
@@ -1289,716 +1166,306 @@
   window.submitComplaint = function() {
     const textarea = document.getElementById('complaint-text');
     const text = textarea.value.trim();
-
-    const hasErr = setErr('cw-text', 'complaint-err', !text ? 'Tulis keluhan terlebih dahulu' : '');
-    if (hasErr) return;
-
-    complaintsList.unshift({
-      id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-      name: 'Anonim',
-      text,
-      time: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
-      likes: 0,
-      dislikes: 0
-    });
-    saveComplaints();
-
-    textarea.value = '';
+    if (setErr('cw-text', 'complaint-err', !text ? 'Tulis keluhan terlebih dahulu' : '')) return;
+    complaintsList.unshift({ id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8), name: 'Anonim', text, time: new Date().toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'}), likes: 0, dislikes: 0 });
+    saveComplaints(); textarea.value = '';
     showToast('Keluhan berhasil dikirim, terima kasih! 🙏');
     renderComplaints();
   };
 
   window.voteComplaint = function(id, type) {
-    const c = complaintsList.find(item => item.id === id);
-    if (!c) return;
-    c.likes = c.likes || 0;
-    c.dislikes = c.dislikes || 0;
-
-    const votes = loadMyVotes();
-    const current = votes[id] || null;
-
-    if (current === type) {
-      // batalkan vote akun ini
-      if (type === 'like') c.likes--; else c.dislikes--;
-      delete votes[id];
-    } else {
-      if (current === 'like') c.likes--;
-      if (current === 'dislike') c.dislikes--;
-      if (type === 'like') c.likes++; else c.dislikes++;
-      votes[id] = type;
-    }
-
-    saveComplaints();
-    saveMyVotes(votes);
-    renderComplaints();
+    const c = complaintsList.find(item => item.id === id); if (!c) return;
+    c.likes = c.likes || 0; c.dislikes = c.dislikes || 0;
+    const votes = loadMyVotes(); const current = votes[id] || null;
+    if (current === type) { if (type==='like') c.likes--; else c.dislikes--; delete votes[id]; }
+    else { if (current==='like') c.likes--; if (current==='dislike') c.dislikes--; if (type==='like') c.likes++; else c.dislikes++; votes[id]=type; }
+    saveComplaints(); saveMyVotes(votes); renderComplaints();
   };
 
   window.renderComplaints = function() {
-    const container = document.getElementById('complaint-list');
-    container.innerHTML = '';
-
-    if (complaintsList.length === 0) {
-      container.innerHTML = '<div class="send-empty">Belum ada keluhan dari pengguna</div>';
-      return;
-    }
-
+    const container = document.getElementById('complaint-list'); container.innerHTML = '';
+    if (complaintsList.length === 0) { container.innerHTML = '<div class="send-empty">Belum ada keluhan dari pengguna</div>'; return; }
     const thumbPath = '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>';
     const myVotes = loadMyVotes();
-
-    complaintsList.forEach((c) => {
-      const likes = c.likes || 0;
-      const dislikes = c.dislikes || 0;
-      const myVote = myVotes[c.id] || null;
-      const item = document.createElement('div');
-      item.className = 'complaint-item';
-      item.innerHTML = `
-        <img class="complaint-avatar" src="${DEFAULT_AVATAR}" alt=""/>
-        <div class="complaint-body">
-          <div class="complaint-name">${escapeHtml(c.name)}</div>
-          <div class="complaint-text">${escapeHtml(c.text)}</div>
-          <div class="complaint-time">${escapeHtml(c.time)}</div>
-          <div class="complaint-actions">
-            <button class="complaint-vote-btn like${myVote === 'like' ? ' active' : ''}" onclick="voteComplaint('${c.id}','like')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${thumbPath}</svg>
-              <span>${likes}</span>
-            </button>
-            <button class="complaint-vote-btn dislike${myVote === 'dislike' ? ' active' : ''}" onclick="voteComplaint('${c.id}','dislike')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="transform:rotate(180deg)">${thumbPath}</svg>
-              <span>${dislikes}</span>
-            </button>
-          </div>
-        </div>
-      `;
+    complaintsList.forEach(c => {
+      const likes = c.likes||0, dislikes = c.dislikes||0, myVote = myVotes[c.id]||null;
+      const item = document.createElement('div'); item.className = 'complaint-item';
+      item.innerHTML = `<img class="complaint-avatar" src="${DEFAULT_AVATAR}" alt=""/><div class="complaint-body"><div class="complaint-name">${escapeHtml(c.name)}</div><div class="complaint-text">${escapeHtml(c.text)}</div><div class="complaint-time">${escapeHtml(c.time)}</div><div class="complaint-actions"><button class="complaint-vote-btn like${myVote==='like'?' active':''}" onclick="voteComplaint('${c.id}','like')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${thumbPath}</svg><span>${likes}</span></button><button class="complaint-vote-btn dislike${myVote==='dislike'?' active':''}" onclick="voteComplaint('${c.id}','dislike')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="transform:rotate(180deg)">${thumbPath}</svg><span>${dislikes}</span></button></div></div>`;
       container.appendChild(item);
     });
   };
 
-  // ════════════════════════════════════════════════════════════
-  //  CHAT ADMIN (BOT): chat sederhana dengan auto-reply bot admin
-  // ════════════════════════════════════════════════════════════
-  function chatStorageKey() {
-    return 'pu_chat_' + (currentUserEmail || 'guest');
-  }
+  function chatStorageKey() { return 'pu_chat_' + (currentUserEmail || 'guest'); }
+  function loadChatMessages() { return JSON.parse(localStorage.getItem(chatStorageKey()) || '[]'); }
+  function saveChatMessages(msgs) { localStorage.setItem(chatStorageKey(), JSON.stringify(msgs)); }
+  function chatTimeNow() { return new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'}); }
 
-  function loadChatMessages() {
-    return JSON.parse(localStorage.getItem(chatStorageKey()) || '[]');
-  }
-
-  function saveChatMessages(msgs) {
-    localStorage.setItem(chatStorageKey(), JSON.stringify(msgs));
-  }
-
-  function chatTimeNow() {
-    return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  // ─── Filter kata kasar (sensor otomatis) ──────────────────
-  const BAD_WORDS = [
-    'anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','kntol','memek','mmk',
-    'tai','taik','goblok','gblk','tolol','tlol','bego','bgo','babi','jancok','jancuk',
-    'kampret','brengsek','bgsk','sialan','silan','pantek','pntek','kunyuk','bajingan',
-    'bjingan','keparat','kprt','pepek','ngentot','entot','pukimak','kimak','lonte',
-    'jembut','peler','dancuk','cuk','tete','perek','bencong','banci',
-    'fuck','fck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'
-  ];
-
+  const BAD_WORDS = ['anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','kntol','memek','mmk','tai','taik','goblok','gblk','tolol','tlol','bego','bgo','babi','jancok','jancuk','kampret','brengsek','bgsk','sialan','silan','pantek','pntek','kunyuk','bajingan','bjingan','keparat','kprt','pepek','ngentot','entot','pukimak','kimak','lonte','jembut','peler','dancuk','cuk','tete','perek','bencong','banci','fuck','fck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'];
   function censorText(str) {
     let result = str;
-    BAD_WORDS.forEach(word => {
-      const regex = new RegExp('\\b(' + word + ')(\\w*)', 'gi');
-      result = result.replace(regex, (match) => {
-        if (match.length <= 1) return '*';
-        return match[0] + '*'.repeat(match.length - 1);
-      });
-    });
+    BAD_WORDS.forEach(word => { const regex = new RegExp('\\b(' + word + ')(\\w*)', 'gi'); result = result.replace(regex, match => match.length <= 1 ? '*' : match[0] + '*'.repeat(match.length-1)); });
     return result;
   }
 
   window.openChatPage = function() {
     go('s-chat');
     let msgs = loadChatMessages();
-    if (msgs.length === 0) {
-      msgs.push({
-        sender: 'bot',
-        text: 'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',
-        time: chatTimeNow()
-      });
-      saveChatMessages(msgs);
-    }
+    if (msgs.length === 0) { msgs.push({sender:'bot',text:'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',time:chatTimeNow()}); saveChatMessages(msgs); }
     renderChatMessages(msgs);
   };
 
   window.renderChatMessages = function(msgs) {
-    const container = document.getElementById('chat-messages');
-    container.innerHTML = '';
+    const container = document.getElementById('chat-messages'); container.innerHTML = '';
     (msgs || loadChatMessages()).forEach(m => {
-      const bubble = document.createElement('div');
-      bubble.className = 'chat-bubble ' + (m.sender === 'user' ? 'user' : 'bot');
+      const bubble = document.createElement('div'); bubble.className = 'chat-bubble ' + (m.sender==='user'?'user':'bot');
       bubble.innerHTML = `${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
       container.appendChild(bubble);
     });
-    const scroller = document.getElementById('chat-scroll');
-    scroller.scrollTop = scroller.scrollHeight;
+    const scroller = document.getElementById('chat-scroll'); scroller.scrollTop = scroller.scrollHeight;
   };
 
   function getBotReply(text) {
     const t = text.toLowerCase();
-    if (/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) {
-      return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun, saldo, atau transaksi?';
-    }
-    if (/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) {
-      return 'Terima kasih sudah melaporkan. Keluhan kamu sudah kami catat dan akan ditindaklanjuti oleh tim kami secepatnya 🙏. Kamu juga bisa mengirim keluhan lewat menu "Keluhan" di halaman utama.';
-    }
-    if (/(saldo|balance|dana|uang)/.test(t)) {
-      return 'Untuk melihat saldo dan riwayat transaksi, silakan buka halaman Home di tab bawah ya.';
-    }
-    if (/(password|kata sandi|lupa)/.test(t)) {
-      return 'Kalau lupa password, kamu bisa reset lewat halaman login menggunakan tombol "Forget password?".';
-    }
-    if (/(akun|profil|email)/.test(t)) {
-      return 'Untuk pengaturan akun dan profil, silakan buka menu Account di tab bawah.';
-    }
-    if (/(terima kasih|makasih|thanks|thx)/.test(t)) {
-      return 'Sama-sama! Senang bisa membantu 😊 Ada hal lain yang bisa saya bantu?';
-    }
-    if (/(bye|sampai jumpa|dadah)/.test(t)) {
-      return 'Sampai jumpa! Jangan ragu untuk chat lagi kalau butuh bantuan ya 👋';
-    }
-    const fallback = [
-      'Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.',
-      'Terima kasih atas pesannya. Apakah ada detail tambahan yang bisa kamu berikan?',
-      'Pesan kamu sudah kami terima. Mohon ditunggu, kami akan segera membalas.'
-    ];
+    if (/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun, saldo, atau transaksi?';
+    if (/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) return 'Terima kasih sudah melaporkan. Keluhan kamu sudah kami catat dan akan ditindaklanjuti oleh tim kami secepatnya 🙏.';
+    if (/(saldo|balance|dana|uang)/.test(t)) return 'Untuk melihat saldo dan riwayat transaksi, silakan buka halaman Home di tab bawah ya.';
+    if (/(password|kata sandi|lupa)/.test(t)) return 'Kalau lupa password, kamu bisa reset lewat halaman login menggunakan tombol "Forget password?".';
+    if (/(akun|profil|email)/.test(t)) return 'Untuk pengaturan akun dan profil, silakan buka menu Account di tab bawah.';
+    if (/(terima kasih|makasih|thanks|thx)/.test(t)) return 'Sama-sama! Senang bisa membantu 😊 Ada hal lain yang bisa saya bantu?';
+    if (/(bye|sampai jumpa|dadah)/.test(t)) return 'Sampai jumpa! Jangan ragu untuk chat lagi kalau butuh bantuan ya 👋';
+    const fallback = ['Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.','Terima kasih atas pesannya. Apakah ada detail tambahan yang bisa kamu berikan?','Pesan kamu sudah kami terima. Mohon ditunggu, kami akan segera membalas.'];
     return fallback[Math.floor(Math.random() * fallback.length)];
   }
 
   window.sendChatMessage = function() {
-    const input = document.getElementById('chat-input');
-    const raw = input.value.trim();
-    if (!raw) return;
-
-    const text = censorText(raw);
-    const wasCensored = text !== raw;
-
-    let msgs = loadChatMessages();
-    msgs.push({ sender: 'user', text, time: chatTimeNow() });
-    saveChatMessages(msgs);
-    renderChatMessages(msgs);
-    input.value = '';
-
-    if (wasCensored) {
-      showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐', true);
-    }
-
-    // Tampilkan indikator "sedang mengetik" lalu balas otomatis seperti bot
-    const container = document.getElementById('chat-messages');
-    const scroller = document.getElementById('chat-scroll');
-    const typing = document.createElement('div');
-    typing.className = 'chat-typing';
-    typing.id = 'chat-typing-indicator';
-    typing.innerHTML = '<span></span><span></span><span></span>';
-    container.appendChild(typing);
-    scroller.scrollTop = scroller.scrollHeight;
-
+    const input = document.getElementById('chat-input'); const raw = input.value.trim(); if (!raw) return;
+    const text = censorText(raw); const wasCensored = text !== raw;
+    let msgs = loadChatMessages(); msgs.push({sender:'user',text,time:chatTimeNow()}); saveChatMessages(msgs); renderChatMessages(msgs); input.value = '';
+    if (wasCensored) showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐', true);
+    const container = document.getElementById('chat-messages'); const scroller = document.getElementById('chat-scroll');
+    const typing = document.createElement('div'); typing.className='chat-typing'; typing.id='chat-typing-indicator'; typing.innerHTML='<span></span><span></span><span></span>';
+    container.appendChild(typing); scroller.scrollTop = scroller.scrollHeight;
     setTimeout(() => {
-      const ind = document.getElementById('chat-typing-indicator');
-      if (ind) ind.remove();
-      let m = loadChatMessages();
-      const reply = wasCensored
-        ? 'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu masalah kamu.'
-        : getBotReply(text);
-      m.push({ sender: 'bot', text: reply, time: chatTimeNow() });
-      saveChatMessages(m);
-      renderChatMessages(m);
+      const ind = document.getElementById('chat-typing-indicator'); if (ind) ind.remove();
+      let m = loadChatMessages(); const reply = wasCensored ? 'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu masalah kamu.' : getBotReply(text);
+      m.push({sender:'bot',text:reply,time:chatTimeNow()}); saveChatMessages(m); renderChatMessages(m);
     }, 900 + Math.random() * 700);
   };
 
-  // ════════════════════════════════════════════════════════════
-  //  DASHBOARD: avatar, balance card, dan slider promo
-  // ════════════════════════════════════════════════════════════
-
-  // --- Avatar profil ---
-  // Set foto profil lewat URL (bisa dipanggil manual: setAvatar('https://...jpg'))
-  window.setAvatar = function(url) {
-    const avatar = document.getElementById('dash-avatar');
-    avatar.src = url;
-    avatar.style.display = 'block';
-  };
-
-  // Set foto profil dari file lokal (klik tombol "+" di avatar)
+  window.setAvatar = function(url) { const avatar = document.getElementById('dash-avatar'); avatar.src = url; avatar.style.display = 'block'; };
   window.setAvatarFromFile = function(input) {
-    const file = input.files && input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => setAvatar(e.target.result);
-    reader.readAsDataURL(file);
+    const file = input.files && input.files[0]; if (!file) return;
+    const reader = new FileReader(); reader.onload = e => setAvatar(e.target.result); reader.readAsDataURL(file);
   };
 
-  // --- Greeting (Good Morning/Afternoon/Evening + nama) ---
-  // Dipanggil otomatis saat dashboard dibuka, atau manual: setGreetingName('Tobechukwu')
   function getGreetingByTime() {
     const h = new Date().getHours();
-    if (h < 11) return 'Good Morning';
-    if (h < 15) return 'Good Afternoon';
-    if (h < 19) return 'Good Evening';
-    return 'Good Night';
+    if (h < 11) return 'Good Morning'; if (h < 15) return 'Good Afternoon'; if (h < 19) return 'Good Evening'; return 'Good Night';
   }
-  window.setGreetingName = function(name) {
-    document.getElementById('dash-greeting-name').textContent = name + '!';
-  };
+  window.setGreetingName = function(name) { document.getElementById('dash-greeting-name').textContent = name + '!'; };
+  window.setAccountName = function(name) { document.getElementById('acc-name').textContent = name; };
+  window.setAccountRating = function(rating) { document.getElementById('acc-rating-val').textContent = Number(rating).toFixed(2); };
+  window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage = `url('${url}')`; };
 
-  // --- Account screen ---
-  // Contoh: setAccountName('David Saito')
-  window.setAccountName = function(name) {
-    document.getElementById('acc-name').textContent = name;
-  };
-  // Contoh: setAccountRating(4.85)
-  window.setAccountRating = function(rating) {
-    document.getElementById('acc-rating-val').textContent = Number(rating).toFixed(2);
-  };
-
-  // --- Banner kecil di bawah header ---
-  // Contoh: setTopBannerImage('https://url-banner.jpg')
-  window.setTopBannerImage = function(url) {
-    const banner = document.getElementById('top-banner');
-    banner.style.backgroundImage = `url('${url}')`;
-  };
-
-  // --- Activity list ---
-  // type: 'sent' | 'received'
-  // Contoh: addActivity('sent', '0x34534...232', '23 min ago', 763.17, '299 usdt')
   window.addActivity = function(type, address, time, amount, usdtText) {
-    const list = document.getElementById('activity-list');
-    const isReceived = type === 'received';
-    const iconSvg = isReceived
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
-    const actionLabel = isReceived ? 'Received from' : 'Sent to';
-    const amountClass = isReceived ? 'positive' : '';
-    const item = document.createElement('div');
-    item.className = 'activity-item';
-    item.innerHTML = `
-      <div class="activity-icon">${iconSvg}</div>
-      <div class="activity-mid">
-        <div class="activity-action">${actionLabel} <b>${address}</b></div>
-        <div class="activity-time">${time}</div>
-      </div>
-      <div class="activity-right">
-        <div class="activity-amount ${amountClass}">$${Number(amount).toFixed(2)}</div>
-        <div class="activity-usdt">≈${usdtText}</div>
-      </div>
-    `;
+    const list = document.getElementById('activity-list'); const isReceived = type === 'received';
+    const iconSvg = isReceived ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+    const item = document.createElement('div'); item.className = 'activity-item';
+    item.innerHTML = `<div class="activity-icon">${iconSvg}</div><div class="activity-mid"><div class="activity-action">${isReceived?'Received from':'Sent to'} <b>${address}</b></div><div class="activity-time">${time}</div></div><div class="activity-right"><div class="activity-amount ${isReceived?'positive':''}">$${Number(amount).toFixed(2)}</div><div class="activity-usdt">≈${usdtText}</div></div>`;
     list.appendChild(item);
   };
+  window.clearActivity = function() { document.getElementById('activity-list').innerHTML = ''; };
 
-  window.clearActivity = function() {
-    document.getElementById('activity-list').innerHTML = '';
-  };
-
-  // --- Slider promo (3 gambar) ---
+  // ───────── SLIDER (dengan kontrol video per slide) ─────────
   const sliderTrack = document.getElementById('slider-track');
   const sliderDots = document.querySelectorAll('.slider-dot');
   const slides = document.querySelectorAll('.slide');
-  let sliderIndex = 0;
-  let autoSlideTimer = null;
+  let sliderIndex = 0, autoSlideTimer = null;
   const AUTO_SLIDE_MS = 4000;
 
   function updateSlider() {
     sliderTrack.style.transform = `translateX(-${sliderIndex * 100}%)`;
     sliderDots.forEach((d, i) => d.classList.toggle('active', i === sliderIndex));
-  }
-
-  function goToSlide(i) {
-    sliderIndex = (i + slides.length) % slides.length;
-    updateSlider();
-  }
-
-  function nextSlide() { goToSlide(sliderIndex + 1); }
-
-  function startAutoSlide() {
-    stopAutoSlide();
-    autoSlideTimer = setInterval(nextSlide, AUTO_SLIDE_MS);
-  }
-  function stopAutoSlide() {
-    if (autoSlideTimer) clearInterval(autoSlideTimer);
-  }
-
-  sliderDots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      goToSlide(parseInt(dot.dataset.go, 10));
-      startAutoSlide();
-    });
-  });
-
-  // Swipe / drag support (mouse + touch)
-  let isDragging = false;
-  let startX = 0;
-  let currentTranslate = 0;
-
-  function getX(e) {
-    return (e.touches ? e.touches[0].clientX : e.clientX);
-  }
-
-  sliderTrack.addEventListener('pointerdown', e => {
-    isDragging = true;
-    startX = getX(e);
-    currentTranslate = -sliderIndex * sliderTrack.offsetWidth;
-    sliderTrack.classList.add('dragging');
-    stopAutoSlide();
-  });
-
-  sliderTrack.addEventListener('pointermove', e => {
-    if (!isDragging) return;
-    const dx = getX(e) - startX;
-    sliderTrack.style.transform = `translateX(${currentTranslate + dx}px)`;
-  });
-
-  function endDrag(e) {
-    if (!isDragging) return;
-    isDragging = false;
-    sliderTrack.classList.remove('dragging');
-    const dx = (e.clientX !== undefined ? e.clientX : (e.changedTouches ? e.changedTouches[0].clientX : startX)) - startX;
-    const threshold = sliderTrack.offsetWidth * 0.15;
-    if (dx > threshold) {
-      goToSlide(sliderIndex - 1);
-    } else if (dx < -threshold) {
-      goToSlide(sliderIndex + 1);
-    } else {
-      updateSlider();
+    // Play video hanya saat slide video aktif
+    const vid = document.querySelector('.slide-video-el');
+    if (vid) {
+      if (sliderIndex === 1) { vid.play().catch(() => {}); }
+      else { vid.pause(); }
     }
+  }
+
+  function goToSlide(i) { sliderIndex = (i + slides.length) % slides.length; updateSlider(); }
+  function nextSlide() { goToSlide(sliderIndex + 1); }
+  function startAutoSlide() { stopAutoSlide(); autoSlideTimer = setInterval(nextSlide, AUTO_SLIDE_MS); }
+  function stopAutoSlide() { if (autoSlideTimer) clearInterval(autoSlideTimer); }
+
+  sliderDots.forEach(dot => { dot.addEventListener('click', () => { goToSlide(parseInt(dot.dataset.go, 10)); startAutoSlide(); }); });
+
+  let isDragging = false, startX = 0, currentTranslate = 0;
+  function getX(e) { return (e.touches ? e.touches[0].clientX : e.clientX); }
+  sliderTrack.addEventListener('pointerdown', e => { isDragging=true; startX=getX(e); currentTranslate=-sliderIndex*sliderTrack.offsetWidth; sliderTrack.classList.add('dragging'); stopAutoSlide(); });
+  sliderTrack.addEventListener('pointermove', e => { if (!isDragging) return; sliderTrack.style.transform=`translateX(${currentTranslate+getX(e)-startX}px)`; });
+  function endDrag(e) {
+    if (!isDragging) return; isDragging=false; sliderTrack.classList.remove('dragging');
+    const dx=(e.clientX!==undefined?e.clientX:(e.changedTouches?e.changedTouches[0].clientX:startX))-startX;
+    const threshold=sliderTrack.offsetWidth*0.15;
+    if (dx>threshold) goToSlide(sliderIndex-1); else if (dx<-threshold) goToSlide(sliderIndex+1); else updateSlider();
     startAutoSlide();
   }
-
   sliderTrack.addEventListener('pointerup', endDrag);
   sliderTrack.addEventListener('pointerleave', e => { if (isDragging) endDrag(e); });
 
-  // Set gambar untuk slide tertentu (index 0,1,2) lewat URL
-  // Contoh: setSlideImage(0, 'https://...jpg', 'Judul Promo', 'Deskripsi singkat')
   window.setSlideImage = function(index, url, title, desc) {
-    const slide = slides[index];
-    if (!slide) return;
-    slide.style.backgroundImage = `url('${url}')`;
-    slide.classList.add('has-img');
+    const slide = slides[index]; if (!slide) return;
+    slide.style.backgroundImage = `url('${url}')`; slide.classList.add('has-img');
     if (title !== undefined) slide.querySelector('.slide-title').textContent = title;
     if (desc !== undefined) slide.querySelector('.slide-desc').textContent = desc;
-    const icon = slide.querySelector('.slide-icon');
-    if (icon) icon.style.display = 'none';
+    const icon = slide.querySelector('.slide-icon'); if (icon) icon.style.display='none';
   };
 
-  function initSlider() {
-    updateSlider();
-    startAutoSlide();
-  }
+  function initSlider() { updateSlider(); startAutoSlide(); }
 
-  // ─── LOGOUT ───────────────────────────────────────────────
   window.doLogout = async function() {
-    try {
-      await signOut(auth);
-    } catch(e) {}
-    stopAutoSlide();
-    go('s-login');
-    showToast('Berhasil logout 👋');
+    try { await signOut(auth); } catch(e) {}
+    stopAutoSlide(); go('s-login'); showToast('Berhasil logout 👋');
   };
 
-  // ─── LOGIN (Email) ────────────────────────────────────────
   window.doEmailLogin = async function() {
     const email = document.getElementById('l-email').value.trim();
-    const pass  = document.getElementById('l-pass').value;
+    const pass = document.getElementById('l-pass').value;
     let hasErr = false;
     hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
     hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
     if (hasErr) return;
-
     const acc = registeredAccounts[email];
-
-    // Tidak ada di lokal → belum registrasi
-    if (!acc) {
-      setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.');
-      return;
-    }
-
-    // Cek password lokal
-    if (acc.password !== pass) {
-      setErr('lw-pass','l-pass-err','Password salah!');
-      return;
-    }
-
-    // Verifikasi ke Firebase
+    if (!acc) { setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.'); return; }
+    if (acc.password !== pass) { setErr('lw-pass','l-pass-err','Password salah!'); return; }
     try {
-      const result = await signInWithEmailAndPassword(auth, email, pass);
+      await signInWithEmailAndPassword(auth, email, pass);
       await signOut(auth);
       showToast('Login berhasil! Selamat datang 👋');
       showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
     } catch(e) {
-      if (e.code === 'auth/user-disabled') {
-        // Akun ditangguhkan — JANGAN hapus lokal, beri tahu user
-        setErr('lw-email','l-email-err','Akun kamu sedang ditangguhkan. Hubungi admin.');
-      } else if (
-        e.code === 'auth/user-not-found' ||
-        e.code === 'auth/invalid-credential' ||
-        e.code === 'auth/invalid-login-credentials'
-      ) {
-        // Akun benar-benar dihapus → hapus lokal
-        delete registeredAccounts[email];
-        saveAccounts();
-        setErr('lw-email','l-email-err','Akun telah dihapus. Silakan registrasi ulang.');
-      } else {
-        // Firebase error lain (network, auth belum aktif, dll) → tetap login lokal
-        showToast('Login berhasil! Selamat datang 👋');
-        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password');
-      }
+      if (e.code === 'auth/user-disabled') { setErr('lw-email','l-email-err','Akun kamu sedang ditangguhkan. Hubungi admin.'); }
+      else if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential' || e.code === 'auth/invalid-login-credentials') { delete registeredAccounts[email]; saveAccounts(); setErr('lw-email','l-email-err','Akun telah dihapus. Silakan registrasi ulang.'); }
+      else { showToast('Login berhasil! Selamat datang 👋'); showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null }, 'Email & Password'); }
     }
   };
 
-  // ─── LOGIN Google (halaman login) ─────────────────────────
   window.doGoogleLogin = async function() {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-
-      // Belum registrasi di app → hapus akun Firebase yang baru dibuat, arahkan ke Register
+      const result = await signInWithPopup(auth, googleProvider); const user = result.user;
       if (!registeredAccounts[user.email]) {
         try { await deleteUser(user); } catch(e) {}
-        pendingGoogleCred = {
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          type: 'google'
-        };
+        pendingGoogleCred = {email:user.email,displayName:user.displayName,photoURL:user.photoURL,type:'google'};
         showToast('Akun belum ada, daftar dulu ya 👇', true);
-        setTimeout(() => {
-          go('s-register');
-          const rEmail = document.getElementById('r-email');
-          if (rEmail) rEmail.value = user.email;
-        }, 1000);
+        setTimeout(() => { go('s-register'); const rEmail = document.getElementById('r-email'); if (rEmail) rEmail.value = user.email; }, 1000);
         return;
       }
-
-      // Sudah registrasi → verifikasi token
-      try {
-        await user.getIdToken(true);
-      } catch(e) {
-        // Akun dihapus dari Firebase Console
-        delete registeredAccounts[user.email];
-        saveAccounts();
-        showToast('Akun belum ada, daftar dulu ya 👇', true);
-        setTimeout(() => {
-          go('s-register');
-          const rEmail = document.getElementById('r-email');
-          if (rEmail) rEmail.value = user.email;
-        }, 1000);
-        return;
-      }
-
-      showToast('Login berhasil! Selamat datang 👋');
-      showDashboard(user, 'Google');
+      try { await user.getIdToken(true); } catch(e) { delete registeredAccounts[user.email]; saveAccounts(); showToast('Akun belum ada, daftar dulu ya 👇', true); setTimeout(() => { go('s-register'); }, 1000); return; }
+      showToast('Login berhasil! Selamat datang 👋'); showDashboard(user, 'Google');
     } catch(e) {
-      if (e.code === 'auth/user-disabled' || e.code === 'auth/user-not-found' || e.code === 'auth/invalid-user-token') {
-        showToast('Akun belum ada, daftar dulu ya 👇', true);
-        setTimeout(() => go('s-register'), 1200);
-      } else if (e.code !== 'auth/popup-closed-by-user') {
-        showToast('Login Google gagal: ' + e.message, true);
-      }
+      if (e.code === 'auth/user-disabled' || e.code === 'auth/user-not-found' || e.code === 'auth/invalid-user-token') { showToast('Akun belum ada, daftar dulu ya 👇', true); setTimeout(() => go('s-register'), 1200); }
+      else if (e.code !== 'auth/popup-closed-by-user') { showToast('Login Google gagal: ' + e.message, true); }
     }
   };
 
-  // ─── REGISTER (Email manual) ──────────────────────────────
   window.doRegister = async function() {
     const email = document.getElementById('r-email').value.trim();
-    const pass  = document.getElementById('r-pass').value;
+    const pass = document.getElementById('r-pass').value;
     const cpass = document.getElementById('r-cpass').value;
     let hasErr = false;
     hasErr = setErr('rw-email','r-email-err', checkEmail(email)) || hasErr;
-    hasErr = setErr('rw-pass','r-pass-err', !pass ? 'Password wajib diisi' : pass.length < 8 ? 'Password minimal 8 karakter' : '') || hasErr;
-    hasErr = setErr('rw-cpass','r-cpass-err', !cpass ? 'Konfirmasi password wajib diisi' : pass !== cpass ? 'Password tidak cocok!' : '') || hasErr;
+    hasErr = setErr('rw-pass','r-pass-err', !pass?'Password wajib diisi':pass.length<8?'Password minimal 8 karakter':'') || hasErr;
+    hasErr = setErr('rw-cpass','r-cpass-err', !cpass?'Konfirmasi password wajib diisi':pass!==cpass?'Password tidak cocok!':'') || hasErr;
     if (hasErr) return;
-
-    if (registeredAccounts[email]) {
-      setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.');
-      return;
-    }
-
-    // Simpan sementara termasuk password, arahkan ke OTP
-    pendingGoogleCred = { email, password: pass, type: 'email' };
+    if (registeredAccounts[email]) { setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.'); return; }
+    pendingGoogleCred = {email, password: pass, type: 'email'};
     verifyMode = 'register-email';
     document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode verifikasi';
     document.getElementById('verify-back-btn').onclick = () => go('s-register');
-    go('s-verify');
-    generateOtp();
+    go('s-verify'); generateOtp();
   };
 
-  // ─── REGISTER Google ──────────────────────────────────────
   window.doGoogleRegister = async function() {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      const email = user.email;
-
-      // Sudah terdaftar → sign out, arahkan ke login
-      if (registeredAccounts[email]) {
-        await signOut(auth);
-        showToast('Akun sudah ada, silakan login 👇', true);
-        setTimeout(() => go('s-login'), 1000);
-        return;
-      }
-
-      // Belum terdaftar → hapus dari Firebase, simpan data, lanjut OTP + buat PW
-      pendingGoogleCred = {
-        email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        type: 'google'
-      };
+      const result = await signInWithPopup(auth, googleProvider); const user = result.user; const email = user.email;
+      if (registeredAccounts[email]) { await signOut(auth); showToast('Akun sudah ada, silakan login 👇', true); setTimeout(() => go('s-login'), 1000); return; }
+      pendingGoogleCred = {email, displayName:user.displayName, photoURL:user.photoURL, type:'google'};
       try { await deleteUser(user); } catch(e) {}
-
       verifyMode = 'register-google';
       document.getElementById('verify-subtitle').textContent = 'Verifikasi akun Google kamu';
       document.getElementById('verify-back-btn').onclick = () => go('s-register');
       document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
       document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login ke akun kamu';
-      go('s-verify');
-      generateOtp();
-
-    } catch(e) {
-      if (e.code !== 'auth/popup-closed-by-user') {
-        showToast('Google gagal: ' + e.message, true);
-      }
-    }
+      go('s-verify'); generateOtp();
+    } catch(e) { if (e.code !== 'auth/popup-closed-by-user') showToast('Google gagal: ' + e.message, true); }
   };
 
-  // ─── VERIFY OTP ───────────────────────────────────────────
   window.doVerify = async function() {
     const inputs = document.querySelectorAll('#otp-row input');
     const entered = Array.from(inputs).map(i => i.value).join('');
-    if (entered.length < 4) {
-      document.getElementById('otp-err').textContent = 'Masukkan 4 digit kode terlebih dahulu';
-      return;
-    }
-    if (entered !== currentOtp) {
-      document.getElementById('otp-err').textContent = 'Kode salah! Coba lagi atau kirim ulang kode';
-      inputs.forEach(i => { i.value = ''; i.parentElement.classList.remove('filled'); });
-      inputs[0].focus();
-      return;
-    }
-    document.getElementById('otp-err').textContent = '';
-    showToast('Kode benar! ✅');
-
-    if (verifyMode === 'forgot') {
-      document.getElementById('newpass-title').innerHTML = 'Create<br>New Password';
-      document.getElementById('newpass-subtitle').textContent = 'Your new password must be different from previously used password';
-      document.getElementById('n-pass').value = '';
-      document.getElementById('n-cpass').value = '';
-      setTimeout(() => go('s-newpass'), 800);
-
-    } else if (verifyMode === 'register-email') {
+    if (entered.length < 4) { document.getElementById('otp-err').textContent = 'Masukkan 4 digit kode terlebih dahulu'; return; }
+    if (entered !== currentOtp) { document.getElementById('otp-err').textContent = 'Kode salah! Coba lagi atau kirim ulang kode'; inputs.forEach(i => { i.value=''; i.parentElement.classList.remove('filled'); }); inputs[0].focus(); return; }
+    document.getElementById('otp-err').textContent = ''; showToast('Kode benar! ✅');
+    if (verifyMode === 'forgot') { document.getElementById('newpass-title').innerHTML='Create<br>New Password'; document.getElementById('newpass-subtitle').textContent='Your new password must be different from previously used password'; document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value=''; setTimeout(() => go('s-newpass'), 800); }
+    else if (verifyMode === 'register-email') {
       const { email, password } = pendingGoogleCred;
-      // Coba buat di Firebase, kalau gagal tetap simpan lokal
-      try {
-        const uc = await createUserWithEmailAndPassword(auth, email, password);
-        await signOut(auth);
-      } catch(e) {
-        // Email sudah ada di Firebase atau error lain — tetap lanjut simpan lokal
-        console.log('Firebase register note:', e.code);
-      }
-      registeredAccounts[email] = { password, name: email.split('@')[0], method: 'email' };
-      saveAccounts();
-      pendingGoogleCred = null;
-      showToast('Registrasi berhasil! Silakan login 🎉');
-      setTimeout(() => go('s-login'), 1800);
-
+      try { const uc = await createUserWithEmailAndPassword(auth, email, password); await signOut(auth); } catch(e) { console.log('Firebase register note:', e.code); }
+      registeredAccounts[email] = {password, name:email.split('@')[0], method:'email'}; saveAccounts(); pendingGoogleCred=null;
+      showToast('Registrasi berhasil! Silakan login 🎉'); setTimeout(() => go('s-login'), 1800);
     } else if (verifyMode === 'register-google') {
-      document.getElementById('newpass-title').innerHTML = 'Buat<br>Password';
-      document.getElementById('newpass-subtitle').textContent = 'Buat password untuk login ke akun kamu';
-      document.getElementById('n-pass').value = '';
-      document.getElementById('n-cpass').value = '';
-      setTimeout(() => go('s-newpass'), 800);
+      document.getElementById('newpass-title').innerHTML='Buat<br>Password'; document.getElementById('newpass-subtitle').textContent='Buat password untuk login ke akun kamu';
+      document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value=''; setTimeout(() => go('s-newpass'), 800);
     }
   };
 
-  // ─── FORGOT PASSWORD ──────────────────────────────────────
   window.doForgot = function() {
     const email = document.getElementById('f-email').value.trim();
-    const hasErr = setErr('fw-email','f-email-err', checkEmail(email));
-    if (!hasErr) {
-      // Simpan email untuk dipakai saat save password
-      pendingForgotEmail = email;
-      verifyMode = 'forgot';
-      document.getElementById('newpass-title').innerHTML = 'Create<br>New Password';
-      document.getElementById('newpass-subtitle').textContent = 'Your new password must be different from previously used password';
-      document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode verifikasi';
+    if (!setErr('fw-email','f-email-err', checkEmail(email))) {
+      pendingForgotEmail = email; verifyMode = 'forgot';
+      document.getElementById('newpass-title').innerHTML='Create<br>New Password'; document.getElementById('newpass-subtitle').textContent='Your new password must be different from previously used password';
+      document.getElementById('verify-subtitle').textContent='Masukkan 4 digit kode verifikasi';
       document.getElementById('verify-back-btn').onclick = () => go('s-forgot');
       setTimeout(() => { go('s-verify'); generateOtp(); }, 300);
     }
   };
 
-  // ─── SAVE PASSWORD (setelah OTP) ─────────────────────────
   window.doSavePass = async function() {
-    const np = document.getElementById('n-pass').value;
-    const cp = document.getElementById('n-cpass').value;
+    const np = document.getElementById('n-pass').value; const cp = document.getElementById('n-cpass').value;
     let hasErr = false;
-    hasErr = setErr('nw-pass','n-pass-err', !np ? 'Password baru wajib diisi' : np.length < 8 ? 'Minimal 8 karakter' : '') || hasErr;
-    hasErr = setErr('nw-cpass','n-cpass-err', !cp ? 'Konfirmasi password wajib diisi' : np !== cp ? 'Password tidak cocok!' : '') || hasErr;
+    hasErr = setErr('nw-pass','n-pass-err', !np?'Password baru wajib diisi':np.length<8?'Minimal 8 karakter':'') || hasErr;
+    hasErr = setErr('nw-cpass','n-cpass-err', !cp?'Konfirmasi password wajib diisi':np!==cp?'Password tidak cocok!':'') || hasErr;
     if (hasErr) return;
-
     if (verifyMode === 'forgot') {
       const email = pendingForgotEmail;
       if (email) {
         const oldPass = registeredAccounts[email] ? registeredAccounts[email].password : null;
-
-        // Update localStorage dulu dengan password baru
-        if (registeredAccounts[email]) {
-          registeredAccounts[email].password = np;
-        } else {
-          registeredAccounts[email] = { password: np, name: email.split('@')[0], method: 'email' };
-        }
+        if (registeredAccounts[email]) registeredAccounts[email].password = np;
+        else registeredAccounts[email] = {password:np, name:email.split('@')[0], method:'email'};
         saveAccounts();
-
-        // Update password di Firebase juga (login dulu pakai pw lama, lalu update)
-        if (oldPass) {
-          try {
-            const uc = await signInWithEmailAndPassword(auth, email, oldPass);
-            await updatePassword(uc.user, np);
-            await signOut(auth);
-          } catch(e) {
-            // Kalau gagal (pw lama salah di Firebase dll) tidak apa-apa, lokal sudah update
-          }
-        }
+        if (oldPass) { try { const uc = await signInWithEmailAndPassword(auth, email, oldPass); await updatePassword(uc.user, np); await signOut(auth); } catch(e) {} }
       }
-      pendingForgotEmail = null;
-      showToast('Password berhasil diubah! Silakan login 🔐');
-      setTimeout(() => go('s-login'), 1800);
-
+      pendingForgotEmail = null; showToast('Password berhasil diubah! Silakan login 🔐'); setTimeout(() => go('s-login'), 1800);
     } else if (verifyMode === 'register-google') {
       const { email, displayName, photoURL } = pendingGoogleCred;
-      registeredAccounts[email] = { password: np, name: displayName || email.split('@')[0], photoURL, method: 'google' };
-      saveAccounts();
-      showToast('Registrasi berhasil! Silakan login 🎉');
-      pendingGoogleCred = null;
-      setTimeout(() => go('s-login'), 1800);
+      registeredAccounts[email] = {password:np, name:displayName||email.split('@')[0], photoURL, method:'google'};
+      saveAccounts(); showToast('Registrasi berhasil! Silakan login 🎉'); pendingGoogleCred=null; setTimeout(() => go('s-login'), 1800);
     }
   };
 
-  // ─── Show Dashboard (override dengan inisialisasi slider) ──
   function showDashboard(user, method) {
     currentUserEmail = user.email || null;
     const avatar = document.getElementById('dash-avatar');
-    if (user.photoURL) {
-      avatar.src = user.photoURL;
-      avatar.style.display = 'block';
-    } else {
-      avatar.src = DEFAULT_AVATAR;
-      avatar.style.display = 'block';
-    }
+    avatar.src = user.photoURL || DEFAULT_AVATAR; avatar.style.display = 'block';
     document.getElementById('dash-greeting-sub').textContent = getGreetingByTime();
     const displayName = (user.displayName || user.email || 'User').split('@')[0];
     setGreetingName(displayName);
     document.getElementById('acc-name').textContent = displayName;
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
-    go('s-dashboard');
-    initSlider();
+    go('s-dashboard'); initSlider();
   }
-
 </script>
 
 </body>
