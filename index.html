@@ -139,6 +139,76 @@
       font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      position: relative; display: inline-block;
+    }
+
+    /* ───────── GLITCH EFFECT (nama) ───────── */
+    .glitch-name {
+      position: relative;
+      display: inline-block;
+      animation: glitchSkew 3.2s infinite linear;
+    }
+    .glitch-name::before,
+    .glitch-name::after {
+      content: attr(data-glitch);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      background: transparent;
+      pointer-events: none;
+    }
+    .glitch-name::before {
+      color: #ff2860;
+      animation: glitchBefore 3.2s infinite linear;
+      clip-path: inset(0 0 0 0);
+      mix-blend-mode: lighten;
+    }
+    .glitch-name::after {
+      color: #00e5ff;
+      animation: glitchAfter 3.2s infinite linear;
+      clip-path: inset(0 0 0 0);
+      mix-blend-mode: lighten;
+    }
+    @keyframes glitchBefore {
+      0%   { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      4%   { clip-path: inset(20% 0 60% 0); transform: translate(-2px,-1px); }
+      8%   { clip-path: inset(60% 0 5% 0);  transform: translate(2px,1px); }
+      12%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      40%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      43%  { clip-path: inset(40% 0 30% 0); transform: translate(2px,0); }
+      46%  { clip-path: inset(10% 0 70% 0); transform: translate(-2px,1px); }
+      50%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      77%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      80%  { clip-path: inset(70% 0 5% 0);  transform: translate(-3px,0); }
+      83%  { clip-path: inset(5% 0 80% 0);  transform: translate(3px,-1px); }
+      87%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      100% { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+    }
+    @keyframes glitchAfter {
+      0%   { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      5%   { clip-path: inset(50% 0 15% 0); transform: translate(2px,1px); }
+      9%   { clip-path: inset(10% 0 65% 0); transform: translate(-2px,-1px); }
+      13%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      41%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      44%  { clip-path: inset(25% 0 50% 0); transform: translate(-2px,0); }
+      47%  { clip-path: inset(65% 0 10% 0); transform: translate(2px,1px); }
+      51%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      78%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      81%  { clip-path: inset(8% 0 75% 0);  transform: translate(3px,1px); }
+      84%  { clip-path: inset(75% 0 8% 0);  transform: translate(-3px,0); }
+      88%  { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+      100% { clip-path: inset(0 0 0 0);   transform: translate(0,0); }
+    }
+    @keyframes glitchSkew {
+      0%, 40%, 77%, 100% { transform: translate(0,0) skew(0deg); }
+      4%  { transform: translate(-1px,0) skew(0.5deg); }
+      8%  { transform: translate(1px,0) skew(-0.5deg); }
+      43% { transform: translate(1px,0) skew(-0.5deg); }
+      46% { transform: translate(-1px,0) skew(0.5deg); }
+      80% { transform: translate(-1px,0) skew(1deg); }
+      83% { transform: translate(1px,0) skew(-1deg); }
     }
 
     .top-banner {
@@ -726,7 +796,7 @@
       <div class="dash-header">
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</div>
-          <div class="dash-greeting-name" id="dash-greeting-name">User!</div>
+          <div class="dash-greeting-name glitch-name" id="dash-greeting-name" data-glitch="User!">User!</div>
         </div>
       </div>
 
@@ -800,7 +870,7 @@
 
       <div class="acc-header">
         <div class="acc-header-text">
-          <div class="acc-name" id="acc-name">User</div>
+          <div class="acc-name glitch-name" id="acc-name" data-glitch="User">User</div>
           <div class="acc-rating">
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <span id="acc-rating-val">5.00</span>
@@ -1262,8 +1332,16 @@
     const h = new Date().getHours();
     if (h < 11) return 'Good Morning'; if (h < 15) return 'Good Afternoon'; if (h < 19) return 'Good Evening'; return 'Good Night';
   }
-  window.setGreetingName = function(name) { document.getElementById('dash-greeting-name').textContent = name + '!'; };
-  window.setAccountName = function(name) { document.getElementById('acc-name').textContent = name; };
+  window.setGreetingName = function(name) {
+    const el = document.getElementById('dash-greeting-name');
+    el.textContent = name + '!';
+    el.setAttribute('data-glitch', name + '!');
+  };
+  window.setAccountName = function(name) {
+    const el = document.getElementById('acc-name');
+    el.textContent = name;
+    el.setAttribute('data-glitch', name);
+  };
   window.setAccountRating = function(rating) { document.getElementById('acc-rating-val').textContent = Number(rating).toFixed(2); };
   window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage = `url('${url}')`; };
 
@@ -1461,7 +1539,7 @@
     document.getElementById('dash-greeting-sub').textContent = getGreetingByTime();
     const displayName = (user.displayName || user.email || 'User').split('@')[0];
     setGreetingName(displayName);
-    document.getElementById('acc-name').textContent = displayName;
+    setAccountName(displayName);
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
     go('s-dashboard'); initSlider();
