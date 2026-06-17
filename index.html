@@ -1446,12 +1446,7 @@
     setErr('dw-amount', 'donasi-amount-err', '');
   };
   window.openDonasiPage = function() {
-    go('s-donasi');
-    document.querySelectorAll('.donasi-chip').forEach(chip => chip.classList.remove('active'));
-    document.getElementById('donasi-amount').value = '';
-    document.getElementById('donasi-name').value = '';
-    document.getElementById('donasi-message').value = '';
-    setErr('dw-amount', 'donasi-amount-err', '');
+    window.open('https://sociabuzz.com/orbitxy/donate', '_blank');
   };
   window.submitDonasi = function() {
     const amountRaw = document.getElementById('donasi-amount').value.replace(/[^0-9]/g, '');
