@@ -96,12 +96,12 @@
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     /* ───────── DASHBOARD & ACCOUNT (FULL SCREEN, EDGE-TO-EDGE) ───────── */
-    #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account {
+    #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account, #s-donasi {
       position: fixed; inset: 0; z-index: 50;
       background: var(--black);
       overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner {
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
       padding: max(24px, env(safe-area-inset-top)) 18px 90px;
@@ -664,6 +664,23 @@
     .btn-primary.btn-danger { background: #ff5c5c; color: #1a0000; }
     .btn-primary.btn-danger:hover { background: #ff7a7a; }
     #ma-status-label, #ma-method-label, #ma-since-label { font-size: 12.5px; }
+
+    /* ───────── DONASI: AMOUNT CHIPS ───────── */
+    .donasi-chip-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .donasi-chip {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 13px 10px;
+      font-size: 13.5px; font-weight: 600; color: var(--white);
+      font-family: 'DM Sans', sans-serif; cursor: pointer;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .donasi-chip:hover { border-color: #444; }
+    .donasi-chip.active {
+      border-color: var(--accent); background: rgba(0,255,136,0.08); color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -841,7 +858,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           Keluhan
         </div>
-        <div class="action-btn" onclick="playSendAnimation(function(){ showToast('Donasi'); })">
+        <div class="action-btn" onclick="playSendAnimation(openDonasiPage)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
           Donasi
         </div>
@@ -993,6 +1010,55 @@
         <div class="activity-title">Keluhan Pengguna</div>
       </div>
       <div class="send-recipients" id="complaint-list" style="max-height:none;"></div>
+    </div>
+  </div>
+
+  <!-- DONASI PAGE -->
+  <div class="screen" id="s-donasi">
+    <div class="dash-inner">
+
+      <div class="send-page-header">
+        <button class="circle-back-btn" onclick="go('s-dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+      </div>
+
+      <h1 class="title" style="font-size:30px;margin-bottom:8px;">Donasi</h1>
+      <p class="subtitle" style="margin-top:0;margin-bottom:22px;">Dukung pengembangan orbitxy dengan donasi kamu</p>
+
+      <p class="hint" style="margin-top:0;margin-bottom:10px;padding-left:0;">Amount to be given</p>
+      <div class="donasi-chip-row" id="donasi-chip-row">
+        <button type="button" class="donasi-chip" data-amount="10000" onclick="selectDonasiAmount(10000)">Rp 10.000</button>
+        <button type="button" class="donasi-chip" data-amount="25000" onclick="selectDonasiAmount(25000)">Rp 25.000</button>
+        <button type="button" class="donasi-chip" data-amount="50000" onclick="selectDonasiAmount(50000)">Rp 50.000</button>
+        <button type="button" class="donasi-chip" data-amount="100000" onclick="selectDonasiAmount(100000)">Rp 100.000</button>
+      </div>
+
+      <div class="input-group">
+        <div class="input-wrap" id="dw-amount">
+          <span style="color:var(--muted);font-size:14px;flex-shrink:0;">Rp</span>
+          <input type="text" inputmode="numeric" placeholder="Masukkan nominal lain" id="donasi-amount" oninput="onDonasiAmountInput(this)"/>
+        </div>
+        <div class="err-msg" id="donasi-amount-err"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-wrap" id="dw-name">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" placeholder="Nama kamu (opsional)" id="donasi-name"/>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-wrap" id="dw-msg" style="align-items:flex-start;padding:14px 16px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin-top:2px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <textarea id="donasi-message" placeholder="Tulis pesan dukungan (opsional)..." rows="2" style="background:transparent;border:none;outline:none;width:100%;resize:vertical;font-size:14px;font-family:'DM Sans',sans-serif;color:#ccc;padding:0;line-height:1.6;"></textarea>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="submitDonasi()">Kirim Donasi</button>
+      <p class="hint" style="text-align:center;margin-top:14px;">Pembayaran via QRIS &amp; e-wallet, didukung oleh SociaBuzz</p>
+
     </div>
   </div>
 
@@ -1358,6 +1424,41 @@
     saveComplaints(); textarea.value = '';
     showToast('Keluhan berhasil dikirim, terima kasih! 🙏');
     renderComplaints();
+  };
+
+  // ───────── DONASI PAGE ─────────
+  function formatRupiah(num) {
+    return num.toLocaleString('id-ID');
+  }
+  window.selectDonasiAmount = function(amount) {
+    document.querySelectorAll('.donasi-chip').forEach(chip => {
+      chip.classList.toggle('active', Number(chip.dataset.amount) === amount);
+    });
+    document.getElementById('donasi-amount').value = formatRupiah(amount);
+    setErr('dw-amount', 'donasi-amount-err', '');
+  };
+  window.onDonasiAmountInput = function(input) {
+    const digits = input.value.replace(/[^0-9]/g, '');
+    input.value = digits ? formatRupiah(Number(digits)) : '';
+    document.querySelectorAll('.donasi-chip').forEach(chip => {
+      chip.classList.toggle('active', Number(chip.dataset.amount) === Number(digits));
+    });
+    setErr('dw-amount', 'donasi-amount-err', '');
+  };
+  window.openDonasiPage = function() {
+    go('s-donasi');
+    document.querySelectorAll('.donasi-chip').forEach(chip => chip.classList.remove('active'));
+    document.getElementById('donasi-amount').value = '';
+    document.getElementById('donasi-name').value = '';
+    document.getElementById('donasi-message').value = '';
+    setErr('dw-amount', 'donasi-amount-err', '');
+  };
+  window.submitDonasi = function() {
+    const amountRaw = document.getElementById('donasi-amount').value.replace(/[^0-9]/g, '');
+    const amount = Number(amountRaw);
+    if (setErr('dw-amount', 'donasi-amount-err', !amount ? 'Masukkan nominal donasi terlebih dahulu' : amount < 1000 ? 'Minimal donasi Rp 1.000' : '')) return;
+    showToast('Terima kasih atas donasi Rp ' + formatRupiah(amount) + '! 💚');
+    setTimeout(() => go('s-dashboard'), 1400);
   };
 
   window.voteComplaint = function(id, type) {
