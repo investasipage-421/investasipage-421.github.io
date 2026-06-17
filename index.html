@@ -1057,7 +1057,16 @@
       </div>
 
       <button class="btn-primary" onclick="submitDonasi()">Kirim Donasi</button>
-      <p class="hint" style="text-align:center;margin-top:14px;">Pembayaran via QRIS &amp; e-wallet, didukung oleh SociaBuzz</p>
+
+      <div class="acc-privacy-banner" style="margin-top:20px;margin-bottom:0;" onclick="window.open('https://sociabuzz.com/orbitxy/donate', '_blank')">
+        <div class="acc-privacy-text">
+          <div class="acc-privacy-title">Donasi via SociaBuzz</div>
+          <div class="acc-privacy-desc">Bayar langsung lewat QRIS &amp; e-wallet di halaman resmi SociaBuzz</div>
+        </div>
+        <div class="acc-privacy-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -1446,7 +1455,12 @@
     setErr('dw-amount', 'donasi-amount-err', '');
   };
   window.openDonasiPage = function() {
-    window.open('https://sociabuzz.com/orbitxy/donate', '_blank');
+    go('s-donasi');
+    document.querySelectorAll('.donasi-chip').forEach(chip => chip.classList.remove('active'));
+    document.getElementById('donasi-amount').value = '';
+    document.getElementById('donasi-name').value = '';
+    document.getElementById('donasi-message').value = '';
+    setErr('dw-amount', 'donasi-amount-err', '');
   };
   window.submitDonasi = function() {
     const amountRaw = document.getElementById('donasi-amount').value.replace(/[^0-9]/g, '');
