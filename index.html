@@ -1021,10 +1021,6 @@
 
       <button class="btn-primary" onclick="submitComplaint()">Kirim Keluhan</button>
 
-      <div class="activity-header" style="margin-top:28px;">
-        <div class="activity-title">Keluhan Pengguna</div>
-      </div>
-      <div class="send-recipients" id="complaint-list" style="max-height:none;"></div>
     </div>
   </div>
 
@@ -1413,44 +1409,21 @@
     const textarea = document.getElementById('complaint-text');
     if (textarea) textarea.value = '';
     setErr('cw-text', 'complaint-err', '');
-    renderComplaints();
   };
 
   window.submitComplaint = function() {
     const textarea = document.getElementById('complaint-text');
     const text = textarea.value.trim();
     if (setErr('cw-text', 'complaint-err', !text ? 'Tulis keluhan terlebih dahulu' : '')) return;
-    complaintsList.unshift({ id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8), name: 'Anonim', text, time: new Date().toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'}), likes: 0, dislikes: 0 });
+    complaintsList.unshift({ id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8), name: 'Anonim', text, time: new Date().toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'}) });
     saveComplaints(); textarea.value = '';
     showToast('Keluhan berhasil dikirim, terima kasih! 🙏');
-    renderComplaints();
+    setTimeout(() => go('s-dashboard'), 1000);
   };
 
   // ───────── DONASI PAGE ─────────
   window.openDonasiPage = function() {
     go('s-donasi');
-  };
-
-  window.voteComplaint = function(id, type) {
-    const c = complaintsList.find(item => item.id === id); if (!c) return;
-    c.likes = c.likes || 0; c.dislikes = c.dislikes || 0;
-    const votes = loadMyVotes(); const current = votes[id] || null;
-    if (current === type) { if (type==='like') c.likes--; else c.dislikes--; delete votes[id]; }
-    else { if (current==='like') c.likes--; if (current==='dislike') c.dislikes--; if (type==='like') c.likes++; else c.dislikes++; votes[id]=type; }
-    saveComplaints(); saveMyVotes(votes); renderComplaints();
-  };
-
-  window.renderComplaints = function() {
-    const container = document.getElementById('complaint-list'); container.innerHTML = '';
-    if (complaintsList.length === 0) { container.innerHTML = '<div class="send-empty">Belum ada keluhan dari pengguna</div>'; return; }
-    const thumbPath = '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>';
-    const myVotes = loadMyVotes();
-    complaintsList.forEach(c => {
-      const likes = c.likes||0, dislikes = c.dislikes||0, myVote = myVotes[c.id]||null;
-      const item = document.createElement('div'); item.className = 'complaint-item';
-      item.innerHTML = `<img class="complaint-avatar" src="${DEFAULT_AVATAR}" alt=""/><div class="complaint-body"><div class="complaint-name">${escapeHtml(c.name)}</div><div class="complaint-text">${escapeHtml(c.text)}</div><div class="complaint-time">${escapeHtml(c.time)}</div><div class="complaint-actions"><button class="complaint-vote-btn like${myVote==='like'?' active':''}" onclick="voteComplaint('${c.id}','like')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${thumbPath}</svg><span>${likes}</span></button><button class="complaint-vote-btn dislike${myVote==='dislike'?' active':''}" onclick="voteComplaint('${c.id}','dislike')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="transform:rotate(180deg)">${thumbPath}</svg><span>${dislikes}</span></button></div></div>`;
-      container.appendChild(item);
-    });
   };
 
   function chatStorageKey() { return 'pu_chat_' + (currentUserEmail || 'guest'); }
