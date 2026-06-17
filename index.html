@@ -681,6 +681,21 @@
     .donasi-chip.active {
       border-color: var(--accent); background: rgba(0,255,136,0.08); color: var(--accent);
     }
+
+    /* ───────── DONASI: WARNING BOX ───────── */
+    .donasi-warning {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.3);
+      border-radius: 14px; padding: 14px 16px; margin-top: 14px;
+    }
+    .donasi-warning svg {
+      width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+      color: #ff5c5c;
+    }
+    .donasi-warning-text {
+      font-size: 12.5px; color: #ff9b9b; line-height: 1.55;
+    }
+    .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -1033,6 +1048,14 @@
         </div>
         <div class="acc-privacy-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+      </div>
+
+      <div class="donasi-warning">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div class="donasi-warning-text">
+          <b>Waspada penipuan.</b><br/>
+          Tombol di atas adalah satu-satunya cara resmi untuk berdonasi ke orbitxy. Kami tidak pernah membagikan link donasi lewat chat, DM, atau media lain. Jika ada yang mengirimkan link donasi selain dari halaman ini, abaikan — itu bukan dari kami.
         </div>
       </div>
 
