@@ -1391,50 +1391,48 @@
     return '';
   }
 
-  function generateOtp() {
-    currentOtp = String(Math.floor(1000 + Math.random() * 9000));
-    document.getElementById('otp-display').textContent = currentOtp;
-    document.getElementById('otp-err').textContent = '';
-    const inputs = document.querySelectorAll('#otp-row input');
-    inputs.forEach((inp, i) => {
-      inp.value = ''; inp.parentElement.classList.remove('filled');
-      inp.oninput = () => { inp.value = inp.value.replace(/[^0-9]/g,''); inp.parentElement.classList.toggle('filled', !!inp.value); if (inp.value && i < inputs.length - 1) inputs[i+1].focus(); };
-      inp.onkeydown = e => { if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i-1].focus(); };
-    });
-    inputs[0].focus();
-  }
-  window.resendOtp = function() { generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
-
- window.submitComplaint = async function() {
+  window.submitComplaint = function() {
     const textarea = document.getElementById('complaint-text');
     const text = textarea.value.trim();
     
+    // 1. Validasi teks kosong
     if (setErr('cw-text', 'complaint-err', !text ? 'Tulis keluhan terlebih dahulu' : '')) return;
     
-    // Panggil Firebase Database (menggunakan variabel 'app' yang sudah ada di atas kode Anda)
-    const { getDatabase, ref, push } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
-    const database = getDatabase(app);
-    const dbRef = ref(database, 'keluhan_member');
-    
-    const dataKeluhan = {
-      id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
-      name: currentUserEmail ? currentUserEmail.split('@')[0] : 'Anonim',
-      text: text,
-      time: new Date().toLocaleString('id-ID', {dateStyle:'medium', timeStyle:'short'})
-    };
+    // 2. Jalankan animasi pesawat/gelombang bawaan web Anda
+    if (typeof playSendAnimation === 'function') {
+      playSendAnimation(() => {
+        // Fungsi ini akan berjalan otomatis di tengah-tengah animasi
+      });
+    }
 
-    // Kirim ke Firebase Realtime Database secara realtime
-    push(dbRef, dataKeluhan)
-      .then(() => {
-        // Jika sukses di Firebase, simpan juga di lokal web Anda
+    // 3. Ambil library Firebase dan langsung kirim datanya secara otomatis
+    import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js")
+      .then((FirebaseDB) => {
+        const database = FirebaseDB.getDatabase(app);
+        const dbRef = FirebaseDB.ref(database, 'keluhan_member');
+        
+        const dataKeluhan = {
+          id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+          name: currentUserEmail ? currentUserEmail.split('@')[0] : 'Anonim',
+          text: text,
+          time: new Date().toLocaleString('id-ID', {dateStyle:'medium', timeStyle:'short'})
+        };
+
+        // Kirim ke Firebase Realtime Database
+        return FirebaseDB.push(dbRef, dataKeluhan).then(() => dataKeluhan);
+      })
+      .then((dataKeluhan) => {
+        // 4. Jika sukses masuk Firebase, simpan di lokal dan kembali ke dashboard
         complaintsList.unshift(dataKeluhan);
         saveComplaints(); 
         textarea.value = '';
         showToast('Keluhan berhasil dikirim ke database! 🙏');
-        setTimeout(() => go('s-dashboard'), 1000);
+        setTimeout(() => go('s-dashboard'), 500);
       })
       .catch((error) => {
-        showToast('Gagal kirim online: ' + error.message, true);
+        // Jika ada masalah koneksi atau permission denied
+        showToast('Gagal kirim ke Firebase: ' + error.message, true);
+        console.error(error);
       });
   };
 
