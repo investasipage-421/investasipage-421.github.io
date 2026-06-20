@@ -1403,38 +1403,32 @@
       setErr('lw-pass','l-pass-err','Password salah!');
       return;
     }
-    // ── Cek 2: flag deactivated di DB (ban manual via DB) ──
-    if (acc.deactivated === true) {
-      hideLoading();
-      setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
-      return;
-    }
-
-    // ── Cek 3: status di Firebase Authentication (ban via Auth Console) ──
+    // ── Cek 2: status di Firebase Authentication (sumber kebenaran utama ban) ──
     try {
       await signInWithEmailAndPassword(auth, email, pass);
       await signOut(auth);
-    } catch(e) {
-      hideLoading();
-      if (e.code === 'auth/user-disabled') {
-        // User di-disable dari Firebase Authentication Console
-        // Sinkronkan juga ke DB supaya konsisten
-        await updateAccountInDB(email, { deactivated: true });
-        setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
-      } else if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
-        // Akun tidak ada di Auth tapi ada di DB — tetap izinkan login
-        currentUserEmail = email;
-        currentUserData  = acc;
-        showToast('Login berhasil! Selamat datang 👋');
-        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null });
-      } else {
-        // Error lain (misal jaringan) — tetap izinkan login dari DB
-        currentUserEmail = email;
-        currentUserData  = acc;
-        showToast('Login berhasil! Selamat datang 👋');
-        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null });
+      // Auth login berhasil = akun aktif
+      // Kalau sebelumnya deactivated:true di DB (sisa sync lama), bersihkan
+      if (acc.deactivated === true) {
+        await updateAccountInDB(email, { deactivated: false });
+        acc.deactivated = false;
       }
-      return;
+    } catch(e) {
+      if (e.code === 'auth/user-disabled') {
+        // Di-ban dari Firebase Authentication Console
+        hideLoading();
+        setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
+        return;
+      } else if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential' || e.code === 'auth/invalid-login-credentials') {
+        // Akun tidak ada di Auth tapi ada di DB — cek flag DB saja
+        if (acc.deactivated === true) {
+          hideLoading();
+          setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
+          return;
+        }
+        // Tidak ada di Auth tapi DB valid → izinkan login
+      }
+      // Error jaringan atau lainnya → izinkan login dari DB
     }
 
     currentUserEmail = email;
