@@ -1390,6 +1390,8 @@
     if (hasErr) return;
 
     showLoading('Memeriksa akun...');
+
+    // ── Cek 1: data akun di Realtime Database ──
     const acc = await getAccountFromDB(email);
     if (!acc) {
       hideLoading();
@@ -1401,17 +1403,39 @@
       setErr('lw-pass','l-pass-err','Password salah!');
       return;
     }
-    if (acc.deactivated) {
+    // ── Cek 2: flag deactivated di DB (ban manual via DB) ──
+    if (acc.deactivated === true) {
       hideLoading();
-      setErr('lw-email','l-email-err','Akun kamu sedang dinonaktifkan.');
+      setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
       return;
     }
 
-    // Login ke Firebase Auth juga (opsional, untuk konsistensi)
+    // ── Cek 3: status di Firebase Authentication (ban via Auth Console) ──
     try {
       await signInWithEmailAndPassword(auth, email, pass);
       await signOut(auth);
-    } catch(e) { /* abaikan error auth, DB sudah valid */ }
+    } catch(e) {
+      hideLoading();
+      if (e.code === 'auth/user-disabled') {
+        // User di-disable dari Firebase Authentication Console
+        // Sinkronkan juga ke DB supaya konsisten
+        await updateAccountInDB(email, { deactivated: true });
+        setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
+      } else if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+        // Akun tidak ada di Auth tapi ada di DB — tetap izinkan login
+        currentUserEmail = email;
+        currentUserData  = acc;
+        showToast('Login berhasil! Selamat datang 👋');
+        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null });
+      } else {
+        // Error lain (misal jaringan) — tetap izinkan login dari DB
+        currentUserEmail = email;
+        currentUserData  = acc;
+        showToast('Login berhasil! Selamat datang 👋');
+        showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null });
+      }
+      return;
+    }
 
     currentUserEmail = email;
     currentUserData  = acc;
