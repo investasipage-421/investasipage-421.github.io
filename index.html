@@ -1152,7 +1152,7 @@
   import {
     getAuth, onAuthStateChanged, signOut,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    deleteUser, updatePassword
+    deleteUser, updatePassword, sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
     getDatabase, ref, get, set, push, remove, update
@@ -1168,26 +1168,24 @@
     appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
   };
 
-  const app   = initializeApp(firebaseConfig);
-  const auth  = getAuth(app);
-  const db    = getDatabase(app);
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getDatabase(app);
 
   const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e1e1e'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23555'/%3E%3Cpath d='M50 60c-22 0-34 12-34 28v12h68V88c0-16-12-28-34-28z' fill='%23555'/%3E%3C/svg%3E";
 
-  // ─── helpers email key (titik tidak boleh di RTDB key) ───
-  function emailToKey(email) { return email.replace(/\./g, '_DOT_'); }
-  function keyToEmail(key)   { return key.replace(/_DOT_/g, '.'); }
+  // email tidak boleh ada titik di RTDB key
+  function emailToKey(e) { return e.replace(/\./g,'_DOT_'); }
 
-  let currentOtp      = '';
-  let verifyMode      = 'forgot';
-  let pendingCred     = null;   // { email, password, name, method }
-  let pendingForgotEmail = null;
+  let currentOtp         = '';
+  let verifyMode         = 'forgot';
+  let pendingCred        = null;
   let currentUserEmail   = null;
-  let currentUserData    = null; // data dari DB
+  let currentUserData    = null;
 
-  // ─── utility ────────────────────────────────────────────
-  function escapeHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  // ─── helpers ────────────────────────────────────────────
+  function escapeHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
   const validDomains = ['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
@@ -1196,8 +1194,7 @@
   function checkEmail(email) {
     if (!email) return 'Email wajib diisi';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
-    const domain = email.split('@')[1].toLowerCase();
-    if (!validDomains.includes(domain)) return 'Gunakan email valid (contoh: @gmail.com)';
+    if (!validDomains.includes(email.split('@')[1].toLowerCase())) return 'Gunakan email valid (contoh: @gmail.com)';
     return '';
   }
 
@@ -1208,352 +1205,293 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   };
-
   window.setErr = function(wrapId, errId, msg) {
-    if (wrapId) { const w = document.getElementById(wrapId); if (w) w.classList.toggle('err', !!msg); }
-    const e = document.getElementById(errId); if (e) e.textContent = msg || ''; return !!msg;
+    if (wrapId) { const w=document.getElementById(wrapId); if(w) w.classList.toggle('err',!!msg); }
+    const e=document.getElementById(errId); if(e) e.textContent=msg||''; return !!msg;
   };
-
   window.togglePass = function(id, btn) {
-    const inp = document.getElementById(id);
-    inp.type = inp.type === 'password' ? 'text' : 'password';
-    btn.style.color = inp.type === 'text' ? '#bbb' : '';
+    const inp=document.getElementById(id); inp.type=inp.type==='password'?'text':'password';
+    btn.style.color=inp.type==='text'?'#bbb':'';
   };
-
   window.checkStrength = function(val, prefix) {
-    const segs = [1,2,3,4].map(i => document.getElementById(prefix+i));
-    segs.forEach(s => s.className = 'strength-segment');
+    const segs=[1,2,3,4].map(i=>document.getElementById(prefix+i));
+    segs.forEach(s=>s.className='strength-segment');
     if (!val) return;
-    let score = 0;
-    if (val.length >= 8) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
-    const cls = score <= 1 ? 'weak' : score <= 3 ? 'medium' : 'strong';
-    for (let i = 0; i < score; i++) segs[i].classList.add(cls);
+    let score=0;
+    if(val.length>=8)score++; if(/[A-Z]/.test(val))score++;
+    if(/[0-9]/.test(val))score++; if(/[^A-Za-z0-9]/.test(val))score++;
+    const cls=score<=1?'weak':score<=3?'medium':'strong';
+    for(let i=0;i<score;i++) segs[i].classList.add(cls);
   };
-
-  // ─── Firebase DB: baca akun ──────────────────────────────
-  async function getAccountFromDB(email) {
-    try {
-      const snap = await get(ref(db, 'users/' + emailToKey(email)));
-      return snap.exists() ? snap.val() : null;
-    } catch(e) { console.error('getAccount error:', e); return null; }
-  }
-
-  // ─── Firebase DB: tulis/update akun ─────────────────────
-  async function saveAccountToDB(email, data) {
-    try {
-      await set(ref(db, 'users/' + emailToKey(email)), data);
-      return true;
-    } catch(e) { console.error('saveAccount error:', e); return false; }
-  }
-
-  async function updateAccountInDB(email, partial) {
-    try {
-      await update(ref(db, 'users/' + emailToKey(email)), partial);
-      return true;
-    } catch(e) { console.error('updateAccount error:', e); return false; }
-  }
 
   // ─── loading overlay ────────────────────────────────────
   function showLoading(msg) {
-    let el = document.getElementById('global-loading');
+    let el=document.getElementById('global-loading');
     if (!el) {
-      el = document.createElement('div');
-      el.id = 'global-loading';
-      el.style.cssText = 'position:fixed;inset:0;z-index:9000;background:rgba(11,11,11,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;';
-      el.innerHTML = '<div style="width:36px;height:36px;border:3px solid #252525;border-top-color:#00ff88;border-radius:50%;animation:spin .7s linear infinite;"></div><div style="font-size:13px;color:#888;font-family:\'DM Sans\',sans-serif;" id="loading-msg">Memuat...</div>';
+      el=document.createElement('div'); el.id='global-loading';
+      el.style.cssText='position:fixed;inset:0;z-index:9000;background:rgba(11,11,11,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;';
+      el.innerHTML='<div style="width:36px;height:36px;border:3px solid #252525;border-top-color:#00ff88;border-radius:50%;animation:spin .7s linear infinite;"></div><div style="font-size:13px;color:#888;font-family:\'DM Sans\',sans-serif;" id="loading-msg">Memuat...</div>';
       if (!document.getElementById('spin-style')) {
-        const s = document.createElement('style'); s.id='spin-style';
-        s.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+        const s=document.createElement('style'); s.id='spin-style';
+        s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
         document.head.appendChild(s);
       }
       document.body.appendChild(el);
     }
-    document.getElementById('loading-msg').textContent = msg || 'Memuat...';
-    el.style.display = 'flex';
+    document.getElementById('loading-msg').textContent=msg||'Memuat...';
+    el.style.display='flex';
   }
-  function hideLoading() {
-    const el = document.getElementById('global-loading');
-    if (el) el.style.display = 'none';
+  function hideLoading() { const el=document.getElementById('global-loading'); if(el) el.style.display='none'; }
+
+  // ─── Realtime DB: data profil user ──────────────────────
+  async function getProfileFromDB(email) {
+    try {
+      const snap=await get(ref(db,'users/'+emailToKey(email)));
+      return snap.exists() ? snap.val() : null;
+    } catch(e) { return null; }
+  }
+  async function saveProfileToDB(email, data) {
+    try { await set(ref(db,'users/'+emailToKey(email)), data); return true; }
+    catch(e) { console.error('saveProfile error:',e); return false; }
+  }
+  async function updateProfileInDB(email, partial) {
+    try { await update(ref(db,'users/'+emailToKey(email)), partial); return true; }
+    catch(e) { console.error('updateProfile error:',e); return false; }
   }
 
-  // ─── navigation ─────────────────────────────────────────
+  // ─── auth state: auto login kalau sesi masih aktif ──────
+  onAuthStateChanged(auth, async user => {
+    if (user) {
+      currentUserEmail = user.email;
+      const profile = await getProfileFromDB(user.email);
+      currentUserData = profile;
+      showDashboard({
+        displayName: profile?.name || user.displayName || user.email,
+        email: user.email,
+        photoURL: profile?.photoURL || user.photoURL || null
+      });
+    }
+  });
+
+  // ─── navigasi ───────────────────────────────────────────
   window.go = function(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    const dashNav = document.getElementById('dash-bottom-nav');
-    if (dashNav) dashNav.style.display = (id === 's-dashboard' || id === 's-account') ? 'flex' : 'none';
-    window.scrollTo(0, 0);
+    const nav=document.getElementById('dash-bottom-nav');
+    if(nav) nav.style.display=(id==='s-dashboard'||id==='s-account')?'flex':'none';
+    window.scrollTo(0,0);
     manageSlideVideo(id);
-    if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
-    if (id === 's-account'   && typeof triggerAccountNameGlitch === 'function') triggerAccountNameGlitch();
+    if(id==='s-dashboard') triggerGreetingGlitch();
+    if(id==='s-account')   triggerAccountNameGlitch();
   };
-
-  function manageSlideVideo(screenId) {
-    const vid = document.querySelector('.slide-video-el');
-    if (!vid) return;
-    if (screenId === 's-dashboard') vid.play().catch(()=>{});
-    else vid.pause();
+  function manageSlideVideo(id) {
+    const vid=document.querySelector('.slide-video-el'); if(!vid) return;
+    if(id==='s-dashboard') vid.play().catch(()=>{}); else vid.pause();
   }
-
   window.goDashTab = function(tab) {
-    document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-    const navEl = document.getElementById('nav-' + tab);
-    if (navEl) navEl.classList.add('active');
-    if (tab === 'home')    { go('s-dashboard'); initSlider(); }
-    else if (tab === 'account') { go('s-account'); }
-    else { showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)'); }
+    document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
+    const el=document.getElementById('nav-'+tab); if(el) el.classList.add('active');
+    if(tab==='home'){ go('s-dashboard'); initSlider(); }
+    else if(tab==='account'){ go('s-account'); }
+    else showToast(tab.charAt(0).toUpperCase()+tab.slice(1)+' (segera hadir)');
   };
 
   // ─── animasi plane ──────────────────────────────────────
   function getConnSpeedFactor() {
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (!conn) return 1;
-    const map = {'4g':1,'3g':0.5,'2g':0.25,'slow-2g':0.12};
-    let f = map[conn.effectiveType] !== undefined ? map[conn.effectiveType] : 1;
-    if (typeof conn.downlink === 'number' && conn.downlink > 0)
-      f = Math.min(f, Math.max(Math.min(1, conn.downlink/5), 0.12));
-    return Math.max(f, 0.12);
+    const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection; if(!c) return 1;
+    const m={'4g':1,'3g':0.5,'2g':0.25,'slow-2g':0.12};
+    let f=m[c.effectiveType]!==undefined?m[c.effectiveType]:1;
+    if(typeof c.downlink==='number'&&c.downlink>0) f=Math.min(f,Math.max(Math.min(1,c.downlink/5),0.12));
+    return Math.max(f,0.12);
   }
-
   window.playSendAnimation = function(onDone, color) {
-    const w = window.innerWidth, h = window.innerHeight;
-    const midY = h/2, amp = Math.min(h*0.07,40), segs = 4;
-    const animColor = color || 'var(--accent)';
-    let points = [];
-    for (let i = 0; i <= segs; i++) {
-      const x = (w*i)/segs;
-      const y = (i===0||i===segs) ? midY : midY+(i%2===1?-amp:amp);
-      points.push([x,y]);
-    }
-    let d = `M ${points[0][0]} ${points[0][1]}`;
-    for (let i=1;i<points.length-1;i++) {
-      const mx=(points[i][0]+points[i+1][0])/2, my=(points[i][1]+points[i+1][1])/2;
-      d += ` Q ${points[i][0]} ${points[i][1]} ${mx} ${my}`;
-    }
-    d += ` L ${points[points.length-1][0]} ${points[points.length-1][1]}`;
-    const animId = 'sa-'+Date.now();
-    const overlay = document.createElement('div');
-    overlay.className = 'send-anim-overlay';
-    overlay.innerHTML = `<svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><clipPath id="${animId}-clip"><rect x="0" y="0" width="0" height="${h}"></rect></clipPath></defs><path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path></svg><div class="send-anim-plane"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>`;
+    const w=window.innerWidth, h=window.innerHeight;
+    const midY=h/2, amp=Math.min(h*0.07,40), segs=4;
+    const animColor=color||'var(--accent)';
+    let points=[];
+    for(let i=0;i<=segs;i++){ const x=(w*i)/segs; const y=(i===0||i===segs)?midY:midY+(i%2===1?-amp:amp); points.push([x,y]); }
+    let d=`M ${points[0][0]} ${points[0][1]}`;
+    for(let i=1;i<points.length-1;i++){ const mx=(points[i][0]+points[i+1][0])/2,my=(points[i][1]+points[i+1][1])/2; d+=` Q ${points[i][0]} ${points[i][1]} ${mx} ${my}`; }
+    d+=` L ${points[points.length-1][0]} ${points[points.length-1][1]}`;
+    const animId='sa-'+Date.now();
+    const overlay=document.createElement('div'); overlay.className='send-anim-overlay';
+    overlay.innerHTML=`<svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><clipPath id="${animId}-clip"><rect x="0" y="0" width="0" height="${h}"></rect></clipPath></defs><path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path></svg><div class="send-anim-plane"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>`;
     document.body.appendChild(overlay);
-    const path = overlay.querySelector('.send-anim-path');
-    const plane = overlay.querySelector('.send-anim-plane');
-    const clipRect = overlay.querySelector(`#${animId}-clip rect`);
-    plane.style.offsetPath = `path('${d}')`;
-    path.style.stroke = animColor; plane.style.color = animColor;
-    let progress=0, lastTime=null, doneTriggered=false;
-    function frame(t) {
-      if (lastTime===null) lastTime=t;
-      progress += ((t-lastTime)/1400)*getConnSpeedFactor(); lastTime=t;
-      if (progress>1) progress=1;
-      clipRect.setAttribute('width', String(w*progress));
-      plane.style.offsetDistance = (progress*100)+'%';
-      const opacity = progress<0.12 ? progress/0.12 : progress>0.85 ? (1-progress)/0.15 : 1;
-      overlay.style.opacity = String(opacity); plane.style.opacity = String(opacity);
-      if (!doneTriggered && progress>=0.5) { doneTriggered=true; if (typeof onDone==='function') onDone(); }
-      if (progress<1) requestAnimationFrame(frame); else overlay.remove();
+    const path=overlay.querySelector('.send-anim-path'); const plane=overlay.querySelector('.send-anim-plane');
+    const clipRect=overlay.querySelector(`#${animId}-clip rect`);
+    plane.style.offsetPath=`path('${d}')`; path.style.stroke=animColor; plane.style.color=animColor;
+    let progress=0,lastTime=null,doneTriggered=false;
+    function frame(t){
+      if(lastTime===null)lastTime=t; progress+=((t-lastTime)/1400)*getConnSpeedFactor(); lastTime=t;
+      if(progress>1)progress=1;
+      clipRect.setAttribute('width',String(w*progress)); plane.style.offsetDistance=(progress*100)+'%';
+      const op=progress<0.12?progress/0.12:progress>0.85?(1-progress)/0.15:1;
+      overlay.style.opacity=String(op); plane.style.opacity=String(op);
+      if(!doneTriggered&&progress>=0.5){doneTriggered=true;if(typeof onDone==='function')onDone();}
+      if(progress<1)requestAnimationFrame(frame); else overlay.remove();
     }
     requestAnimationFrame(frame);
   };
 
   // ─── OTP ────────────────────────────────────────────────
   function generateOtp() {
-    currentOtp = String(Math.floor(1000+Math.random()*9000));
-    document.getElementById('otp-display').textContent = currentOtp;
-    document.getElementById('otp-err').textContent = '';
-    const inputs = document.querySelectorAll('#otp-row input');
-    inputs.forEach((inp,i) => {
+    currentOtp=String(Math.floor(1000+Math.random()*9000));
+    document.getElementById('otp-display').textContent=currentOtp;
+    document.getElementById('otp-err').textContent='';
+    const inputs=document.querySelectorAll('#otp-row input');
+    inputs.forEach((inp,i)=>{
       inp.value=''; inp.parentElement.classList.remove('filled');
-      inp.oninput = () => {
-        inp.value=inp.value.replace(/[^0-9]/g,'');
-        inp.parentElement.classList.toggle('filled',!!inp.value);
-        if (inp.value && i<inputs.length-1) inputs[i+1].focus();
-      };
-      inp.onkeydown = e => { if (e.key==='Backspace'&&!inp.value&&i>0) inputs[i-1].focus(); };
+      inp.oninput=()=>{ inp.value=inp.value.replace(/[^0-9]/g,''); inp.parentElement.classList.toggle('filled',!!inp.value); if(inp.value&&i<inputs.length-1)inputs[i+1].focus(); };
+      inp.onkeydown=e=>{if(e.key==='Backspace'&&!inp.value&&i>0)inputs[i-1].focus();};
     });
     inputs[0].focus();
   }
-  window.resendOtp = function() { generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
+  window.resendOtp = function(){ generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
 
   // ════════════════════════════════════════════════════════
-  // LOGIN — cek akun di Firebase DB, bukan localStorage
+  // LOGIN — pakai Firebase Authentication sepenuhnya
+  // Password dicek oleh Firebase Auth, bukan DB
   // ════════════════════════════════════════════════════════
   window.doEmailLogin = async function() {
-    const email = document.getElementById('l-email').value.trim();
-    const pass  = document.getElementById('l-pass').value;
-    let hasErr = false;
-    hasErr = setErr('lw-email','l-email-err', checkEmail(email)) || hasErr;
-    hasErr = setErr('lw-pass','l-pass-err', !pass ? 'Password wajib diisi' : '') || hasErr;
-    if (hasErr) return;
+    const email=document.getElementById('l-email').value.trim();
+    const pass=document.getElementById('l-pass').value;
+    let hasErr=false;
+    hasErr=setErr('lw-email','l-email-err',checkEmail(email))||hasErr;
+    hasErr=setErr('lw-pass','l-pass-err',!pass?'Password wajib diisi':'')||hasErr;
+    if(hasErr) return;
 
-    showLoading('Memeriksa akun...');
-
-    // ── Cek 1: data akun di Realtime Database ──
-    const acc = await getAccountFromDB(email);
-    if (!acc) {
-      hideLoading();
-      setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.');
-      return;
-    }
-    if (acc.password !== pass) {
-      hideLoading();
-      setErr('lw-pass','l-pass-err','Password salah!');
-      return;
-    }
-    // ── Cek 2: status di Firebase Authentication (sumber kebenaran utama ban) ──
+    showLoading('Masuk ke akun...');
     try {
-      await signInWithEmailAndPassword(auth, email, pass);
-      await signOut(auth);
-      // Auth login berhasil = akun aktif
-      // Kalau sebelumnya deactivated:true di DB (sisa sync lama), bersihkan
-      if (acc.deactivated === true) {
-        await updateAccountInDB(email, { deactivated: false });
-        acc.deactivated = false;
-      }
+      const result=await signInWithEmailAndPassword(auth, email, pass);
+      const user=result.user;
+      // Ambil profil dari DB
+      const profile=await getProfileFromDB(email);
+      currentUserEmail=email;
+      currentUserData=profile;
+      hideLoading();
+      showToast('Login berhasil! Selamat datang 👋');
+      showDashboard({
+        displayName: profile?.name||user.displayName||email,
+        email, photoURL: profile?.photoURL||null
+      });
     } catch(e) {
-      if (e.code === 'auth/user-disabled') {
-        // Di-ban dari Firebase Authentication Console
-        hideLoading();
+      hideLoading();
+      if (e.code==='auth/user-disabled') {
         setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
-        return;
-      } else if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential' || e.code === 'auth/invalid-login-credentials') {
-        // Akun tidak ada di Auth tapi ada di DB — cek flag DB saja
-        if (acc.deactivated === true) {
-          hideLoading();
-          setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
-          return;
-        }
-        // Tidak ada di Auth tapi DB valid → izinkan login
+      } else if (e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'||e.code==='auth/invalid-login-credentials'||e.code==='auth/wrong-password') {
+        setErr('lw-email','l-email-err','Email atau password salah.');
+      } else {
+        setErr('lw-email','l-email-err','Login gagal: '+e.message);
       }
-      // Error jaringan atau lainnya → izinkan login dari DB
     }
-
-    currentUserEmail = email;
-    currentUserData  = acc;
-    hideLoading();
-    showToast('Login berhasil! Selamat datang 👋');
-    showDashboard({ displayName: acc.name || email, email, photoURL: acc.photoURL || null });
   };
 
   // ════════════════════════════════════════════════════════
-  // REGISTER — simpan ke Firebase DB
+  // REGISTER — daftar ke Firebase Auth + simpan profil ke DB
   // ════════════════════════════════════════════════════════
   window.doRegister = async function() {
-    const email = document.getElementById('r-email').value.trim();
-    const pass  = document.getElementById('r-pass').value;
-    const cpass = document.getElementById('r-cpass').value;
-    let hasErr = false;
-    hasErr = setErr('rw-email','r-email-err', checkEmail(email)) || hasErr;
-    hasErr = setErr('rw-pass','r-pass-err', !pass?'Password wajib diisi':pass.length<8?'Password minimal 8 karakter':'') || hasErr;
-    hasErr = setErr('rw-cpass','r-cpass-err', !cpass?'Konfirmasi password wajib diisi':pass!==cpass?'Password tidak cocok!':'') || hasErr;
-    if (hasErr) return;
+    const email=document.getElementById('r-email').value.trim();
+    const pass=document.getElementById('r-pass').value;
+    const cpass=document.getElementById('r-cpass').value;
+    let hasErr=false;
+    hasErr=setErr('rw-email','r-email-err',checkEmail(email))||hasErr;
+    hasErr=setErr('rw-pass','r-pass-err',!pass?'Password wajib diisi':pass.length<8?'Password minimal 8 karakter':'')||hasErr;
+    hasErr=setErr('rw-cpass','r-cpass-err',!cpass?'Konfirmasi password wajib diisi':pass!==cpass?'Password tidak cocok!':'')||hasErr;
+    if(hasErr) return;
 
-    showLoading('Mengecek email...');
-    const existing = await getAccountFromDB(email);
-    hideLoading();
-    if (existing) { setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.'); return; }
-
-    pendingCred = { email, password: pass, name: email.split('@')[0], method: 'email', photoURL: null };
-    verifyMode  = 'register-email';
-    document.getElementById('verify-subtitle').textContent = 'Masukkan 4 digit kode verifikasi';
-    document.getElementById('verify-back-btn').onclick = () => go('s-register');
+    pendingCred={ email, password: pass, name: email.split('@')[0] };
+    verifyMode='register-email';
+    document.getElementById('verify-subtitle').textContent='Masukkan 4 digit kode verifikasi';
+    document.getElementById('verify-back-btn').onclick=()=>go('s-register');
     go('s-verify'); generateOtp();
-  };
-
-  // ════════════════════════════════════════════════════════
-  // FORGOT PASSWORD
-  // ════════════════════════════════════════════════════════
-  window.doForgot = async function() {
-    const email = document.getElementById('f-email').value.trim();
-    if (setErr('fw-email','f-email-err', checkEmail(email))) return;
-
-    showLoading('Mengecek email...');
-    const acc = await getAccountFromDB(email);
-    hideLoading();
-    if (!acc) { setErr('fw-email','f-email-err','Email ini belum terdaftar.'); return; }
-
-    pendingForgotEmail = email;
-    verifyMode = 'forgot';
-    document.getElementById('newpass-title').innerHTML   = 'Create<br>New Password';
-    document.getElementById('newpass-subtitle').textContent = 'Password baru harus berbeda dari sebelumnya';
-    document.getElementById('verify-subtitle').textContent  = 'Masukkan 4 digit kode verifikasi';
-    document.getElementById('verify-back-btn').onclick = () => go('s-forgot');
-    const backBtn = document.getElementById('newpass-back-btn');
-    if (backBtn) backBtn.onclick = () => go('s-forgot');
-    setTimeout(() => { go('s-verify'); generateOtp(); }, 200);
   };
 
   // ════════════════════════════════════════════════════════
   // VERIFY OTP
   // ════════════════════════════════════════════════════════
   window.doVerify = async function() {
-    const inputs  = document.querySelectorAll('#otp-row input');
-    const entered = Array.from(inputs).map(i => i.value).join('');
-    if (entered.length < 4) { document.getElementById('otp-err').textContent='Masukkan 4 digit kode'; return; }
-    if (entered !== currentOtp) {
+    const inputs=document.querySelectorAll('#otp-row input');
+    const entered=Array.from(inputs).map(i=>i.value).join('');
+    if(entered.length<4){ document.getElementById('otp-err').textContent='Masukkan 4 digit kode'; return; }
+    if(entered!==currentOtp){
       document.getElementById('otp-err').textContent='Kode salah! Coba lagi atau kirim ulang.';
       inputs.forEach(i=>{i.value='';i.parentElement.classList.remove('filled');}); inputs[0].focus(); return;
     }
     document.getElementById('otp-err').textContent=''; showToast('Kode benar! ✅');
 
-    if (verifyMode === 'forgot') {
-      document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';
-      setTimeout(() => go('s-newpass'), 800);
-    } else if (verifyMode === 'register-email') {
+    if(verifyMode==='register-email'){
       showLoading('Membuat akun...');
-      const { email, password, name, method } = pendingCred;
-      const accData = {
-        email, password, name, method,
-        photoURL: null,
-        createdAt: new Date().toISOString(),
-        createdYear: new Date().getFullYear().toString()
-      };
-      // Daftar ke Firebase Auth juga
-      try { await createUserWithEmailAndPassword(auth, email, password); await signOut(auth); } catch(e) {}
-      const ok = await saveAccountToDB(email, accData);
-      hideLoading();
-      if (ok) {
+      const {email,password,name}=pendingCred;
+      try {
+        const result=await createUserWithEmailAndPassword(auth,email,password);
+        // Simpan profil ke DB
+        await saveProfileToDB(email,{
+          email, name,
+          photoURL: null,
+          createdAt: new Date().toISOString(),
+          createdYear: new Date().getFullYear().toString()
+        });
+        await signOut(auth);
+        hideLoading();
         showToast('Registrasi berhasil! Silakan login 🎉');
-        pendingCred = null;
-        setTimeout(() => go('s-login'), 1800);
+        pendingCred=null;
+        setTimeout(()=>go('s-login'),1600);
+      } catch(e) {
+        hideLoading();
+        if(e.code==='auth/email-already-in-use'){
+          go('s-register');
+          setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.');
+        } else {
+          showToast('Gagal daftar: '+e.message,true);
+        }
+      }
+    } else if(verifyMode==='forgot'){
+      document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';
+      setTimeout(()=>go('s-newpass'),800);
+    }
+  };
+
+  // ════════════════════════════════════════════════════════
+  // FORGOT PASSWORD — kirim reset email via Firebase Auth
+  // ════════════════════════════════════════════════════════
+  window.doForgot = async function() {
+    const email=document.getElementById('f-email').value.trim();
+    if(setErr('fw-email','f-email-err',checkEmail(email))) return;
+    showLoading('Mengirim email reset...');
+    try {
+      await sendPasswordResetEmail(auth, email);
+      hideLoading();
+      showToast('Email reset password sudah dikirim! Cek inbox kamu 📧');
+      setTimeout(()=>go('s-login'),2000);
+    } catch(e) {
+      hideLoading();
+      if(e.code==='auth/user-not-found'){
+        setErr('fw-email','f-email-err','Email ini belum terdaftar.');
       } else {
-        showToast('Gagal menyimpan akun. Cek koneksi & Rules DB!', true);
+        setErr('fw-email','f-email-err','Gagal kirim email: '+e.message);
       }
     }
   };
 
   // ════════════════════════════════════════════════════════
-  // SAVE PASSWORD (setelah forgot / ubah password)
+  // UBAH PASSWORD (dari halaman Manage Account)
   // ════════════════════════════════════════════════════════
   window.doSavePass = async function() {
-    const np = document.getElementById('n-pass').value;
-    const cp = document.getElementById('n-cpass').value;
-    let hasErr = false;
-    hasErr = setErr('nw-pass','n-pass-err', !np?'Password baru wajib diisi':np.length<8?'Minimal 8 karakter':'') || hasErr;
-    hasErr = setErr('nw-cpass','n-cpass-err', !cp?'Konfirmasi wajib diisi':np!==cp?'Password tidak cocok!':'') || hasErr;
-    if (hasErr) return;
-
+    const np=document.getElementById('n-pass').value;
+    const cp=document.getElementById('n-cpass').value;
+    let hasErr=false;
+    hasErr=setErr('nw-pass','n-pass-err',!np?'Password baru wajib diisi':np.length<8?'Minimal 8 karakter':'')||hasErr;
+    hasErr=setErr('nw-cpass','n-cpass-err',!cp?'Konfirmasi wajib diisi':np!==cp?'Password tidak cocok!':'')||hasErr;
+    if(hasErr) return;
     showLoading('Menyimpan password...');
-
-    if (verifyMode === 'forgot') {
-      const email = pendingForgotEmail;
-      const ok = await updateAccountInDB(email, { password: np });
-      try { const uc = await signInWithEmailAndPassword(auth, email, (await getAccountFromDB(email))?.password||np); await updatePassword(uc.user, np); await signOut(auth); } catch(e) {}
+    try {
+      await updatePassword(auth.currentUser, np);
       hideLoading();
-      if (ok) { showToast('Password berhasil diubah! 🔐'); pendingForgotEmail=null; setTimeout(()=>go('s-login'),1600); }
-      else     showToast('Gagal update. Cek koneksi!', true);
-
-    } else if (verifyMode === 'change-from-manage') {
-      const email = currentUserEmail;
-      const ok = await updateAccountInDB(email, { password: np });
-      try { const uc = await signInWithEmailAndPassword(auth, email, currentUserData?.password||np); await updatePassword(uc.user, np); await signOut(auth); } catch(e) {}
-      if (currentUserData) currentUserData.password = np;
+      showToast('Password berhasil diubah! 🔐');
+      setTimeout(()=>openManageAccountPage(),900);
+    } catch(e) {
       hideLoading();
-      if (ok) { showToast('Password berhasil diubah! 🔐'); setTimeout(()=>openManageAccountPage(), 900); }
-      else     showToast('Gagal update. Cek koneksi!', true);
+      showToast('Gagal ubah password: '+e.message,true);
     }
   };
 
@@ -1563,88 +1501,72 @@
   window.doLogout = async function() {
     try { await signOut(auth); } catch(e) {}
     stopAutoSlide();
-    currentUserEmail = null; currentUserData = null;
+    currentUserEmail=null; currentUserData=null;
     go('s-login'); showToast('Berhasil logout 👋');
   };
 
   // ════════════════════════════════════════════════════════
-  // KELUHAN → push ke Firebase DB node "keluhan/"
+  // KELUHAN → push ke node "keluhan/" di DB
   // ════════════════════════════════════════════════════════
   window.openSendPage = function() {
     go('s-send');
-    const ta = document.getElementById('complaint-text');
-    if (ta) ta.value='';
+    const ta=document.getElementById('complaint-text'); if(ta) ta.value='';
     setErr('cw-text','complaint-err','');
   };
 
   window.submitComplaint = async function() {
-    const ta  = document.getElementById('complaint-text');
-    const btn = document.querySelector('#s-send .btn-primary');
-    const text = ta.value.trim();
-    if (setErr('cw-text','complaint-err', !text ? 'Tulis keluhan terlebih dahulu' : '')) return;
-
-    if (btn) { btn.disabled=true; btn.textContent='Mengirim...'; }
-
-    const data = {
-      email   : currentUserEmail || 'anonim',
-      name    : currentUserEmail ? currentUserEmail.split('@')[0] : 'Anonim',
-      text    : text,
+    const ta=document.getElementById('complaint-text');
+    const btn=document.querySelector('#s-send .btn-primary');
+    const text=ta.value.trim();
+    if(setErr('cw-text','complaint-err',!text?'Tulis keluhan terlebih dahulu':'')) return;
+    if(btn){btn.disabled=true;btn.textContent='Mengirim...';}
+    const data={
+      email: currentUserEmail||'anonim',
+      name: currentUserEmail?currentUserEmail.split('@')[0]:'Anonim',
+      text,
       timestamp: new Date().toISOString(),
-      waktu   : new Date().toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})
+      waktu: new Date().toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})
     };
-
-    let ok = false;
-    for (let attempt=1; attempt<=2; attempt++) {
-      try {
-        await push(ref(db,'keluhan'), data);
-        ok = true; break;
-      } catch(e) {
-        console.error('[Keluhan] attempt',attempt,e.code, e.message);
-        if (attempt===1) await new Promise(r=>setTimeout(r,1000));
-      }
+    let ok=false;
+    for(let attempt=1;attempt<=2;attempt++){
+      try{ await push(ref(db,'keluhan'),data); ok=true; break; }
+      catch(e){ console.error('[Keluhan] attempt',attempt,e.code); if(attempt===1) await new Promise(r=>setTimeout(r,1000)); }
     }
-
-    if (btn) { btn.disabled=false; btn.textContent='Kirim Keluhan'; }
+    if(btn){btn.disabled=false;btn.textContent='Kirim Keluhan';}
     ta.value='';
-
-    if (ok) showToast('Keluhan berhasil dikirim! Terima kasih 🙏');
-    else    showToast('Gagal kirim — cek Rules Firebase! ⚠️', true);
-
-    setTimeout(()=>go('s-dashboard'), 1400);
+    if(ok) showToast('Keluhan berhasil dikirim! Terima kasih 🙏');
+    else   showToast('Gagal kirim — cek Rules Firebase! ⚠️',true);
+    setTimeout(()=>go('s-dashboard'),1400);
   };
 
-  // ════════════════════════════════════════════════════════
-  // DONASI
-  // ════════════════════════════════════════════════════════
-  window.openDonasiPage = function() { go('s-donasi'); };
+  window.openDonasiPage = function(){ go('s-donasi'); };
 
   // ════════════════════════════════════════════════════════
   // MANAGE ACCOUNT
   // ════════════════════════════════════════════════════════
   window.openManageAccountPage = function() {
     go('s-manage-account');
-    const acc = currentUserData;
-    document.getElementById('ma-status-label').textContent  = 'Aman';
-    document.getElementById('ma-method-label').textContent  = acc?.method === 'google' ? 'Google' : 'Email';
-    document.getElementById('ma-since-label').textContent   = acc?.createdYear || '2026';
+    const acc=currentUserData;
+    document.getElementById('ma-status-label').textContent='Aman';
+    document.getElementById('ma-method-label').textContent='Email';
+    document.getElementById('ma-since-label').textContent=acc?.createdYear||'2026';
   };
 
   window.openChangePasswordPage = function() {
-    verifyMode = 'change-from-manage';
-    document.getElementById('newpass-title').innerHTML      = 'Ganti<br>Password';
-    document.getElementById('newpass-subtitle').textContent = 'Masukkan password baru untuk akun kamu';
-    document.getElementById('n-pass').value = '';
-    document.getElementById('n-cpass').value = '';
+    verifyMode='change-from-manage';
+    document.getElementById('newpass-title').innerHTML='Ganti<br>Password';
+    document.getElementById('newpass-subtitle').textContent='Masukkan password baru untuk akun kamu';
+    document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';
     setErr('nw-pass','n-pass-err',''); setErr('nw-cpass','n-cpass-err','');
-    const backBtn = document.getElementById('newpass-back-btn');
-    if (backBtn) backBtn.onclick = () => openManageAccountPage();
+    const backBtn=document.getElementById('newpass-back-btn');
+    if(backBtn) backBtn.onclick=()=>openManageAccountPage();
     go('s-newpass');
   };
 
-  window.openModal  = function(id) { const m=document.getElementById(id); if(m) m.classList.add('show'); };
-  window.closeModal = function(id) { const m=document.getElementById(id); if(m) m.classList.remove('show'); };
-  window.openDeactivateModal = function() { openModal('modal-deactivate'); };
-  window.openDeleteModal = function() {
+  window.openModal  = function(id){ const m=document.getElementById(id); if(m) m.classList.add('show'); };
+  window.closeModal = function(id){ const m=document.getElementById(id); if(m) m.classList.remove('show'); };
+  window.openDeactivateModal = function(){ openModal('modal-deactivate'); };
+  window.openDeleteModal = function(){
     const inp=document.getElementById('del-confirm-input');
     if(inp){inp.value=''; document.getElementById('del-confirm-wrap').classList.remove('err');}
     openModal('modal-delete');
@@ -1653,152 +1575,147 @@
   window.confirmDeactivate = async function() {
     closeModal('modal-deactivate');
     showLoading('Menonaktifkan akun...');
-    await updateAccountInDB(currentUserEmail, { deactivated: true });
+    // Simpan flag nonaktif ke DB, lalu logout
+    await updateProfileInDB(currentUserEmail,{ deactivated: true });
+    try{ await signOut(auth); }catch(e){}
     hideLoading();
     showToast('Akun berhasil dinonaktifkan sementara 😴');
-    try { await signOut(auth); } catch(e) {}
     currentUserEmail=null; currentUserData=null;
-    setTimeout(()=>go('s-login'), 1200);
+    setTimeout(()=>go('s-login'),1200);
   };
 
   window.confirmDelete = async function() {
-    const inp = document.getElementById('del-confirm-input');
-    if ((inp.value||'').trim().toUpperCase() !== 'HAPUS') {
+    const inp=document.getElementById('del-confirm-input');
+    if((inp.value||'').trim().toUpperCase()!=='HAPUS'){
       document.getElementById('del-confirm-wrap').classList.add('err');
-      showToast('Ketik "HAPUS" untuk konfirmasi', true); return;
+      showToast('Ketik "HAPUS" untuk konfirmasi',true); return;
     }
     closeModal('modal-delete');
     showLoading('Menghapus akun...');
-    const email = currentUserEmail;
-    try { await remove(ref(db,'users/'+emailToKey(email))); } catch(e) {}
-    try { if (auth.currentUser) await deleteUser(auth.currentUser); } catch(e) {}
+    const email=currentUserEmail;
+    // Hapus profil dari DB
+    try{ await remove(ref(db,'users/'+emailToKey(email))); }catch(e){}
+    // Hapus dari Firebase Auth
+    try{ if(auth.currentUser) await deleteUser(auth.currentUser); }catch(e){}
     hideLoading();
     showToast('Akun berhasil dihapus secara permanen 🗑️');
     currentUserEmail=null; currentUserData=null;
-    setTimeout(()=>go('s-login'), 1200);
+    setTimeout(()=>go('s-login'),1200);
   };
 
   window.downloadAccountData = function() {
-    const email = currentUserEmail || 'guest';
-    const acc   = currentUserData || {};
-    const data  = { email, name: acc.name||email.split('@')[0], method: acc.method||'email', exportedAt: new Date().toISOString() };
-    const blob  = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url   = URL.createObjectURL(blob);
-    const a     = document.createElement('a');
-    a.href=url; a.download='account-data-'+email.split('@')[0]+'.json';
+    const email=currentUserEmail||'guest';
+    const acc=currentUserData||{};
+    const data={email,name:acc.name||email.split('@')[0],method:'email',exportedAt:new Date().toISOString()};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='account-data-'+email.split('@')[0]+'.json';
     document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     showToast('Data akun berhasil diunduh 📥');
   };
 
-  window.setAvatar = function(url) { const av=document.getElementById('dash-avatar'); av.src=url; av.style.display='block'; };
-  window.setAvatarFromFile = function(input) {
+  window.setAvatar = function(url){ const av=document.getElementById('dash-avatar'); av.src=url; av.style.display='block'; };
+  window.setAvatarFromFile = function(input){
     const file=input.files&&input.files[0]; if(!file) return;
     const reader=new FileReader(); reader.onload=e=>setAvatar(e.target.result); reader.readAsDataURL(file);
   };
 
   // ─── CHAT (bot) ──────────────────────────────────────────
-  function chatStorageKey() { return 'pu_chat_'+(currentUserEmail||'guest'); }
-  function loadChatMessages() { return JSON.parse(localStorage.getItem(chatStorageKey())||'[]'); }
-  function saveChatMessages(msgs) { localStorage.setItem(chatStorageKey(), JSON.stringify(msgs)); }
-  function chatTimeNow() { return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
+  function chatStorageKey(){ return 'pu_chat_'+(currentUserEmail||'guest'); }
+  function loadChatMessages(){ return JSON.parse(localStorage.getItem(chatStorageKey())||'[]'); }
+  function saveChatMessages(msgs){ localStorage.setItem(chatStorageKey(),JSON.stringify(msgs)); }
+  function chatTimeNow(){ return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
 
   const BAD_WORDS=['anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','memek','tai','taik',
-    'goblok','gblk','tolol','bego','babi','jancok','jancuk','kampret','brengsek','sialan','pantek',
+    'goblok','tolol','bego','babi','jancok','jancuk','kampret','brengsek','sialan','pantek',
     'bajingan','keparat','pepek','ngentot','pukimak','lonte','jembut','peler','dancuk','cuk',
     'fuck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'];
-  function censorText(str) {
+  function censorText(str){
     let r=str;
     BAD_WORDS.forEach(w=>{const re=new RegExp('\\b('+w+')(\\w*)','gi'); r=r.replace(re,m=>m.length<=1?'*':m[0]+'*'.repeat(m.length-1));});
     return r;
   }
 
-  window.openChatPage = function() {
+  window.openChatPage = function(){
     go('s-chat');
     let msgs=loadChatMessages();
-    if (msgs.length===0) { msgs.push({sender:'bot',text:'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',time:chatTimeNow()}); saveChatMessages(msgs); }
+    if(msgs.length===0){msgs.push({sender:'bot',text:'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',time:chatTimeNow()});saveChatMessages(msgs);}
     renderChatMessages(msgs);
   };
-
-  window.renderChatMessages = function(msgs) {
-    const container=document.getElementById('chat-messages'); container.innerHTML='';
+  window.renderChatMessages = function(msgs){
+    const c=document.getElementById('chat-messages'); c.innerHTML='';
     (msgs||loadChatMessages()).forEach(m=>{
-      const bubble=document.createElement('div'); bubble.className='chat-bubble '+(m.sender==='user'?'user':'bot');
-      bubble.innerHTML=`${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
-      container.appendChild(bubble);
+      const b=document.createElement('div'); b.className='chat-bubble '+(m.sender==='user'?'user':'bot');
+      b.innerHTML=`${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
+      c.appendChild(b);
     });
-    const scroller=document.getElementById('chat-scroll'); scroller.scrollTop=scroller.scrollHeight;
+    const s=document.getElementById('chat-scroll'); s.scrollTop=s.scrollHeight;
   };
-
-  function getBotReply(text) {
+  function getBotReply(text){
     const t=text.toLowerCase();
-    if (/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun atau transaksi?';
-    if (/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) return 'Terima kasih sudah melaporkan. Keluhan kamu sudah dicatat dan akan ditindaklanjuti secepatnya 🙏';
-    if (/(password|kata sandi|lupa)/.test(t)) return 'Kalau lupa password, bisa reset lewat tombol "Forget password?" di halaman login.';
-    if (/(akun|profil|email)/.test(t)) return 'Untuk pengaturan akun, silakan buka menu Account di tab bawah.';
-    if (/(terima kasih|makasih|thanks)/.test(t)) return 'Sama-sama! 😊 Ada hal lain yang bisa saya bantu?';
+    if(/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun atau transaksi?';
+    if(/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) return 'Terima kasih sudah melaporkan. Keluhan kamu sudah dicatat dan akan ditindaklanjuti secepatnya 🙏';
+    if(/(password|kata sandi|lupa)/.test(t)) return 'Kalau lupa password, klik "Forget password?" di halaman login. Email reset akan dikirim ke inbox kamu.';
+    if(/(akun|profil|email)/.test(t)) return 'Untuk pengaturan akun, silakan buka menu Account di tab bawah.';
+    if(/(terima kasih|makasih|thanks)/.test(t)) return 'Sama-sama! 😊 Ada hal lain yang bisa saya bantu?';
     const fb=['Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.','Terima kasih pesannya. Ada detail tambahan yang bisa kamu berikan?','Pesan kamu sudah kami terima. Mohon ditunggu ya 🙏'];
     return fb[Math.floor(Math.random()*fb.length)];
   }
-
-  window.sendChatMessage = function() {
+  window.sendChatMessage = function(){
     const input=document.getElementById('chat-input'); const raw=input.value.trim(); if(!raw) return;
     const text=censorText(raw); const censored=text!==raw;
     let msgs=loadChatMessages(); msgs.push({sender:'user',text,time:chatTimeNow()}); saveChatMessages(msgs); renderChatMessages(msgs); input.value='';
     if(censored) showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐',true);
-    const container=document.getElementById('chat-messages'); const scroller=document.getElementById('chat-scroll');
+    const c=document.getElementById('chat-messages'); const s=document.getElementById('chat-scroll');
     const typing=document.createElement('div'); typing.className='chat-typing'; typing.id='chat-typing-indicator'; typing.innerHTML='<span></span><span></span><span></span>';
-    container.appendChild(typing); scroller.scrollTop=scroller.scrollHeight;
+    c.appendChild(typing); s.scrollTop=s.scrollHeight;
     setTimeout(()=>{
       const ind=document.getElementById('chat-typing-indicator'); if(ind) ind.remove();
       let m=loadChatMessages();
       const reply=censored?'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu.':getBotReply(text);
       m.push({sender:'bot',text:reply,time:chatTimeNow()}); saveChatMessages(m); renderChatMessages(m);
-    }, 900+Math.random()*700);
+    },900+Math.random()*700);
   };
 
   // ─── glitch name ─────────────────────────────────────────
   const glitchTimers={};
-  window.triggerNameGlitch = function(elId) {
+  window.triggerNameGlitch = function(elId){
     const el=document.getElementById(elId); if(!el) return;
     el.classList.remove('glitching'); void el.offsetWidth; el.classList.add('glitching');
     if(glitchTimers[elId]) clearTimeout(glitchTimers[elId]);
     glitchTimers[elId]=setTimeout(()=>el.classList.remove('glitching'),2300);
   };
-  window.triggerGreetingGlitch     = function() { triggerNameGlitch('dash-greeting-name'); };
-  window.triggerAccountNameGlitch  = function() { triggerNameGlitch('acc-name'); };
+  window.triggerGreetingGlitch    = function(){ triggerNameGlitch('dash-greeting-name'); };
+  window.triggerAccountNameGlitch = function(){ triggerNameGlitch('acc-name'); };
 
-  function setGreetingName(name) {
+  function setGreetingName(name){
     const el=document.getElementById('dash-greeting-name');
-    const finalText=name+'!'; el.textContent=finalText; el.setAttribute('data-glitch-text',finalText);
+    const t=name+'!'; el.textContent=t; el.setAttribute('data-glitch-text',t);
     triggerNameGlitch('dash-greeting-name');
   }
-  function setAccountName(name) {
+  function setAccountName(name){
     const el=document.getElementById('acc-name'); el.textContent=name; el.setAttribute('data-glitch-text',name);
   }
-
-  window.setAccountRating  = function(r) { document.getElementById('acc-rating-val').textContent=Number(r).toFixed(2); };
-  window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage=`url('${url}')`; };
+  window.setAccountRating  = function(r){ document.getElementById('acc-rating-val').textContent=Number(r).toFixed(2); };
+  window.setTopBannerImage = function(url){ document.getElementById('top-banner').style.backgroundImage=`url('${url}')`; };
 
   // ─── slider ──────────────────────────────────────────────
-  const sliderTrack = document.getElementById('slider-track');
-  const sliderDots  = document.querySelectorAll('.slider-dot');
-  const slides      = document.querySelectorAll('.slide');
+  const sliderTrack=document.getElementById('slider-track');
+  const sliderDots=document.querySelectorAll('.slider-dot');
+  const slides=document.querySelectorAll('.slide');
   let sliderIndex=0, autoSlideTimer=null;
   const AUTO_SLIDE_MS=4000;
-
-  function updateSlider() {
+  function updateSlider(){
     sliderTrack.style.transform=`translateX(-${sliderIndex*100}%)`;
     sliderDots.forEach((d,i)=>d.classList.toggle('active',i===sliderIndex));
     const vid=document.querySelector('.slide-video-el');
-    if(vid){ if(sliderIndex===1) vid.play().catch(()=>{}); else vid.pause(); }
+    if(vid){if(sliderIndex===1)vid.play().catch(()=>{}); else vid.pause();}
   }
-  function goToSlide(i) { sliderIndex=(i+slides.length)%slides.length; updateSlider(); }
-  function nextSlide()  { goToSlide(sliderIndex+1); }
-  function startAutoSlide() { stopAutoSlide(); autoSlideTimer=setInterval(nextSlide,AUTO_SLIDE_MS); }
-  function stopAutoSlide()  { if(autoSlideTimer) clearInterval(autoSlideTimer); }
-
+  function goToSlide(i){sliderIndex=(i+slides.length)%slides.length;updateSlider();}
+  function nextSlide(){goToSlide(sliderIndex+1);}
+  function startAutoSlide(){stopAutoSlide();autoSlideTimer=setInterval(nextSlide,AUTO_SLIDE_MS);}
+  function stopAutoSlide(){if(autoSlideTimer)clearInterval(autoSlideTimer);}
   sliderDots.forEach(dot=>{dot.addEventListener('click',()=>{goToSlide(parseInt(dot.dataset.go,10));startAutoSlide();});});
-
   let isDragging=false,startX=0,currentTranslate=0;
   function getX(e){return(e.touches?e.touches[0].clientX:e.clientX);}
   sliderTrack.addEventListener('pointerdown',e=>{isDragging=true;startX=getX(e);currentTranslate=-sliderIndex*sliderTrack.offsetWidth;sliderTrack.classList.add('dragging');stopAutoSlide();});
@@ -1807,36 +1724,31 @@
     if(!isDragging)return;isDragging=false;sliderTrack.classList.remove('dragging');
     const dx=(e.clientX!==undefined?e.clientX:(e.changedTouches?e.changedTouches[0].clientX:startX))-startX;
     const threshold=sliderTrack.offsetWidth*0.15;
-    if(dx>threshold) goToSlide(sliderIndex-1); else if(dx<-threshold) goToSlide(sliderIndex+1); else updateSlider();
+    if(dx>threshold)goToSlide(sliderIndex-1);else if(dx<-threshold)goToSlide(sliderIndex+1);else updateSlider();
     startAutoSlide();
   }
   sliderTrack.addEventListener('pointerup',endDrag);
   sliderTrack.addEventListener('pointerleave',e=>{if(isDragging)endDrag(e);});
-
-  function initSlider(){ updateSlider(); startAutoSlide(); }
+  function initSlider(){updateSlider();startAutoSlide();}
 
   // ─── show dashboard ───────────────────────────────────────
-  function showDashboard(user) {
-    currentUserEmail = user.email || null;
+  function showDashboard(user){
+    currentUserEmail=user.email||null;
     const avatar=document.getElementById('dash-avatar');
     avatar.src=user.photoURL||DEFAULT_AVATAR; avatar.style.display='block';
     document.getElementById('dash-greeting-sub').textContent=getGreetingByTime();
-    const displayName=(user.displayName||user.email||'User').split('@')[0];
-    setGreetingName(displayName);
-    setAccountName(displayName);
+    const name=(user.displayName||user.email||'User').split('@')[0];
+    setGreetingName(name); setAccountName(name);
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
     go('s-dashboard'); initSlider();
   }
-
-  function getGreetingByTime() {
+  function getGreetingByTime(){
     const h=new Date().getHours();
-    if(h<11) return 'Good Morning'; if(h<15) return 'Good Afternoon'; if(h<19) return 'Good Evening'; return 'Good Night';
+    if(h<11)return 'Good Morning';if(h<15)return 'Good Afternoon';if(h<19)return 'Good Evening';return 'Good Night';
   }
-
-  window.addActivity   = function(){};
-  window.clearActivity = function(){};
+  window.addActivity=function(){};
+  window.clearActivity=function(){};
 </script>
-
 </body>
 </html>
