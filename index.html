@@ -14,22 +14,17 @@
       --accent: #00ff88; --radius: 8px;
     }
     body {
-      background: var(--black);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
+      background: var(--black); font-family: 'DM Sans', sans-serif;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
       position: relative; overflow-x: hidden; padding: 40px 16px;
     }
     body::before {
       content: ''; position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 44px 44px; pointer-events: none; z-index: 0;
     }
     body::after {
-      content: ''; position: fixed; top: -120px; left: -120px;
-      width: 400px; height: 400px;
+      content: ''; position: fixed; top: -120px; left: -120px; width: 400px; height: 400px;
       background: radial-gradient(circle, rgba(0,255,136,0.07) 0%, transparent 70%);
       pointer-events: none; z-index: 0;
     }
@@ -59,12 +54,6 @@
     .btn-primary { width: 100%; background: var(--white); color: #000; border: none; border-radius: var(--radius); padding: 15px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 16px; letter-spacing: .01em; transition: background .2s, transform .1s; }
     .btn-primary:hover { background: #e8e8e8; }
     .btn-primary:active { transform: scale(.99); }
-    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
-    .divider-line { flex: 1; height: 1px; background: var(--border); }
-    .divider-text { font-size: 12px; color: #3a3a3a; }
-    .btn-social { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 16px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: #999; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; transition: border-color .2s, color .2s; }
-    .btn-social:hover { border-color: #444; color: var(--white); }
-    .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
     .switch-text { font-size: 13px; color: #444; text-align: center; margin-top: 20px; }
     .switch-text button { color: #888; text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 13px; font-family: 'DM Sans', sans-serif; transition: color .2s; padding: 0; }
     .switch-text button:hover { color: var(--white); }
@@ -76,358 +65,126 @@
     .resend-link:hover { color: #aaa; }
     .strength-bar { display: flex; gap: 4px; margin-top: 8px; }
     .strength-segment { flex: 1; height: 3px; border-radius: 2px; background: var(--input-border); transition: background .3s; }
-    .strength-segment.weak   { background: #c0392b; }
+    .strength-segment.weak { background: #c0392b; }
     .strength-segment.medium { background: #e67e22; }
     .strength-segment.strong { background: var(--accent); }
     .hint { font-size: 12px; color: var(--muted); margin-top: 6px; padding-left: 2px; }
     #toast {
       position: fixed; top: 28px; left: 50%; transform: translateX(-50%);
       background: #1a2f23; border: 1px solid rgba(0,255,136,0.35);
-      border-radius: 12px; padding: 13px 22px;
-      font-size: 13px; color: #00ff88; font-family: 'DM Sans', sans-serif;
-      display: flex; align-items: center; gap: 8px;
-      z-index: 999; opacity: 0; pointer-events: none;
-      transition: opacity .3s, transform .3s;
-      transform: translateX(-50%) translateY(-8px);
-      white-space: nowrap;
+      border-radius: 12px; padding: 13px 22px; font-size: 13px; color: #00ff88;
+      font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 8px;
+      z-index: 999; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s;
+      transform: translateX(-50%) translateY(-8px); white-space: nowrap;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
     #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account, #s-donasi {
-      position: fixed; inset: 0; z-index: 50;
-      background: var(--black);
-      overflow-y: auto;
+      position: fixed; inset: 0; z-index: 50; background: var(--black); overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
-      width: 100%; max-width: 480px; margin: 0 auto;
-      min-height: 100%;
-      padding: max(24px, env(safe-area-inset-top)) 18px 90px;
-      display: flex; flex-direction: column;
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner,
+    #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
+      width: 100%; max-width: 480px; margin: 0 auto; min-height: 100%;
+      padding: max(24px, env(safe-area-inset-top)) 18px 90px; display: flex; flex-direction: column;
     }
-
     #s-chat { overflow: hidden; }
-    #s-chat .dash-inner {
-      height: 100%; min-height: 0;
-      padding-bottom: 0;
-      overflow: hidden;
-    }
-    .chat-header-bar {
-      flex-shrink: 0;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
-    }
-    .chat-scroll {
-      flex: 1; min-height: 0;
-      overflow-y: auto;
-      margin: 0 -18px;
-      padding: 0 18px;
-    }
+    #s-chat .dash-inner { height: 100%; min-height: 0; padding-bottom: 0; overflow: hidden; }
+    .chat-header-bar { flex-shrink: 0; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .chat-scroll { flex: 1; min-height: 0; overflow-y: auto; margin: 0 -18px; padding: 0 18px; }
 
-    .dash-header {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
+    .dash-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
     .dash-greeting-text { flex: 1; min-width: 0; }
-    .dash-greeting-sub {
-      font-size: 14px; color: var(--text-sec); margin-bottom: 2px;
-    }
+    .dash-greeting-sub { font-size: 14px; color: var(--text-sec); margin-bottom: 2px; }
     .dash-greeting-name {
       font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      position: relative;
-      display: inline-block;
+      position: relative; display: inline-block;
     }
-
-    .glitching {
-      animation: glitchSkew 2.2s ease-in-out;
+    .glitching { animation: glitchSkew 2.2s ease-in-out; }
+    .glitching::before, .glitching::after {
+      content: attr(data-glitch-text); position: absolute; left: 0; top: 0;
+      width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: var(--black);
     }
-    .glitching::before,
-    .glitching::after {
-      content: attr(data-glitch-text);
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      background: var(--black);
-    }
-    .glitching::before {
-      color: #ff2e63;
-      animation: glitchBefore 2.2s ease-in-out;
-      mix-blend-mode: screen;
-    }
-    .glitching::after {
-      color: #00ff88;
-      animation: glitchAfter 2.2s ease-in-out;
-      mix-blend-mode: screen;
-    }
+    .glitching::before { color: #ff2e63; animation: glitchBefore 2.2s ease-in-out; mix-blend-mode: screen; }
+    .glitching::after { color: #00ff88; animation: glitchAfter 2.2s ease-in-out; mix-blend-mode: screen; }
     @keyframes glitchSkew {
-      0%, 100% { transform: skewX(0deg); opacity: 1; }
-      4%  { transform: skewX(4deg) translateX(-2px); opacity: .9; }
-      8%  { transform: skewX(-3deg) translateX(2px); opacity: 1; }
-      12% { transform: skewX(0deg); opacity: .85; }
-      16% { transform: skewX(2deg); opacity: 1; }
-      40% { transform: skewX(0deg); opacity: 1; }
-      42% { transform: skewX(-2deg) translateX(1px); opacity: .9; }
-      45% { transform: skewX(0deg); opacity: 1; }
-      70% { transform: skewX(0deg); }
-      72% { transform: skewX(3deg) translateX(-1px); opacity: .9; }
-      75% { transform: skewX(0deg); opacity: 1; }
+      0%, 100% { transform: skewX(0deg); opacity: 1; } 4% { transform: skewX(4deg) translateX(-2px); opacity: .9; }
+      8% { transform: skewX(-3deg) translateX(2px); opacity: 1; } 12% { transform: skewX(0deg); opacity: .85; }
+      16% { transform: skewX(2deg); opacity: 1; } 40% { transform: skewX(0deg); opacity: 1; }
+      42% { transform: skewX(-2deg) translateX(1px); opacity: .9; } 45% { transform: skewX(0deg); opacity: 1; }
+      70% { transform: skewX(0deg); } 72% { transform: skewX(3deg) translateX(-1px); opacity: .9; } 75% { transform: skewX(0deg); opacity: 1; }
     }
     @keyframes glitchBefore {
-      0%, 100%   { clip-path: inset(0 0 100% 0); transform: translate(0,0); opacity: 0; }
-      3%, 7%     { clip-path: inset(10% 0 60% 0); transform: translate(-3px,-1px); opacity: .8; }
-      4%, 6%     { opacity: 0; }
-      8%         { clip-path: inset(0 0 100% 0); opacity: 0; }
-      40%        { opacity: 0; }
-      41%, 44%   { clip-path: inset(40% 0 20% 0); transform: translate(2px,1px); opacity: .75; }
-      45%        { opacity: 0; }
-      71%, 74%   { clip-path: inset(70% 0 5% 0); transform: translate(-2px,0); opacity: .8; }
-      76%        { opacity: 0; }
+      0%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0,0); opacity: 0; }
+      3%, 7% { clip-path: inset(10% 0 60% 0); transform: translate(-3px,-1px); opacity: .8; }
+      4%, 6% { opacity: 0; } 8% { clip-path: inset(0 0 100% 0); opacity: 0; } 40% { opacity: 0; }
+      41%, 44% { clip-path: inset(40% 0 20% 0); transform: translate(2px,1px); opacity: .75; } 45% { opacity: 0; }
+      71%, 74% { clip-path: inset(70% 0 5% 0); transform: translate(-2px,0); opacity: .8; } 76% { opacity: 0; }
     }
     @keyframes glitchAfter {
-      0%, 100%   { clip-path: inset(100% 0 0 0); transform: translate(0,0); opacity: 0; }
-      3%, 7%     { clip-path: inset(55% 0 15% 0); transform: translate(3px,1px); opacity: .8; }
-      4%, 6%     { opacity: 0; }
-      8%         { clip-path: inset(100% 0 0 0); opacity: 0; }
-      40%        { opacity: 0; }
-      41%, 44%   { clip-path: inset(15% 0 50% 0); transform: translate(-2px,-1px); opacity: .75; }
-      45%        { opacity: 0; }
-      71%, 74%   { clip-path: inset(5% 0 70% 0); transform: translate(2px,0); opacity: .8; }
-      76%        { opacity: 0; }
+      0%, 100% { clip-path: inset(100% 0 0 0); transform: translate(0,0); opacity: 0; }
+      3%, 7% { clip-path: inset(55% 0 15% 0); transform: translate(3px,1px); opacity: .8; }
+      4%, 6% { opacity: 0; } 8% { clip-path: inset(100% 0 0 0); opacity: 0; } 40% { opacity: 0; }
+      41%, 44% { clip-path: inset(15% 0 50% 0); transform: translate(-2px,-1px); opacity: .75; } 45% { opacity: 0; }
+      71%, 74% { clip-path: inset(5% 0 70% 0); transform: translate(2px,0); opacity: .8; } 76% { opacity: 0; }
     }
 
-    .top-banner {
-      border-radius: 14px;
-      aspect-ratio: 16 / 7;
-      margin-bottom: 16px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      background-size: cover; background-position: center; background-repeat: no-repeat;
-    }
-
-    .action-row {
-      display: flex; gap: 10px; margin-bottom: 20px;
-    }
-    .action-btn {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 30px; padding: 13px; cursor: pointer;
-      font-size: 13.5px; font-weight: 600; color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      transition: border-color .2s;
-    }
+    .top-banner { border-radius: 14px; aspect-ratio: 16/7; margin-bottom: 16px; background: var(--card); border: 1px solid var(--border); background-size: cover; background-position: center; background-repeat: no-repeat; }
+    .action-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 13px; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--white); font-family: 'DM Sans', sans-serif; transition: border-color .2s; }
     .action-btn:hover { border-color: #444; }
     .action-btn svg { width: 16px; height: 16px; }
     .action-btn.icon-only { flex: 0 0 48px; padding: 13px 0; }
 
-    .slider-wrap {
-      position: relative; border-radius: 16px; overflow: hidden;
-      background: var(--card); border: 1px solid var(--border);
-      margin-bottom: 22px;
-    }
-    .slider-track {
-      display: flex; width: 100%;
-      transition: transform .45s cubic-bezier(.22,.61,.36,1);
-      touch-action: pan-y;
-      cursor: grab;
-    }
+    .slider-wrap { position: relative; border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid var(--border); margin-bottom: 22px; }
+    .slider-track { display: flex; width: 100%; transition: transform .45s cubic-bezier(.22,.61,.36,1); touch-action: pan-y; cursor: grab; }
     .slider-track.dragging { transition: none; cursor: grabbing; }
-    .slide {
-      flex: 0 0 100%; aspect-ratio: 16 / 7;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 22px 20px;
-      background-size: cover; background-position: center; background-repeat: no-repeat;
-      position: relative;
-    }
+    .slide { flex: 0 0 100%; aspect-ratio: 16/7; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 22px 20px; background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; }
     .slide.has-img .slide-content { display: none; }
     .slide-content { position: relative; z-index: 1; }
-    .slide-icon {
-      width: 40px; height: 40px; border-radius: 12px;
-      background: var(--input-bg); border: 1px solid var(--input-border);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 12px;
-    }
+    .slide-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
     .slide-icon svg { width: 18px; height: 18px; color: var(--muted); }
-    .slide-title {
-      font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800;
-      color: var(--white); margin-bottom: 6px;
-    }
+    .slide-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); margin-bottom: 6px; }
     .slide-desc { font-size: 12px; color: var(--text-sec); line-height: 1.5; max-width: 280px; margin: 0 auto; }
-    .slider-dots {
-      position: absolute; left: 0; right: 0; bottom: 10px; z-index: 2;
-      display: flex; justify-content: center; gap: 6px;
-      padding: 0; pointer-events: none;
-    }
-    .slider-dot {
-      width: 16px; height: 4px; border-radius: 4px;
-      background: rgba(255,255,255,0.35);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
-      transition: background .3s, width .3s;
-      cursor: pointer; pointer-events: auto;
-    }
+    .slider-dots { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 2; display: flex; justify-content: center; gap: 6px; padding: 0; pointer-events: none; }
+    .slider-dot { width: 16px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.35); box-shadow: 0 0 0 1px rgba(0,0,0,0.25); transition: background .3s, width .3s; cursor: pointer; pointer-events: auto; }
     .slider-dot.active { background: var(--accent); width: 20px; }
+    .slide-video { padding: 0; overflow: hidden; }
+    .slide-video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 
-    .slide-video {
-      padding: 0;
-      overflow: hidden;
-    }
-    .slide-video-el {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-    }
-
-    .dash-footer {
-      text-align: center; font-size: 11.5px; color: var(--muted);
-      margin-top: auto; padding-top: 24px; padding-bottom: 8px;
-    }
-
-    .activity-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .activity-title {
-      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800;
-      color: var(--white);
-    }
-    .activity-seeall {
-      display: flex; align-items: center; gap: 4px;
-      font-size: 13px; color: var(--text-sec); cursor: pointer;
-    }
-    .activity-seeall svg { width: 14px; height: 14px; }
-    .activity-list { display: flex; flex-direction: column; gap: 8px; }
-    .activity-item {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 12px 14px;
-    }
-    .activity-icon {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      background: var(--input-bg); border: 1px solid var(--input-border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted);
-    }
-    .activity-icon svg { width: 16px; height: 16px; }
-    .activity-mid { flex: 1; min-width: 0; }
-    .activity-action {
-      font-size: 13px; color: var(--white); font-weight: 500;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .activity-action b { font-weight: 700; }
-    .activity-time { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-    .activity-right { text-align: right; flex-shrink: 0; }
-    .activity-amount { font-size: 14px; font-weight: 700; color: var(--white); }
-    .activity-amount.positive { color: var(--accent); }
-    .activity-usdt { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    .bottom-nav-wrap {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 51;
-      background: var(--surface); border-top: 1px solid var(--border);
-      padding: 10px 18px max(10px, env(safe-area-inset-bottom));
-      display: none; justify-content: center;
-    }
-    .bottom-nav {
-      display: flex; align-items: center; justify-content: space-between;
-      width: 100%; max-width: 480px;
-    }
-    .nav-item {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      gap: 4px; color: var(--muted); cursor: pointer; padding: 4px 0;
-      font-size: 11px;
-    }
+    .dash-footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: auto; padding-top: 24px; padding-bottom: 8px; }
+    .bottom-nav-wrap { position: fixed; bottom: 0; left: 0; right: 0; z-index: 51; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 18px max(10px, env(safe-area-inset-bottom)); display: none; justify-content: center; }
+    .bottom-nav { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 480px; }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--muted); cursor: pointer; padding: 4px 0; font-size: 11px; }
     .nav-item svg { width: 21px; height: 21px; }
     .nav-item.active { color: var(--accent); }
 
-    .acc-header {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; margin-bottom: 22px;
-    }
+    .acc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
     .acc-header-text { flex: 1; min-width: 0; }
-    .acc-name {
-      font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800;
-      color: var(--white); letter-spacing: -.01em; margin-bottom: 8px;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      position: relative; display: inline-block; max-width: 100%;
-    }
-    .acc-rating {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 20px; padding: 5px 12px;
-      font-size: 13px; font-weight: 600; color: var(--white);
-    }
+    .acc-name { font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800; color: var(--white); letter-spacing: -.01em; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; position: relative; display: inline-block; max-width: 100%; }
+    .acc-rating { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--white); }
     .acc-rating svg { width: 13px; height: 13px; color: var(--accent); }
-
     .dash-avatar-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
-    .dash-avatar {
-      width: 52px; height: 52px; border-radius: 50%;
-      object-fit: cover; background: var(--card);
-      border: 1px solid var(--border);
-      display: block;
-    }
-    .dash-avatar-add {
-      position: absolute; bottom: -2px; right: -2px;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--accent); color: #000;
-      display: flex; align-items: center; justify-content: center;
-      border: 2px solid var(--black);
-      cursor: pointer;
-    }
+    .dash-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; background: var(--card); border: 1px solid var(--border); display: block; }
+    .dash-avatar-add { position: absolute; bottom: -2px; right: -2px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #000; display: flex; align-items: center; justify-content: center; border: 2px solid var(--black); cursor: pointer; }
     .dash-avatar-add svg { width: 10px; height: 10px; }
 
-    .acc-quick-row {
-      display: flex; gap: 10px; margin-bottom: 16px;
-    }
-    .acc-quick-card {
-      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 16px 8px;
-      cursor: pointer; transition: border-color .2s;
-    }
+    .acc-quick-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .acc-quick-card { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 8px; cursor: pointer; transition: border-color .2s; }
     .acc-quick-card:hover { border-color: #444; }
     .acc-quick-card svg { width: 22px; height: 22px; color: var(--white); }
     .acc-quick-card span { font-size: 13px; font-weight: 600; color: var(--white); }
-
-    .acc-privacy-banner {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 16px; margin-bottom: 22px;
-      cursor: pointer; transition: border-color .2s;
-    }
+    .acc-privacy-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 22px; cursor: pointer; transition: border-color .2s; }
     .acc-privacy-banner:hover { border-color: #444; }
-    .acc-privacy-title {
-      font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px;
-    }
-    .acc-privacy-desc {
-      font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px;
-    }
-    .acc-privacy-icon {
-      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-      background: var(--input-bg); border: 1px solid var(--input-border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-    }
+    .acc-privacy-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .acc-privacy-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px; }
+    .acc-privacy-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; color: var(--accent); }
     .acc-privacy-icon svg { width: 22px; height: 22px; }
-
-    .acc-menu {
-      display: flex; flex-direction: column;
-      border-top: 1px solid var(--border);
-    }
-    .acc-menu-item {
-      display: flex; align-items: center; gap: 16px;
-      padding: 16px 0; border-bottom: 1px solid var(--border);
-      cursor: pointer; color: var(--white);
-      transition: opacity .2s;
-    }
+    .acc-menu { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
+    .acc-menu-item { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--white); transition: opacity .2s; }
     .acc-menu-item:hover { opacity: .75; }
     .acc-menu-item svg { width: 21px; height: 21px; flex-shrink: 0; color: var(--white); }
     .acc-menu-item span { font-size: 15px; font-weight: 500; }
@@ -435,256 +192,66 @@
     .acc-menu-text { display: flex; flex-direction: column; gap: 4px; }
     .acc-menu-sub { font-size: 12.5px; color: var(--text-sec); font-weight: 400; }
 
-    .send-page-header {
-      display: flex; align-items: center; margin-bottom: 18px;
-    }
-    .circle-back-btn {
-      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
-      background: var(--card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--white); cursor: pointer; transition: border-color .2s;
-      padding: 0;
-    }
+    .send-page-header { display: flex; align-items: center; margin-bottom: 18px; }
+    .circle-back-btn { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--white); cursor: pointer; transition: border-color .2s; padding: 0; }
     .circle-back-btn:hover { border-color: #444; }
     .circle-back-btn svg { width: 20px; height: 20px; }
-    .send-recipients {
-      display: flex; flex-direction: column; gap: 8px;
-      margin-bottom: 20px; max-height: 320px; overflow-y: auto;
-    }
-    .send-recipient {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 12px 14px;
-      cursor: pointer; transition: border-color .2s;
-    }
-    .send-recipient:hover { border-color: #444; }
-    .send-recipient.selected { border-color: var(--accent); }
-    .send-recipient-avatar {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      object-fit: cover; background: var(--input-bg); border: 1px solid var(--input-border);
-    }
-    .send-recipient-info { flex: 1; min-width: 0; }
-    .send-recipient-name {
-      font-size: 14px; font-weight: 600; color: var(--white);
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .send-recipient-email {
-      font-size: 12px; color: var(--text-sec);
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .send-recipient-check {
-      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-      border: 1px solid var(--input-border); color: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .send-recipient-check svg { width: 13px; height: 13px; opacity: 0; transition: opacity .15s; }
-    .send-recipient.selected .send-recipient-check { border-color: var(--accent); }
-    .send-recipient.selected .send-recipient-check svg { opacity: 1; }
-    .send-empty {
-      font-size: 13px; color: var(--text-sec); text-align: center;
-      padding: 28px 0; background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px;
-    }
-
-    .complaint-item {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 12px 14px;
-    }
-    .complaint-avatar {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      object-fit: cover; background: var(--input-bg); border: 1px solid var(--input-border);
-    }
-    .complaint-body { flex: 1; min-width: 0; }
-    .complaint-name { font-size: 13px; font-weight: 700; color: var(--white); }
-    .complaint-text { font-size: 13px; color: var(--text-sec); margin-top: 4px; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
-    .complaint-time { font-size: 11px; color: var(--muted); margin-top: 6px; }
-    .complaint-actions { display: flex; gap: 18px; margin-top: 10px; }
-    .complaint-vote-btn {
-      display: flex; align-items: center; gap: 6px;
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 12px; font-weight: 600;
-      font-family: 'DM Sans', sans-serif; padding: 0;
-      transition: color .2s;
-    }
-    .complaint-vote-btn svg { width: 16px; height: 16px; }
-    .complaint-vote-btn:hover { color: #ccc; }
-    .complaint-vote-btn.like.active { color: var(--accent); }
-    .complaint-vote-btn.dislike.active { color: #e74c3c; }
 
     .chat-header-info { flex: 1; min-width: 0; margin-left: 4px; }
-    .chat-header-name {
-      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800;
-      color: var(--white); letter-spacing: -.01em;
-    }
-    .chat-header-status {
-      font-size: 12px; color: var(--accent); margin-top: 2px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .chat-header-status::before {
-      content: ''; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--accent); display: inline-block;
-    }
-    .chat-header-avatar {
-      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
-      background: var(--card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-    }
+    .chat-header-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); letter-spacing: -.01em; }
+    .chat-header-status { font-size: 12px; color: var(--accent); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+    .chat-header-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--accent); }
     .chat-header-avatar svg { width: 20px; height: 20px; }
-    .chat-messages {
-      flex: 1; display: flex; flex-direction: column; gap: 10px;
-      padding-top: 14px; padding-bottom: 84px;
-    }
-    .chat-bubble {
-      max-width: 78%; padding: 10px 14px; border-radius: 16px;
-      font-size: 13.5px; line-height: 1.55; word-break: break-word;
-      white-space: pre-wrap;
-    }
-    .chat-bubble.bot {
-      align-self: flex-start; background: var(--card);
-      border: 1px solid var(--border); color: #ddd;
-      border-bottom-left-radius: 4px;
-    }
-    .chat-bubble.user {
-      align-self: flex-end; background: var(--white); color: #000;
-      border-bottom-right-radius: 4px;
-    }
-    .chat-bubble-time {
-      font-size: 10px; color: var(--muted); margin-top: 4px;
-    }
+    .chat-messages { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 14px; padding-bottom: 84px; }
+    .chat-bubble { max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.55; word-break: break-word; white-space: pre-wrap; }
+    .chat-bubble.bot { align-self: flex-start; background: var(--card); border: 1px solid var(--border); color: #ddd; border-bottom-left-radius: 4px; }
+    .chat-bubble.user { align-self: flex-end; background: var(--white); color: #000; border-bottom-right-radius: 4px; }
+    .chat-bubble-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
     .chat-bubble.user .chat-bubble-time { text-align: right; color: #999; }
-    .chat-typing {
-      align-self: flex-start; display: flex; gap: 4px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; border-bottom-left-radius: 4px;
-      padding: 12px 16px;
-    }
-    .chat-typing span {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--muted);
-      animation: chatTypingBounce 1.2s infinite ease-in-out;
-    }
+    .chat-typing { align-self: flex-start; display: flex; gap: 4px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 4px; padding: 12px 16px; }
+    .chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: chatTypingBounce 1.2s infinite ease-in-out; }
     .chat-typing span:nth-child(2) { animation-delay: .15s; }
     .chat-typing span:nth-child(3) { animation-delay: .3s; }
-    @keyframes chatTypingBounce {
-      0%, 60%, 100% { transform: translateY(0); opacity: .4; }
-      30% { transform: translateY(-4px); opacity: 1; }
-    }
-    .chat-input-bar {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 51;
-      background: var(--surface); border-top: 1px solid var(--border);
-      padding: 10px 14px max(10px, env(safe-area-inset-bottom));
-      display: flex; justify-content: center;
-    }
-    .chat-input-row {
-      display: flex; align-items: center; gap: 10px;
-      width: 100%; max-width: 480px;
-    }
-    .chat-input-row input {
-      flex: 1; background: var(--input-bg); border: 1px solid var(--input-border);
-      border-radius: 24px; padding: 12px 18px; color: #ccc;
-      outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px;
-    }
+    @keyframes chatTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
+    .chat-input-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 51; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 14px max(10px, env(safe-area-inset-bottom)); display: flex; justify-content: center; }
+    .chat-input-row { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 480px; }
+    .chat-input-row input { flex: 1; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 24px; padding: 12px 18px; color: #ccc; outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px; }
     .chat-input-row input:focus { border-color: #444; }
-    .chat-send-btn {
-      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
-      background: var(--white); color: #000; border: none;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background .2s;
-    }
+    .chat-send-btn { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--white); color: #000; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s; }
     .chat-send-btn:hover { background: #e8e8e8; }
     .chat-send-btn svg { width: 18px; height: 18px; }
 
-    .send-anim-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: auto; z-index: 9999;
-      background: var(--black);
-      opacity: 0;
-    }
-    .send-anim-svg {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    }
-    .send-anim-path {
-      fill: none;
-      stroke: var(--accent);
-      stroke-width: 2;
-      stroke-dasharray: 8 8;
-    }
-    .send-anim-plane {
-      position: absolute; top: 0; left: 0;
-      width: 36px; height: 36px;
-      color: var(--accent);
-      opacity: 0;
-      offset-rotate: auto;
-    }
+    .send-anim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 9999; background: var(--black); opacity: 0; }
+    .send-anim-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .send-anim-path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 8 8; }
+    .send-anim-plane { position: absolute; top: 0; left: 0; width: 36px; height: 36px; color: var(--accent); opacity: 0; offset-rotate: auto; }
     .send-anim-plane svg { width: 100%; height: 100%; }
 
-    .confirm-overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.7);
-      display: none; align-items: center; justify-content: center;
-      padding: 24px;
-    }
+    .confirm-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; padding: 24px; }
     .confirm-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .confirm-card {
-      width: 100%; max-width: 340px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 28px 24px;
-      text-align: center;
-    }
-    .confirm-icon {
-      width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 16px;
-      background: var(--input-bg); border: 1px solid var(--input-border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--white);
-    }
+    .confirm-card { width: 100%; max-width: 340px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px 24px; text-align: center; }
+    .confirm-icon { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 16px; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; color: var(--white); }
     .confirm-icon svg { width: 24px; height: 24px; }
     .confirm-icon.danger { color: #ff5c5c; border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.08); }
-    .confirm-title {
-      font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 800;
-      color: var(--white); margin-bottom: 10px; line-height: 1.3;
-    }
+    .confirm-title { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 800; color: var(--white); margin-bottom: 10px; line-height: 1.3; }
     .confirm-desc { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
-    .btn-ghost-cancel {
-      width: 100%; background: none; border: none; cursor: pointer;
-      color: var(--text-sec); font-size: 13.5px; font-weight: 500;
-      font-family: 'DM Sans', sans-serif; padding: 13px; margin-top: 6px;
-      transition: color .2s;
-    }
+    .btn-ghost-cancel { width: 100%; background: none; border: none; cursor: pointer; color: var(--text-sec); font-size: 13.5px; font-weight: 500; font-family: 'DM Sans', sans-serif; padding: 13px; margin-top: 6px; transition: color .2s; }
     .btn-ghost-cancel:hover { color: var(--white); }
     .btn-primary.btn-danger { background: #ff5c5c; color: #1a0000; }
     .btn-primary.btn-danger:hover { background: #ff7a7a; }
     #ma-status-label, #ma-method-label, #ma-since-label { font-size: 12.5px; }
 
-    .donasi-chip-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-      margin-bottom: 16px;
-    }
-    .donasi-chip {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 13px 10px;
-      font-size: 13.5px; font-weight: 600; color: var(--white);
-      font-family: 'DM Sans', sans-serif; cursor: pointer;
-      transition: border-color .2s, background .2s, color .2s;
-    }
-    .donasi-chip:hover { border-color: #444; }
-    .donasi-chip.active {
-      border-color: var(--accent); background: rgba(0,255,136,0.08); color: var(--accent);
-    }
-
-    .donasi-warning {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.3);
-      border-radius: 14px; padding: 14px 16px; margin-top: 14px;
-    }
-    .donasi-warning svg {
-      width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
-      color: #ff5c5c;
-    }
-    .donasi-warning-text {
-      font-size: 12.5px; color: #ff9b9b; line-height: 1.55;
-    }
+    .donasi-warning { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.3); border-radius: 14px; padding: 14px 16px; margin-top: 14px; }
+    .donasi-warning svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; color: #ff5c5c; }
+    .donasi-warning-text { font-size: 12.5px; color: #ff9b9b; line-height: 1.55; }
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
+
+    /* Loading spinner */
+    #global-loading { position:fixed;inset:0;z-index:9000;background:rgba(11,11,11,0.85);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px; }
+    .loading-spinner { width:36px;height:36px;border:3px solid #252525;border-top-color:#00ff88;border-radius:50%;animation:spin .7s linear infinite; }
+    #loading-msg { font-size:13px;color:#888;font-family:'DM Sans',sans-serif; }
+    @keyframes spin { to { transform:rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -692,6 +259,12 @@
 <div id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
   <span id="toast-msg">Berhasil!</span>
+</div>
+
+<!-- Loading overlay -->
+<div id="global-loading">
+  <div class="loading-spinner"></div>
+  <div id="loading-msg">Memuat...</div>
 </div>
 
 <div id="app">
@@ -770,7 +343,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
       <h1 class="title">Forget<br>Password?</h1>
-      <p class="subtitle">Enter your email address and we'll send you a link to reset your password.</p>
+      <p class="subtitle">Masukkan email kamu, kami akan kirim link reset password ke inbox kamu.</p>
       <div class="input-group">
         <div class="input-wrap" id="fw-email">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -778,19 +351,19 @@
         </div>
         <div class="err-msg" id="f-email-err"></div>
       </div>
-      <button class="btn-primary" onclick="doForgot()">Send</button>
-      <p class="switch-text" style="margin-top:24px">Remember your password? <button onclick="go('s-login')">Sign in</button></p>
+      <button class="btn-primary" onclick="doForgot()">Kirim Link Reset</button>
+      <p class="switch-text" style="margin-top:24px">Ingat password? <button onclick="go('s-login')">Sign in</button></p>
     </div>
   </div>
 
-  <!-- VERIFY EMAIL (OTP) -->
+  <!-- VERIFY EMAIL (OTP) — hanya untuk register -->
   <div class="screen" id="s-verify">
     <div class="card">
-      <button class="back-btn" id="verify-back-btn" onclick="go('s-forgot')">
+      <button class="back-btn" id="verify-back-btn" onclick="go('s-register')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
       <h1 class="title">Verify<br>Your Email</h1>
-      <p class="subtitle" id="verify-subtitle">Masukkan 4 digit kode yang dikirim ke email kamu</p>
+      <p class="subtitle" id="verify-subtitle">Masukkan 4 digit kode verifikasi</p>
       <div class="otp-row" id="otp-row">
         <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
         <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
@@ -807,37 +380,37 @@
     </div>
   </div>
 
-  <!-- CREATE NEW PASSWORD -->
+  <!-- UBAH PASSWORD (dari manage account) -->
   <div class="screen" id="s-newpass">
     <div class="card">
-      <button class="back-btn" id="newpass-back-btn" onclick="go('s-forgot')">
+      <button class="back-btn" id="newpass-back-btn" onclick="openManageAccountPage()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
-      <h1 class="title" id="newpass-title">Create<br>New Password</h1>
-      <p class="subtitle" id="newpass-subtitle">Your new password must be different from previously used password</p>
+      <h1 class="title" id="newpass-title">Ganti<br>Password</h1>
+      <p class="subtitle" id="newpass-subtitle">Masukkan password baru untuk akun kamu</p>
       <div class="input-group">
         <div class="input-wrap" id="nw-pass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="New password" id="n-pass" oninput="checkStrength(this.value,'np')"/>
+          <input type="password" placeholder="Password baru" id="n-pass" oninput="checkStrength(this.value,'np')"/>
           <button class="show-pass-btn" onclick="togglePass('n-pass',this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
         <div class="strength-bar"><div class="strength-segment" id="np1"></div><div class="strength-segment" id="np2"></div><div class="strength-segment" id="np3"></div><div class="strength-segment" id="np4"></div></div>
-        <p class="hint">Min. 8 characters, include uppercase &amp; symbol</p>
+        <p class="hint">Min. 8 karakter, sertakan huruf besar &amp; simbol</p>
         <div class="err-msg" id="n-pass-err"></div>
       </div>
       <div class="input-group">
         <div class="input-wrap" id="nw-cpass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M9 16l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="Confirm password" id="n-cpass"/>
+          <input type="password" placeholder="Konfirmasi password" id="n-cpass"/>
           <button class="show-pass-btn" onclick="togglePass('n-cpass',this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
         <div class="err-msg" id="n-cpass-err"></div>
       </div>
-      <button class="btn-primary" onclick="doSavePass()">Save</button>
+      <button class="btn-primary" onclick="doSavePass()">Simpan</button>
     </div>
   </div>
 
@@ -868,25 +441,13 @@
       <div class="slider-wrap">
         <div class="slider-track" id="slider-track">
           <div class="slide has-img" data-index="0" style="background-image:url('https://i.ibb.co.com/d4hRH6Wj/orbitxy-com-20260614-075731-0000.jpg')">
-            <div class="slide-content">
-              <div class="slide-icon" style="display:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </div>
-              <div class="slide-title">Promo Banner #1</div>
-              <div class="slide-desc">Slide ke-1</div>
-            </div>
+            <div class="slide-content"><div class="slide-icon" style="display:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><div class="slide-title">Promo Banner #1</div><div class="slide-desc">Slide ke-1</div></div>
           </div>
           <div class="slide slide-video" data-index="1">
             <video class="slide-video-el" src="https://files.catbox.moe/byyqm3.mp4" autoplay muted loop playsinline preload="auto"></video>
           </div>
           <div class="slide" data-index="2">
-            <div class="slide-content">
-              <div class="slide-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </div>
-              <div class="slide-title">Promo Banner #3</div>
-              <div class="slide-desc">Slide ke-3 (Ganti gambar ini dengan promo Anda sendiri nanti)</div>
-            </div>
+            <div class="slide-content"><div class="slide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><div class="slide-title">Promo Banner #3</div><div class="slide-desc">Slide ke-3</div></div>
           </div>
         </div>
         <div class="slider-dots" id="slider-dots">
@@ -947,14 +508,11 @@
         </div>
         <div class="acc-menu-item acc-menu-item-sub" onclick="showToast('Business profile')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          <div class="acc-menu-text">
-            <span>Setup your business profile</span>
-            <div class="acc-menu-sub">Automate work travel &amp; meal expenses</div>
-          </div>
+          <div class="acc-menu-text"><span>Setup your business profile</span><div class="acc-menu-sub">Automate work travel &amp; meal expenses</div></div>
         </div>
         <div class="acc-menu-item" onclick="playSendAnimation(openManageAccountPage, '#ffffff')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Manage Uber account</span>
+          <span>Manage account</span>
         </div>
         <div class="acc-menu-item" onclick="showToast('Legal')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -995,7 +553,7 @@
       </div>
       <h1 class="title" style="font-size:30px;margin-bottom:8px;">Donasi</h1>
       <p class="subtitle" style="margin-top:0;margin-bottom:22px;">Dukung pengembangan orbitxy dengan donasi kamu</p>
-      <div class="acc-privacy-banner" style="margin-top:4px;margin-bottom:0;" onclick="window.open('https://sociabuzz.com/orbitxy/donate', '_blank')">
+      <div class="acc-privacy-banner" style="margin-top:4px;margin-bottom:0;" onclick="window.open('https://sociabuzz.com/orbitxy/donate','_blank')">
         <div class="acc-privacy-text">
           <div class="acc-privacy-title">Donasi via SociaBuzz</div>
           <div class="acc-privacy-desc">Bayar langsung lewat QRIS &amp; e-wallet di halaman resmi SociaBuzz</div>
@@ -1006,10 +564,7 @@
       </div>
       <div class="donasi-warning">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <div class="donasi-warning-text">
-          <b>Waspada penipuan.</b><br/>
-          Tombol di atas adalah satu-satunya cara resmi untuk berdonasi ke orbitxy. Kami tidak pernah membagikan link donasi lewat chat, DM, atau media lain. Jika ada yang mengirimkan link donasi selain dari halaman ini, abaikan — itu bukan dari kami.
-        </div>
+        <div class="donasi-warning-text"><b>Waspada penipuan.</b><br/>Tombol di atas adalah satu-satunya cara resmi untuk berdonasi ke orbitxy. Kami tidak pernah membagikan link donasi lewat chat, DM, atau media lain.</div>
       </div>
     </div>
   </div>
@@ -1074,10 +629,7 @@
         </div>
         <div class="acc-menu-item acc-menu-item-sub" onclick="downloadAccountData()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <div class="acc-menu-text">
-            <span>Unduh data akun</span>
-            <div class="acc-menu-sub">Ekspor info profil &amp; riwayat aktivitas kamu</div>
-          </div>
+          <div class="acc-menu-text"><span>Unduh data akun</span><div class="acc-menu-sub">Ekspor info profil &amp; riwayat aktivitas kamu</div></div>
         </div>
         <div class="acc-menu-item" onclick="openDeactivateModal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
@@ -1088,31 +640,27 @@
           <span>Hapus akun</span>
         </div>
       </div>
-      <p class="hint" style="text-align:center;margin-top:18px;">Punya pertanyaan sebelum menghapus akun? <span style="text-decoration:underline;color:#aaa;cursor:pointer;" onclick="playSendAnimation(openChatPage, '#ff3b3b')">Chat admin dulu</span></p>
+      <p class="hint" style="text-align:center;margin-top:18px;">Punya pertanyaan? <span style="text-decoration:underline;color:#aaa;cursor:pointer;" onclick="playSendAnimation(openChatPage,'#ff3b3b')">Chat admin dulu</span></p>
     </div>
   </div>
 
-  <!-- DEACTIVATE CONFIRM MODAL -->
+  <!-- DEACTIVATE MODAL -->
   <div class="confirm-overlay" id="modal-deactivate">
     <div class="confirm-card">
-      <div class="confirm-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-      </div>
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
       <div class="confirm-title">Nonaktifkan akun sementara?</div>
-      <div class="confirm-desc">Profil dan riwayat kamu akan disembunyikan. Kamu bisa mengaktifkannya kembali kapan saja dengan login ulang.</div>
+      <div class="confirm-desc">Akun kamu akan dinonaktifkan. Aktifkan kembali kapan saja lewat Firebase Console.</div>
       <button class="btn-primary" style="margin-top:18px;" onclick="confirmDeactivate()">Ya, nonaktifkan</button>
       <button class="btn-ghost-cancel" onclick="closeModal('modal-deactivate')">Batal</button>
     </div>
   </div>
 
-  <!-- DELETE CONFIRM MODAL -->
+  <!-- DELETE MODAL -->
   <div class="confirm-overlay" id="modal-delete">
     <div class="confirm-card">
-      <div class="confirm-icon danger">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-      </div>
+      <div class="confirm-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
       <div class="confirm-title">Hapus akun secara permanen?</div>
-      <div class="confirm-desc">Semua data kamu — profil, riwayat keluhan, dan pesan chat — akan dihapus dan tidak dapat dikembalikan.</div>
+      <div class="confirm-desc">Semua data kamu akan dihapus dan tidak dapat dikembalikan.</div>
       <div class="input-group" style="margin-top:14px;text-align:left;">
         <div class="input-wrap" id="del-confirm-wrap">
           <input type="text" placeholder='Ketik "HAPUS" untuk konfirmasi' id="del-confirm-input" oninput="this.parentElement.classList.remove('err')"/>
@@ -1148,607 +696,506 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getAuth, onAuthStateChanged, signOut,
-    createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    deleteUser, updatePassword, sendPasswordResetEmail
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import {
-    getDatabase, ref, get, set, push, remove, update
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, signOut,
+  createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  deleteUser, updatePassword, sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getDatabase, ref, push
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
-    authDomain: "orbitxy-6e79c.firebaseapp.com",
-    databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "orbitxy-6e79c",
-    storageBucket: "orbitxy-6e79c.firebasestorage.app",
-    messagingSenderId: "1064037228597",
-    appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
+  authDomain: "orbitxy-6e79c.firebaseapp.com",
+  databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "orbitxy-6e79c",
+  storageBucket: "orbitxy-6e79c.firebasestorage.app",
+  messagingSenderId: "1064037228597",
+  appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
+};
 
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db   = getDatabase(app);
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
 
-  const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e1e1e'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23555'/%3E%3Cpath d='M50 60c-22 0-34 12-34 28v12h68V88c0-16-12-28-34-28z' fill='%23555'/%3E%3C/svg%3E";
+const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e1e1e'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23555'/%3E%3Cpath d='M50 60c-22 0-34 12-34 28v12h68V88c0-16-12-28-34-28z' fill='%23555'/%3E%3C/svg%3E";
 
-  // email tidak boleh ada titik di RTDB key
-  function emailToKey(e) { return e.replace(/\./g,'_DOT_'); }
+let currentOtp       = '';
+let pendingCred      = null;
+let currentUserEmail = null;
+let currentAuthUser  = null;
 
-  let currentOtp         = '';
-  let verifyMode         = 'forgot';
-  let pendingCred        = null;
-  let currentUserEmail   = null;
-  let currentUserData    = null;
+// ── loading ──────────────────────────────────────────────
+function showLoading(msg) {
+  document.getElementById('loading-msg').textContent = msg || 'Memuat...';
+  document.getElementById('global-loading').style.display = 'flex';
+}
+function hideLoading() { document.getElementById('global-loading').style.display = 'none'; }
 
-  // ─── helpers ────────────────────────────────────────────
-  function escapeHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+// ── helpers ──────────────────────────────────────────────
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+const validDomains = ['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com','icloud.com','me.com','mac.com','protonmail.com','proton.me','mail.com','zoho.com','yandex.com','aol.com','live.com','msn.com','googlemail.com','rocketmail.com','inbox.com'];
+function checkEmail(email) {
+  if (!email) return 'Email wajib diisi';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
+  if (!validDomains.includes(email.split('@')[1].toLowerCase())) return 'Gunakan email valid (contoh: @gmail.com)';
+  return '';
+}
+
+window.showToast = function(msg, isErr) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.toggle('toast-err', !!isErr);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+};
+window.setErr = function(wrapId, errId, msg) {
+  if (wrapId) { const w=document.getElementById(wrapId); if(w) w.classList.toggle('err',!!msg); }
+  const e=document.getElementById(errId); if(e) e.textContent=msg||''; return !!msg;
+};
+window.togglePass = function(id, btn) {
+  const inp=document.getElementById(id); inp.type=inp.type==='password'?'text':'password';
+  btn.style.color=inp.type==='text'?'#bbb':'';
+};
+window.checkStrength = function(val, prefix) {
+  const segs=[1,2,3,4].map(i=>document.getElementById(prefix+i));
+  segs.forEach(s=>s.className='strength-segment');
+  if(!val) return;
+  let score=0;
+  if(val.length>=8)score++; if(/[A-Z]/.test(val))score++;
+  if(/[0-9]/.test(val))score++; if(/[^A-Za-z0-9]/.test(val))score++;
+  const cls=score<=1?'weak':score<=3?'medium':'strong';
+  for(let i=0;i<score;i++) segs[i].classList.add(cls);
+};
+
+// ── auto-login saat buka app ─────────────────────────────
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentAuthUser  = user;
+    currentUserEmail = user.email;
+    showDashboard({ displayName: user.displayName || user.email, email: user.email, photoURL: user.photoURL });
   }
+});
 
-  const validDomains = ['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com',
-    'icloud.com','me.com','mac.com','protonmail.com','proton.me','mail.com','zoho.com',
-    'yandex.com','aol.com','live.com','msn.com','googlemail.com','rocketmail.com','inbox.com'];
-  function checkEmail(email) {
-    if (!email) return 'Email wajib diisi';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
-    if (!validDomains.includes(email.split('@')[1].toLowerCase())) return 'Gunakan email valid (contoh: @gmail.com)';
-    return '';
-  }
+// ── navigasi ─────────────────────────────────────────────
+window.go = function(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const nav=document.getElementById('dash-bottom-nav');
+  if(nav) nav.style.display=(id==='s-dashboard'||id==='s-account')?'flex':'none';
+  window.scrollTo(0,0);
+  manageSlideVideo(id);
+  if(id==='s-dashboard') triggerGreetingGlitch();
+  if(id==='s-account')   triggerAccountNameGlitch();
+};
+function manageSlideVideo(id) {
+  const vid=document.querySelector('.slide-video-el'); if(!vid) return;
+  if(id==='s-dashboard') vid.play().catch(()=>{}); else vid.pause();
+}
+window.goDashTab = function(tab) {
+  document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
+  const el=document.getElementById('nav-'+tab); if(el) el.classList.add('active');
+  if(tab==='home'){go('s-dashboard');initSlider();}
+  else if(tab==='account'){go('s-account');}
+  else showToast(tab.charAt(0).toUpperCase()+tab.slice(1)+' (segera hadir)');
+};
 
-  window.showToast = function(msg, isErr) {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-msg').textContent = msg;
-    t.classList.toggle('toast-err', !!isErr);
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  };
-  window.setErr = function(wrapId, errId, msg) {
-    if (wrapId) { const w=document.getElementById(wrapId); if(w) w.classList.toggle('err',!!msg); }
-    const e=document.getElementById(errId); if(e) e.textContent=msg||''; return !!msg;
-  };
-  window.togglePass = function(id, btn) {
-    const inp=document.getElementById(id); inp.type=inp.type==='password'?'text':'password';
-    btn.style.color=inp.type==='text'?'#bbb':'';
-  };
-  window.checkStrength = function(val, prefix) {
-    const segs=[1,2,3,4].map(i=>document.getElementById(prefix+i));
-    segs.forEach(s=>s.className='strength-segment');
-    if (!val) return;
-    let score=0;
-    if(val.length>=8)score++; if(/[A-Z]/.test(val))score++;
-    if(/[0-9]/.test(val))score++; if(/[^A-Za-z0-9]/.test(val))score++;
-    const cls=score<=1?'weak':score<=3?'medium':'strong';
-    for(let i=0;i<score;i++) segs[i].classList.add(cls);
-  };
+// ── animasi plane ─────────────────────────────────────────
+function getConnSpeedFactor() {
+  const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection; if(!c) return 1;
+  const m={'4g':1,'3g':0.5,'2g':0.25,'slow-2g':0.12};
+  let f=m[c.effectiveType]!==undefined?m[c.effectiveType]:1;
+  if(typeof c.downlink==='number'&&c.downlink>0) f=Math.min(f,Math.max(Math.min(1,c.downlink/5),0.12));
+  return Math.max(f,0.12);
+}
+window.playSendAnimation = function(onDone, color) {
+  const w=window.innerWidth,h=window.innerHeight,midY=h/2,amp=Math.min(h*0.07,40),segs=4;
+  const animColor=color||'var(--accent)';
+  let points=[];
+  for(let i=0;i<=segs;i++){const x=(w*i)/segs,y=(i===0||i===segs)?midY:midY+(i%2===1?-amp:amp);points.push([x,y]);}
+  let d=`M ${points[0][0]} ${points[0][1]}`;
+  for(let i=1;i<points.length-1;i++){const mx=(points[i][0]+points[i+1][0])/2,my=(points[i][1]+points[i+1][1])/2;d+=` Q ${points[i][0]} ${points[i][1]} ${mx} ${my}`;}
+  d+=` L ${points[points.length-1][0]} ${points[points.length-1][1]}`;
+  const animId='sa-'+Date.now();
+  const overlay=document.createElement('div');overlay.className='send-anim-overlay';
+  overlay.innerHTML=`<svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><clipPath id="${animId}-clip"><rect x="0" y="0" width="0" height="${h}"></rect></clipPath></defs><path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path></svg><div class="send-anim-plane"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>`;
+  document.body.appendChild(overlay);
+  const path=overlay.querySelector('.send-anim-path'),plane=overlay.querySelector('.send-anim-plane'),clipRect=overlay.querySelector(`#${animId}-clip rect`);
+  plane.style.offsetPath=`path('${d}')`;path.style.stroke=animColor;plane.style.color=animColor;
+  let progress=0,lastTime=null,doneTriggered=false;
+  function frame(t){
+    if(lastTime===null)lastTime=t;progress+=((t-lastTime)/1400)*getConnSpeedFactor();lastTime=t;
+    if(progress>1)progress=1;clipRect.setAttribute('width',String(w*progress));plane.style.offsetDistance=(progress*100)+'%';
+    const op=progress<0.12?progress/0.12:progress>0.85?(1-progress)/0.15:1;
+    overlay.style.opacity=String(op);plane.style.opacity=String(op);
+    if(!doneTriggered&&progress>=0.5){doneTriggered=true;if(typeof onDone==='function')onDone();}
+    if(progress<1)requestAnimationFrame(frame);else overlay.remove();
+  }
+  requestAnimationFrame(frame);
+};
 
-  // ─── loading overlay ────────────────────────────────────
-  function showLoading(msg) {
-    let el=document.getElementById('global-loading');
-    if (!el) {
-      el=document.createElement('div'); el.id='global-loading';
-      el.style.cssText='position:fixed;inset:0;z-index:9000;background:rgba(11,11,11,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;';
-      el.innerHTML='<div style="width:36px;height:36px;border:3px solid #252525;border-top-color:#00ff88;border-radius:50%;animation:spin .7s linear infinite;"></div><div style="font-size:13px;color:#888;font-family:\'DM Sans\',sans-serif;" id="loading-msg">Memuat...</div>';
-      if (!document.getElementById('spin-style')) {
-        const s=document.createElement('style'); s.id='spin-style';
-        s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
-        document.head.appendChild(s);
-      }
-      document.body.appendChild(el);
-    }
-    document.getElementById('loading-msg').textContent=msg||'Memuat...';
-    el.style.display='flex';
-  }
-  function hideLoading() { const el=document.getElementById('global-loading'); if(el) el.style.display='none'; }
-
-  // ─── Realtime DB: data profil user ──────────────────────
-  async function getProfileFromDB(email) {
-    try {
-      const snap=await get(ref(db,'users/'+emailToKey(email)));
-      return snap.exists() ? snap.val() : null;
-    } catch(e) { return null; }
-  }
-  async function saveProfileToDB(email, data) {
-    try { await set(ref(db,'users/'+emailToKey(email)), data); return true; }
-    catch(e) { console.error('saveProfile error:',e); return false; }
-  }
-  async function updateProfileInDB(email, partial) {
-    try { await update(ref(db,'users/'+emailToKey(email)), partial); return true; }
-    catch(e) { console.error('updateProfile error:',e); return false; }
-  }
-
-  // ─── auth state: auto login kalau sesi masih aktif ──────
-  onAuthStateChanged(auth, async user => {
-    if (user) {
-      currentUserEmail = user.email;
-      const profile = await getProfileFromDB(user.email);
-      currentUserData = profile;
-      showDashboard({
-        displayName: profile?.name || user.displayName || user.email,
-        email: user.email,
-        photoURL: profile?.photoURL || user.photoURL || null
-      });
-    }
+// ── OTP ──────────────────────────────────────────────────
+function generateOtp() {
+  currentOtp=String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('otp-display').textContent=currentOtp;
+  document.getElementById('otp-err').textContent='';
+  const inputs=document.querySelectorAll('#otp-row input');
+  inputs.forEach((inp,i)=>{
+    inp.value='';inp.parentElement.classList.remove('filled');
+    inp.oninput=()=>{inp.value=inp.value.replace(/[^0-9]/g,'');inp.parentElement.classList.toggle('filled',!!inp.value);if(inp.value&&i<inputs.length-1)inputs[i+1].focus();};
+    inp.onkeydown=e=>{if(e.key==='Backspace'&&!inp.value&&i>0)inputs[i-1].focus();};
   });
+  inputs[0].focus();
+}
+window.resendOtp = function(){generateOtp();showToast('Kode baru dikirim ulang 🔄');};
 
-  // ─── navigasi ───────────────────────────────────────────
-  window.go = function(id) {
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    const nav=document.getElementById('dash-bottom-nav');
-    if(nav) nav.style.display=(id==='s-dashboard'||id==='s-account')?'flex':'none';
-    window.scrollTo(0,0);
-    manageSlideVideo(id);
-    if(id==='s-dashboard') triggerGreetingGlitch();
-    if(id==='s-account')   triggerAccountNameGlitch();
-  };
-  function manageSlideVideo(id) {
-    const vid=document.querySelector('.slide-video-el'); if(!vid) return;
-    if(id==='s-dashboard') vid.play().catch(()=>{}); else vid.pause();
-  }
-  window.goDashTab = function(tab) {
-    document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
-    const el=document.getElementById('nav-'+tab); if(el) el.classList.add('active');
-    if(tab==='home'){ go('s-dashboard'); initSlider(); }
-    else if(tab==='account'){ go('s-account'); }
-    else showToast(tab.charAt(0).toUpperCase()+tab.slice(1)+' (segera hadir)');
-  };
-
-  // ─── animasi plane ──────────────────────────────────────
-  function getConnSpeedFactor() {
-    const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection; if(!c) return 1;
-    const m={'4g':1,'3g':0.5,'2g':0.25,'slow-2g':0.12};
-    let f=m[c.effectiveType]!==undefined?m[c.effectiveType]:1;
-    if(typeof c.downlink==='number'&&c.downlink>0) f=Math.min(f,Math.max(Math.min(1,c.downlink/5),0.12));
-    return Math.max(f,0.12);
-  }
-  window.playSendAnimation = function(onDone, color) {
-    const w=window.innerWidth, h=window.innerHeight;
-    const midY=h/2, amp=Math.min(h*0.07,40), segs=4;
-    const animColor=color||'var(--accent)';
-    let points=[];
-    for(let i=0;i<=segs;i++){ const x=(w*i)/segs; const y=(i===0||i===segs)?midY:midY+(i%2===1?-amp:amp); points.push([x,y]); }
-    let d=`M ${points[0][0]} ${points[0][1]}`;
-    for(let i=1;i<points.length-1;i++){ const mx=(points[i][0]+points[i+1][0])/2,my=(points[i][1]+points[i+1][1])/2; d+=` Q ${points[i][0]} ${points[i][1]} ${mx} ${my}`; }
-    d+=` L ${points[points.length-1][0]} ${points[points.length-1][1]}`;
-    const animId='sa-'+Date.now();
-    const overlay=document.createElement('div'); overlay.className='send-anim-overlay';
-    overlay.innerHTML=`<svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><clipPath id="${animId}-clip"><rect x="0" y="0" width="0" height="${h}"></rect></clipPath></defs><path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path></svg><div class="send-anim-plane"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>`;
-    document.body.appendChild(overlay);
-    const path=overlay.querySelector('.send-anim-path'); const plane=overlay.querySelector('.send-anim-plane');
-    const clipRect=overlay.querySelector(`#${animId}-clip rect`);
-    plane.style.offsetPath=`path('${d}')`; path.style.stroke=animColor; plane.style.color=animColor;
-    let progress=0,lastTime=null,doneTriggered=false;
-    function frame(t){
-      if(lastTime===null)lastTime=t; progress+=((t-lastTime)/1400)*getConnSpeedFactor(); lastTime=t;
-      if(progress>1)progress=1;
-      clipRect.setAttribute('width',String(w*progress)); plane.style.offsetDistance=(progress*100)+'%';
-      const op=progress<0.12?progress/0.12:progress>0.85?(1-progress)/0.15:1;
-      overlay.style.opacity=String(op); plane.style.opacity=String(op);
-      if(!doneTriggered&&progress>=0.5){doneTriggered=true;if(typeof onDone==='function')onDone();}
-      if(progress<1)requestAnimationFrame(frame); else overlay.remove();
-    }
-    requestAnimationFrame(frame);
-  };
-
-  // ─── OTP ────────────────────────────────────────────────
-  function generateOtp() {
-    currentOtp=String(Math.floor(1000+Math.random()*9000));
-    document.getElementById('otp-display').textContent=currentOtp;
-    document.getElementById('otp-err').textContent='';
-    const inputs=document.querySelectorAll('#otp-row input');
-    inputs.forEach((inp,i)=>{
-      inp.value=''; inp.parentElement.classList.remove('filled');
-      inp.oninput=()=>{ inp.value=inp.value.replace(/[^0-9]/g,''); inp.parentElement.classList.toggle('filled',!!inp.value); if(inp.value&&i<inputs.length-1)inputs[i+1].focus(); };
-      inp.onkeydown=e=>{if(e.key==='Backspace'&&!inp.value&&i>0)inputs[i-1].focus();};
-    });
-    inputs[0].focus();
-  }
-  window.resendOtp = function(){ generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
-
-  // ════════════════════════════════════════════════════════
-  // LOGIN — pakai Firebase Authentication sepenuhnya
-  // Password dicek oleh Firebase Auth, bukan DB
-  // ════════════════════════════════════════════════════════
-  window.doEmailLogin = async function() {
-    const email=document.getElementById('l-email').value.trim();
-    const pass=document.getElementById('l-pass').value;
-    let hasErr=false;
-    hasErr=setErr('lw-email','l-email-err',checkEmail(email))||hasErr;
-    hasErr=setErr('lw-pass','l-pass-err',!pass?'Password wajib diisi':'')||hasErr;
-    if(hasErr) return;
-
-    showLoading('Masuk ke akun...');
-    try {
-      const result=await signInWithEmailAndPassword(auth, email, pass);
-      const user=result.user;
-      // Ambil profil dari DB
-      const profile=await getProfileFromDB(email);
-      currentUserEmail=email;
-      currentUserData=profile;
-      hideLoading();
-      showToast('Login berhasil! Selamat datang 👋');
-      showDashboard({
-        displayName: profile?.name||user.displayName||email,
-        email, photoURL: profile?.photoURL||null
-      });
-    } catch(e) {
-      hideLoading();
-      if (e.code==='auth/user-disabled') {
-        setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
-      } else if (e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'||e.code==='auth/invalid-login-credentials'||e.code==='auth/wrong-password') {
-        setErr('lw-email','l-email-err','Email atau password salah.');
-      } else {
-        setErr('lw-email','l-email-err','Login gagal: '+e.message);
-      }
-    }
-  };
-
-  // ════════════════════════════════════════════════════════
-  // REGISTER — daftar ke Firebase Auth + simpan profil ke DB
-  // ════════════════════════════════════════════════════════
-  window.doRegister = async function() {
-    const email=document.getElementById('r-email').value.trim();
-    const pass=document.getElementById('r-pass').value;
-    const cpass=document.getElementById('r-cpass').value;
-    let hasErr=false;
-    hasErr=setErr('rw-email','r-email-err',checkEmail(email))||hasErr;
-    hasErr=setErr('rw-pass','r-pass-err',!pass?'Password wajib diisi':pass.length<8?'Password minimal 8 karakter':'')||hasErr;
-    hasErr=setErr('rw-cpass','r-cpass-err',!cpass?'Konfirmasi password wajib diisi':pass!==cpass?'Password tidak cocok!':'')||hasErr;
-    if(hasErr) return;
-
-    pendingCred={ email, password: pass, name: email.split('@')[0] };
-    verifyMode='register-email';
-    document.getElementById('verify-subtitle').textContent='Masukkan 4 digit kode verifikasi';
-    document.getElementById('verify-back-btn').onclick=()=>go('s-register');
-    go('s-verify'); generateOtp();
-  };
-
-  // ════════════════════════════════════════════════════════
-  // VERIFY OTP
-  // ════════════════════════════════════════════════════════
-  window.doVerify = async function() {
-    const inputs=document.querySelectorAll('#otp-row input');
-    const entered=Array.from(inputs).map(i=>i.value).join('');
-    if(entered.length<4){ document.getElementById('otp-err').textContent='Masukkan 4 digit kode'; return; }
-    if(entered!==currentOtp){
-      document.getElementById('otp-err').textContent='Kode salah! Coba lagi atau kirim ulang.';
-      inputs.forEach(i=>{i.value='';i.parentElement.classList.remove('filled');}); inputs[0].focus(); return;
-    }
-    document.getElementById('otp-err').textContent=''; showToast('Kode benar! ✅');
-
-    if(verifyMode==='register-email'){
-      showLoading('Membuat akun...');
-      const {email,password,name}=pendingCred;
-      try {
-        const result=await createUserWithEmailAndPassword(auth,email,password);
-        // Simpan profil ke DB
-        await saveProfileToDB(email,{
-          email, name,
-          photoURL: null,
-          createdAt: new Date().toISOString(),
-          createdYear: new Date().getFullYear().toString()
-        });
-        await signOut(auth);
-        hideLoading();
-        showToast('Registrasi berhasil! Silakan login 🎉');
-        pendingCred=null;
-        setTimeout(()=>go('s-login'),1600);
-      } catch(e) {
-        hideLoading();
-        if(e.code==='auth/email-already-in-use'){
-          go('s-register');
-          setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.');
-        } else {
-          showToast('Gagal daftar: '+e.message,true);
-        }
-      }
-    } else if(verifyMode==='forgot'){
-      document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';
-      setTimeout(()=>go('s-newpass'),800);
-    }
-  };
-
-  // ════════════════════════════════════════════════════════
-  // FORGOT PASSWORD — kirim reset email via Firebase Auth
-  // ════════════════════════════════════════════════════════
-  window.doForgot = async function() {
-    const email=document.getElementById('f-email').value.trim();
-    if(setErr('fw-email','f-email-err',checkEmail(email))) return;
-    showLoading('Mengirim email reset...');
-    try {
-      await sendPasswordResetEmail(auth, email);
-      hideLoading();
-      showToast('Email reset password sudah dikirim! Cek inbox kamu 📧');
-      setTimeout(()=>go('s-login'),2000);
-    } catch(e) {
-      hideLoading();
-      if(e.code==='auth/user-not-found'){
-        setErr('fw-email','f-email-err','Email ini belum terdaftar.');
-      } else {
-        setErr('fw-email','f-email-err','Gagal kirim email: '+e.message);
-      }
-    }
-  };
-
-  // ════════════════════════════════════════════════════════
-  // UBAH PASSWORD (dari halaman Manage Account)
-  // ════════════════════════════════════════════════════════
-  window.doSavePass = async function() {
-    const np=document.getElementById('n-pass').value;
-    const cp=document.getElementById('n-cpass').value;
-    let hasErr=false;
-    hasErr=setErr('nw-pass','n-pass-err',!np?'Password baru wajib diisi':np.length<8?'Minimal 8 karakter':'')||hasErr;
-    hasErr=setErr('nw-cpass','n-cpass-err',!cp?'Konfirmasi wajib diisi':np!==cp?'Password tidak cocok!':'')||hasErr;
-    if(hasErr) return;
-    showLoading('Menyimpan password...');
-    try {
-      await updatePassword(auth.currentUser, np);
-      hideLoading();
-      showToast('Password berhasil diubah! 🔐');
-      setTimeout(()=>openManageAccountPage(),900);
-    } catch(e) {
-      hideLoading();
-      showToast('Gagal ubah password: '+e.message,true);
-    }
-  };
-
-  // ════════════════════════════════════════════════════════
-  // LOGOUT
-  // ════════════════════════════════════════════════════════
-  window.doLogout = async function() {
-    try { await signOut(auth); } catch(e) {}
-    stopAutoSlide();
-    currentUserEmail=null; currentUserData=null;
-    go('s-login'); showToast('Berhasil logout 👋');
-  };
-
-  // ════════════════════════════════════════════════════════
-  // KELUHAN → push ke node "keluhan/" di DB
-  // ════════════════════════════════════════════════════════
-  window.openSendPage = function() {
-    go('s-send');
-    const ta=document.getElementById('complaint-text'); if(ta) ta.value='';
-    setErr('cw-text','complaint-err','');
-  };
-
-  window.submitComplaint = async function() {
-    const ta=document.getElementById('complaint-text');
-    const btn=document.querySelector('#s-send .btn-primary');
-    const text=ta.value.trim();
-    if(setErr('cw-text','complaint-err',!text?'Tulis keluhan terlebih dahulu':'')) return;
-    if(btn){btn.disabled=true;btn.textContent='Mengirim...';}
-    const data={
-      email: currentUserEmail||'anonim',
-      name: currentUserEmail?currentUserEmail.split('@')[0]:'Anonim',
-      text,
-      timestamp: new Date().toISOString(),
-      waktu: new Date().toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})
-    };
-    let ok=false;
-    for(let attempt=1;attempt<=2;attempt++){
-      try{ await push(ref(db,'keluhan'),data); ok=true; break; }
-      catch(e){ console.error('[Keluhan] attempt',attempt,e.code); if(attempt===1) await new Promise(r=>setTimeout(r,1000)); }
-    }
-    if(btn){btn.disabled=false;btn.textContent='Kirim Keluhan';}
-    ta.value='';
-    if(ok) showToast('Keluhan berhasil dikirim! Terima kasih 🙏');
-    else   showToast('Gagal kirim — cek Rules Firebase! ⚠️',true);
-    setTimeout(()=>go('s-dashboard'),1400);
-  };
-
-  window.openDonasiPage = function(){ go('s-donasi'); };
-
-  // ════════════════════════════════════════════════════════
-  // MANAGE ACCOUNT
-  // ════════════════════════════════════════════════════════
-  window.openManageAccountPage = function() {
-    go('s-manage-account');
-    const acc=currentUserData;
-    document.getElementById('ma-status-label').textContent='Aman';
-    document.getElementById('ma-method-label').textContent='Email';
-    document.getElementById('ma-since-label').textContent=acc?.createdYear||'2026';
-  };
-
-  window.openChangePasswordPage = function() {
-    verifyMode='change-from-manage';
-    document.getElementById('newpass-title').innerHTML='Ganti<br>Password';
-    document.getElementById('newpass-subtitle').textContent='Masukkan password baru untuk akun kamu';
-    document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';
-    setErr('nw-pass','n-pass-err',''); setErr('nw-cpass','n-cpass-err','');
-    const backBtn=document.getElementById('newpass-back-btn');
-    if(backBtn) backBtn.onclick=()=>openManageAccountPage();
-    go('s-newpass');
-  };
-
-  window.openModal  = function(id){ const m=document.getElementById(id); if(m) m.classList.add('show'); };
-  window.closeModal = function(id){ const m=document.getElementById(id); if(m) m.classList.remove('show'); };
-  window.openDeactivateModal = function(){ openModal('modal-deactivate'); };
-  window.openDeleteModal = function(){
-    const inp=document.getElementById('del-confirm-input');
-    if(inp){inp.value=''; document.getElementById('del-confirm-wrap').classList.remove('err');}
-    openModal('modal-delete');
-  };
-
-  window.confirmDeactivate = async function() {
-    closeModal('modal-deactivate');
-    showLoading('Menonaktifkan akun...');
-    // Simpan flag nonaktif ke DB, lalu logout
-    await updateProfileInDB(currentUserEmail,{ deactivated: true });
-    try{ await signOut(auth); }catch(e){}
+// ════════════════════════════════════════════════════════
+// LOGIN — Firebase Auth sepenuhnya, tidak ada localStorage
+// ════════════════════════════════════════════════════════
+window.doEmailLogin = async function() {
+  const email=document.getElementById('l-email').value.trim();
+  const pass=document.getElementById('l-pass').value;
+  let hasErr=false;
+  hasErr=setErr('lw-email','l-email-err',checkEmail(email))||hasErr;
+  hasErr=setErr('lw-pass','l-pass-err',!pass?'Password wajib diisi':'')||hasErr;
+  if(hasErr) return;
+  showLoading('Masuk ke akun...');
+  try {
+    const result=await signInWithEmailAndPassword(auth,email,pass);
+    currentAuthUser=result.user; currentUserEmail=email;
     hideLoading();
-    showToast('Akun berhasil dinonaktifkan sementara 😴');
-    currentUserEmail=null; currentUserData=null;
-    setTimeout(()=>go('s-login'),1200);
-  };
+    showToast('Login berhasil! Selamat datang 👋');
+    showDashboard({displayName:result.user.displayName||email,email,photoURL:result.user.photoURL});
+  } catch(e) {
+    hideLoading();
+    if(e.code==='auth/user-disabled') setErr('lw-email','l-email-err','Akun kamu telah dinonaktifkan. Hubungi admin.');
+    else if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/invalid-login-credentials') setErr('lw-email','l-email-err','Email atau password salah.');
+    else setErr('lw-email','l-email-err','Login gagal: '+e.message);
+  }
+};
 
-  window.confirmDelete = async function() {
-    const inp=document.getElementById('del-confirm-input');
-    if((inp.value||'').trim().toUpperCase()!=='HAPUS'){
-      document.getElementById('del-confirm-wrap').classList.add('err');
-      showToast('Ketik "HAPUS" untuk konfirmasi',true); return;
-    }
-    closeModal('modal-delete');
-    showLoading('Menghapus akun...');
-    const email=currentUserEmail;
-    // Hapus profil dari DB
-    try{ await remove(ref(db,'users/'+emailToKey(email))); }catch(e){}
-    // Hapus dari Firebase Auth
-    try{ if(auth.currentUser) await deleteUser(auth.currentUser); }catch(e){}
+// ════════════════════════════════════════════════════════
+// REGISTER — Firebase Auth, verifikasi OTP dulu
+// ════════════════════════════════════════════════════════
+window.doRegister = async function() {
+  const email=document.getElementById('r-email').value.trim();
+  const pass=document.getElementById('r-pass').value;
+  const cpass=document.getElementById('r-cpass').value;
+  let hasErr=false;
+  hasErr=setErr('rw-email','r-email-err',checkEmail(email))||hasErr;
+  hasErr=setErr('rw-pass','r-pass-err',!pass?'Password wajib diisi':pass.length<8?'Password minimal 8 karakter':'')||hasErr;
+  hasErr=setErr('rw-cpass','r-cpass-err',!cpass?'Konfirmasi wajib diisi':pass!==cpass?'Password tidak cocok!':'')||hasErr;
+  if(hasErr) return;
+  pendingCred={email,password:pass};
+  document.getElementById('verify-subtitle').textContent='Masukkan 4 digit kode verifikasi';
+  document.getElementById('verify-back-btn').onclick=()=>go('s-register');
+  go('s-verify'); generateOtp();
+};
+
+window.doVerify = async function() {
+  const inputs=document.querySelectorAll('#otp-row input');
+  const entered=Array.from(inputs).map(i=>i.value).join('');
+  if(entered.length<4){document.getElementById('otp-err').textContent='Masukkan 4 digit kode';return;}
+  if(entered!==currentOtp){
+    document.getElementById('otp-err').textContent='Kode salah! Coba lagi atau kirim ulang.';
+    inputs.forEach(i=>{i.value='';i.parentElement.classList.remove('filled');});inputs[0].focus();return;
+  }
+  document.getElementById('otp-err').textContent='';showToast('Kode benar! ✅');
+  showLoading('Membuat akun...');
+  try {
+    await createUserWithEmailAndPassword(auth,pendingCred.email,pendingCred.password);
+    await signOut(auth);
+    hideLoading();
+    showToast('Registrasi berhasil! Silakan login 🎉');
+    pendingCred=null;
+    setTimeout(()=>go('s-login'),1600);
+  } catch(e) {
+    hideLoading();
+    if(e.code==='auth/email-already-in-use'){go('s-register');setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.');}
+    else showToast('Gagal daftar: '+e.message,true);
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// FORGOT PASSWORD — Firebase kirim email reset otomatis
+// ════════════════════════════════════════════════════════
+window.doForgot = async function() {
+  const email=document.getElementById('f-email').value.trim();
+  if(setErr('fw-email','f-email-err',checkEmail(email))) return;
+  showLoading('Mengirim email reset...');
+  try {
+    await sendPasswordResetEmail(auth,email);
+    hideLoading();
+    showToast('Link reset dikirim! Cek inbox kamu 📧');
+    setTimeout(()=>go('s-login'),2000);
+  } catch(e) {
+    hideLoading();
+    if(e.code==='auth/user-not-found') setErr('fw-email','f-email-err','Email belum terdaftar.');
+    else setErr('fw-email','f-email-err','Gagal kirim: '+e.message);
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// UBAH PASSWORD (dari manage account)
+// ════════════════════════════════════════════════════════
+window.doSavePass = async function() {
+  const np=document.getElementById('n-pass').value;
+  const cp=document.getElementById('n-cpass').value;
+  let hasErr=false;
+  hasErr=setErr('nw-pass','n-pass-err',!np?'Password baru wajib diisi':np.length<8?'Minimal 8 karakter':'')||hasErr;
+  hasErr=setErr('nw-cpass','n-cpass-err',!cp?'Konfirmasi wajib diisi':np!==cp?'Password tidak cocok!':'')||hasErr;
+  if(hasErr) return;
+  if(!currentAuthUser){showToast('Sesi habis, silakan login ulang.',true);go('s-login');return;}
+  showLoading('Menyimpan password...');
+  try {
+    await updatePassword(currentAuthUser,np);
+    hideLoading();
+    showToast('Password berhasil diubah! 🔐');
+    setTimeout(()=>openManageAccountPage(),900);
+  } catch(e) {
+    hideLoading();
+    if(e.code==='auth/requires-recent-login') showToast('Login ulang dulu sebelum ubah password.',true);
+    else showToast('Gagal: '+e.message,true);
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// LOGOUT
+// ════════════════════════════════════════════════════════
+window.doLogout = async function() {
+  try{await signOut(auth);}catch(e){}
+  stopAutoSlide();
+  currentAuthUser=null;currentUserEmail=null;
+  go('s-login');showToast('Berhasil logout 👋');
+};
+
+// ════════════════════════════════════════════════════════
+// KELUHAN — push ke Firebase Realtime Database
+// ════════════════════════════════════════════════════════
+window.openSendPage = function() {
+  go('s-send');
+  const ta=document.getElementById('complaint-text');if(ta)ta.value='';
+  setErr('cw-text','complaint-err','');
+};
+window.submitComplaint = async function() {
+  const ta=document.getElementById('complaint-text');
+  const btn=document.querySelector('#s-send .btn-primary');
+  const text=ta.value.trim();
+  if(setErr('cw-text','complaint-err',!text?'Tulis keluhan terlebih dahulu':'')) return;
+  if(btn){btn.disabled=true;btn.textContent='Mengirim...';}
+  const data={
+    email:currentUserEmail||'anonim',
+    name:currentUserEmail?currentUserEmail.split('@')[0]:'Anonim',
+    text,
+    timestamp:new Date().toISOString(),
+    waktu:new Date().toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})
+  };
+  let ok=false;
+  for(let attempt=1;attempt<=2;attempt++){
+    try{await push(ref(db,'keluhan'),data);ok=true;break;}
+    catch(e){console.error('[Keluhan] attempt',attempt,e.code);if(attempt===1)await new Promise(r=>setTimeout(r,1000));}
+  }
+  if(btn){btn.disabled=false;btn.textContent='Kirim Keluhan';}
+  ta.value='';
+  if(ok) showToast('Keluhan berhasil dikirim! Terima kasih 🙏');
+  else   showToast('Gagal kirim — cek Rules Firebase! ⚠️',true);
+  setTimeout(()=>go('s-dashboard'),1400);
+};
+
+window.openDonasiPage = function(){go('s-donasi');};
+
+// ── manage account ───────────────────────────────────────
+window.openManageAccountPage = function() {
+  go('s-manage-account');
+  document.getElementById('ma-status-label').textContent='Aman';
+  document.getElementById('ma-method-label').textContent='Email';
+  document.getElementById('ma-since-label').textContent=currentAuthUser?.metadata?.creationTime ? new Date(currentAuthUser.metadata.creationTime).getFullYear() : '2026';
+};
+window.openChangePasswordPage = function() {
+  document.getElementById('n-pass').value='';document.getElementById('n-cpass').value='';
+  setErr('nw-pass','n-pass-err','');setErr('nw-cpass','n-cpass-err','');
+  go('s-newpass');
+};
+window.openModal  = function(id){const m=document.getElementById(id);if(m)m.classList.add('show');};
+window.closeModal = function(id){const m=document.getElementById(id);if(m)m.classList.remove('show');};
+window.openDeactivateModal = function(){openModal('modal-deactivate');};
+window.openDeleteModal = function(){
+  const inp=document.getElementById('del-confirm-input');
+  if(inp){inp.value='';document.getElementById('del-confirm-wrap').classList.remove('err');}
+  openModal('modal-delete');
+};
+window.confirmDeactivate = async function() {
+  closeModal('modal-deactivate');
+  // Disable di Firebase Auth Console — kasih tahu admin caranya
+  showToast('Untuk nonaktifkan: disable akun di Firebase Auth Console 👆');
+  // Logout user sekarang
+  try{await signOut(auth);}catch(e){}
+  currentAuthUser=null;currentUserEmail=null;
+  setTimeout(()=>go('s-login'),1800);
+};
+window.confirmDelete = async function() {
+  const inp=document.getElementById('del-confirm-input');
+  if((inp.value||'').trim().toUpperCase()!=='HAPUS'){
+    document.getElementById('del-confirm-wrap').classList.add('err');
+    showToast('Ketik "HAPUS" untuk konfirmasi',true);return;
+  }
+  closeModal('modal-delete');
+  showLoading('Menghapus akun...');
+  try{
+    if(currentAuthUser) await deleteUser(currentAuthUser);
     hideLoading();
     showToast('Akun berhasil dihapus secara permanen 🗑️');
-    currentUserEmail=null; currentUserData=null;
+    currentAuthUser=null;currentUserEmail=null;
     setTimeout(()=>go('s-login'),1200);
-  };
-
-  window.downloadAccountData = function() {
-    const email=currentUserEmail||'guest';
-    const acc=currentUserData||{};
-    const data={email,name:acc.name||email.split('@')[0],method:'email',exportedAt:new Date().toISOString()};
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='account-data-'+email.split('@')[0]+'.json';
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    showToast('Data akun berhasil diunduh 📥');
-  };
-
-  window.setAvatar = function(url){ const av=document.getElementById('dash-avatar'); av.src=url; av.style.display='block'; };
-  window.setAvatarFromFile = function(input){
-    const file=input.files&&input.files[0]; if(!file) return;
-    const reader=new FileReader(); reader.onload=e=>setAvatar(e.target.result); reader.readAsDataURL(file);
-  };
-
-  // ─── CHAT (bot) ──────────────────────────────────────────
-  function chatStorageKey(){ return 'pu_chat_'+(currentUserEmail||'guest'); }
-  function loadChatMessages(){ return JSON.parse(localStorage.getItem(chatStorageKey())||'[]'); }
-  function saveChatMessages(msgs){ localStorage.setItem(chatStorageKey(),JSON.stringify(msgs)); }
-  function chatTimeNow(){ return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
-
-  const BAD_WORDS=['anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','memek','tai','taik',
-    'goblok','tolol','bego','babi','jancok','jancuk','kampret','brengsek','sialan','pantek',
-    'bajingan','keparat','pepek','ngentot','pukimak','lonte','jembut','peler','dancuk','cuk',
-    'fuck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'];
-  function censorText(str){
-    let r=str;
-    BAD_WORDS.forEach(w=>{const re=new RegExp('\\b('+w+')(\\w*)','gi'); r=r.replace(re,m=>m.length<=1?'*':m[0]+'*'.repeat(m.length-1));});
-    return r;
+  } catch(e){
+    hideLoading();
+    if(e.code==='auth/requires-recent-login') showToast('Login ulang dulu sebelum hapus akun.',true);
+    else showToast('Gagal hapus: '+e.message,true);
   }
+};
+window.downloadAccountData = function() {
+  const email=currentUserEmail||'guest';
+  const data={email,name:email.split('@')[0],method:'email',exportedAt:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='account-data-'+email.split('@')[0]+'.json';
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  showToast('Data akun berhasil diunduh 📥');
+};
 
-  window.openChatPage = function(){
-    go('s-chat');
-    let msgs=loadChatMessages();
-    if(msgs.length===0){msgs.push({sender:'bot',text:'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',time:chatTimeNow()});saveChatMessages(msgs);}
-    renderChatMessages(msgs);
-  };
-  window.renderChatMessages = function(msgs){
-    const c=document.getElementById('chat-messages'); c.innerHTML='';
-    (msgs||loadChatMessages()).forEach(m=>{
-      const b=document.createElement('div'); b.className='chat-bubble '+(m.sender==='user'?'user':'bot');
-      b.innerHTML=`${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
-      c.appendChild(b);
-    });
-    const s=document.getElementById('chat-scroll'); s.scrollTop=s.scrollHeight;
-  };
-  function getBotReply(text){
-    const t=text.toLowerCase();
-    if(/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun atau transaksi?';
-    if(/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) return 'Terima kasih sudah melaporkan. Keluhan kamu sudah dicatat dan akan ditindaklanjuti secepatnya 🙏';
-    if(/(password|kata sandi|lupa)/.test(t)) return 'Kalau lupa password, klik "Forget password?" di halaman login. Email reset akan dikirim ke inbox kamu.';
-    if(/(akun|profil|email)/.test(t)) return 'Untuk pengaturan akun, silakan buka menu Account di tab bawah.';
-    if(/(terima kasih|makasih|thanks)/.test(t)) return 'Sama-sama! 😊 Ada hal lain yang bisa saya bantu?';
-    const fb=['Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.','Terima kasih pesannya. Ada detail tambahan yang bisa kamu berikan?','Pesan kamu sudah kami terima. Mohon ditunggu ya 🙏'];
-    return fb[Math.floor(Math.random()*fb.length)];
-  }
-  window.sendChatMessage = function(){
-    const input=document.getElementById('chat-input'); const raw=input.value.trim(); if(!raw) return;
-    const text=censorText(raw); const censored=text!==raw;
-    let msgs=loadChatMessages(); msgs.push({sender:'user',text,time:chatTimeNow()}); saveChatMessages(msgs); renderChatMessages(msgs); input.value='';
-    if(censored) showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐',true);
-    const c=document.getElementById('chat-messages'); const s=document.getElementById('chat-scroll');
-    const typing=document.createElement('div'); typing.className='chat-typing'; typing.id='chat-typing-indicator'; typing.innerHTML='<span></span><span></span><span></span>';
-    c.appendChild(typing); s.scrollTop=s.scrollHeight;
-    setTimeout(()=>{
-      const ind=document.getElementById('chat-typing-indicator'); if(ind) ind.remove();
-      let m=loadChatMessages();
-      const reply=censored?'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu.':getBotReply(text);
-      m.push({sender:'bot',text:reply,time:chatTimeNow()}); saveChatMessages(m); renderChatMessages(m);
-    },900+Math.random()*700);
-  };
+// ── avatar ────────────────────────────────────────────────
+window.setAvatar = function(url){const av=document.getElementById('dash-avatar');av.src=url;av.style.display='block';};
+window.setAvatarFromFile = function(input){
+  const file=input.files&&input.files[0];if(!file)return;
+  const reader=new FileReader();reader.onload=e=>setAvatar(e.target.result);reader.readAsDataURL(file);
+};
 
-  // ─── glitch name ─────────────────────────────────────────
-  const glitchTimers={};
-  window.triggerNameGlitch = function(elId){
-    const el=document.getElementById(elId); if(!el) return;
-    el.classList.remove('glitching'); void el.offsetWidth; el.classList.add('glitching');
-    if(glitchTimers[elId]) clearTimeout(glitchTimers[elId]);
-    glitchTimers[elId]=setTimeout(()=>el.classList.remove('glitching'),2300);
-  };
-  window.triggerGreetingGlitch    = function(){ triggerNameGlitch('dash-greeting-name'); };
-  window.triggerAccountNameGlitch = function(){ triggerNameGlitch('acc-name'); };
+// ── chat bot ─────────────────────────────────────────────
+function chatStorageKey(){return 'pu_chat_'+(currentUserEmail||'guest');}
+function loadChatMessages(){return JSON.parse(localStorage.getItem(chatStorageKey())||'[]');}
+function saveChatMessages(msgs){localStorage.setItem(chatStorageKey(),JSON.stringify(msgs));}
+function chatTimeNow(){return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});}
+const BAD_WORDS=['anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','memek','tai','taik','goblok','tolol','bego','babi','jancok','jancuk','kampret','brengsek','sialan','pantek','bajingan','keparat','pepek','ngentot','pukimak','lonte','jembut','peler','dancuk','cuk','fuck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'];
+function censorText(str){
+  let r=str;
+  BAD_WORDS.forEach(w=>{const re=new RegExp('\\b('+w+')(\\w*)','gi');r=r.replace(re,m=>m.length<=1?'*':m[0]+'*'.repeat(m.length-1));});
+  return r;
+}
+window.openChatPage = function(){
+  go('s-chat');
+  let msgs=loadChatMessages();
+  if(msgs.length===0){msgs.push({sender:'bot',text:'Halo! 👋 Saya Admin Bot PulseUp. Ada yang bisa saya bantu hari ini?',time:chatTimeNow()});saveChatMessages(msgs);}
+  renderChatMessages(msgs);
+};
+window.renderChatMessages = function(msgs){
+  const c=document.getElementById('chat-messages');c.innerHTML='';
+  (msgs||loadChatMessages()).forEach(m=>{
+    const b=document.createElement('div');b.className='chat-bubble '+(m.sender==='user'?'user':'bot');
+    b.innerHTML=`${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
+    c.appendChild(b);
+  });
+  const s=document.getElementById('chat-scroll');s.scrollTop=s.scrollHeight;
+};
+function getBotReply(text){
+  const t=text.toLowerCase();
+  if(/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun atau transaksi?';
+  if(/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) return 'Terima kasih sudah melaporkan. Keluhan kamu sudah dicatat dan akan ditindaklanjuti secepatnya 🙏';
+  if(/(password|kata sandi|lupa)/.test(t)) return 'Kalau lupa password, klik "Forget password?" di halaman login. Firebase akan kirim email reset ke inbox kamu.';
+  if(/(akun|profil|email)/.test(t)) return 'Untuk pengaturan akun, silakan buka menu Account di tab bawah.';
+  if(/(terima kasih|makasih|thanks)/.test(t)) return 'Sama-sama! 😊 Ada hal lain yang bisa saya bantu?';
+  const fb=['Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.','Terima kasih pesannya. Ada detail tambahan yang bisa kamu berikan?','Pesan kamu sudah kami terima. Mohon ditunggu ya 🙏'];
+  return fb[Math.floor(Math.random()*fb.length)];
+}
+window.sendChatMessage = function(){
+  const input=document.getElementById('chat-input');const raw=input.value.trim();if(!raw)return;
+  const text=censorText(raw);const censored=text!==raw;
+  let msgs=loadChatMessages();msgs.push({sender:'user',text,time:chatTimeNow()});saveChatMessages(msgs);renderChatMessages(msgs);input.value='';
+  if(censored)showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐',true);
+  const c=document.getElementById('chat-messages'),s=document.getElementById('chat-scroll');
+  const typing=document.createElement('div');typing.className='chat-typing';typing.id='chat-typing-indicator';typing.innerHTML='<span></span><span></span><span></span>';
+  c.appendChild(typing);s.scrollTop=s.scrollHeight;
+  setTimeout(()=>{
+    const ind=document.getElementById('chat-typing-indicator');if(ind)ind.remove();
+    let m=loadChatMessages();
+    const reply=censored?'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu.':getBotReply(text);
+    m.push({sender:'bot',text:reply,time:chatTimeNow()});saveChatMessages(m);renderChatMessages(m);
+  },900+Math.random()*700);
+};
 
-  function setGreetingName(name){
-    const el=document.getElementById('dash-greeting-name');
-    const t=name+'!'; el.textContent=t; el.setAttribute('data-glitch-text',t);
-    triggerNameGlitch('dash-greeting-name');
-  }
-  function setAccountName(name){
-    const el=document.getElementById('acc-name'); el.textContent=name; el.setAttribute('data-glitch-text',name);
-  }
-  window.setAccountRating  = function(r){ document.getElementById('acc-rating-val').textContent=Number(r).toFixed(2); };
-  window.setTopBannerImage = function(url){ document.getElementById('top-banner').style.backgroundImage=`url('${url}')`; };
+// ── glitch name ───────────────────────────────────────────
+const glitchTimers={};
+window.triggerNameGlitch = function(elId){
+  const el=document.getElementById(elId);if(!el)return;
+  el.classList.remove('glitching');void el.offsetWidth;el.classList.add('glitching');
+  if(glitchTimers[elId])clearTimeout(glitchTimers[elId]);
+  glitchTimers[elId]=setTimeout(()=>el.classList.remove('glitching'),2300);
+};
+window.triggerGreetingGlitch    = function(){triggerNameGlitch('dash-greeting-name');};
+window.triggerAccountNameGlitch = function(){triggerNameGlitch('acc-name');};
+function setGreetingName(name){
+  const el=document.getElementById('dash-greeting-name');
+  const t=name+'!';el.textContent=t;el.setAttribute('data-glitch-text',t);
+  triggerNameGlitch('dash-greeting-name');
+}
+function setAccountName(name){
+  const el=document.getElementById('acc-name');el.textContent=name;el.setAttribute('data-glitch-text',name);
+}
 
-  // ─── slider ──────────────────────────────────────────────
-  const sliderTrack=document.getElementById('slider-track');
-  const sliderDots=document.querySelectorAll('.slider-dot');
-  const slides=document.querySelectorAll('.slide');
-  let sliderIndex=0, autoSlideTimer=null;
-  const AUTO_SLIDE_MS=4000;
-  function updateSlider(){
-    sliderTrack.style.transform=`translateX(-${sliderIndex*100}%)`;
-    sliderDots.forEach((d,i)=>d.classList.toggle('active',i===sliderIndex));
-    const vid=document.querySelector('.slide-video-el');
-    if(vid){if(sliderIndex===1)vid.play().catch(()=>{}); else vid.pause();}
-  }
-  function goToSlide(i){sliderIndex=(i+slides.length)%slides.length;updateSlider();}
-  function nextSlide(){goToSlide(sliderIndex+1);}
-  function startAutoSlide(){stopAutoSlide();autoSlideTimer=setInterval(nextSlide,AUTO_SLIDE_MS);}
-  function stopAutoSlide(){if(autoSlideTimer)clearInterval(autoSlideTimer);}
-  sliderDots.forEach(dot=>{dot.addEventListener('click',()=>{goToSlide(parseInt(dot.dataset.go,10));startAutoSlide();});});
-  let isDragging=false,startX=0,currentTranslate=0;
-  function getX(e){return(e.touches?e.touches[0].clientX:e.clientX);}
-  sliderTrack.addEventListener('pointerdown',e=>{isDragging=true;startX=getX(e);currentTranslate=-sliderIndex*sliderTrack.offsetWidth;sliderTrack.classList.add('dragging');stopAutoSlide();});
-  sliderTrack.addEventListener('pointermove',e=>{if(!isDragging)return;sliderTrack.style.transform=`translateX(${currentTranslate+getX(e)-startX}px)`;});
-  function endDrag(e){
-    if(!isDragging)return;isDragging=false;sliderTrack.classList.remove('dragging');
-    const dx=(e.clientX!==undefined?e.clientX:(e.changedTouches?e.changedTouches[0].clientX:startX))-startX;
-    const threshold=sliderTrack.offsetWidth*0.15;
-    if(dx>threshold)goToSlide(sliderIndex-1);else if(dx<-threshold)goToSlide(sliderIndex+1);else updateSlider();
-    startAutoSlide();
-  }
-  sliderTrack.addEventListener('pointerup',endDrag);
-  sliderTrack.addEventListener('pointerleave',e=>{if(isDragging)endDrag(e);});
-  function initSlider(){updateSlider();startAutoSlide();}
+// ── slider ────────────────────────────────────────────────
+const sliderTrack=document.getElementById('slider-track');
+const sliderDots=document.querySelectorAll('.slider-dot');
+const slides=document.querySelectorAll('.slide');
+let sliderIndex=0,autoSlideTimer=null;
+const AUTO_SLIDE_MS=4000;
+function updateSlider(){
+  sliderTrack.style.transform=`translateX(-${sliderIndex*100}%)`;
+  sliderDots.forEach((d,i)=>d.classList.toggle('active',i===sliderIndex));
+  const vid=document.querySelector('.slide-video-el');
+  if(vid){if(sliderIndex===1)vid.play().catch(()=>{});else vid.pause();}
+}
+function goToSlide(i){sliderIndex=(i+slides.length)%slides.length;updateSlider();}
+function nextSlide(){goToSlide(sliderIndex+1);}
+function startAutoSlide(){stopAutoSlide();autoSlideTimer=setInterval(nextSlide,AUTO_SLIDE_MS);}
+function stopAutoSlide(){if(autoSlideTimer)clearInterval(autoSlideTimer);}
+sliderDots.forEach(dot=>{dot.addEventListener('click',()=>{goToSlide(parseInt(dot.dataset.go,10));startAutoSlide();});});
+let isDragging=false,startX=0,currentTranslate=0;
+function getX(e){return(e.touches?e.touches[0].clientX:e.clientX);}
+sliderTrack.addEventListener('pointerdown',e=>{isDragging=true;startX=getX(e);currentTranslate=-sliderIndex*sliderTrack.offsetWidth;sliderTrack.classList.add('dragging');stopAutoSlide();});
+sliderTrack.addEventListener('pointermove',e=>{if(!isDragging)return;sliderTrack.style.transform=`translateX(${currentTranslate+getX(e)-startX}px)`;});
+function endDrag(e){
+  if(!isDragging)return;isDragging=false;sliderTrack.classList.remove('dragging');
+  const dx=(e.clientX!==undefined?e.clientX:(e.changedTouches?e.changedTouches[0].clientX:startX))-startX;
+  const thr=sliderTrack.offsetWidth*0.15;
+  if(dx>thr)goToSlide(sliderIndex-1);else if(dx<-thr)goToSlide(sliderIndex+1);else updateSlider();
+  startAutoSlide();
+}
+sliderTrack.addEventListener('pointerup',endDrag);
+sliderTrack.addEventListener('pointerleave',e=>{if(isDragging)endDrag(e);});
+function initSlider(){updateSlider();startAutoSlide();}
 
-  // ─── show dashboard ───────────────────────────────────────
-  function showDashboard(user){
-    currentUserEmail=user.email||null;
-    const avatar=document.getElementById('dash-avatar');
-    avatar.src=user.photoURL||DEFAULT_AVATAR; avatar.style.display='block';
-    document.getElementById('dash-greeting-sub').textContent=getGreetingByTime();
-    const name=(user.displayName||user.email||'User').split('@')[0];
-    setGreetingName(name); setAccountName(name);
-    document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
-    document.getElementById('nav-home').classList.add('active');
-    go('s-dashboard'); initSlider();
-  }
-  function getGreetingByTime(){
-    const h=new Date().getHours();
-    if(h<11)return 'Good Morning';if(h<15)return 'Good Afternoon';if(h<19)return 'Good Evening';return 'Good Night';
-  }
-  window.addActivity=function(){};
-  window.clearActivity=function(){};
+// ── dashboard ─────────────────────────────────────────────
+function showDashboard(user){
+  currentUserEmail=user.email||null;
+  const avatar=document.getElementById('dash-avatar');
+  avatar.src=user.photoURL||DEFAULT_AVATAR;avatar.style.display='block';
+  document.getElementById('dash-greeting-sub').textContent=getGreetingByTime();
+  const name=(user.displayName||user.email||'User').split('@')[0];
+  setGreetingName(name);setAccountName(name);
+  document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('nav-home').classList.add('active');
+  go('s-dashboard');initSlider();
+}
+function getGreetingByTime(){
+  const h=new Date().getHours();
+  if(h<11)return 'Good Morning';if(h<15)return 'Good Afternoon';if(h<19)return 'Good Evening';return 'Good Night';
+}
+window.setAccountRating  = function(r){document.getElementById('acc-rating-val').textContent=Number(r).toFixed(2);};
+window.setTopBannerImage = function(url){document.getElementById('top-banner').style.backgroundImage=`url('${url}')`;};
+window.addActivity=function(){};window.clearActivity=function(){};
 </script>
 </body>
 </html>
