@@ -685,73 +685,6 @@
       font-size: 12.5px; color: #ff9b9b; line-height: 1.55;
     }
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
-    
-    /* ==========================================
-       CSS POP-UP (TARUH DI ATAS SINI)
-       ========================================== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 32px 28px;
-      width: 100%;
-      max-width: 360px;
-      position: relative;
-      transform: scale(0.92) translateY(10px);
-      transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-    .modal-overlay.active .modal-box {
-      transform: scale(1) translateY(0);
-    }
-    .modal-close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted);
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-    }
-    .modal-close-btn:hover { color: var(--white); }
-    .modal-close-btn svg { width: 18px; height: 18px; }
-    .modal-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-    .modal-desc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13.5px;
-      color: var(--text-sec);
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-  
   </style>
 </head>
 <body>
@@ -763,20 +696,6 @@
 
 <div id="app">
 
-  <div id="customModal" class="modal-overlay">
-    <div class="modal-box">
-      <button id="closeModalBtn" class="modal-close-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <h3 class="modal-title">Welcome back! 👋</h3>
-      <p class="modal-desc">Login berhasil dilakukan. Temukan berbagai fitur baru orbitxy di dashboard utama kamu.</p>
-      <button id="actionModalBtn" class="btn-primary" style="margin-top: 12px; background: var(--white); color: #000;">Lanjutkan</button>
-    </div>
-  </div>
-
-  <div class="screen active" id="s-login">
-    <div class="card">
-  
   <!-- LOGIN -->
   <div class="screen active" id="s-login">
     <div class="card">
@@ -1868,46 +1787,15 @@
   function showDashboard(user, method) {
     currentUserEmail = user.email || null;
     const avatar = document.getElementById('dash-avatar');
-    if (avatar) {
-      avatar.src = user.photoURL || DEFAULT_AVATAR; 
-      avatar.style.display = 'block';
-    }
-    const greetingSub = document.getElementById('dash-greeting-sub');
-    if (greetingSub) greetingSub.textContent = getGreetingByTime();
-    
+    avatar.src = user.photoURL || DEFAULT_AVATAR; avatar.style.display = 'block';
+    document.getElementById('dash-greeting-sub').textContent = getGreetingByTime();
     const displayName = (user.displayName || user.email || 'User').split('@')[0];
-    if (typeof setGreetingName === 'function') setGreetingName(displayName);
-    if (typeof setAccountName === 'function') setAccountName(displayName);
-    
+    setGreetingName(displayName);
+    setAccountName(displayName);
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-    const navHome = document.getElementById('nav-home');
-    if (navHome) navHome.classList.add('active');
-    
-    go('s-dashboard'); 
-    if (typeof initSlider === 'function') initSlider();
-    
-    // Memunculkan pop-up welcome back secara otomatis begitu masuk dashboard
-    openModalCustom(); 
+    document.getElementById('nav-home').classList.add('active');
+    go('s-dashboard'); initSlider();
   }
-
-  // Fungsi pengatur pop-up custom
-  function openModalCustom() {
-    const modal = document.getElementById('customModal');
-    if (modal) modal.classList.add('active');
-  }
-
-  function closeModalCustom() {
-    const modal = document.getElementById('customModal');
-    if (modal) modal.classList.remove('active');
-  }
-
-  // Pasang aksi klik tombol close & lanjutkan secara otomatis
-  document.addEventListener('DOMContentLoaded', () => {
-    const closeBtn = document.getElementById('closeModalBtn');
-    const actionBtn = document.getElementById('actionModalBtn');
-    if (closeBtn) closeBtn.addEventListener('click', closeModalCustom);
-    if (actionBtn) actionBtn.addEventListener('click', closeModalCustom);
-  });
 </script>
 
 </body>
