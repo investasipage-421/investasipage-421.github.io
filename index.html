@@ -141,6 +141,14 @@
       position: relative;
       display: inline-block;
     }
+    .dash-header-video {
+      width: 52px; height: 52px; flex-shrink: 0;
+      border-radius: 12px; overflow: hidden;
+      background: var(--card); border: 1px solid var(--border);
+    }
+    .dash-header-video video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
 
     .glitching {
       animation: glitchSkew 2.2s ease-in-out;
@@ -900,6 +908,9 @@
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</div>
           <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!" onclick="triggerGreetingGlitch()" style="cursor:pointer;">User!</div>
+        </div>
+        <div class="dash-header-video">
+          <video src="https://files.catbox.moe/sxccc2.mp4" autoplay muted loop playsinline preload="auto"></video>
         </div>
       </div>
       <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="setAvatarFromFile(this)"/>
