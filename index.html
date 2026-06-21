@@ -769,18 +769,20 @@
     .cards-streak-title { font-size: 16px; font-weight: 700; color: var(--white); }
     .cards-streak-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
     .cards-streak-flame svg { width: 24px; height: 24px; color: #ffb020; }
-    .cards-streak-checks { display: flex; align-items: center; gap: 8px; }
-    .cards-streak-check {
-      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-      background: var(--accent); color: #06210f;
+    .cards-streak-milestones {
+      display: flex; align-items: center; gap: 8px;
+      overflow-x: auto; padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .cards-streak-milestones::-webkit-scrollbar { display: none; }
+    .cards-streak-milestone {
+      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      color: var(--text-sec); font-size: 12px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
     }
-    .cards-streak-check svg { width: 15px; height: 15px; }
-    .cards-streak-extra {
-      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-      background: var(--input-bg); border: 1px solid var(--input-border);
-      color: var(--text-sec); font-size: 12.5px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
+    .cards-streak-milestone.reached {
+      background: var(--accent); border-color: var(--accent); color: #06210f;
     }
 
     .dash-popup-overlay {
@@ -1255,23 +1257,6 @@
     <div class="dash-inner">
       <h1 class="title" style="font-size:30px;margin-bottom:20px;">Cards</h1>
 
-      <div class="cards-grid-row">
-        <div class="cards-mini-card">
-          <div class="cards-mini-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          </div>
-          <div class="cards-mini-title">Use Apple<br>Watch as alarm</div>
-          <div class="cards-mini-day">Day 3</div>
-        </div>
-        <div class="cards-mini-card">
-          <div class="cards-mini-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div class="cards-mini-title">Switch to<br>Notion Mail</div>
-          <div class="cards-mini-day">Day 8</div>
-        </div>
-      </div>
-
       <div class="cards-progress-card">
         <div class="cards-progress-head">
           <div class="cards-progress-icon">
@@ -1294,21 +1279,14 @@
       <div class="cards-streak-card">
         <div class="cards-streak-head">
           <div>
-            <div class="cards-streak-title">5 days streak</div>
-            <div class="cards-streak-sub">100 Days of Code</div>
+            <div class="cards-streak-title" id="cards-streak-title">0 days streak</div>
+            <div class="cards-streak-sub">Streak kamu</div>
           </div>
           <div class="cards-streak-flame">
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c1 3-2 4.5-2 7.5a4 4 0 0 0 8 0c0-1-.3-2-1-3 2 1 3.5 3.5 3.5 6.5a7.5 7.5 0 0 1-15 0C5.5 8.5 9 5.5 12 2z"/></svg>
           </div>
         </div>
-        <div class="cards-streak-checks">
-          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="cards-streak-extra">15</div>
-        </div>
+        <div class="cards-streak-milestones" id="cards-streak-milestones"></div>
       </div>
     </div>
   </div>
@@ -1829,6 +1807,23 @@
     list.appendChild(item);
   };
   window.clearActivity = function() { document.getElementById('activity-list').innerHTML = ''; };
+
+  window.setStreak = function(value) {
+    const n = Math.max(0, Number(value) || 0);
+    const titleEl = document.getElementById('cards-streak-title');
+    if (titleEl) titleEl.textContent = n + (n === 1 ? ' day streak' : ' days streak');
+    const wrap = document.getElementById('cards-streak-milestones');
+    if (!wrap) return;
+    const maxStep = Math.max(45, Math.ceil((n + 15) / 5) * 5);
+    wrap.innerHTML = '';
+    for (let v = 0; v <= maxStep; v += 5) {
+      const badge = document.createElement('div');
+      badge.className = 'cards-streak-milestone' + (v <= n ? ' reached' : '');
+      badge.textContent = v;
+      wrap.appendChild(badge);
+    }
+  };
+  setStreak(0);
 
   const sliderTrack = document.getElementById('slider-track');
   const sliderDots = document.querySelectorAll('.slider-dot');
