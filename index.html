@@ -723,6 +723,19 @@
     }
     .dash-popup-body {
       font-size: 12.5px; color: var(--text-sec); line-height: 1.55;
+      min-height: 54px; text-align: left;
+    }
+    .dash-popup-cursor {
+      display: inline-block;
+      width: 2px; height: 13px;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: -2px;
+      animation: dashCursorBlink .85s steps(1) infinite;
+    }
+    @keyframes dashCursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
     }
   </style>
 </head>
@@ -1168,8 +1181,8 @@
       <button class="dash-popup-close" onclick="closeDashPopup()" aria-label="Tutup">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-      <div class="dash-popup-title">orbitxy</div>
-      <div class="dash-popup-body">orbitxy</div>
+      <div class="dash-popup-title">Kenalan yuk 👋</div>
+      <div class="dash-popup-body"><span id="dash-popup-typed"></span><span class="dash-popup-cursor" id="dash-popup-cursor"></span></div>
     </div>
   </div>
 
@@ -1694,13 +1707,31 @@
 
   function initSlider() { updateSlider(); startAutoSlide(); }
 
+  const DASH_POPUP_INTRO = "Halo! 👋 Aku konten kreator di balik orbitxy. Di sini aku berbagi konten seputar dunia digital & teknologi. Makasih udah mampir, semoga betah ya! ✨";
+  let dashPopupTypeTimer = null;
+
+  function typeDashPopupIntro() {
+    const target = document.getElementById('dash-popup-typed');
+    if (!target) return;
+    if (dashPopupTypeTimer) clearInterval(dashPopupTypeTimer);
+    target.textContent = '';
+    let i = 0;
+    dashPopupTypeTimer = setInterval(() => {
+      target.textContent = DASH_POPUP_INTRO.slice(0, i + 1);
+      i++;
+      if (i >= DASH_POPUP_INTRO.length) clearInterval(dashPopupTypeTimer);
+    }, 32);
+  }
+
   window.closeDashPopup = function() {
     const p = document.getElementById('dash-popup');
     if (p) p.classList.remove('show');
+    if (dashPopupTypeTimer) clearInterval(dashPopupTypeTimer);
   };
   window.openDashPopup = function() {
     const p = document.getElementById('dash-popup');
     if (p) p.classList.add('show');
+    typeDashPopupIntro();
   };
 
   window.doLogout = async function() {
