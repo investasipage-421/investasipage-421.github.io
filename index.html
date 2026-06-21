@@ -95,12 +95,12 @@
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-    #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account, #s-donasi {
+    #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account, #s-donasi, #s-cards {
       position: fixed; inset: 0; z-index: 50;
       background: var(--black);
       overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner, #s-cards .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
       padding: max(24px, env(safe-area-inset-top)) 18px 90px;
@@ -707,6 +707,82 @@
     }
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
 
+    .cards-grid-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-bottom: 14px;
+    }
+    .cards-mini-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 18px 16px;
+    }
+    .cards-mini-icon {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--white); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .cards-mini-icon svg { width: 17px; height: 17px; }
+    .cards-mini-title {
+      font-size: 14.5px; font-weight: 700; color: var(--white);
+      line-height: 1.35; margin-bottom: 8px;
+    }
+    .cards-mini-day { font-size: 12px; color: var(--muted); }
+
+    .cards-progress-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px 18px; margin-bottom: 14px;
+    }
+    .cards-progress-head {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .cards-progress-icon {
+      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+    }
+    .cards-progress-icon svg { width: 18px; height: 18px; }
+    .cards-progress-title { font-size: 15px; font-weight: 700; color: var(--white); }
+    .cards-progress-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .cards-progress-row {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 13px; color: var(--text-sec); margin-bottom: 10px;
+    }
+    .cards-progress-row span:last-child { color: var(--white); font-weight: 600; }
+    .cards-progress-bar-track {
+      width: 100%; height: 7px; border-radius: 6px;
+      background: var(--input-border); overflow: hidden;
+    }
+    .cards-progress-bar-fill {
+      height: 100%; border-radius: 6px;
+      background: var(--accent);
+    }
+
+    .cards-streak-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px 18px;
+    }
+    .cards-streak-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .cards-streak-title { font-size: 16px; font-weight: 700; color: var(--white); }
+    .cards-streak-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+    .cards-streak-flame svg { width: 24px; height: 24px; color: #ffb020; }
+    .cards-streak-checks { display: flex; align-items: center; gap: 8px; }
+    .cards-streak-check {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      background: var(--accent); color: #06210f;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cards-streak-check svg { width: 15px; height: 15px; }
+    .cards-streak-extra {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      color: var(--text-sec); font-size: 12.5px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
     .dash-popup-overlay {
       position: fixed; inset: 0; z-index: 300;
       display: none; align-items: center; justify-content: center;
@@ -1174,6 +1250,69 @@
     </div>
   </div>
 
+  <!-- CARDS PAGE -->
+  <div class="screen" id="s-cards">
+    <div class="dash-inner">
+      <h1 class="title" style="font-size:30px;margin-bottom:20px;">Cards</h1>
+
+      <div class="cards-grid-row">
+        <div class="cards-mini-card">
+          <div class="cards-mini-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <div class="cards-mini-title">Use Apple<br>Watch as alarm</div>
+          <div class="cards-mini-day">Day 3</div>
+        </div>
+        <div class="cards-mini-card">
+          <div class="cards-mini-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="cards-mini-title">Switch to<br>Notion Mail</div>
+          <div class="cards-mini-day">Day 8</div>
+        </div>
+      </div>
+
+      <div class="cards-progress-card">
+        <div class="cards-progress-head">
+          <div class="cards-progress-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          </div>
+          <div>
+            <div class="cards-progress-title">100 Days of Code</div>
+            <div class="cards-progress-sub">63 days left</div>
+          </div>
+        </div>
+        <div class="cards-progress-row">
+          <span>Progress</span>
+          <span>37/100 days</span>
+        </div>
+        <div class="cards-progress-bar-track">
+          <div class="cards-progress-bar-fill" style="width:37%"></div>
+        </div>
+      </div>
+
+      <div class="cards-streak-card">
+        <div class="cards-streak-head">
+          <div>
+            <div class="cards-streak-title">5 days streak</div>
+            <div class="cards-streak-sub">100 Days of Code</div>
+          </div>
+          <div class="cards-streak-flame">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c1 3-2 4.5-2 7.5a4 4 0 0 0 8 0c0-1-.3-2-1-3 2 1 3.5 3.5 3.5 6.5a7.5 7.5 0 0 1-15 0C5.5 8.5 9 5.5 12 2z"/></svg>
+          </div>
+        </div>
+        <div class="cards-streak-checks">
+          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="cards-streak-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="cards-streak-extra">15</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- DEACTIVATE CONFIRM MODAL -->
   <div class="confirm-overlay" id="modal-deactivate">
     <div class="confirm-card">
@@ -1323,7 +1462,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const dashNav = document.getElementById('dash-bottom-nav');
-    if (dashNav) dashNav.style.display = (id === 's-dashboard' || id === 's-account') ? 'flex' : 'none';
+    if (dashNav) dashNav.style.display = (id === 's-dashboard' || id === 's-account' || id === 's-cards') ? 'flex' : 'none';
     window.scrollTo(0, 0);
     manageSlideVideo(id);
     if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
@@ -1343,6 +1482,7 @@
     if (navEl) navEl.classList.add('active');
     if (tab === 'home') { go('s-dashboard'); initSlider(); }
     else if (tab === 'account') { go('s-account'); }
+    else if (tab === 'cards') { go('s-cards'); }
     else { showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)'); }
   };
 
