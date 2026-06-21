@@ -131,9 +131,14 @@
       margin-bottom: 22px;
     }
     .dash-greeting-text { flex: 1; min-width: 0; padding-right: 4px; }
-    .dash-greeting-sub {
-      font-size: 14px; color: var(--text-sec); margin-bottom: 2px;
+    .dash-greeting-sub-row {
+      display: flex; align-items: center; gap: 5px;
+      margin-bottom: 2px;
     }
+    .dash-greeting-sub {
+      font-size: 14px; color: var(--text-sec);
+    }
+    .verified-badge { flex-shrink: 0; display: block; }
     .dash-greeting-name {
       font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
       color: var(--white); letter-spacing: -.01em;
@@ -910,7 +915,13 @@
     <div class="dash-inner">
       <div class="dash-header">
         <div class="dash-greeting-text">
-          <div class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</div>
+          <div class="dash-greeting-sub-row">
+            <span class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</span>
+            <svg class="verified-badge" viewBox="0 0 24 24" width="14" height="14" aria-label="Terverifikasi">
+              <circle cx="12" cy="12" r="12" fill="#2E9BF0"/>
+              <path d="M8.5 12.3l2.4 2.4 4.6-5.2" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!" onclick="triggerGreetingGlitch()" style="cursor:pointer;">User!</div>
         </div>
         <div class="dash-header-video">
