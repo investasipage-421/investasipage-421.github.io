@@ -685,6 +685,45 @@
       font-size: 12.5px; color: #ff9b9b; line-height: 1.55;
     }
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
+
+    .dash-popup-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      display: none; align-items: flex-start; justify-content: flex-end;
+      padding: max(24px, env(safe-area-inset-top)) 18px 0 0;
+      pointer-events: none;
+    }
+    .dash-popup-overlay.show { display: flex; }
+    .dash-popup-card {
+      pointer-events: auto;
+      width: 100%; max-width: 280px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px 18px 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      animation: dashPopupIn .25s ease;
+      position: relative;
+    }
+    @keyframes dashPopupIn {
+      from { opacity: 0; transform: translateY(-8px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .dash-popup-close {
+      position: absolute; top: 10px; right: 10px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-sec); cursor: pointer;
+      transition: color .2s, border-color .2s;
+      padding: 0;
+    }
+    .dash-popup-close:hover { color: var(--white); border-color: #444; }
+    .dash-popup-close svg { width: 13px; height: 13px; }
+    .dash-popup-title {
+      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800;
+      color: var(--white); margin-bottom: 6px; padding-right: 24px;
+    }
+    .dash-popup-body {
+      font-size: 12.5px; color: var(--text-sec); line-height: 1.55;
+    }
   </style>
 </head>
 <body>
@@ -1120,6 +1159,17 @@
       </div>
       <button class="btn-primary btn-danger" style="margin-top:6px;" onclick="confirmDelete()">Hapus akun saya</button>
       <button class="btn-ghost-cancel" onclick="closeModal('modal-delete')">Batal</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD POPUP NOTIFICATION -->
+  <div class="dash-popup-overlay" id="dash-popup">
+    <div class="dash-popup-card">
+      <button class="dash-popup-close" onclick="closeDashPopup()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="dash-popup-title">orbitxy</div>
+      <div class="dash-popup-body">orbitxy</div>
     </div>
   </div>
 
@@ -1644,6 +1694,15 @@
 
   function initSlider() { updateSlider(); startAutoSlide(); }
 
+  window.closeDashPopup = function() {
+    const p = document.getElementById('dash-popup');
+    if (p) p.classList.remove('show');
+  };
+  window.openDashPopup = function() {
+    const p = document.getElementById('dash-popup');
+    if (p) p.classList.add('show');
+  };
+
   window.doLogout = async function() {
     try { await signOut(auth); } catch(e) {}
     stopAutoSlide(); go('s-login'); showToast('Berhasil logout 👋');
@@ -1795,6 +1854,7 @@
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
     go('s-dashboard'); initSlider();
+    openDashPopup();
   }
 </script>
 
