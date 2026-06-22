@@ -943,8 +943,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
           Donasi
         </div>
-        <div class="action-btn icon-only" onclick="showToast('Swap')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <div class="action-btn icon-only" onclick="showToast('Link')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         </div>
       </div>
       <div class="slider-wrap">
@@ -1241,10 +1241,6 @@
 </div>
 
 <script type="module">
-  // ══════════════════════════════════════════════════════════
-  // PERUBAHAN #1: Tambah import "ref", "push", "set" dari
-  // firebase/database untuk bisa simpan ke Realtime Database
-  // ══════════════════════════════════════════════════════════
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
     getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider,
@@ -1266,10 +1262,6 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-
-  // ══════════════════════════════════════════════════════════
-  // PERUBAHAN #2: Inisialisasi Realtime Database
-  // ══════════════════════════════════════════════════════════
   const db = getDatabase(app);
 
   const googleProvider = new GoogleAuthProvider();
@@ -1478,7 +1470,6 @@
     complaintsList.unshift({ ...complaintData, id: 'c_' + Date.now(), likes: 0, dislikes: 0 });
     saveComplaints();
 
-    // Kirim ke Firebase Realtime Database dengan retry 1x
     let dbOk = false;
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
