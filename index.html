@@ -103,7 +103,7 @@
     #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
-      padding: max(24px, env(safe-area-inset-top)) 18px 90px;
+      padding: max(24px, env(safe-area-inset-top)) 18px 130px;
       display: flex; flex-direction: column;
     }
 
@@ -168,12 +168,11 @@
 
     .top-banner { border-radius: 22px; aspect-ratio: 16/7; margin-bottom: 20px; background: var(--card); border: 1px solid var(--border); background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 8px 28px rgba(0,0,0,0.45); }
 
-    .action-row { display: flex; gap: 12px; margin-bottom: 22px; }
-    .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 17px 14px; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--white); font-family: 'DM Sans', sans-serif; transition: border-color .2s, transform .15s, box-shadow .2s; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
-    .action-btn:hover { border-color: #444; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
-    .action-btn:active { transform: translateY(0); }
-    .action-btn svg { width: 18px; height: 18px; }
-    .action-btn.icon-only { flex: 0 0 56px; padding: 17px 0; }
+    .action-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 13px; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--white); font-family: 'DM Sans', sans-serif; transition: border-color .2s; }
+    .action-btn:hover { border-color: #444; }
+    .action-btn svg { width: 16px; height: 16px; }
+    .action-btn.icon-only { flex: 0 0 48px; padding: 13px 0; }
 
     .slider-wrap { position: relative; border-radius: 24px; overflow: hidden; background: var(--card); border: 1px solid rgba(255,255,255,0.07); margin-bottom: 24px; box-shadow: 0 8px 28px rgba(0,0,0,0.45); }
     .slider-track { display: flex; width: 100%; transition: transform .45s cubic-bezier(.22,.61,.36,1); touch-action: pan-y; cursor: grab; }
