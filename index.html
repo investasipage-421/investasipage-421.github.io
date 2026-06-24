@@ -861,11 +861,10 @@
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
       <div class="nav-item active" id="nav-home" onclick="goDashTab('home')">
-        <svg class="nav-icon-home" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" class="nav-house-body"/>
-          <rect x="9.5" y="14.5" width="5" height="7" rx="1" class="nav-house-door"/>
-          <!-- senyum saat aktif -->
-          <path d="M10.5 17 Q12 18.5 13.5 17" class="nav-house-smile" fill="none" stroke-linecap="round"/>
+        <svg id="home-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path id="house-body" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
+          <rect id="house-door" x="9.5" y="14.5" width="5" height="7" rx="1" fill="#2a2a2a" stroke="none"/>
+          <path id="house-smile" d="M10.5 16.5 Q12 18.5 13.5 16.5" fill="none" stroke="#2a2a2a" stroke-width="1.8" stroke-linecap="round" style="display:block"/>
         </svg>
       </div>
       <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
@@ -944,9 +943,26 @@
   window.goDashTab = function(tab) {
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     const navEl = document.getElementById('nav-' + tab); if (navEl) navEl.classList.add('active');
-    if (tab === 'home') { go('s-dashboard'); initSlider(); }
-    else if (tab === 'account') { go('s-account'); }
-    else showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)');
+
+    const houseBody  = document.getElementById('house-body');
+    const houseDoor  = document.getElementById('house-door');
+    const houseSmile = document.getElementById('house-smile');
+
+    if (tab === 'home') {
+      // rumah putih, pintu bolong, senyum muncul
+      if (houseBody)  { houseBody.setAttribute('fill','#ffffff'); houseBody.setAttribute('stroke','none'); }
+      if (houseDoor)  { houseDoor.setAttribute('fill','#2a2a2a'); houseDoor.setAttribute('stroke','none'); }
+      if (houseSmile) { houseSmile.style.display = 'block'; }
+      go('s-dashboard'); initSlider();
+    } else if (tab === 'account') {
+      // rumah kembali outline abu, pintu outline, senyum hilang
+      if (houseBody)  { houseBody.setAttribute('fill','none'); houseBody.setAttribute('stroke','#666'); houseBody.setAttribute('stroke-width','1.8'); }
+      if (houseDoor)  { houseDoor.setAttribute('fill','none'); houseDoor.setAttribute('stroke','#666'); houseDoor.setAttribute('stroke-width','1.8'); }
+      if (houseSmile) { houseSmile.style.display = 'none'; }
+      go('s-account');
+    } else {
+      showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)');
+    }
   };
 
   window.showToast = function(msg, isErr) {
