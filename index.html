@@ -225,9 +225,11 @@
     /* Ikon rumah - tidak aktif: outline abu */
     .nav-house-body { fill: none; stroke: #666; stroke-width: 1.8; }
     .nav-house-door { fill: none; stroke: #666; stroke-width: 1.8; }
-    /* Ikon rumah - aktif: filled putih, pintu bolong */
+    .nav-house-smile { display: none; stroke: #666; stroke-width: 1.6; }
+    /* Ikon rumah - aktif: filled putih, pintu bolong, senyum */
     .nav-item.active .nav-house-body { fill: #ffffff; stroke: none; }
     .nav-item.active .nav-house-door { fill: #2a2a2a; stroke: none; }
+    .nav-item.active .nav-house-smile { display: block; stroke: #2a2a2a; stroke-width: 1.8; }
 
 
     .acc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
@@ -862,6 +864,8 @@
         <svg class="nav-icon-home" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" class="nav-house-body"/>
           <path d="M9 22V14h6v8" class="nav-house-door"/>
+          <!-- senyum saat aktif -->
+          <path d="M10 17.5 Q12 19.5 14 17.5" class="nav-house-smile" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
