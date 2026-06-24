@@ -228,12 +228,7 @@
     /* Ikon rumah - aktif: filled putih, pintu bolong */
     .nav-item.active .nav-house-body { fill: #ffffff; stroke: none; }
     .nav-item.active .nav-house-door { fill: #2a2a2a; stroke: none; }
-    /* Ikon account - tidak aktif: outline abu */
-    .nav-acc-head { fill: none; stroke: #666; stroke-width: 1.8; }
-    .nav-acc-body { fill: none; stroke: #666; stroke-width: 1.8; }
-    /* Ikon account - aktif: outline putih mencolok */
-    .nav-item.active .nav-acc-head { fill: none; stroke: #ffffff; stroke-width: 2.2; }
-    .nav-item.active .nav-acc-body { fill: none; stroke: #ffffff; stroke-width: 2.2; }
+
 
     .acc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
     .acc-header-text { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
@@ -870,10 +865,7 @@
         </svg>
       </div>
       <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
-        <svg class="nav-icon-account" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="7" r="4" class="nav-acc-head"/>
-          <path d="M4 21v-1a8 8 0 0 1 16 0v1" class="nav-acc-body"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </div>
     </div>
   </div>
