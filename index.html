@@ -864,11 +864,13 @@
         <svg id="home-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path id="house-body" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
           <rect id="house-door" x="9.5" y="14.5" width="5" height="7" rx="1" fill="#2a2a2a" stroke="none"/>
-          <path id="house-smile" d="M10.5 16.5 Q12 18.5 13.5 16.5" fill="none" stroke="#2a2a2a" stroke-width="1.8" stroke-linecap="round" style="display:block"/>
         </svg>
       </div>
       <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <svg id="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle id="acc-head" cx="12" cy="7" r="4" fill="none" stroke="#666" stroke-width="1.8"/>
+          <path id="acc-body" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#666" stroke-width="1.8"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -946,19 +948,25 @@
 
     const houseBody  = document.getElementById('house-body');
     const houseDoor  = document.getElementById('house-door');
-    const houseSmile = document.getElementById('house-smile');
+
+    const accHead = document.getElementById('acc-head');
+    const accBody = document.getElementById('acc-body');
 
     if (tab === 'home') {
-      // rumah putih, pintu bolong, senyum muncul
-      if (houseBody)  { houseBody.setAttribute('fill','#ffffff'); houseBody.setAttribute('stroke','none'); }
-      if (houseDoor)  { houseDoor.setAttribute('fill','#2a2a2a'); houseDoor.setAttribute('stroke','none'); }
-      if (houseSmile) { houseSmile.style.display = 'block'; }
+      // rumah putih filled
+      if (houseBody) { houseBody.setAttribute('fill','#ffffff'); houseBody.setAttribute('stroke','none'); }
+      if (houseDoor) { houseDoor.setAttribute('fill','#2a2a2a'); houseDoor.setAttribute('stroke','none'); }
+      // account kembali abu
+      if (accHead) { accHead.setAttribute('fill','none'); accHead.setAttribute('stroke','#666'); }
+      if (accBody) { accBody.setAttribute('stroke','#666'); }
       go('s-dashboard'); initSlider();
     } else if (tab === 'account') {
-      // rumah kembali outline abu, pintu outline, senyum hilang
-      if (houseBody)  { houseBody.setAttribute('fill','none'); houseBody.setAttribute('stroke','#666'); houseBody.setAttribute('stroke-width','1.8'); }
-      if (houseDoor)  { houseDoor.setAttribute('fill','none'); houseDoor.setAttribute('stroke','#666'); houseDoor.setAttribute('stroke-width','1.8'); }
-      if (houseSmile) { houseSmile.style.display = 'none'; }
+      // rumah kembali outline abu
+      if (houseBody) { houseBody.setAttribute('fill','none'); houseBody.setAttribute('stroke','#666'); houseBody.setAttribute('stroke-width','1.8'); }
+      if (houseDoor) { houseDoor.setAttribute('fill','none'); houseDoor.setAttribute('stroke','#666'); houseDoor.setAttribute('stroke-width','1.8'); }
+      // account kepala putih filled, badan putih
+      if (accHead) { accHead.setAttribute('fill','#ffffff'); accHead.setAttribute('stroke','none'); }
+      if (accBody) { accBody.setAttribute('stroke','#ffffff'); }
       go('s-account');
     } else {
       showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)');
