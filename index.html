@@ -222,6 +222,18 @@
       border-color: rgba(255,255,255,0.18);
       box-shadow: 0 4px 20px rgba(0,0,0,0.6);
     }
+    /* Ikon rumah - tidak aktif: outline abu */
+    .nav-house-body { fill: none; stroke: #666; stroke-width: 1.8; }
+    .nav-house-door { fill: none; stroke: #666; stroke-width: 1.8; }
+    /* Ikon rumah - aktif: filled putih, pintu bolong */
+    .nav-item.active .nav-house-body { fill: #ffffff; stroke: none; }
+    .nav-item.active .nav-house-door { fill: #2a2a2a; stroke: none; }
+    /* Ikon account - tidak aktif: outline abu */
+    .nav-acc-head { fill: none; stroke: #666; stroke-width: 1.8; }
+    .nav-acc-body { fill: none; stroke: #666; stroke-width: 1.8; }
+    /* Ikon account - aktif: outline putih mencolok */
+    .nav-item.active .nav-acc-head { fill: none; stroke: #ffffff; stroke-width: 2.2; }
+    .nav-item.active .nav-acc-body { fill: none; stroke: #ffffff; stroke-width: 2.2; }
 
     .acc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
     .acc-header-text { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
@@ -852,19 +864,15 @@
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
       <div class="nav-item active" id="nav-home" onclick="goDashTab('home')">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- atap rumah putih filled -->
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
-          <!-- pintu kosong/transparan = warna kotak background -->
-          <path d="M9 22V14h6v8" fill="#1e1e1e" stroke="none"/>
+        <svg class="nav-icon-home" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" class="nav-house-body"/>
+          <path d="M9 22V14h6v8" class="nav-house-door"/>
         </svg>
       </div>
       <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- kepala bulat putih -->
-          <circle cx="12" cy="7" r="4" fill="#ffffff" stroke="none"/>
-          <!-- badan putih -->
-          <path d="M4 21v-1a8 8 0 0 1 16 0v1" fill="#ffffff" stroke="none"/>
+        <svg class="nav-icon-account" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="7" r="4" class="nav-acc-head"/>
+          <path d="M4 21v-1a8 8 0 0 1 16 0v1" class="nav-acc-body"/>
         </svg>
       </div>
     </div>
