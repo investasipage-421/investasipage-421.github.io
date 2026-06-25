@@ -4,6 +4,8 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>orbitxy.com</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co.com/KjJFHHFH/Proyek-Baru-18-0-CCBDE7.png">
+  <link rel="apple-touch-icon" href="https://i.ibb.co.com/KjJFHHFH/Proyek-Baru-18-0-CCBDE7.png">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -214,7 +216,6 @@
       box-shadow: 0 4px 18px rgba(0,0,0,0.5);
       transition: background .2s, color .2s, transform .15s, box-shadow .2s;
     }
-    .nav-item:hover { }
     .nav-item svg { width: 24px; height: 24px; }
     .nav-item.active {
       color: #fff;
@@ -222,15 +223,12 @@
       border-color: rgba(255,255,255,0.18);
       box-shadow: 0 4px 20px rgba(0,0,0,0.6);
     }
-    /* Ikon rumah - tidak aktif: outline abu */
     .nav-house-body { fill: none; stroke: #666; stroke-width: 1.8; }
     .nav-house-door { fill: none; stroke: #666; stroke-width: 1.8; }
     .nav-house-smile { display: none; stroke: #666; stroke-width: 1.6; }
-    /* Ikon rumah - aktif: filled putih, pintu bolong, senyum */
     .nav-item.active .nav-house-body { fill: #ffffff; stroke: none; }
     .nav-item.active .nav-house-door { fill: #2a2a2a; stroke: none; }
     .nav-item.active .nav-house-smile { display: block; stroke: #2a2a2a; stroke-width: 1.8; }
-
 
     .acc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
     .acc-header-text { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
@@ -340,7 +338,6 @@
     .dash-popup-cursor { display: inline-block; width: 2px; height: 13px; background: var(--accent); margin-left: 2px; vertical-align: -2px; animation: dashCursorBlink .85s steps(1) infinite; }
     @keyframes dashCursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
-    /* ===== SOSMED POPUP ===== */
     .sosmed-popup-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; padding: 24px; }
     .sosmed-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
     .sosmed-popup-card { width: 100%; max-width: 340px; background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 26px 22px 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); animation: dashPopupIn .25s ease; position: relative; }
@@ -522,7 +519,6 @@
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub-row">
             <span class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</span>
-            <!-- Badge biru: klik buka popup sosmed -->
             <svg class="verified-badge" viewBox="0 0 24 24" width="14" height="14" aria-label="Sosial Media" onclick="openSosmedPopup()" style="cursor:pointer;">
               <circle cx="12" cy="12" r="11" fill="#2E9BF0"/>
               <path d="M8.5 12.3l2.4 2.4 4.6-5.2" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -545,7 +541,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
           Donasi
         </div>
-        <!-- Paperclip: klik buka popup sosmed -->
         <div class="action-btn icon-only" onclick="openSosmedPopup()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         </div>
@@ -804,7 +799,7 @@
     </div>
   </div>
 
-  <!-- ===== SOSMED POPUP ===== -->
+  <!-- SOSMED POPUP -->
   <div class="sosmed-popup-overlay" id="sosmed-popup" onclick="if(event.target===this)closeSosmedPopup()">
     <div class="sosmed-popup-card">
       <div class="sosmed-popup-header">
@@ -813,7 +808,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <!-- Instagram -->
       <a href="https://www.instagram.com/orbitxy_gaming?igsh=MTJwcWpxcWZtZGlrOA==" target="_blank" class="sosmed-link-card">
         <div class="sosmed-link-img-wrap" style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);border-radius:14px;display:flex;align-items:center;justify-content:center;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -829,7 +823,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </div>
       </a>
-      <!-- TikTok -->
       <a href="https://tiktok.com/@orbitxy7" target="_blank" class="sosmed-link-card">
         <div class="sosmed-link-img-wrap" style="background:#010101;border-radius:14px;display:flex;align-items:center;justify-content:center;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -911,7 +904,6 @@
   function saveAccounts() { localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts)); }
   function escapeHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-  // ===== SOSMED POPUP =====
   window.openSosmedPopup = function() {
     document.getElementById('sosmed-popup').classList.add('show');
   };
@@ -948,23 +940,18 @@
 
     const houseBody  = document.getElementById('house-body');
     const houseDoor  = document.getElementById('house-door');
-
     const accHead = document.getElementById('acc-head');
     const accBody = document.getElementById('acc-body');
 
     if (tab === 'home') {
-      // rumah putih filled
       if (houseBody) { houseBody.setAttribute('fill','#ffffff'); houseBody.setAttribute('stroke','none'); }
       if (houseDoor) { houseDoor.setAttribute('fill','#2a2a2a'); houseDoor.setAttribute('stroke','none'); }
-      // account kembali abu
       if (accHead) { accHead.setAttribute('fill','none'); accHead.setAttribute('stroke','#666'); }
       if (accBody) { accBody.setAttribute('stroke','#666'); }
       go('s-dashboard'); initSlider();
     } else if (tab === 'account') {
-      // rumah kembali outline abu
       if (houseBody) { houseBody.setAttribute('fill','none'); houseBody.setAttribute('stroke','#666'); houseBody.setAttribute('stroke-width','1.8'); }
       if (houseDoor) { houseDoor.setAttribute('fill','none'); houseDoor.setAttribute('stroke','#666'); houseDoor.setAttribute('stroke-width','1.8'); }
-      // account kepala putih filled, badan putih
       if (accHead) { accHead.setAttribute('fill','#ffffff'); accHead.setAttribute('stroke','none'); }
       if (accBody) { accBody.setAttribute('stroke','#ffffff'); }
       go('s-account');
