@@ -1,0 +1,15 @@
+{
+  "name": "Orbitxy",
+  "short_name": "Orbitxy", 
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b0b",
+  "theme_color": "#0b0b0b",
+  "icons": [
+    {
+      "src": "/favicon.jpg?v=1",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
