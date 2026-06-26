@@ -97,11 +97,9 @@
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
-
     #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account, #s-donasi {
       position: fixed; inset: 0; z-index: 50;
-      background: var(--black);
-      overflow-y: auto;
+      background: var(--black); overflow-y: auto;
     }
     #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
@@ -109,12 +107,10 @@
       padding: max(24px, env(safe-area-inset-top)) 18px 110px;
       display: flex; flex-direction: column;
     }
-
     #s-chat { overflow: hidden; }
     #s-chat .dash-inner { height: 100%; min-height: 0; padding-bottom: 0; overflow: hidden; }
     .chat-header-bar { flex-shrink: 0; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .chat-scroll { flex: 1; min-height: 0; overflow-y: auto; margin: 0 -18px; padding: 0 18px; }
-
     .dash-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
     .dash-greeting-text { flex: 1; min-width: 0; padding-right: 4px; }
     .dash-greeting-sub-row { display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
@@ -128,7 +124,6 @@
     }
     .dash-header-video { width: 52px; height: 52px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--card); border: 1px solid var(--border); }
     .dash-header-video video { width: 100%; height: 100%; object-fit: cover; display: block; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; pointer-events: none; }
-
     .glitching { animation: glitchSkew 2.2s ease-in-out; }
     .glitching::before, .glitching::after { content: attr(data-glitch-text); position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: var(--black); }
     .glitching::before { color: #ff2e63; animation: glitchBefore 2.2s ease-in-out; mix-blend-mode: screen; }
@@ -168,15 +163,12 @@
       71%, 74%   { clip-path: inset(5% 0 70% 0); transform: translate(2px,0); opacity: .8; }
       76%        { opacity: 0; }
     }
-
     .top-banner { border-radius: 22px; aspect-ratio: 16/7; margin-bottom: 20px; background: var(--card); border: 1px solid var(--border); background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 8px 28px rgba(0,0,0,0.45); }
-
     .action-row { display: flex; gap: 10px; margin-bottom: 20px; }
     .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 13px; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--white); font-family: 'DM Sans', sans-serif; transition: border-color .2s; }
     .action-btn:hover { border-color: #444; }
     .action-btn svg { width: 16px; height: 16px; }
     .action-btn.icon-only { flex: 0 0 48px; padding: 13px 0; }
-
     .slider-wrap { position: relative; border-radius: 24px; overflow: hidden; background: var(--card); border: 1px solid rgba(255,255,255,0.07); margin-bottom: 24px; box-shadow: 0 8px 28px rgba(0,0,0,0.45); }
     .slider-track { display: flex; width: 100%; transition: transform .45s cubic-bezier(.22,.61,.36,1); touch-action: pan-y; cursor: grab; }
     .slider-track.dragging { transition: none; cursor: grabbing; }
@@ -192,71 +184,44 @@
     .slider-dot.active { background: var(--accent); width: 20px; }
     .slide-video { padding: 0; overflow: hidden; }
     .slide-video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-
     .dash-footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: auto; padding-top: 24px; padding-bottom: 8px; }
-
     .bottom-nav-wrap {
       position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
-      z-index: 51;
-      background: transparent;
-      border: none;
-      padding: 0;
-      display: none; justify-content: center;
-      box-shadow: none;
-      width: auto;
+      z-index: 51; background: transparent; border: none; padding: 0;
+      display: none; justify-content: center; box-shadow: none; width: auto;
     }
     .bottom-nav { display: flex; align-items: center; justify-content: center; gap: 14px; }
     .nav-item {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: #888; cursor: pointer;
-      font-size: 0px;
-      width: 58px; height: 58px;
-      border-radius: 18px;
-      background: #1e1e1e;
-      border: 1px solid rgba(255,255,255,0.08);
+      color: #888; cursor: pointer; font-size: 0px;
+      width: 58px; height: 58px; border-radius: 18px;
+      background: #1e1e1e; border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 4px 18px rgba(0,0,0,0.5);
       transition: background .2s, color .2s, transform .15s, box-shadow .2s;
     }
     .nav-item svg { width: 24px; height: 24px; }
-    .nav-item.active {
-      color: #fff;
-      background: #2a2a2a;
-      border-color: rgba(255,255,255,0.18);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    }
-    .nav-house-body { fill: none; stroke: #666; stroke-width: 1.8; }
-    .nav-house-door { fill: none; stroke: #666; stroke-width: 1.8; }
-    .nav-house-smile { display: none; stroke: #666; stroke-width: 1.6; }
-    .nav-item.active .nav-house-body { fill: #ffffff; stroke: none; }
-    .nav-item.active .nav-house-door { fill: #2a2a2a; stroke: none; }
-    .nav-item.active .nav-house-smile { display: block; stroke: #2a2a2a; stroke-width: 1.8; }
+    .nav-item.active { color: #fff; background: #2a2a2a; border-color: rgba(255,255,255,0.18); box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
 
-    .acc-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-    .acc-header-text { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
-    .acc-name { font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800; color: var(--white); letter-spacing: -.01em; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; position: relative; display: block; max-width: 100%; width: 100%; }
+    /* ACCOUNT - avatar tengah + nama tengah */
+    .acc-top-section { display: flex; flex-direction: column; align-items: center; padding-top: 10px; margin-bottom: 20px; }
+    .acc-avatar-wrap { position: relative; width: 90px; height: 90px; margin-bottom: 14px; cursor: pointer; }
+    .acc-avatar-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; display: block; border: 2.5px solid var(--border); background: var(--card); }
+    .acc-name-center { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -.01em; text-align: center; margin-bottom: 8px; position: relative; display: inline-block; cursor: pointer; }
     .acc-rating { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--white); }
     .acc-rating svg { width: 13px; height: 13px; color: var(--accent); }
-
-    .dash-avatar-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
-    .dash-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; background: var(--card); border: 1px solid var(--border); display: block; }
-    .dash-avatar-add { position: absolute; bottom: -2px; right: -2px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #000; display: flex; align-items: center; justify-content: center; border: 2px solid var(--black); cursor: pointer; }
-    .dash-avatar-add svg { width: 10px; height: 10px; }
 
     .acc-quick-row { display: flex; gap: 10px; margin-bottom: 12px; }
     .acc-quick-card { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 16px 8px; cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
     .acc-quick-card:hover { border-color: #444; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.4); }
     .acc-quick-card svg { width: 22px; height: 22px; color: var(--white); }
     .acc-quick-card span { font-size: 13px; font-weight: 600; color: var(--white); }
-
     .acc-privacy-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 22px; padding: 16px 18px; margin-bottom: 14px; cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
     .acc-privacy-banner:hover { border-color: #444; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,0.4); }
     .acc-privacy-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
     .acc-privacy-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px; }
     .acc-privacy-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; color: var(--accent); }
     .acc-privacy-icon svg { width: 22px; height: 22px; }
-
     .acc-section-label { font-size: 11px; font-weight: 600; color: #555; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; padding-left: 2px; }
-
     .acc-menu { display: flex; flex-direction: column; }
     .acc-menu-item { display: flex; align-items: center; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--white); transition: opacity .2s; }
     .acc-menu-item:last-child { border-bottom: none; }
@@ -271,15 +236,6 @@
     .circle-back-btn { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--white); cursor: pointer; transition: border-color .2s; padding: 0; }
     .circle-back-btn:hover { border-color: #444; }
     .circle-back-btn svg { width: 20px; height: 20px; }
-
-    .send-recipient { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: border-color .2s; }
-    .send-recipient:hover { border-color: #444; }
-    .send-recipient.selected { border-color: var(--accent); }
-    .send-recipient-check { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; border: 1px solid var(--input-border); color: var(--accent); display: flex; align-items: center; justify-content: center; }
-    .send-recipient-check svg { width: 13px; height: 13px; opacity: 0; transition: opacity .15s; }
-    .send-recipient.selected .send-recipient-check { border-color: var(--accent); }
-    .send-recipient.selected .send-recipient-check svg { opacity: 1; }
-
     .chat-header-info { flex: 1; min-width: 0; margin-left: 4px; }
     .chat-header-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); letter-spacing: -.01em; }
     .chat-header-status { font-size: 12px; color: var(--accent); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
@@ -304,13 +260,11 @@
     .chat-send-btn { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--white); color: #000; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s; }
     .chat-send-btn:hover { background: #e8e8e8; }
     .chat-send-btn svg { width: 18px; height: 18px; }
-
     .send-anim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 9999; background: var(--black); opacity: 0; }
     .send-anim-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     .send-anim-path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 8 8; }
     .send-anim-plane { position: absolute; top: 0; left: 0; width: 36px; height: 36px; color: var(--accent); opacity: 0; offset-rotate: auto; }
     .send-anim-plane svg { width: 100%; height: 100%; }
-
     .confirm-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; padding: 24px; }
     .confirm-overlay.show { display: flex; animation: fadeIn .2s ease; }
     .confirm-card { width: 100%; max-width: 340px; background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 32px 26px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
@@ -324,12 +278,10 @@
     .btn-primary.btn-danger { background: #ff5c5c; color: #1a0000; }
     .btn-primary.btn-danger:hover { background: #ff7a7a; }
     #ma-status-label, #ma-method-label, #ma-since-label { font-size: 12.5px; }
-
     .donasi-warning { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.3); border-radius: 14px; padding: 14px 16px; margin-top: 14px; }
     .donasi-warning svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; color: #ff5c5c; }
     .donasi-warning-text { font-size: 12.5px; color: #ff9b9b; line-height: 1.55; }
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
-
     .dash-popup-overlay { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,0.6); }
     .dash-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
     .dash-popup-card { width: 100%; max-width: 320px; background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 30px 26px 26px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: dashPopupIn .25s ease; position: relative; text-align: center; }
@@ -341,7 +293,6 @@
     .dash-popup-body { font-size: 12.5px; color: var(--text-sec); line-height: 1.55; min-height: 54px; text-align: left; }
     .dash-popup-cursor { display: inline-block; width: 2px; height: 13px; background: var(--accent); margin-left: 2px; vertical-align: -2px; animation: dashCursorBlink .85s steps(1) infinite; }
     @keyframes dashCursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-
     .sosmed-popup-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; padding: 24px; }
     .sosmed-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
     .sosmed-popup-card { width: 100%; max-width: 340px; background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 26px 22px 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); animation: dashPopupIn .25s ease; position: relative; }
@@ -354,8 +305,6 @@
     .sosmed-link-card:hover { border-color: #444; background: #222; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.45); }
     .sosmed-link-card + .sosmed-link-card { margin-top: 10px; }
     .sosmed-link-img-wrap { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .sosmed-link-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .sosmed-link-info { flex: 1; min-width: 0; }
     .sosmed-link-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
     .sosmed-link-handle { font-size: 12px; color: var(--text-sec); }
     .sosmed-link-arrow { color: var(--muted); flex-shrink: 0; }
@@ -363,12 +312,10 @@
   </style>
 </head>
 <body>
-
 <div id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
   <span id="toast-msg">Berhasil!</span>
 </div>
-
 <div id="app">
 
   <!-- LOGIN -->
@@ -386,9 +333,7 @@
         <div class="input-wrap" id="lw-pass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input type="password" placeholder="Password" id="l-pass"/>
-          <button class="show-pass-btn" onclick="togglePass('l-pass',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+          <button class="show-pass-btn" onclick="togglePass('l-pass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
         <div class="err-msg" id="l-pass-err"></div>
       </div>
@@ -401,9 +346,7 @@
   <!-- REGISTER -->
   <div class="screen" id="s-register">
     <div class="card">
-      <button class="back-btn" onclick="go('s-login')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
-      </button>
+      <button class="back-btn" onclick="go('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       <h1 class="title">Let's get<br>Started</h1>
       <div class="input-group">
         <div class="input-wrap" id="rw-email">
@@ -416,9 +359,7 @@
         <div class="input-wrap" id="rw-pass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input type="password" placeholder="Password" id="r-pass" oninput="checkStrength(this.value,'rs')"/>
-          <button class="show-pass-btn" onclick="togglePass('r-pass',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+          <button class="show-pass-btn" onclick="togglePass('r-pass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
         <div class="strength-bar"><div class="strength-segment" id="rs1"></div><div class="strength-segment" id="rs2"></div><div class="strength-segment" id="rs3"></div><div class="strength-segment" id="rs4"></div></div>
         <div class="err-msg" id="r-pass-err"></div>
@@ -427,9 +368,7 @@
         <div class="input-wrap" id="rw-cpass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M9 16l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input type="password" placeholder="Confirm Password" id="r-cpass"/>
-          <button class="show-pass-btn" onclick="togglePass('r-cpass',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+          <button class="show-pass-btn" onclick="togglePass('r-cpass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
         <div class="err-msg" id="r-cpass-err"></div>
       </div>
@@ -441,9 +380,7 @@
   <!-- FORGOT PASSWORD -->
   <div class="screen" id="s-forgot">
     <div class="card">
-      <button class="back-btn" onclick="go('s-login')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
-      </button>
+      <button class="back-btn" onclick="go('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       <h1 class="title">Forget<br>Password?</h1>
       <p class="subtitle">Enter your email address and we'll send you a link to reset your password.</p>
       <div class="input-group">
@@ -461,9 +398,7 @@
   <!-- VERIFY EMAIL (OTP) -->
   <div class="screen" id="s-verify">
     <div class="card">
-      <button class="back-btn" id="verify-back-btn" onclick="go('s-forgot')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
-      </button>
+      <button class="back-btn" id="verify-back-btn" onclick="go('s-forgot')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       <h1 class="title">Verify<br>Your Email</h1>
       <p class="subtitle" id="verify-subtitle">Masukkan 4 digit kode yang dikirim ke email kamu</p>
       <div class="otp-row" id="otp-row">
@@ -485,18 +420,14 @@
   <!-- CREATE NEW PASSWORD -->
   <div class="screen" id="s-newpass">
     <div class="card">
-      <button class="back-btn" id="newpass-back-btn" onclick="go('s-forgot')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
-      </button>
+      <button class="back-btn" id="newpass-back-btn" onclick="go('s-forgot')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
       <h1 class="title" id="newpass-title">Create<br>New Password</h1>
       <p class="subtitle" id="newpass-subtitle">Your new password must be different from previously used password</p>
       <div class="input-group">
         <div class="input-wrap" id="nw-pass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input type="password" placeholder="New password" id="n-pass" oninput="checkStrength(this.value,'np')"/>
-          <button class="show-pass-btn" onclick="togglePass('n-pass',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+          <button class="show-pass-btn" onclick="togglePass('n-pass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
         <div class="strength-bar"><div class="strength-segment" id="np1"></div><div class="strength-segment" id="np2"></div><div class="strength-segment" id="np3"></div><div class="strength-segment" id="np4"></div></div>
         <p class="hint">Min. 8 characters, include uppercase &amp; symbol</p>
@@ -506,9 +437,7 @@
         <div class="input-wrap" id="nw-cpass">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M9 16l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input type="password" placeholder="Confirm password" id="n-cpass"/>
-          <button class="show-pass-btn" onclick="togglePass('n-cpass',this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+          <button class="show-pass-btn" onclick="togglePass('n-cpass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
         <div class="err-msg" id="n-cpass-err"></div>
       </div>
@@ -523,7 +452,7 @@
         <div class="dash-greeting-text">
           <div class="dash-greeting-sub-row">
             <span class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</span>
-            <svg class="verified-badge" viewBox="0 0 24 24" width="14" height="14" aria-label="Sosial Media" onclick="openSosmedPopup()" style="cursor:pointer;">
+            <svg class="verified-badge" viewBox="0 0 24 24" width="14" height="14" onclick="openSosmedPopup()" style="cursor:pointer;">
               <circle cx="12" cy="12" r="11" fill="#2E9BF0"/>
               <path d="M8.5 12.3l2.4 2.4 4.6-5.2" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -565,7 +494,7 @@
             <div class="slide-content">
               <div class="slide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
               <div class="slide-title">Promo Banner #3</div>
-              <div class="slide-desc">Slide ke-3 (Ganti gambar ini dengan promo Anda sendiri nanti)</div>
+              <div class="slide-desc">Slide ke-3</div>
             </div>
           </div>
         </div>
@@ -579,24 +508,21 @@
     </div>
   </div>
 
-  <!-- ACCOUNT SCREEN -->
+  <!-- ACCOUNT SCREEN - NEW LAYOUT -->
   <div class="screen" id="s-account">
     <div class="dash-inner">
-      <div class="acc-header">
-        <div class="acc-header-text">
-          <div class="acc-name" id="acc-name" data-glitch-text="User" onclick="triggerAccountNameGlitch()" style="cursor:pointer;">User</div>
-          <div class="acc-rating">
-            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span id="acc-rating-val">5.00</span>
-          </div>
+      <!-- Avatar tengah + nama tengah -->
+      <div class="acc-top-section">
+        <div class="acc-avatar-wrap" onclick="document.getElementById('avatar-input').click()" title="Tap untuk ganti foto">
+          <img id="dash-avatar" class="acc-avatar-img" src="" alt="avatar"/>
         </div>
-        <div class="dash-avatar-wrap">
-          <img id="dash-avatar" class="dash-avatar" src="" alt="avatar"/>
-          <div class="dash-avatar-add" title="Ganti foto profil" onclick="document.getElementById('avatar-input').click()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
+        <div class="acc-name-center" id="acc-name" data-glitch-text="User" onclick="triggerAccountNameGlitch()">User</div>
+        <div class="acc-rating">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="acc-rating-val">5.00</span>
         </div>
       </div>
+
       <div class="acc-quick-row">
         <div class="acc-quick-card" onclick="showToast('Help')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
@@ -611,6 +537,7 @@
           <span>Activity</span>
         </div>
       </div>
+
       <div class="acc-privacy-banner" onclick="showToast('Privacy checkup')">
         <div class="acc-privacy-text">
           <div class="acc-privacy-title">Privacy checkup</div>
@@ -620,6 +547,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h4"/><circle cx="17" cy="17" r="3.2"/><path d="M17 17v-1.5"/></svg>
         </div>
       </div>
+
       <div class="acc-section-label">Fitur</div>
       <div class="acc-menu">
         <div class="acc-menu-item" onclick="playSendAnimation(openChatPage, '#ff3b3b')">
@@ -635,7 +563,7 @@
         </div>
         <div class="acc-menu-item" onclick="playSendAnimation(openManageAccountPage, '#ffffff')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Manage Uber account</span>
+          <span>Manage account</span>
         </div>
         <div class="acc-menu-item" onclick="showToast('Legal')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -649,9 +577,7 @@
   <div class="screen" id="s-send">
     <div class="dash-inner">
       <div class="send-page-header">
-        <button class="circle-back-btn" onclick="go('s-dashboard')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
+        <button class="circle-back-btn" onclick="go('s-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
       </div>
       <h1 class="title" style="font-size:30px;margin-bottom:8px;">Keluhan</h1>
       <p class="subtitle" style="margin-top:0;margin-bottom:20px;">Sampaikan keluhan atau masukan kamu tentang aplikasi ini</p>
@@ -670,9 +596,7 @@
   <div class="screen" id="s-donasi">
     <div class="dash-inner">
       <div class="send-page-header">
-        <button class="circle-back-btn" onclick="go('s-dashboard')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
+        <button class="circle-back-btn" onclick="go('s-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
       </div>
       <h1 class="title" style="font-size:30px;margin-bottom:8px;">Donasi</h1>
       <p class="subtitle" style="margin-top:0;margin-bottom:22px;">Dukung pengembangan orbitxy dengan donasi kamu</p>
@@ -687,10 +611,7 @@
       </div>
       <div class="donasi-warning">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <div class="donasi-warning-text">
-          <b>Waspada penipuan.</b><br/>
-          Tombol di atas adalah satu-satunya cara resmi untuk berdonasi ke orbitxy. Kami tidak pernah membagikan link donasi lewat chat, DM, atau media lain. Jika ada yang mengirimkan link donasi selain dari halaman ini, abaikan — itu bukan dari kami.
-        </div>
+        <div class="donasi-warning-text"><b>Waspada penipuan.</b><br/>Tombol di atas adalah satu-satunya cara resmi untuk berdonasi ke orbitxy. Kami tidak pernah membagikan link donasi lewat chat, DM, atau media lain.</div>
       </div>
     </div>
   </div>
@@ -699,9 +620,7 @@
   <div class="screen" id="s-chat">
     <div class="dash-inner">
       <div class="send-page-header chat-header-bar">
-        <button class="circle-back-btn" onclick="go('s-account')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
+        <button class="circle-back-btn" onclick="go('s-account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
         <div class="chat-header-info">
           <div class="chat-header-name">Admin Support</div>
           <div class="chat-header-status">Online</div>
@@ -717,9 +636,7 @@
     <div class="chat-input-bar">
       <div class="chat-input-row">
         <input type="text" id="chat-input" placeholder="Tulis pesan ke admin..." autocomplete="off" onkeydown="if(event.key==='Enter')sendChatMessage()"/>
-        <button class="chat-send-btn" onclick="sendChatMessage()">
-          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-        </button>
+        <button class="chat-send-btn" onclick="sendChatMessage()"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
       </div>
     </div>
   </div>
@@ -728,9 +645,7 @@
   <div class="screen" id="s-manage-account">
     <div class="dash-inner">
       <div class="send-page-header">
-        <button class="circle-back-btn" onclick="go('s-account')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
+        <button class="circle-back-btn" onclick="go('s-account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
       </div>
       <h1 class="title" style="font-size:30px;margin-bottom:6px;">Manage<br>Account</h1>
       <p class="subtitle" style="margin-top:0;margin-bottom:24px;">Kelola data, keamanan, dan status akun kamu</p>
@@ -776,9 +691,7 @@
   <!-- DEACTIVATE CONFIRM MODAL -->
   <div class="confirm-overlay" id="modal-deactivate">
     <div class="confirm-card">
-      <div class="confirm-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-      </div>
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
       <div class="confirm-title">Nonaktifkan akun sementara?</div>
       <div class="confirm-desc">Profil dan riwayat kamu akan disembunyikan. Kamu bisa mengaktifkannya kembali kapan saja dengan login ulang.</div>
       <button class="btn-primary" style="margin-top:18px;" onclick="confirmDeactivate()">Ya, nonaktifkan</button>
@@ -789,11 +702,9 @@
   <!-- DELETE CONFIRM MODAL -->
   <div class="confirm-overlay" id="modal-delete">
     <div class="confirm-card">
-      <div class="confirm-icon danger">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-      </div>
+      <div class="confirm-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
       <div class="confirm-title">Hapus akun secara permanen?</div>
-      <div class="confirm-desc">Semua data kamu — profil, riwayat keluhan, dan pesan chat — akan dihapus dan tidak dapat dikembalikan.</div>
+      <div class="confirm-desc">Semua data kamu akan dihapus dan tidak dapat dikembalikan.</div>
       <div class="input-group" style="margin-top:14px;text-align:left;">
         <div class="input-wrap" id="del-confirm-wrap">
           <input type="text" placeholder='Ketik "HAPUS" untuk konfirmasi' id="del-confirm-input" oninput="this.parentElement.classList.remove('err')"/>
@@ -809,49 +720,31 @@
     <div class="sosmed-popup-card">
       <div class="sosmed-popup-header">
         <div class="sosmed-popup-title">Ikuti kami 👋</div>
-        <button class="sosmed-popup-close" onclick="closeSosmedPopup()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <button class="sosmed-popup-close" onclick="closeSosmedPopup()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <a href="https://www.instagram.com/orbitxy_gaming?igsh=MTJwcWpxcWZtZGlrOA==" target="_blank" class="sosmed-link-card">
-        <div class="sosmed-link-img-wrap" style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);border-radius:14px;display:flex;align-items:center;justify-content:center;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="20" height="20" rx="5.5" fill="none" stroke="#fff" stroke-width="1.8"/>
-            <circle cx="12" cy="12" r="4.5" stroke="#fff" stroke-width="1.8"/>
-            <circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/>
-          </svg>
+        <div class="sosmed-link-img-wrap" style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);border-radius:14px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="#fff" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg>
         </div>
-        <div class="sosmed-link-info">
-          <div class="sosmed-link-name">Instagram</div>
-        </div>
-        <div class="sosmed-link-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </div>
+        <div style="flex:1;min-width:0;"><div class="sosmed-link-name">Instagram</div></div>
+        <div class="sosmed-link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
       </a>
       <a href="https://tiktok.com/@orbitxy7" target="_blank" class="sosmed-link-card">
-        <div class="sosmed-link-img-wrap" style="background:#010101;border-radius:14px;display:flex;align-items:center;justify-content:center;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z" fill="#fff"/>
-          </svg>
+        <div class="sosmed-link-img-wrap" style="background:#010101;border-radius:14px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z" fill="#fff"/></svg>
         </div>
-        <div class="sosmed-link-info">
-          <div class="sosmed-link-name">TikTok</div>
-        </div>
-        <div class="sosmed-link-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </div>
+        <div style="flex:1;min-width:0;"><div class="sosmed-link-name">TikTok</div></div>
+        <div class="sosmed-link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
       </a>
     </div>
   </div>
 
-  <!-- DASHBOARD POPUP NOTIFICATION -->
+  <!-- DASHBOARD POPUP -->
   <div class="dash-popup-overlay" id="dash-popup">
     <div class="dash-popup-card">
-      <button class="dash-popup-close" onclick="closeDashPopup()" aria-label="Tutup">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <button class="dash-popup-close" onclick="closeDashPopup()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       <div class="dash-popup-title">Kenalan yuk 👋</div>
-      <div class="dash-popup-body"><span id="dash-popup-typed"></span><span class="dash-popup-cursor" id="dash-popup-cursor"></span></div>
+      <div class="dash-popup-body"><span id="dash-popup-typed"></span><span class="dash-popup-cursor"></span></div>
     </div>
   </div>
 
@@ -859,22 +752,20 @@
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
       <div class="nav-item active" id="nav-home" onclick="goDashTab('home')">
-        <svg id="home-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 24 24" fill="none">
           <path id="house-body" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
           <rect id="house-door" x="9.5" y="14.5" width="5" height="7" rx="1" fill="#2a2a2a" stroke="none"/>
         </svg>
       </div>
       <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
-        <svg id="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 24 24" fill="none">
           <circle id="acc-head" cx="12" cy="7" r="4" fill="none" stroke="#666" stroke-width="1.8"/>
           <path id="acc-body" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#666" stroke-width="1.8"/>
         </svg>
       </div>
     </div>
   </div>
-
 </div>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -909,12 +800,8 @@
   function saveAccounts() { localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts)); }
   function escapeHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-  window.openSosmedPopup = function() {
-    document.getElementById('sosmed-popup').classList.add('show');
-  };
-  window.closeSosmedPopup = function() {
-    document.getElementById('sosmed-popup').classList.remove('show');
-  };
+  window.openSosmedPopup = function() { document.getElementById('sosmed-popup').classList.add('show'); };
+  window.closeSosmedPopup = function() { document.getElementById('sosmed-popup').classList.remove('show'); };
 
   onAuthStateChanged(auth, async user => {
     if (user) {
@@ -942,12 +829,10 @@
   window.goDashTab = function(tab) {
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
     const navEl = document.getElementById('nav-' + tab); if (navEl) navEl.classList.add('active');
-
-    const houseBody  = document.getElementById('house-body');
-    const houseDoor  = document.getElementById('house-door');
+    const houseBody = document.getElementById('house-body');
+    const houseDoor = document.getElementById('house-door');
     const accHead = document.getElementById('acc-head');
     const accBody = document.getElementById('acc-body');
-
     if (tab === 'home') {
       if (houseBody) { houseBody.setAttribute('fill','#ffffff'); houseBody.setAttribute('stroke','none'); }
       if (houseDoor) { houseDoor.setAttribute('fill','#2a2a2a'); houseDoor.setAttribute('stroke','none'); }
@@ -1192,15 +1077,6 @@
   window.setAccountRating = function(rating) { document.getElementById('acc-rating-val').textContent=Number(rating).toFixed(2); };
   window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage=`url('${url}')`; };
 
-  window.addActivity = function(type, address, time, amount, usdtText) {
-    const list=document.getElementById('activity-list'), isReceived=type==='received';
-    const iconSvg=isReceived?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
-    const item=document.createElement('div'); item.className='activity-item';
-    item.innerHTML=`<div class="activity-icon">${iconSvg}</div><div class="activity-mid"><div class="activity-action">${isReceived?'Received from':'Sent to'} <b>${address}</b></div><div class="activity-time">${time}</div></div><div class="activity-right"><div class="activity-amount ${isReceived?'positive':''}">$${Number(amount).toFixed(2)}</div><div class="activity-usdt">≈${usdtText}</div></div>`;
-    list.appendChild(item);
-  };
-  window.clearActivity = function() { document.getElementById('activity-list').innerHTML=''; };
-
   const sliderTrack=document.getElementById('slider-track'), sliderDots=document.querySelectorAll('.slider-dot'), slides=document.querySelectorAll('.slide');
   let sliderIndex=0, autoSlideTimer=null;
   function updateSlider() {
@@ -1316,7 +1192,7 @@
     if(verifyMode==='forgot') { document.getElementById('newpass-title').innerHTML='Create<br>New Password'; document.getElementById('newpass-subtitle').textContent='Your new password must be different from previously used password'; document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value=''; setTimeout(()=>go('s-newpass'),800); }
     else if(verifyMode==='register-email') {
       const {email,password}=pendingGoogleCred;
-      try{const uc=await createUserWithEmailAndPassword(auth,email,password);await signOut(auth);}catch(e){console.log('Firebase register note:',e.code);}
+      try{await createUserWithEmailAndPassword(auth,email,password);await signOut(auth);}catch(e){console.log('Firebase register note:',e.code);}
       registeredAccounts[email]={password,name:email.split('@')[0],method:'email'}; saveAccounts(); pendingGoogleCred=null;
       showToast('Registrasi berhasil! Silakan login 🎉'); setTimeout(()=>go('s-login'),1800);
     } else if(verifyMode==='register-google') {
@@ -1369,7 +1245,8 @@
 
   function showDashboard(user, method) {
     currentUserEmail=user.email||null;
-    const avatar=document.getElementById('dash-avatar'); avatar.src=user.photoURL||DEFAULT_AVATAR; avatar.style.display='block';
+    const avatar=document.getElementById('dash-avatar');
+    avatar.src=user.photoURL||DEFAULT_AVATAR; avatar.style.display='block';
     document.getElementById('dash-greeting-sub').textContent=getGreetingByTime();
     const displayName=(user.displayName||user.email||'User').split('@')[0];
     setGreetingName(displayName); setAccountName(displayName);
@@ -1378,6 +1255,5 @@
     go('s-dashboard'); initSlider(); openDashPopup();
   }
 </script>
-
 </body>
 </html>
