@@ -221,16 +221,20 @@
     .acc-privacy-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px; }
     .acc-privacy-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; color: var(--accent); }
     .acc-privacy-icon svg { width: 22px; height: 22px; }
-    .acc-section-label { font-size: 11px; font-weight: 600; color: #555; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; padding-left: 2px; }
-    .acc-menu { display: flex; flex-direction: column; }
-    .acc-menu-item { display: flex; align-items: center; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--white); transition: opacity .2s; }
+    .acc-section-label { font-size: 11px; font-weight: 600; color: #555; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; padding-left: 4px; }
+    .acc-menu { display: flex; flex-direction: column; gap: 0; }
+    .acc-menu-group { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+    .acc-menu-item { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--white); transition: background .15s; }
     .acc-menu-item:last-child { border-bottom: none; }
-    .acc-menu-item:hover { opacity: .75; }
-    .acc-menu-item svg { width: 21px; height: 21px; flex-shrink: 0; color: var(--white); }
-    .acc-menu-item span { font-size: 15px; font-weight: 500; }
+    .acc-menu-item:hover { background: rgba(255,255,255,0.04); }
+    .acc-menu-item-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .acc-menu-item-icon svg { width: 17px; height: 17px; color: var(--white); }
+    .acc-menu-item span { font-size: 15px; font-weight: 500; flex: 1; }
     .acc-menu-item-sub { align-items: flex-start; }
-    .acc-menu-text { display: flex; flex-direction: column; gap: 4px; }
-    .acc-menu-sub { font-size: 12.5px; color: var(--text-sec); font-weight: 400; }
+    .acc-menu-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+    .acc-menu-sub { font-size: 12px; color: var(--text-sec); font-weight: 400; }
+    .acc-menu-chevron { color: #444; flex-shrink: 0; }
+    .acc-menu-chevron svg { width: 16px; height: 16px; display: block; }
 
     .send-page-header { display: flex; align-items: center; margin-bottom: 18px; }
     .circle-back-btn { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--white); cursor: pointer; transition: border-color .2s; padding: 0; }
@@ -521,24 +525,30 @@
 
       <div class="acc-section-label">Fitur</div>
       <div class="acc-menu">
-        <div class="acc-menu-item" onclick="playSendAnimation(openChatPage, '#ff3b3b')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>Messages</span>
-        </div>
-        <div class="acc-menu-item acc-menu-item-sub" onclick="showToast('Business profile')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          <div class="acc-menu-text">
-            <span>Setup your business profile</span>
-            <div class="acc-menu-sub">Automate work travel &amp; meal expenses</div>
+        <div class="acc-menu-group">
+          <div class="acc-menu-item" onclick="playSendAnimation(openChatPage, '#ff3b3b')">
+            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <span>Messages</span>
+            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
           </div>
-        </div>
-        <div class="acc-menu-item" onclick="playSendAnimation(openManageAccountPage, '#ffffff')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Manage account</span>
-        </div>
-        <div class="acc-menu-item" onclick="showToast('Legal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <span>Legal</span>
+          <div class="acc-menu-item acc-menu-item-sub" onclick="showToast('Business profile')">
+            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+            <div class="acc-menu-text">
+              <span>Setup your business profile</span>
+              <div class="acc-menu-sub">Automate work travel &amp; meal expenses</div>
+            </div>
+            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="acc-menu-item" onclick="playSendAnimation(openManageAccountPage, '#ffffff')">
+            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span>Manage account</span>
+            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="acc-menu-item" onclick="showToast('Legal')">
+            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <span>Legal</span>
+            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
         </div>
       </div>
     </div>
