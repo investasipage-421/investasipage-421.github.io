@@ -371,47 +371,53 @@
       </div>
     </div>
     <!-- Panel email login -->
-    <div id="email-login-panel" style="display:none;position:fixed;inset:0;background:var(--black);z-index:10;overflow-y:auto;padding:max(48px,env(safe-area-inset-top)) 28px 40px;flex-direction:column;align-items:center;justify-content:center;">
+    <div id="email-login-panel" style="display:none;position:fixed;inset:0;background:var(--black);z-index:10;overflow-y:auto;padding:max(48px,env(safe-area-inset-top)) 28px 40px;flex-direction:column;align-items:center;">
       <button class="back-btn" onclick="hideEmailLogin()" style="align-self:flex-start;margin-bottom:32px;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back
       </button>
-      <div style="width:100%;max-width:400px;">
-        <h2 style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;text-align:center;margin-bottom:8px;">Masuk atau daftar</h2>
-        <p style="font-size:14px;color:#888;text-align:center;line-height:1.6;margin-bottom:32px;">Masuk ke akun orbitxy kamu atau buat akun baru dengan email.</p>
-        <!-- Floating label email input -->
-        <div class="float-input-wrap" style="position:relative;margin-bottom:16px;">
-          <input type="email" id="l-email" autocomplete="email" placeholder=" "
-            style="width:100%;background:transparent;border:1.5px solid #444;border-radius:10px;padding:20px 16px 8px;font-size:15px;font-family:'DM Sans',sans-serif;color:#fff;outline:none;transition:border-color .2s;"
-            onfocus="this.previousElementSibling.style.color='#00ff88';this.style.borderColor='#666';"
-            onblur="this.previousElementSibling.style.color='#666';this.style.borderColor='#444';"
-            oninput="document.getElementById('l-email-err').textContent=''"/>
-          <label style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;color:#666;pointer-events:none;transition:all .15s;background:var(--black);padding:0 4px;"
-            onclick="document.getElementById('l-email').focus()">Email</label>
-          <div class="err-msg" id="l-email-err" style="margin-top:4px;"></div>
-        </div>
-        <!-- Floating label password input -->
-        <div class="float-input-wrap" style="position:relative;margin-bottom:6px;">
-          <input type="password" id="l-pass" placeholder=" "
-            style="width:100%;background:transparent;border:1.5px solid #444;border-radius:10px;padding:20px 48px 8px 16px;font-size:15px;font-family:'DM Sans',sans-serif;color:#fff;outline:none;transition:border-color .2s;"
-            onfocus="this.previousElementSibling.style.color='#00ff88';this.style.borderColor='#666';"
-            onblur="this.previousElementSibling.style.color='#666';this.style.borderColor='#444';"
-            oninput="document.getElementById('l-pass-err').textContent=''"/>
-          <label style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;color:#666;pointer-events:none;transition:all .15s;background:var(--black);padding:0 4px;"
-            onclick="document.getElementById('l-pass').focus()">Password</label>
-          <button class="show-pass-btn" onclick="togglePass('l-pass',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      <div style="width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;">
+        <!-- Logo orbitxy gradient -->
+        <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;background:linear-gradient(90deg,#ff6b35,#e91e8c,#9c27b0,#3f51b5,#2196f3,#00bcd4,#00e676);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:32px;letter-spacing:-.02em;">orbitxy</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;text-align:center;margin-bottom:28px;width:100%;">Masuk atau daftar</h2>
+        <!-- Step 1: Email -->
+        <div id="el-step-email" style="width:100%;">
+          <div style="position:relative;margin-bottom:6px;">
+            <input type="email" id="l-email" autocomplete="email" placeholder=" "
+              style="width:100%;background:transparent;border:1.5px solid #555;border-radius:10px;padding:22px 16px 8px;font-size:15px;font-family:'DM Sans',sans-serif;color:#fff;outline:none;transition:border-color .2s;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#fff';document.getElementById('lbl-email').style.color='#fff';"
+              onblur="this.style.borderColor='#555';document.getElementById('lbl-email').style.color='#888';"
+              onkeydown="if(event.key==='Enter')goToPassword()"/>
+            <label id="lbl-email" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;color:#888;pointer-events:none;transition:all .15s;background:var(--black);padding:0 4px;">Email</label>
+          </div>
+          <div class="err-msg" id="l-email-err" style="margin-bottom:12px;"></div>
+          <button onclick="goToPassword()"
+            style="width:100%;background:#2a2a2a;color:#888;border:none;border-radius:50px;padding:17px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:8px;transition:background .2s,color .2s;"
+            id="btn-lanjutkan-email">
+            Lanjutkan
           </button>
-          <div class="err-msg" id="l-pass-err" style="margin-top:4px;"></div>
+          <p class="switch-text" style="margin-top:24px;">Belum punya akun? <button onclick="hideEmailLogin();go('s-register')">Daftar</button></p>
         </div>
-        <button class="forgot-link" onclick="hideEmailLogin();go('s-forgot')" style="margin-bottom:20px;">Lupa password?</button>
-        <button onclick="doEmailLogin()"
-          style="width:100%;background:#333;color:#888;border:none;border-radius:50px;padding:16px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s,color .2s;"
-          id="btn-login-email"
-          onmouseover="this.style.background='#fff';this.style.color='#000';"
-          onmouseout="this.style.background='#333';this.style.color='#888';">
-          Lanjutkan
-        </button>
-        <p class="switch-text" style="margin-top:24px;">Belum punya akun? <button onclick="hideEmailLogin();go('s-register')">Daftar</button></p>
+        <!-- Step 2: Password (tersembunyi dulu) -->
+        <div id="el-step-pass" style="width:100%;display:none;">
+          <div style="font-size:13px;color:#888;text-align:center;margin-bottom:16px;" id="el-email-show"></div>
+          <div style="position:relative;margin-bottom:6px;">
+            <input type="password" id="l-pass" placeholder=" "
+              style="width:100%;background:transparent;border:1.5px solid #555;border-radius:10px;padding:22px 48px 8px 16px;font-size:15px;font-family:'DM Sans',sans-serif;color:#fff;outline:none;transition:border-color .2s;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#fff';document.getElementById('lbl-pass').style.color='#fff';"
+              onblur="this.style.borderColor='#555';document.getElementById('lbl-pass').style.color='#888';"
+              onkeydown="if(event.key==='Enter')doEmailLogin()"/>
+            <label id="lbl-pass" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;color:#888;pointer-events:none;transition:all .15s;background:var(--black);padding:0 4px;">Password</label>
+            <button class="show-pass-btn" onclick="togglePass('l-pass',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="err-msg" id="l-pass-err" style="margin-bottom:4px;"></div>
+          <button class="forgot-link" onclick="hideEmailLogin();go('s-forgot')" style="margin-bottom:4px;">Lupa password?</button>
+          <button onclick="doEmailLogin()"
+            style="width:100%;background:#2a2a2a;color:#888;border:none;border-radius:50px;padding:17px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:8px;transition:background .2s,color .2s;">
+            Masuk
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -849,30 +855,47 @@
   function saveAccounts() { localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts)); }
   function escapeHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
+  window.goToPassword = function() {
+    const email = document.getElementById('l-email').value.trim();
+    if (!email) { document.getElementById('l-email-err').textContent = 'Email wajib diisi'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('l-email-err').textContent = 'Format email tidak valid'; return; }
+    document.getElementById('el-step-email').style.display = 'none';
+    document.getElementById('el-step-pass').style.display = 'block';
+    document.getElementById('el-email-show').textContent = email;
+    document.getElementById('l-pass').value = '';
+    document.getElementById('l-pass-err').textContent = '';
+    setTimeout(() => document.getElementById('l-pass').focus(), 100);
+    // floating label pass
+    const pw = document.getElementById('l-pass');
+    const lbl = document.getElementById('lbl-pass');
+    pw.addEventListener('input', () => {
+      if (pw.value) { lbl.style.top='10px'; lbl.style.fontSize='11px'; lbl.style.transform='translateY(0)'; }
+      else { lbl.style.top='50%'; lbl.style.fontSize='15px'; lbl.style.transform='translateY(-50%)'; }
+    });
+  };
   window.showEmailLogin = function() {
     const p = document.getElementById('email-login-panel');
     p.style.display = 'flex';
-    // kosongkan field
+    // reset ke step email
+    document.getElementById('el-step-email').style.display = 'block';
+    document.getElementById('el-step-pass').style.display = 'none';
     const em = document.getElementById('l-email');
     const pw = document.getElementById('l-pass');
     if(em) em.value = '';
     if(pw) pw.value = '';
     document.getElementById('l-email-err').textContent = '';
     document.getElementById('l-pass-err').textContent = '';
-    // floating label logic
-    ['l-email','l-pass'].forEach(id => {
-      const inp = document.getElementById(id);
-      if (!inp) return;
-      const lbl = inp.previousElementSibling;
-      function update() {
-        if (inp.value) { lbl.style.top='10px'; lbl.style.fontSize='11px'; lbl.style.transform='translateY(0)'; }
-        else { lbl.style.top='50%'; lbl.style.fontSize='15px'; lbl.style.transform='translateY(-50%)'; }
-      }
-      inp.addEventListener('input', update);
-      inp.addEventListener('focus', ()=>{ lbl.style.top='10px'; lbl.style.fontSize='11px'; lbl.style.transform='translateY(0)'; lbl.style.color='#00ff88'; });
-      inp.addEventListener('blur', ()=>{ lbl.style.color='#666'; update(); });
-      update();
-    });
+    // floating label email
+    const em2 = document.getElementById('l-email');
+    const lbl2 = document.getElementById('lbl-email');
+    if (em2 && lbl2) {
+      em2.addEventListener('input', () => {
+        if (em2.value) { lbl2.style.top='10px'; lbl2.style.fontSize='11px'; lbl2.style.transform='translateY(0)'; }
+        else { lbl2.style.top='50%'; lbl2.style.fontSize='15px'; lbl2.style.transform='translateY(-50%)'; }
+      });
+      lbl2.style.top='50%'; lbl2.style.fontSize='15px'; lbl2.style.transform='translateY(-50%)';
+    }
+    setTimeout(() => { if(em2) em2.focus(); }, 100);
   };
   window.hideEmailLogin = function() { document.getElementById('email-login-panel').style.display='none'; };
   window.hideEmailLogin = function() { document.getElementById('email-login-panel').style.display='none'; };
