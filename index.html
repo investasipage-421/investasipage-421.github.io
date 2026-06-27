@@ -20,27 +20,20 @@
       background: var(--black);
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow-x: hidden; padding: 40px 16px;
+      display: flex; align-items: flex-start; justify-content: center;
+      position: relative; overflow-x: hidden; padding: 0;
     }
     body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 44px 44px; pointer-events: none; z-index: 0;
+      content: ''; display: none;
     }
     body::after {
-      content: ''; position: fixed; top: -120px; left: -120px;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(0,255,136,0.07) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
+      content: ''; display: none;
     }
-    #app { position: relative; z-index: 1; width: 100%; max-width: 400px; }
+    #app { position: relative; z-index: 1; width: 100%; max-width: 480px; min-height: 100vh; }
     .screen { display: none; animation: fadeIn .3s ease; }
     .screen.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .card { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: 28px; padding: 42px 36px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+    .card { background: transparent; border: none; border-radius: 0; padding: 32px 28px; box-shadow: none; }
     .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-sec); background: none; border: none; cursor: pointer; margin-bottom: 32px; padding: 0; font-family: 'DM Sans', sans-serif; transition: color .2s; }
     .back-btn:hover { color: var(--white); }
     .back-btn svg { width: 16px; height: 16px; }
