@@ -104,7 +104,7 @@
     #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
-      padding: max(24px, env(safe-area-inset-top)) 18px 110px;
+      padding: max(24px, env(safe-area-inset-top)) 18px 120px;
       display: flex; flex-direction: column;
     }
     #s-chat { overflow: hidden; }
@@ -185,31 +185,79 @@
     .slide-video { padding: 0; overflow: hidden; }
     .slide-video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .dash-footer { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: auto; padding-top: 24px; padding-bottom: 8px; }
-    .bottom-nav-wrap {
-      position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
-      z-index: 51; background: transparent; border: none; padding: 0;
-      display: none; justify-content: center; box-shadow: none; width: auto;
-    }
-    .bottom-nav { display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: #888; cursor: pointer; font-size: 0px;
-      width: 58px; height: 58px; border-radius: 18px;
-      background: #1e1e1e; border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 4px 18px rgba(0,0,0,0.5);
-      transition: background .2s, color .2s, transform .15s, box-shadow .2s;
-    }
-    .nav-item svg { width: 24px; height: 24px; }
-    .nav-item.active { color: #fff; background: #2a2a2a; border-color: rgba(255,255,255,0.18); box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
 
-    /* ACCOUNT - avatar tengah + nama tengah */
+    /* ===== BOTTOM NAV — SINGLE PILL ===== */
+    .bottom-nav-wrap {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 51;
+      display: none;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .bottom-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: #1c1c1c;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 9999px;
+      padding: 10px 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.65), 0 2px 8px rgba(0,0,0,0.4);
+      pointer-events: auto;
+      gap: 4px;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 52px;
+      height: 44px;
+      border-radius: 9999px;
+      background: transparent;
+      border: none;
+      color: #555;
+      transition: background .2s, color .2s, transform .15s;
+      position: relative;
+    }
+    .nav-item svg { width: 22px; height: 22px; display: block; }
+    .nav-item.active {
+      background: rgba(255,255,255,0.10);
+      color: #ffffff;
+    }
+    .nav-item:hover:not(.active) { color: #aaa; }
+    /* subtle active dot */
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    /* divider between items */
+    .nav-divider {
+      width: 1px;
+      height: 22px;
+      background: rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    /* ===== END BOTTOM NAV ===== */
+
+    /* ACCOUNT */
     .acc-top-section { display: flex; flex-direction: column; align-items: center; padding-top: 10px; margin-bottom: 20px; }
     .acc-avatar-wrap { position: relative; width: 90px; height: 90px; margin-bottom: 14px; cursor: pointer; }
     .acc-avatar-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; display: block; border: 2.5px solid var(--border); background: var(--card); }
     .acc-name-center { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -.01em; text-align: center; margin-bottom: 8px; position: relative; display: inline-block; cursor: pointer; }
     .acc-rating { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--white); }
     .acc-rating svg { width: 13px; height: 13px; color: var(--accent); }
-
     .acc-quick-row { display: flex; gap: 10px; margin-bottom: 12px; }
     .acc-quick-card { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 16px 8px; cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
     .acc-quick-card:hover { border-color: #444; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.4); }
@@ -512,17 +560,15 @@
     </div>
   </div>
 
-  <!-- ACCOUNT SCREEN - NEW LAYOUT -->
+  <!-- ACCOUNT SCREEN -->
   <div class="screen" id="s-account">
     <div class="dash-inner">
-      <!-- Avatar tengah + nama tengah -->
       <div class="acc-top-section">
         <div class="acc-avatar-wrap" onclick="document.getElementById('avatar-input').click()" title="Tap untuk ganti foto">
           <img id="dash-avatar" class="acc-avatar-img" src="" alt="avatar"/>
         </div>
         <div class="acc-name-center" id="acc-name" data-glitch-text="User" onclick="triggerAccountNameGlitch()">User</div>
       </div>
-
       <div class="acc-section-label">Fitur</div>
       <div class="acc-menu">
         <div class="acc-menu-group">
@@ -630,7 +676,6 @@
       </div>
       <h1 class="title" style="font-size:30px;margin-bottom:6px;">Manage<br>Account</h1>
       <p class="subtitle" style="margin-top:0;margin-bottom:24px;">Kelola data, keamanan, dan status akun kamu</p>
-      <!-- info badges kecil -->
       <div style="display:flex;gap:8px;margin-bottom:20px;">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#00ff88"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#00ff88" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -736,23 +781,37 @@
     </div>
   </div>
 
-  <!-- Bottom nav -->
+  <!-- ===== BOTTOM NAV — SINGLE PILL KAPSUL ===== -->
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
-      <div class="nav-item active" id="nav-home" onclick="goDashTab('home')">
+      <!-- Home -->
+      <div class="nav-item active" id="nav-home" onclick="goDashTab('home')" title="Home">
         <svg viewBox="0 0 24 24" fill="none">
-          <path id="house-body" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
-          <rect id="house-door" x="9.5" y="14.5" width="5" height="7" rx="1" fill="#2a2a2a" stroke="none"/>
+          <path id="icon-home-body" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
+          <rect id="icon-home-door" x="9.5" y="14.5" width="5" height="7" rx="1" fill="#1c1c1c" stroke="none"/>
         </svg>
       </div>
-      <div class="nav-item" id="nav-account" onclick="goDashTab('account')">
+      <!-- Divider -->
+      <div class="nav-divider"></div>
+      <!-- Chat -->
+      <div class="nav-item" id="nav-chat" onclick="goDashTab('chat')" title="Chat">
         <svg viewBox="0 0 24 24" fill="none">
-          <circle id="acc-head" cx="12" cy="7" r="4" fill="none" stroke="#666" stroke-width="1.8"/>
-          <path id="acc-body" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#666" stroke-width="1.8"/>
+          <path id="icon-chat-bubble" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="#555" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <!-- Divider -->
+      <div class="nav-divider"></div>
+      <!-- Account -->
+      <div class="nav-item" id="nav-account" onclick="goDashTab('account')" title="Account">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle id="icon-acc-head" cx="12" cy="7" r="4" fill="none" stroke="#555" stroke-width="1.8"/>
+          <path id="icon-acc-body" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#555" stroke-width="1.8"/>
         </svg>
       </div>
     </div>
   </div>
+  <!-- ===== END BOTTOM NAV ===== -->
+
 </div>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -803,7 +862,8 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const dashNav = document.getElementById('dash-bottom-nav');
-    if (dashNav) dashNav.style.display = (id === 's-dashboard' || id === 's-account') ? 'flex' : 'none';
+    const showNav = ['s-dashboard','s-account'].includes(id);
+    if (dashNav) dashNav.style.display = showNav ? 'flex' : 'none';
     window.scrollTo(0,0); manageSlideVideo(id);
     if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
     if (id === 's-account' && typeof triggerAccountNameGlitch === 'function') triggerAccountNameGlitch();
@@ -814,24 +874,49 @@
     if (screenId === 's-dashboard') vid.play().catch(()=>{}); else vid.pause();
   }
 
-  window.goDashTab = function(tab) {
+  // Update icon states for all 3 nav items
+  function setNavActive(tab) {
+    // Reset all
     document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-    const navEl = document.getElementById('nav-' + tab); if (navEl) navEl.classList.add('active');
-    const houseBody = document.getElementById('house-body');
-    const houseDoor = document.getElementById('house-door');
-    const accHead = document.getElementById('acc-head');
-    const accBody = document.getElementById('acc-body');
+
+    // Home icon
+    const homeBody = document.getElementById('icon-home-body');
+    const homeDoor = document.getElementById('icon-home-door');
+    if (homeBody) { homeBody.setAttribute('fill','none'); homeBody.setAttribute('stroke','#555'); homeBody.setAttribute('stroke-width','1.8'); }
+    if (homeDoor) { homeDoor.setAttribute('fill','none'); homeDoor.setAttribute('stroke','none'); }
+
+    // Chat icon
+    const chatBubble = document.getElementById('icon-chat-bubble');
+    if (chatBubble) { chatBubble.setAttribute('fill','none'); chatBubble.setAttribute('stroke','#555'); }
+
+    // Account icon
+    const accHead = document.getElementById('icon-acc-head');
+    const accBody = document.getElementById('icon-acc-body');
+    if (accHead) { accHead.setAttribute('fill','none'); accHead.setAttribute('stroke','#555'); }
+    if (accBody) { accBody.setAttribute('stroke','#555'); }
+
+    // Activate selected
     if (tab === 'home') {
-      if (houseBody) { houseBody.setAttribute('fill','#ffffff'); houseBody.setAttribute('stroke','none'); }
-      if (houseDoor) { houseDoor.setAttribute('fill','#2a2a2a'); houseDoor.setAttribute('stroke','none'); }
-      if (accHead) { accHead.setAttribute('fill','none'); accHead.setAttribute('stroke','#666'); }
-      if (accBody) { accBody.setAttribute('stroke','#666'); }
-      go('s-dashboard'); initSlider();
+      document.getElementById('nav-home').classList.add('active');
+      if (homeBody) { homeBody.setAttribute('fill','#ffffff'); homeBody.setAttribute('stroke','none'); }
+      if (homeDoor) { homeDoor.setAttribute('fill','#1c1c1c'); homeDoor.setAttribute('stroke','none'); }
+    } else if (tab === 'chat') {
+      document.getElementById('nav-chat').classList.add('active');
+      if (chatBubble) { chatBubble.setAttribute('fill','rgba(255,255,255,0.12)'); chatBubble.setAttribute('stroke','#ffffff'); }
     } else if (tab === 'account') {
-      if (houseBody) { houseBody.setAttribute('fill','none'); houseBody.setAttribute('stroke','#666'); houseBody.setAttribute('stroke-width','1.8'); }
-      if (houseDoor) { houseDoor.setAttribute('fill','none'); houseDoor.setAttribute('stroke','#666'); houseDoor.setAttribute('stroke-width','1.8'); }
+      document.getElementById('nav-account').classList.add('active');
       if (accHead) { accHead.setAttribute('fill','#ffffff'); accHead.setAttribute('stroke','none'); }
       if (accBody) { accBody.setAttribute('stroke','#ffffff'); }
+    }
+  }
+
+  window.goDashTab = function(tab) {
+    setNavActive(tab);
+    if (tab === 'home') {
+      go('s-dashboard'); initSlider();
+    } else if (tab === 'chat') {
+      openChatPage();
+    } else if (tab === 'account') {
       go('s-account');
     } else {
       showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)');
@@ -1062,7 +1147,6 @@
   window.triggerGreetingGlitch = function() { triggerNameGlitch('dash-greeting-name'); };
   window.triggerAccountNameGlitch = function() { triggerNameGlitch('acc-name'); };
   window.setAccountName = function(name) { const el=document.getElementById('acc-name'); el.textContent=name; el.setAttribute('data-glitch-text',name); };
-  window.setAccountRating = function(rating) { document.getElementById('acc-rating-val').textContent=Number(rating).toFixed(2); };
   window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage=`url('${url}')`; };
 
   const sliderTrack=document.getElementById('slider-track'), sliderDots=document.querySelectorAll('.slider-dot'), slides=document.querySelectorAll('.slide');
@@ -1238,8 +1322,7 @@
     document.getElementById('dash-greeting-sub').textContent=getGreetingByTime();
     const displayName=(user.displayName||user.email||'User').split('@')[0];
     setGreetingName(displayName); setAccountName(displayName);
-    document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
-    document.getElementById('nav-home').classList.add('active');
+    setNavActive('home');
     go('s-dashboard'); initSlider(); openDashPopup();
   }
 </script>
