@@ -1067,7 +1067,7 @@
       <div style="font-size:11px;font-weight:600;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Anggota</div>
       <div id="gi-member-list" style="background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;margin-bottom:16px;"></div>
       <!-- Leave group -->
-      <button onclick="closeGrupInfo();showToast('Keluar grup segera hadir')" style="width:100%;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:10px;padding:13px;color:#ff7070;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">Keluar Grup</button>
+      <button id="gi-keluar-btn" style="width:100%;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:10px;padding:13px;color:#ff7070;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">Keluar Grup</button>
     </div>
   </div>
 
@@ -1616,7 +1616,9 @@
     const errEl = document.getElementById('grup-name-err');
     if (!name) { if (errEl) errEl.textContent = 'Nama grup wajib diisi'; return; }
     if (errEl) errEl.textContent = '';
-    const grup = { id:'g_'+Date.now(), name, photo: currentGrupPhoto||'', members:1, created: new Date().getFullYear().toString(), memberList:[{ name: currentUserEmail||'Saya', handle:'@saya', avatar:'' }] };
+    const ownerEmail = currentUserEmail || 'saya';
+    const ownerName = (registeredAccounts[ownerEmail] && registeredAccounts[ownerEmail].name) || ownerEmail.split('@')[0] || 'Saya';
+    const grup = { id:'g_'+Date.now(), name, photo: currentGrupPhoto||'', members:1, created: new Date().getFullYear().toString(), ownerEmail, memberList:[{ name: ownerName, handle:'@'+ownerName.toLowerCase().replace(/\s+/g,''), email: ownerEmail, role:'owner' }] };
     chatGrups.unshift(grup);
     saveGrups();
     closeBuatGrupModal();
@@ -1719,30 +1721,133 @@
     renderGrupMessages(currentGrupIndex);
   };
 
+  // Role helpers
+  function getMyRole(g) {
+    const email = currentUserEmail || 'saya';
+    const m = (g.memberList||[]).find(x => x.email === email);
+    return m ? m.role : null; // 'owner','admin','member'
+  }
+  function isOwner(g) { return getMyRole(g) === 'owner'; }
+  function isAdmin(g) { return getMyRole(g) === 'admin' || isOwner(g); }
+
+  function renderGrupInfoMembers(g) {
+    const giMl = document.getElementById('gi-member-list'); if (!giMl) return;
+    giMl.innerHTML = '';
+    const myRole = getMyRole(g);
+    const members = g.memberList || [];
+    members.forEach((m, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);';
+      if (i === members.length-1) row.style.borderBottom = 'none';
+      const bg = avatarColor(m.name);
+      const isMe = m.email === (currentUserEmail||'saya');
+
+      // Role badge
+      let badge = '';
+      if (m.role === 'owner') badge = '<span style="font-size:10px;background:rgba(255,200,0,.15);color:#ffc800;border-radius:6px;padding:2px 8px;font-weight:700;">Owner</span>';
+      else if (m.role === 'admin') badge = '<span style="font-size:10px;background:rgba(0,255,136,.12);color:#00ff88;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>';
+
+      // Action button — what can I do to this member?
+      let actionBtn = '';
+      if (!isMe && m.role !== 'owner') {
+        // Owner can do anything to non-owner
+        if (myRole === 'owner') {
+          if (m.role === 'admin') {
+            actionBtn = `<button onclick="memberAction(${i},'demote')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Turunkan</button>`;
+          } else {
+            actionBtn = `
+              <button onclick="memberAction(${i},'promote')" style="font-size:11px;color:#00ff88;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:4px;white-space:nowrap;">Jadikan Admin</button>
+              <button onclick="memberAction(${i},'kick')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Keluarkan</button>`;
+          }
+        }
+        // Admin can kick member (not admin/owner)
+        else if (myRole === 'admin' && m.role === 'member') {
+          actionBtn = `<button onclick="memberAction(${i},'kick')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Keluarkan</button>`;
+        }
+      }
+
+      row.innerHTML = `
+        <div style="width:34px;height:34px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;">${getInitials(m.name)}</div>
+        <div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:600;color:var(--white);">${escapeHtml(m.name)}${isMe?' <span style=\"font-size:10px;color:#888;\">(Kamu)</span>':''}</div><div style="font-size:11px;color:var(--text-sec);">${escapeHtml(m.handle||'')}</div></div>
+        <div style="display:flex;gap:4px;flex-shrink:0;">${badge}${actionBtn}</div>`;
+      giMl.appendChild(row);
+    });
+  }
+
+  window.memberAction = function(memberIdx, action) {
+    const g = chatGrups[currentGrupIndex]; if (!g) return;
+    const m = g.memberList[memberIdx]; if (!m) return;
+    const myRole = getMyRole(g);
+
+    // Security checks
+    if (m.role === 'owner') { showToast('Owner tidak bisa diubah statusnya', true); return; }
+    if (action === 'kick' && m.role === 'admin' && myRole !== 'owner') { showToast('Hanya owner yang bisa mengeluarkan admin', true); return; }
+    if (action === 'demote' && myRole !== 'owner') { showToast('Hanya owner yang bisa menurunkan admin', true); return; }
+
+    if (action === 'kick') {
+      if (!confirm('Keluarkan ' + m.name + ' dari grup?')) return;
+      g.memberList.splice(memberIdx, 1);
+      g.members = g.memberList.length;
+      showToast(m.name + ' dikeluarkan dari grup');
+    } else if (action === 'promote') {
+      g.memberList[memberIdx].role = 'admin';
+      showToast(m.name + ' dijadikan Admin ✓');
+    } else if (action === 'demote') {
+      g.memberList[memberIdx].role = 'member';
+      showToast(m.name + ' diturunkan jadi Member');
+    }
+
+    saveGrups();
+    // Re-render
+    const gcMembers = document.getElementById('gc-header-members');
+    if (gcMembers) gcMembers.textContent = g.memberList.length + ' anggota';
+    renderGrupInfoMembers(g);
+    renderContactList(chatContacts);
+  };
+
   window.openGrupInfo = function() {
     const g = chatGrups[currentGrupIndex]; if (!g) return;
     const giName = document.getElementById('gi-name');
     const giCount = document.getElementById('gi-count');
     const giAvatar = document.getElementById('gi-avatar');
-    const giMl = document.getElementById('gi-member-list');
     if (giName) giName.textContent = g.name;
-    if (giCount) giCount.textContent = (g.members||1) + ' anggota';
+    if (giCount) giCount.textContent = (g.memberList||[]).length + ' anggota';
     if (giAvatar) giAvatar.innerHTML = grupAvatarHtml(g, 30);
-    if (giMl) {
-      giMl.innerHTML = '';
-      const members = g.memberList || [{ name: currentUserEmail||'Saya', handle:'@saya' }];
-      members.forEach((m, i) => {
-        const row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);';
-        if (i === members.length-1) row.style.borderBottom = 'none';
-        const bg = avatarColor(m.name);
-        row.innerHTML = `
-          <div style="width:34px;height:34px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;">${getInitials(m.name)}</div>
-          <div style="flex:1;"><div style="font-size:13.5px;font-weight:600;color:var(--white);">${escapeHtml(m.name)}</div><div style="font-size:11px;color:var(--text-sec);">${escapeHtml(m.handle||'')}</div></div>
-          ${i===0?'<span style="font-size:10px;background:rgba(0,255,136,.12);color:#00ff88;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>':''}`;
-        giMl.appendChild(row);
-      });
+    renderGrupInfoMembers(g);
+
+    // Show/hide keluar button based on role
+    const keluarBtn = document.getElementById('gi-keluar-btn');
+    const myRole = getMyRole(g);
+    if (keluarBtn) {
+      if (myRole === 'owner') {
+        keluarBtn.textContent = 'Hapus Grup';
+        keluarBtn.onclick = () => {
+          if (!confirm('Hapus grup "' + g.name + '" secara permanen?')) return;
+          chatGrups.splice(currentGrupIndex, 1);
+          saveGrups();
+          closeGrupInfo();
+          go('s-chat-nav');
+          renderContactList(chatContacts);
+          showToast('Grup dihapus');
+        };
+      } else {
+        keluarBtn.textContent = 'Keluar Grup';
+        keluarBtn.onclick = () => {
+          if (!confirm('Keluar dari grup "' + g.name + '"?')) return;
+          const email = currentUserEmail || 'saya';
+          g.memberList = g.memberList.filter(x => x.email !== email);
+          g.members = g.memberList.length;
+          saveGrups();
+          closeGrupInfo();
+          chatGrups.splice(currentGrupIndex, 1); // remove from my list
+          saveGrups();
+          go('s-chat-nav');
+          renderContactList(chatContacts);
+          showToast('Kamu keluar dari grup');
+        };
+      }
     }
+
     document.getElementById('modal-grup-info').classList.add('show');
   };
   window.closeGrupInfo = function() { document.getElementById('modal-grup-info').classList.remove('show'); };
