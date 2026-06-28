@@ -833,33 +833,51 @@
   </div>
 
   <!-- SCAN QR ORANG LAIN -->
-  <div class="screen" id="s-scan-qr">
-    <div class="dash-inner" style="align-items:stretch;">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;">
-        <button onclick="go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
+  <div class="screen" id="s-scan-qr" style="background:#000;">
+    <div style="width:100%;max-width:480px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:max(24px,env(safe-area-inset-top)) 18px 32px;position:relative;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;position:relative;z-index:10;">
+        <button onclick="stopScanCamera();go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;padding:0;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <div>
-          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">Scan QR</div>
-          <div style="font-size:12px;color:var(--text-sec);margin-top:1px;">Scan QR teman untuk tambah kontak</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;">Scan QR</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:1px;">Arahkan ke QR Code teman</div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
-        <!-- Viewfinder -->
-        <div style="position:relative;width:240px;height:240px;">
-          <div style="position:absolute;inset:0;border-radius:18px;background:rgba(255,255,255,0.02);"></div>
-          <div style="position:absolute;top:0;left:0;width:36px;height:36px;border-top:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:6px 0 0 0;"></div>
-          <div style="position:absolute;top:0;right:0;width:36px;height:36px;border-top:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 6px 0 0;"></div>
-          <div style="position:absolute;bottom:0;left:0;width:36px;height:36px;border-bottom:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:0 0 0 6px;"></div>
-          <div style="position:absolute;bottom:0;right:0;width:36px;height:36px;border-bottom:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 0 6px 0;"></div>
-          <div style="position:absolute;left:10px;right:10px;height:2px;background:linear-gradient(90deg,transparent,#00ff88,transparent);border-radius:2px;animation:scanLineMove 2s linear infinite;top:20px;"></div>
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="19" width="2" height="2"/></svg>
+
+      <!-- Camera area -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+        <div style="position:relative;width:100%;max-width:300px;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:#111;">
+          <!-- Live video -->
+          <video id="qr-video" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></video>
+          <!-- Dark overlay with transparent center -->
+          <div style="position:absolute;inset:0;pointer-events:none;">
+            <!-- Corner brackets -->
+            <div style="position:absolute;top:12px;left:12px;width:44px;height:44px;border-top:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:6px 0 0 0;z-index:2;"></div>
+            <div style="position:absolute;top:12px;right:12px;width:44px;height:44px;border-top:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 6px 0 0;z-index:2;"></div>
+            <div style="position:absolute;bottom:12px;left:12px;width:44px;height:44px;border-bottom:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:0 0 0 6px;z-index:2;"></div>
+            <div style="position:absolute;bottom:12px;right:12px;width:44px;height:44px;border-bottom:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 0 6px 0;z-index:2;"></div>
+            <!-- Scan line -->
+            <div id="scan-line-bar" style="position:absolute;left:16px;right:16px;height:2px;background:linear-gradient(90deg,transparent,#00ff88,transparent);z-index:3;animation:scanLineMove 2s linear infinite;"></div>
+          </div>
+          <!-- Camera off state -->
+          <div id="qr-cam-off" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#111;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.4"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/><line x1="1" y1="1" x2="23" y2="23" stroke="#444"/></svg>
+            <span style="font-size:12px;color:#444;">Kamera belum aktif</span>
           </div>
         </div>
-        <p style="font-size:13px;color:#555;text-align:center;line-height:1.6;">Arahkan kamera ke QR Code<br>milik teman kamu</p>
-        <button onclick="showToast('Fitur kamera segera hadir 📷')" style="background:var(--white);color:#000;border:none;border-radius:99px;padding:13px 32px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+
+        <p id="qr-scan-status" style="font-size:13px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.6;">Tekan tombol untuk buka kamera belakang</p>
+
+        <!-- Result box (hidden until scan) -->
+        <div id="qr-result-box" style="display:none;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.35);border-radius:14px;padding:14px 18px;width:100%;max-width:300px;text-align:center;">
+          <div style="font-size:11px;color:#00ff88;margin-bottom:4px;font-weight:600;">QR Terdeteksi ✓</div>
+          <div id="qr-result-text" style="font-size:13px;color:#ddd;word-break:break-all;"></div>
+        </div>
+
+        <button id="qr-cam-btn" onclick="startScanCamera()" style="background:#00ff88;color:#000;border:none;border-radius:99px;padding:14px 36px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity .2s;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           Buka Kamera
         </button>
       </div>
@@ -1068,6 +1086,7 @@
     const showNav = ['s-dashboard','s-account','s-chat-nav'].includes(id);
     if (dashNav) dashNav.style.display = showNav ? 'flex' : 'none';
     window.scrollTo(0,0); manageSlideVideo(id);
+    if (id !== 's-scan-qr' && typeof stopScanCamera === 'function') stopScanCamera();
     if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
     if (id === 's-account' && typeof triggerAccountNameGlitch === 'function') triggerAccountNameGlitch();
   };
@@ -1590,6 +1609,122 @@
     if (dd) dd.style.display = 'none';
     if (btn) btn.style.background = '';
   }
+
+  // ===== SCAN QR KAMERA BELAKANG =====
+  let scanStream = null;
+  let scanAnimFrame = null;
+  let scanCanvas = null;
+  let scanCtx = null;
+
+  window.startScanCamera = async function() {
+    const video = document.getElementById('qr-video');
+    const btn = document.getElementById('qr-cam-btn');
+    const status = document.getElementById('qr-scan-status');
+    const camOff = document.getElementById('qr-cam-off');
+    const resultBox = document.getElementById('qr-result-box');
+    if (!video) return;
+
+    try {
+      // Stop existing stream
+      if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
+      });
+      scanStream = stream;
+      video.srcObject = stream;
+      await video.play();
+
+      if (camOff) camOff.style.display = 'none';
+      if (btn) { btn.textContent = '⏹ Stop Kamera'; btn.onclick = stopScanCamera; btn.style.background = '#ff5c5c'; btn.style.color = '#fff'; }
+      if (status) status.textContent = 'Arahkan ke QR Code teman kamu...';
+      if (resultBox) resultBox.style.display = 'none';
+
+      // Setup canvas for QR scanning
+      scanCanvas = document.createElement('canvas');
+      scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
+      startQRScan(video);
+
+    } catch(e) {
+      // Fallback: try without exact facingMode
+      try {
+        const stream2 = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        scanStream = stream2;
+        video.srcObject = stream2;
+        await video.play();
+        if (camOff) camOff.style.display = 'none';
+        if (btn) { btn.textContent = '⏹ Stop Kamera'; btn.onclick = stopScanCamera; btn.style.background = '#ff5c5c'; btn.style.color = '#fff'; }
+        if (status) status.textContent = 'Arahkan ke QR Code teman kamu...';
+        scanCanvas = document.createElement('canvas');
+        scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
+        startQRScan(video);
+      } catch(e2) {
+        if (status) status.textContent = 'Kamera tidak dapat diakses. Izinkan akses kamera di browser.';
+        showToast('Izinkan akses kamera dulu ya 📷', true);
+      }
+    }
+  };
+
+  function startQRScan(video) {
+    if (scanAnimFrame) cancelAnimationFrame(scanAnimFrame);
+
+    function tick() {
+      if (!scanStream || !video.videoWidth) { scanAnimFrame = requestAnimationFrame(tick); return; }
+      scanCanvas.width = video.videoWidth;
+      scanCanvas.height = video.videoHeight;
+      scanCtx.drawImage(video, 0, 0);
+
+      // Use BarcodeDetector if available (Chrome Android)
+      if (window.BarcodeDetector) {
+        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        detector.detect(scanCanvas).then(codes => {
+          if (codes.length > 0) {
+            onQRDetected(codes[0].rawValue);
+            return;
+          }
+          scanAnimFrame = requestAnimationFrame(tick);
+        }).catch(() => { scanAnimFrame = requestAnimationFrame(tick); });
+      } else {
+        // BarcodeDetector not available
+        const status = document.getElementById('qr-scan-status');
+        if (status && !status.textContent.includes('BarcodeDetector')) {
+          status.textContent = 'Kamera aktif ✓ — Browser ini belum support auto-scan. Pakai Chrome terbaru untuk scan otomatis.';
+        }
+        scanAnimFrame = requestAnimationFrame(tick);
+      }
+    }
+    scanAnimFrame = requestAnimationFrame(tick);
+  }
+
+  function onQRDetected(text) {
+    stopScanCamera();
+    const resultBox = document.getElementById('qr-result-box');
+    const resultText = document.getElementById('qr-result-text');
+    const status = document.getElementById('qr-scan-status');
+    if (resultBox) resultBox.style.display = 'block';
+    if (resultText) resultText.textContent = text;
+    if (status) status.textContent = 'QR berhasil dibaca!';
+    showToast('QR berhasil di-scan! ✅');
+  }
+
+  window.stopScanCamera = function() {
+    if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+    if (scanAnimFrame) { cancelAnimationFrame(scanAnimFrame); scanAnimFrame = null; }
+    const video = document.getElementById('qr-video');
+    if (video) { video.srcObject = null; }
+    const camOff = document.getElementById('qr-cam-off');
+    if (camOff) camOff.style.display = 'flex';
+    const btn = document.getElementById('qr-cam-btn');
+    if (btn) {
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Buka Kamera';
+      btn.onclick = startScanCamera;
+      btn.style.background = '#00ff88';
+      btn.style.color = '#000';
+    }
+    const status = document.getElementById('qr-scan-status');
+    if (status) status.textContent = 'Tekan tombol untuk buka kamera belakang';
+  };
+  // ===== END SCAN QR =====
 
   // Load qrcode.js library
   function loadQRLib(cb) {
