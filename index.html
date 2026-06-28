@@ -97,11 +97,11 @@
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; }
     #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
-    #s-dashboard, #s-account, #s-send, #s-chat, #s-manage-account, #s-donasi {
+    #s-dashboard, #s-account, #s-send, #s-chat, #s-chat-nav, #s-manage-account, #s-donasi {
       position: fixed; inset: 0; z-index: 50;
       background: var(--black); overflow-y: auto;
     }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
+    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-chat-nav .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
       width: 100%; max-width: 480px; margin: 0 auto;
       min-height: 100%;
       padding: max(24px, env(safe-area-inset-top)) 18px 120px;
@@ -781,6 +781,13 @@
     </div>
   </div>
 
+  <!-- CHAT NAV SCREEN (maintenance) -->
+  <div class="screen" id="s-chat-nav">
+    <div class="dash-inner" style="align-items:center;justify-content:center;">
+      <p style="font-size:13px;color:#444;text-align:center;letter-spacing:.02em;">Masih dalam perbaikan</p>
+    </div>
+  </div>
+
   <!-- ===== BOTTOM NAV — SINGLE PILL KAPSUL ===== -->
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
@@ -862,7 +869,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const dashNav = document.getElementById('dash-bottom-nav');
-    const showNav = ['s-dashboard','s-account'].includes(id);
+    const showNav = ['s-dashboard','s-account','s-chat-nav'].includes(id);
     if (dashNav) dashNav.style.display = showNav ? 'flex' : 'none';
     window.scrollTo(0,0); manageSlideVideo(id);
     if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
@@ -915,7 +922,7 @@
     if (tab === 'home') {
       go('s-dashboard'); initSlider();
     } else if (tab === 'chat') {
-      openChatPage();
+      go('s-chat-nav');
     } else if (tab === 'account') {
       go('s-account');
     } else {
