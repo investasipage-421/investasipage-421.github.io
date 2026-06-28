@@ -1356,6 +1356,9 @@
   window.openDashPopup = function() { const p=document.getElementById('dash-popup'); if(p) p.classList.add('show'); typeDashPopupIntro(); };
 
   // ===== CHAT NAV — KONTAK & GRUP =====
+  const _dummyNames = ['Andi Pratama','Budi Santoso','Citra Dewi','Dian Rahma','Eka Putra','Fajar Nugroho'];
+  const _rawC = JSON.parse(localStorage.getItem('pu_contacts') || '[]');
+  if (_rawC.some(c => _dummyNames.includes(c.name))) localStorage.removeItem('pu_contacts');
   let chatContacts = JSON.parse(localStorage.getItem('pu_contacts') || '[]');
   let chatGrups = JSON.parse(localStorage.getItem('pu_grups') || '[]');
   let currentGrupPhoto = null;
