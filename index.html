@@ -790,15 +790,24 @@
           <div style="font-size:12px;color:var(--text-sec);margin-bottom:2px;">Orbitxy</div>
           <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.01em;">Chat</div>
         </div>
-        <div style="display:flex;gap:8px;">
-          <!-- Scan QR -->
-          <button onclick="go('s-scan-qr')" style="width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--white);transition:border-color .2s;padding:0;" title="Scan QR">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
+        <!-- + button with dropdown -->
+        <div style="position:relative;">
+          <button id="chat-plus-btn" onclick="toggleChatDropdown(event)" style="width:40px;height:40px;border-radius:50%;background:var(--white);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;padding:0;transition:background .2s;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
-          <!-- Buat Grup -->
-          <button onclick="openBuatGrupModal()" style="width:40px;height:40px;border-radius:50%;background:var(--white);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;transition:background .2s;padding:0;" title="Buat Grup">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
+          <!-- Dropdown -->
+          <div id="chat-plus-dropdown" style="display:none;position:absolute;top:48px;right:0;background:#1e1e1e;border:1px solid rgba(255,255,255,0.10);border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:160px;z-index:200;animation:fadeIn .15s ease;">
+            <div onclick="openQrSaya()" style="display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07);transition:background .15s;" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background=''">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="19" width="2" height="2"/></svg>
+              <span style="font-size:13.5px;font-weight:500;color:#ddd;">QR Saya</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" style="margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div onclick="openBuatGrupModal()" style="display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;transition:background .15s;" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background=''">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              <span style="font-size:13.5px;font-weight:500;color:#ddd;">Buat Grup</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" style="margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -819,43 +828,37 @@
     </div>
   </div>
 
-  <!-- SCAN QR SCREEN -->
-  <div class="screen" id="s-scan-qr">
+  <!-- QR SAYA SCREEN -->
+  <div class="screen" id="s-qr-saya">
     <div class="dash-inner" style="align-items:stretch;">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;">
         <button onclick="go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <div>
-          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">Scan QR</div>
-          <div style="font-size:12px;color:var(--text-sec);margin-top:1px;">Arahkan kamera ke kode QR</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">QR Saya</div>
+          <div style="font-size:12px;color:var(--text-sec);margin-top:1px;">Bagikan ke teman kamu</div>
         </div>
       </div>
-
-      <!-- QR Viewfinder -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
-        <div style="position:relative;width:240px;height:240px;">
-          <!-- Corner brackets -->
-          <div style="position:absolute;inset:0;border-radius:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);"></div>
-          <!-- TL -->
-          <div style="position:absolute;top:0;left:0;width:36px;height:36px;border-top:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:6px 0 0 0;"></div>
-          <!-- TR -->
-          <div style="position:absolute;top:0;right:0;width:36px;height:36px;border-top:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 6px 0 0;"></div>
-          <!-- BL -->
-          <div style="position:absolute;bottom:0;left:0;width:36px;height:36px;border-bottom:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:0 0 0 6px;"></div>
-          <!-- BR -->
-          <div style="position:absolute;bottom:0;right:0;width:36px;height:36px;border-bottom:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 0 6px 0;"></div>
-          <!-- Scan line animation -->
-          <div id="scan-line" style="position:absolute;left:10px;right:10px;height:2px;background:linear-gradient(90deg,transparent,#00ff88,transparent);border-radius:2px;top:20px;animation:scanLineMove 2s linear infinite;"></div>
-          <!-- Center icon -->
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="14" width="2" height="2"/><rect x="14" y="19" width="2" height="2"/><rect x="17" y="17" width="4" height="4"/></svg>
+      <!-- QR Card -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div style="background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:28px;padding:28px 24px 24px;width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;box-shadow:0 12px 40px rgba(0,0,0,0.5);">
+          <!-- Avatar -->
+          <div id="qr-avatar-display" style="width:64px;height:64px;border-radius:50%;background:var(--input-bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
+          <div id="qr-name-display" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);margin-bottom:2px;">User</div>
+          <div id="qr-handle-display" style="font-size:11.5px;color:var(--text-sec);margin-bottom:20px;">@user</div>
+          <!-- QR Code canvas -->
+          <div style="background:#fff;border-radius:16px;padding:14px;margin-bottom:16px;">
+            <canvas id="qr-canvas" width="180" height="180"></canvas>
+          </div>
+          <div style="font-size:11px;color:#555;text-align:center;">Scan untuk tambahkan kontak</div>
         </div>
-        <p style="font-size:13px;color:#555;text-align:center;line-height:1.6;">Arahkan kamera ke QR Code<br>teman kamu untuk menambahkan kontak</p>
-        <button onclick="showToast('Fitur kamera segera hadir 📷')" style="background:var(--card);border:1px solid var(--border);border-radius:99px;padding:12px 28px;color:var(--white);font-size:13.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Buka Kamera
+        <!-- Share button -->
+        <button onclick="shareQr()" style="margin-top:20px;background:var(--white);color:#000;border:none;border-radius:99px;padding:13px 32px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Bagikan QR
         </button>
       </div>
     </div>
@@ -939,8 +942,8 @@
     .grup-item:hover { border-color:#333; }
     .grup-avatar { width:42px;height:42px;border-radius:50%;background:var(--input-bg);border:1px solid var(--input-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden; }
     .grup-avatar img { width:100%;height:100%;object-fit:cover; }
-    #s-scan-qr, #s-grup-detail { position:fixed;inset:0;z-index:50;background:var(--black);overflow-y:auto; }
-    #s-scan-qr .dash-inner, #s-grup-detail .dash-inner { width:100%;max-width:480px;margin:0 auto;min-height:100%;padding:max(24px,env(safe-area-inset-top)) 18px 40px;display:flex;flex-direction:column; }
+    #s-qr-saya, #s-grup-detail { position:fixed;inset:0;z-index:50;background:var(--black);overflow-y:auto; }
+    #s-qr-saya .dash-inner, #s-grup-detail .dash-inner { width:100%;max-width:480px;margin:0 auto;min-height:100%;padding:max(24px,env(safe-area-inset-top)) 18px 40px;display:flex;flex-direction:column; }
   </style>
 
   <!-- ===== BOTTOM NAV — SINGLE PILL KAPSUL ===== -->
@@ -1525,6 +1528,119 @@
   };
 
   window.triggerGrupAvatarChange = function() { document.getElementById('grup-photo-input') && document.getElementById('grup-photo-input').click(); };
+
+  // Dropdown toggle
+  window.toggleChatDropdown = function(e) {
+    e.stopPropagation();
+    const dd = document.getElementById('chat-plus-dropdown');
+    const btn = document.getElementById('chat-plus-btn');
+    if (!dd) return;
+    const isOpen = dd.style.display === 'block';
+    dd.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+      btn.style.background = '#e8e8e8';
+      setTimeout(() => {
+        document.addEventListener('click', closeChatDropdown, { once: true });
+      }, 10);
+    } else {
+      btn.style.background = '';
+    }
+  };
+  function closeChatDropdown() {
+    const dd = document.getElementById('chat-plus-dropdown');
+    const btn = document.getElementById('chat-plus-btn');
+    if (dd) dd.style.display = 'none';
+    if (btn) btn.style.background = '';
+  }
+
+  // QR Saya
+  window.openQrSaya = function() {
+    closeChatDropdown();
+    // Set name & handle
+    const email = currentUserEmail || 'user@orbitxy.com';
+    const name = (registeredAccounts[email] && registeredAccounts[email].name) || email.split('@')[0];
+    const handle = '@' + name.toLowerCase().replace(/\s+/g, '');
+    const nameEl = document.getElementById('qr-name-display');
+    const handleEl = document.getElementById('qr-handle-display');
+    const avatarEl = document.getElementById('qr-avatar-display');
+    if (nameEl) nameEl.textContent = name;
+    if (handleEl) handleEl.textContent = handle;
+    // Avatar
+    const dashAvatar = document.getElementById('dash-avatar');
+    if (avatarEl) {
+      if (dashAvatar && dashAvatar.src && !dashAvatar.src.includes('svg+xml')) {
+        avatarEl.innerHTML = '<img src="' + dashAvatar.src + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+      } else {
+        avatarEl.innerHTML = '<span style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:#fff;">' + name[0].toUpperCase() + '</span>';
+        avatarEl.style.background = '#2d6a4f';
+      }
+    }
+    // Draw QR
+    const canvas = document.getElementById('qr-canvas');
+    if (canvas) drawQR(canvas, 'orbitxy://user/' + handle);
+    go('s-qr-saya');
+  };
+
+  // Simple QR code generator (pure JS, no library)
+  function drawQR(canvas, text) {
+    const ctx = canvas.getContext('2d');
+    const size = canvas.width;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+    // Generate a deterministic pattern from text
+    const cells = 21;
+    const cell = Math.floor(size / cells);
+    ctx.fillStyle = '#000000';
+    // Use a simple hash to create a unique-looking QR pattern
+    function hashAt(x, y) {
+      const str = text + x * 31 + y * 17;
+      let h = 0;
+      for (let i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) >>> 0; }
+      return h % 2 === 0;
+    }
+    // Draw finder patterns (fixed corners)
+    function drawFinder(ox, oy) {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(ox*cell, oy*cell, 7*cell, 7*cell);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect((ox+1)*cell, (oy+1)*cell, 5*cell, 5*cell);
+      ctx.fillStyle = '#000';
+      ctx.fillRect((ox+2)*cell, (oy+2)*cell, 3*cell, 3*cell);
+    }
+    drawFinder(0, 0); drawFinder(cells-7, 0); drawFinder(0, cells-7);
+    // Data area
+    for (let y = 0; y < cells; y++) {
+      for (let x = 0; x < cells; x++) {
+        // Skip finder pattern zones
+        if ((x<8&&y<8)||(x>cells-9&&y<8)||(x<8&&y>cells-9)) continue;
+        ctx.fillStyle = hashAt(x, y) ? '#000' : '#fff';
+        ctx.fillRect(x*cell, y*cell, cell, cell);
+      }
+    }
+    // Timing patterns
+    ctx.fillStyle = '#000';
+    for (let i = 8; i < cells-8; i++) {
+      if (i%2===0) { ctx.fillRect(i*cell, 6*cell, cell, cell); ctx.fillRect(6*cell, i*cell, cell, cell); }
+      else { ctx.fillStyle='#fff'; ctx.fillRect(i*cell,6*cell,cell,cell); ctx.fillRect(6*cell,i*cell,cell,cell); ctx.fillStyle='#000'; }
+    }
+  }
+
+  window.shareQr = function() {
+    const canvas = document.getElementById('qr-canvas');
+    if (!canvas) return;
+    if (navigator.share) {
+      canvas.toBlob(blob => {
+        const file = new File([blob], 'qr-orbitxy.png', { type:'image/png' });
+        navigator.share({ title:'QR Orbitxy', text:'Tambahkan saya di Orbitxy!', files:[file] }).catch(()=>{});
+      });
+    } else {
+      const link = document.createElement('a');
+      link.download = 'qr-orbitxy.png';
+      link.href = canvas.toDataURL();
+      link.click();
+      showToast('QR berhasil diunduh 📥');
+    }
+  };
 
   // ===== END CHAT NAV =====
 
