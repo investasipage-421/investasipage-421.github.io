@@ -781,12 +781,167 @@
     </div>
   </div>
 
-  <!-- CHAT NAV SCREEN (maintenance) -->
+  <!-- CHAT NAV SCREEN — Temukan Sesama Pengguna -->
   <div class="screen" id="s-chat-nav">
-    <div class="dash-inner" style="align-items:center;justify-content:center;">
-      <p style="font-size:13px;color:#444;text-align:center;letter-spacing:.02em;">Masih dalam perbaikan</p>
+    <div class="dash-inner" style="padding-bottom:110px;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <div style="font-size:12px;color:var(--text-sec);margin-bottom:2px;">Orbitxy</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.01em;">Chat</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <!-- Scan QR -->
+          <button onclick="go('s-scan-qr')" style="width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--white);transition:border-color .2s;padding:0;" title="Scan QR">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
+          </button>
+          <!-- Buat Grup -->
+          <button onclick="openBuatGrupModal()" style="width:40px;height:40px;border-radius:50%;background:var(--white);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;transition:background .2s;padding:0;" title="Buat Grup">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div style="display:flex;align-items:center;gap:10px;background:var(--input-bg);border:1px solid var(--input-border);border-radius:99px;padding:0 16px;margin-bottom:20px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="chat-search" type="text" placeholder="Cari nama..." oninput="filterChatContacts(this.value)" style="background:transparent;border:none;outline:none;width:100%;padding:12px 0;font-size:13.5px;font-family:'DM Sans',sans-serif;color:#ccc;" autocomplete="off"/>
+      </div>
+
+      <!-- A-Z contact list -->
+      <div id="chat-contact-list"></div>
+
+      <!-- Empty state -->
+      <div id="chat-empty-state" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 0;gap:12px;">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <p style="font-size:13px;color:#444;text-align:center;">Belum ada kontak tersimpan<br><span style="font-size:12px;color:#333;">Tambah kontak lewat tombol +</span></p>
+      </div>
     </div>
   </div>
+
+  <!-- SCAN QR SCREEN -->
+  <div class="screen" id="s-scan-qr">
+    <div class="dash-inner" style="align-items:stretch;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;">
+        <button onclick="go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">Scan QR</div>
+          <div style="font-size:12px;color:var(--text-sec);margin-top:1px;">Arahkan kamera ke kode QR</div>
+        </div>
+      </div>
+
+      <!-- QR Viewfinder -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
+        <div style="position:relative;width:240px;height:240px;">
+          <!-- Corner brackets -->
+          <div style="position:absolute;inset:0;border-radius:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);"></div>
+          <!-- TL -->
+          <div style="position:absolute;top:0;left:0;width:36px;height:36px;border-top:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:6px 0 0 0;"></div>
+          <!-- TR -->
+          <div style="position:absolute;top:0;right:0;width:36px;height:36px;border-top:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 6px 0 0;"></div>
+          <!-- BL -->
+          <div style="position:absolute;bottom:0;left:0;width:36px;height:36px;border-bottom:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:0 0 0 6px;"></div>
+          <!-- BR -->
+          <div style="position:absolute;bottom:0;right:0;width:36px;height:36px;border-bottom:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 0 6px 0;"></div>
+          <!-- Scan line animation -->
+          <div id="scan-line" style="position:absolute;left:10px;right:10px;height:2px;background:linear-gradient(90deg,transparent,#00ff88,transparent);border-radius:2px;top:20px;animation:scanLineMove 2s linear infinite;"></div>
+          <!-- Center icon -->
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="14" width="2" height="2"/><rect x="14" y="19" width="2" height="2"/><rect x="17" y="17" width="4" height="4"/></svg>
+          </div>
+        </div>
+        <p style="font-size:13px;color:#555;text-align:center;line-height:1.6;">Arahkan kamera ke QR Code<br>teman kamu untuk menambahkan kontak</p>
+        <button onclick="showToast('Fitur kamera segera hadir 📷')" style="background:var(--card);border:1px solid var(--border);border-radius:99px;padding:12px 28px;color:var(--white);font-size:13.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Buka Kamera
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUP DETAIL SCREEN -->
+  <div class="screen" id="s-grup-detail">
+    <div class="dash-inner" style="align-items:stretch;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:0;">
+        <button onclick="go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+      </div>
+      <!-- Grup hero -->
+      <div style="display:flex;flex-direction:column;align-items:center;padding:28px 0 24px;">
+        <div id="grup-detail-avatar" onclick="triggerGrupAvatarChange()" style="width:88px;height:88px;border-radius:50%;background:var(--card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:14px;position:relative;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div id="grup-detail-name" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.01em;margin-bottom:4px;text-align:center;">Nama Grup</div>
+        <div id="grup-detail-count" style="font-size:12px;color:var(--text-sec);">0 anggota</div>
+      </div>
+      <!-- Info cards -->
+      <div style="display:flex;gap:10px;margin-bottom:20px;">
+        <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
+          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:var(--white);" id="grup-detail-members-count">0</div>
+          <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Anggota</div>
+        </div>
+        <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
+          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);">✓</div>
+          <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Aktif</div>
+        </div>
+        <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
+          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:var(--white);" id="grup-detail-created">2026</div>
+          <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Dibuat</div>
+        </div>
+      </div>
+      <!-- Members list -->
+      <div style="font-size:11px;font-weight:600;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding-left:4px;">Anggota</div>
+      <div id="grup-detail-member-list" style="background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:18px;overflow:hidden;"></div>
+    </div>
+  </div>
+
+  <!-- MODAL BUAT GRUP -->
+  <div class="confirm-overlay" id="modal-buat-grup" onclick="if(event.target===this)closeBuatGrupModal()" style="align-items:flex-end;padding:0;">
+    <div style="width:100%;max-width:480px;margin:0 auto;background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:28px 28px 0 0;padding:28px 22px 40px;box-shadow:0 -20px 60px rgba(0,0,0,0.6);animation:slideUp .3s ease;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">Buat Grup</div>
+        <button onclick="closeBuatGrupModal()" style="width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-sec);cursor:pointer;padding:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <!-- Foto grup -->
+      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:20px;">
+        <div id="grup-photo-preview" onclick="document.getElementById('grup-photo-input').click()" style="width:80px;height:80px;border-radius:50%;background:var(--card);border:2px dashed var(--input-border);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:8px;position:relative;transition:border-color .2s;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <input type="file" id="grup-photo-input" accept="image/*" style="display:none" onchange="setGrupPhoto(this)"/>
+        <span style="font-size:12px;color:#555;">Tap untuk pilih foto grup</span>
+      </div>
+      <!-- Nama grup input -->
+      <div style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;padding:0 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;" id="grup-name-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <input type="text" id="grup-name-input" placeholder="Nama grup..." style="background:transparent;border:none;outline:none;width:100%;padding:13px 0;font-size:14px;font-family:'DM Sans',sans-serif;color:#ccc;" maxlength="40"/>
+      </div>
+      <div class="err-msg" id="grup-name-err" style="margin-top:-8px;margin-bottom:8px;"></div>
+      <button class="btn-primary" onclick="buatGrup()" style="margin-top:4px;">Buat Grup</button>
+    </div>
+  </div>
+
+  <style>
+    @keyframes slideUp { from { transform: translateY(100%); opacity:0; } to { transform: translateY(0); opacity:1; } }
+    @keyframes scanLineMove { 0% { top: 14px; } 50% { top: calc(100% - 16px); } 100% { top: 14px; } }
+    .contact-letter-header { font-size:11px;font-weight:700;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:6px 4px 6px;margin-top:10px; }
+    .contact-item { display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border-radius:14px;margin-bottom:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);transition:border-color .15s,background .15s; }
+    .contact-item:hover { border-color:#333;background:#1e1e1e; }
+    .contact-avatar { width:42px;height:42px;border-radius:50%;background:var(--input-bg);border:1px solid var(--input-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);overflow:hidden; }
+    .contact-avatar img { width:100%;height:100%;object-fit:cover; }
+    .contact-name { font-size:14px;font-weight:600;color:var(--white);flex:1; }
+    .contact-handle { font-size:11.5px;color:var(--text-sec);margin-top:1px; }
+    .grup-item { display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border-radius:14px;margin-bottom:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);transition:border-color .15s; }
+    .grup-item:hover { border-color:#333; }
+    .grup-avatar { width:42px;height:42px;border-radius:50%;background:var(--input-bg);border:1px solid var(--input-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden; }
+    .grup-avatar img { width:100%;height:100%;object-fit:cover; }
+    #s-scan-qr, #s-grup-detail { position:fixed;inset:0;z-index:50;background:var(--black);overflow-y:auto; }
+    #s-scan-qr .dash-inner, #s-grup-detail .dash-inner { width:100%;max-width:480px;margin:0 auto;min-height:100%;padding:max(24px,env(safe-area-inset-top)) 18px 40px;display:flex;flex-direction:column; }
+  </style>
 
   <!-- ===== BOTTOM NAV — SINGLE PILL KAPSUL ===== -->
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
@@ -1199,6 +1354,187 @@
   }
   window.closeDashPopup = function() { const p=document.getElementById('dash-popup'); if(p) p.classList.remove('show'); if(dashPopupTypeTimer) clearInterval(dashPopupTypeTimer); };
   window.openDashPopup = function() { const p=document.getElementById('dash-popup'); if(p) p.classList.add('show'); typeDashPopupIntro(); };
+
+  // ===== CHAT NAV — KONTAK & GRUP =====
+  let chatContacts = JSON.parse(localStorage.getItem('pu_contacts') || '[]');
+  let chatGrups = JSON.parse(localStorage.getItem('pu_grups') || '[]');
+  let currentGrupPhoto = null;
+  let currentGrupIndex = null;
+
+  function saveContacts() { localStorage.setItem('pu_contacts', JSON.stringify(chatContacts)); }
+  function saveGrups() { localStorage.setItem('pu_grups', JSON.stringify(chatGrups)); }
+
+  // Seed demo contacts if empty
+  if (chatContacts.length === 0) {
+    chatContacts = [
+      { id:'c1', name:'Andi Pratama', handle:'@andi', avatar:'' },
+      { id:'c2', name:'Budi Santoso', handle:'@budi', avatar:'' },
+      { id:'c3', name:'Citra Dewi', handle:'@citra', avatar:'' },
+      { id:'c4', name:'Dian Rahma', handle:'@dian', avatar:'' },
+      { id:'c5', name:'Eka Putra', handle:'@eka', avatar:'' },
+      { id:'c6', name:'Fajar Nugroho', handle:'@fajar', avatar:'' },
+    ];
+    saveContacts();
+  }
+
+  function getInitials(name) {
+    return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  }
+
+  const AVATAR_COLORS = ['#2d6a4f','#1d3557','#6a2d3f','#3a2d6a','#2d5a6a','#6a4a2d'];
+  function avatarColor(name) { let h=0; for(let c of name) h+=c.charCodeAt(0); return AVATAR_COLORS[h%AVATAR_COLORS.length]; }
+
+  function renderContactList(contacts) {
+    const list = document.getElementById('chat-contact-list');
+    const emptyEl = document.getElementById('chat-empty-state');
+    if (!list) return;
+    list.innerHTML = '';
+
+    // Grups section
+    if (chatGrups.length > 0) {
+      const gl = document.createElement('div');
+      gl.innerHTML = '<div class="contact-letter-header">Grup</div>';
+      chatGrups.forEach((g, idx) => {
+        const el = document.createElement('div');
+        el.className = 'grup-item';
+        const avatarHtml = g.photo
+          ? `<img src="${g.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`
+          : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+        el.innerHTML = `
+          <div class="grup-avatar">${avatarHtml}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="contact-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(g.name)}</div>
+            <div class="contact-handle">${g.members ? g.members + ' anggota' : '0 anggota'}</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
+        el.onclick = () => openGrupDetail(idx);
+        gl.appendChild(el);
+      });
+      list.appendChild(gl);
+    }
+
+    if (contacts.length === 0) {
+      if (chatGrups.length === 0) { emptyEl.style.display='flex'; }
+      return;
+    }
+    emptyEl.style.display='none';
+
+    // Group by first letter
+    const grouped = {};
+    contacts.forEach(c => {
+      const letter = c.name[0].toUpperCase();
+      if (!grouped[letter]) grouped[letter] = [];
+      grouped[letter].push(c);
+    });
+
+    Object.keys(grouped).sort().forEach(letter => {
+      const section = document.createElement('div');
+      section.innerHTML = `<div class="contact-letter-header">${letter}</div>`;
+      grouped[letter].forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'contact-item';
+        const bg = avatarColor(c.name);
+        const avatarHtml = c.avatar
+          ? `<img src="${c.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`
+          : `<span style="color:#fff;font-size:15px;font-family:'Syne',sans-serif;font-weight:800;">${getInitials(c.name)}</span>`;
+        el.innerHTML = `
+          <div class="contact-avatar" style="background:${bg};">${avatarHtml}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="contact-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(c.name)}</div>
+            <div class="contact-handle">${escapeHtml(c.handle||'')}</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
+        el.onclick = () => showToast('Chat dengan ' + c.name + ' segera hadir 💬');
+        section.appendChild(el);
+      });
+      list.appendChild(section);
+    });
+  }
+
+  window.filterChatContacts = function(q) {
+    if (!q) { renderContactList(chatContacts); return; }
+    const filtered = chatContacts.filter(c => c.name.toLowerCase().includes(q.toLowerCase()) || (c.handle||'').toLowerCase().includes(q.toLowerCase()));
+    renderContactList(filtered);
+  };
+
+  // Hook go() to render contacts when opening chat-nav
+  const _origGo = window.go;
+  window.go = function(id) {
+    _origGo(id);
+    if (id === 's-chat-nav') {
+      const si = document.getElementById('chat-search'); if (si) si.value='';
+      renderContactList(chatContacts);
+    }
+  };
+
+  // Grup modal
+  window.openBuatGrupModal = function() {
+    currentGrupPhoto = null;
+    const preview = document.getElementById('grup-photo-preview');
+    if (preview) preview.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
+    const ni = document.getElementById('grup-name-input'); if (ni) ni.value='';
+    const ne = document.getElementById('grup-name-err'); if (ne) ne.textContent='';
+    document.getElementById('modal-buat-grup').classList.add('show');
+  };
+  window.closeBuatGrupModal = function() { document.getElementById('modal-buat-grup').classList.remove('show'); };
+
+  window.setGrupPhoto = function(input) {
+    const file = input.files && input.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentGrupPhoto = e.target.result;
+      const preview = document.getElementById('grup-photo-preview');
+      if (preview) preview.innerHTML = `<img src="${currentGrupPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.buatGrup = function() {
+    const nameInput = document.getElementById('grup-name-input');
+    const name = (nameInput ? nameInput.value : '').trim();
+    const errEl = document.getElementById('grup-name-err');
+    if (!name) { if (errEl) errEl.textContent = 'Nama grup wajib diisi'; return; }
+    if (errEl) errEl.textContent = '';
+    const grup = { id:'g_'+Date.now(), name, photo: currentGrupPhoto||'', members:1, created: new Date().getFullYear().toString(), memberList:[{ name: currentUserEmail||'Saya', handle:'@saya', avatar:'' }] };
+    chatGrups.unshift(grup);
+    saveGrups();
+    closeBuatGrupModal();
+    showToast('Grup "' + name + '" berhasil dibuat! 🎉');
+    renderContactList(chatContacts);
+  };
+
+  window.openGrupDetail = function(idx) {
+    currentGrupIndex = idx;
+    const g = chatGrups[idx]; if (!g) return;
+    const nameEl = document.getElementById('grup-detail-name'); if (nameEl) nameEl.textContent = g.name;
+    const countEl = document.getElementById('grup-detail-count'); if (countEl) countEl.textContent = (g.members||1) + ' anggota';
+    const mcEl = document.getElementById('grup-detail-members-count'); if (mcEl) mcEl.textContent = g.members||1;
+    const crEl = document.getElementById('grup-detail-created'); if (crEl) crEl.textContent = g.created||'2026';
+    const avatarEl = document.getElementById('grup-detail-avatar');
+    if (avatarEl) avatarEl.innerHTML = g.photo
+      ? `<img src="${g.photo}" style="width:100%;height:100%;object-fit:cover;"/>`
+      : `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+    // member list
+    const ml = document.getElementById('grup-detail-member-list'); if (!ml) return;
+    ml.innerHTML = '';
+    const members = g.memberList || [{ name: currentUserEmail||'Saya', handle:'@saya', avatar:'' }];
+    members.forEach((m, i) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);';
+      if (i === members.length-1) row.style.borderBottom='none';
+      const bg = avatarColor(m.name);
+      row.innerHTML = `
+        <div style="width:36px;height:36px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;">${getInitials(m.name)}</div>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--white);">${escapeHtml(m.name)}</div><div style="font-size:11.5px;color:var(--text-sec);">${escapeHtml(m.handle||'')}</div></div>
+        ${i===0?'<span style="font-size:10px;background:rgba(0,255,136,.12);color:#00ff88;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>':''}`;
+      ml.appendChild(row);
+    });
+    go('s-grup-detail');
+  };
+
+  window.triggerGrupAvatarChange = function() { document.getElementById('grup-photo-input') && document.getElementById('grup-photo-input').click(); };
+
+  // ===== END CHAT NAV =====
 
   window.doLogout = async function() { try{await signOut(auth);}catch(e){} stopAutoSlide(); go('s-login'); showToast('Berhasil logout 👋'); };
 
