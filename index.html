@@ -1002,6 +1002,74 @@
     #s-qr-saya .dash-inner, #s-scan-qr .dash-inner, #s-grup-detail .dash-inner { width:100%;max-width:480px;margin:0 auto;min-height:100%;padding:max(24px,env(safe-area-inset-top)) 18px 40px;display:flex;flex-direction:column; }
   </style>
 
+  <!-- GRUP CHAT SCREEN -->
+  <div class="screen" id="s-grup-chat" style="position:fixed;inset:0;z-index:50;background:var(--black);display:flex;flex-direction:column;">
+    <!-- Header -->
+    <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:max(16px,env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--border);background:var(--surface);">
+      <button onclick="go('s-chat-nav')" style="width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <!-- Avatar -->
+      <div id="gc-header-avatar" style="width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div id="gc-header-name" style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Grup</div>
+        <div id="gc-header-members" style="font-size:11px;color:var(--text-sec);margin-top:1px;">0 anggota</div>
+      </div>
+      <!-- Info button -->
+      <button onclick="openGrupInfo()" style="width:36px;height:36px;border-radius:50%;background:transparent;border:none;display:flex;align-items:center;justify-content:center;color:#666;cursor:pointer;padding:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12.01" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+      </button>
+    </div>
+
+    <!-- Messages area -->
+    <div id="gc-messages-scroll" style="flex:1;overflow-y:auto;padding:14px 14px 90px;">
+      <div id="gc-messages" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- Input bar -->
+    <div style="position:fixed;bottom:0;left:0;right:0;z-index:52;background:var(--surface);border-top:1px solid var(--border);padding:10px 12px max(10px,env(safe-area-inset-bottom));display:flex;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:8px;width:100%;max-width:480px;">
+        <!-- Attachment -->
+        <button onclick="showToast('Lampiran segera hadir 📎')" style="width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:#666;cursor:pointer;padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        </button>
+        <input type="text" id="gc-input" placeholder="Pesan..." autocomplete="off"
+          onkeydown="if(event.key==='Enter')sendGrupMessage()"
+          style="flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:22px;padding:11px 16px;color:#ccc;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;"/>
+        <button onclick="sendGrupMessage()" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--accent);color:#000;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="17" height="17"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUP INFO BOTTOM SHEET -->
+  <div class="confirm-overlay" id="modal-grup-info" onclick="if(event.target===this)closeGrupInfo()" style="align-items:flex-end;padding:0;">
+    <div style="width:100%;max-width:480px;margin:0 auto;background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:28px 28px 0 0;padding:24px 20px max(28px,env(safe-area-inset-bottom));box-shadow:0 -20px 60px rgba(0,0,0,0.6);animation:slideUp .3s ease;max-height:70vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);">Info Grup</div>
+        <button onclick="closeGrupInfo()" style="width:26px;height:26px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-sec);cursor:pointer;padding:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <!-- Grup avatar + name -->
+      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:20px;">
+        <div id="gi-avatar" style="width:72px;height:72px;border-radius:50%;background:var(--card);border:2px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div id="gi-name" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:2px;"></div>
+        <div id="gi-count" style="font-size:12px;color:var(--text-sec);"></div>
+      </div>
+      <!-- Members -->
+      <div style="font-size:11px;font-weight:600;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Anggota</div>
+      <div id="gi-member-list" style="background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;margin-bottom:16px;"></div>
+      <!-- Leave group -->
+      <button onclick="closeGrupInfo();showToast('Keluar grup segera hadir')" style="width:100%;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:10px;padding:13px;color:#ff7070;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">Keluar Grup</button>
+    </div>
+  </div>
+
   <!-- ===== BOTTOM NAV — SINGLE PILL KAPSUL ===== -->
   <div class="bottom-nav-wrap" id="dash-bottom-nav">
     <div class="bottom-nav">
@@ -1555,34 +1623,128 @@
     renderContactList(chatContacts);
   };
 
+  function grupAvatarHtml(g, size) {
+    if (g.photo) return `<img src="${g.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+    return `<svg width="${size||28}" height="${size||28}" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+  }
+
+  function grupChatKey(idx) { return 'pu_gchat_' + idx; }
+  function loadGrupMessages(idx) { return JSON.parse(localStorage.getItem(grupChatKey(idx)) || '[]'); }
+  function saveGrupMessages(idx, msgs) { localStorage.setItem(grupChatKey(idx), JSON.stringify(msgs)); }
+  function gcTimeNow() { return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
+
   window.openGrupDetail = function(idx) {
     currentGrupIndex = idx;
     const g = chatGrups[idx]; if (!g) return;
-    const nameEl = document.getElementById('grup-detail-name'); if (nameEl) nameEl.textContent = g.name;
-    const countEl = document.getElementById('grup-detail-count'); if (countEl) countEl.textContent = (g.members||1) + ' anggota';
-    const mcEl = document.getElementById('grup-detail-members-count'); if (mcEl) mcEl.textContent = g.members||1;
-    const crEl = document.getElementById('grup-detail-created'); if (crEl) crEl.textContent = g.created||'2026';
-    const avatarEl = document.getElementById('grup-detail-avatar');
-    if (avatarEl) avatarEl.innerHTML = g.photo
-      ? `<img src="${g.photo}" style="width:100%;height:100%;object-fit:cover;"/>`
-      : `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
-    // member list
-    const ml = document.getElementById('grup-detail-member-list'); if (!ml) return;
-    ml.innerHTML = '';
-    const members = g.memberList || [{ name: currentUserEmail||'Saya', handle:'@saya', avatar:'' }];
-    members.forEach((m, i) => {
-      const row = document.createElement('div');
-      row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);';
-      if (i === members.length-1) row.style.borderBottom='none';
-      const bg = avatarColor(m.name);
-      row.innerHTML = `
-        <div style="width:36px;height:36px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;">${getInitials(m.name)}</div>
-        <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--white);">${escapeHtml(m.name)}</div><div style="font-size:11.5px;color:var(--text-sec);">${escapeHtml(m.handle||'')}</div></div>
-        ${i===0?'<span style="font-size:10px;background:rgba(0,255,136,.12);color:#00ff88;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>':''}`;
-      ml.appendChild(row);
-    });
-    go('s-grup-detail');
+
+    // Set header
+    const hName = document.getElementById('gc-header-name');
+    const hMembers = document.getElementById('gc-header-members');
+    const hAvatar = document.getElementById('gc-header-avatar');
+    if (hName) hName.textContent = g.name;
+    if (hMembers) hMembers.textContent = (g.members||1) + ' anggota';
+    if (hAvatar) hAvatar.innerHTML = grupAvatarHtml(g, 20);
+
+    // Render messages
+    renderGrupMessages(idx);
+    go('s-grup-chat');
+
+    // Scroll to bottom
+    setTimeout(() => {
+      const scroll = document.getElementById('gc-messages-scroll');
+      if (scroll) scroll.scrollTop = scroll.scrollHeight;
+    }, 80);
   };
+
+  window.renderGrupMessages = function(idx) {
+    const msgs = loadGrupMessages(idx);
+    const container = document.getElementById('gc-messages');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (msgs.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:40px 0;"><p style="font-size:12px;color:#444;">Belum ada pesan. Mulai percakapan! 👋</p></div>';
+      return;
+    }
+
+    let lastDate = '';
+    msgs.forEach(m => {
+      // Date separator
+      const msgDate = m.date || '';
+      if (msgDate && msgDate !== lastDate) {
+        lastDate = msgDate;
+        const sep = document.createElement('div');
+        sep.style.cssText = 'text-align:center;margin:8px 0;';
+        sep.innerHTML = `<span style="font-size:11px;color:#444;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:3px 12px;">${msgDate}</span>`;
+        container.appendChild(sep);
+      }
+
+      const isMe = m.sender === 'me';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = `display:flex;flex-direction:column;align-items:${isMe?'flex-end':'flex-start'};gap:2px;`;
+
+      // Sender name (for others)
+      if (!isMe) {
+        const senderEl = document.createElement('div');
+        senderEl.style.cssText = 'font-size:11px;font-weight:600;color:#00ff88;padding-left:12px;';
+        senderEl.textContent = m.senderName || 'Anggota';
+        wrap.appendChild(senderEl);
+      }
+
+      const bubble = document.createElement('div');
+      bubble.style.cssText = `max-width:78%;padding:9px 13px;border-radius:${isMe?'16px 16px 4px 16px':'16px 16px 16px 4px'};font-size:13.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap;background:${isMe?'var(--white)':'var(--card)'};color:${isMe?'#000':'#ddd'};border:${isMe?'none':'1px solid var(--border)'};`;
+      bubble.innerHTML = `${escapeHtml(m.text)}<div style="font-size:10px;color:${isMe?'#999':'var(--muted)'};margin-top:4px;text-align:${isMe?'right':'left'};">${m.time}${isMe?' ✓✓':''}</div>`;
+      wrap.appendChild(bubble);
+      container.appendChild(wrap);
+    });
+
+    const scroll = document.getElementById('gc-messages-scroll');
+    if (scroll) scroll.scrollTop = scroll.scrollHeight;
+  };
+
+  window.sendGrupMessage = function() {
+    const input = document.getElementById('gc-input');
+    const raw = (input ? input.value : '').trim();
+    if (!raw || currentGrupIndex === null) return;
+    const text = censorText(raw);
+    const email = currentUserEmail || 'user';
+    const name = (registeredAccounts[email] && registeredAccounts[email].name) || email.split('@')[0] || 'Saya';
+    const today = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
+    const msg = { sender:'me', senderName: name, text, time: gcTimeNow(), date: today };
+    const msgs = loadGrupMessages(currentGrupIndex);
+    msgs.push(msg);
+    saveGrupMessages(currentGrupIndex, msgs);
+    input.value = '';
+    renderGrupMessages(currentGrupIndex);
+  };
+
+  window.openGrupInfo = function() {
+    const g = chatGrups[currentGrupIndex]; if (!g) return;
+    const giName = document.getElementById('gi-name');
+    const giCount = document.getElementById('gi-count');
+    const giAvatar = document.getElementById('gi-avatar');
+    const giMl = document.getElementById('gi-member-list');
+    if (giName) giName.textContent = g.name;
+    if (giCount) giCount.textContent = (g.members||1) + ' anggota';
+    if (giAvatar) giAvatar.innerHTML = grupAvatarHtml(g, 30);
+    if (giMl) {
+      giMl.innerHTML = '';
+      const members = g.memberList || [{ name: currentUserEmail||'Saya', handle:'@saya' }];
+      members.forEach((m, i) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);';
+        if (i === members.length-1) row.style.borderBottom = 'none';
+        const bg = avatarColor(m.name);
+        row.innerHTML = `
+          <div style="width:34px;height:34px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;">${getInitials(m.name)}</div>
+          <div style="flex:1;"><div style="font-size:13.5px;font-weight:600;color:var(--white);">${escapeHtml(m.name)}</div><div style="font-size:11px;color:var(--text-sec);">${escapeHtml(m.handle||'')}</div></div>
+          ${i===0?'<span style="font-size:10px;background:rgba(0,255,136,.12);color:#00ff88;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>':''}`;
+        giMl.appendChild(row);
+      });
+    }
+    document.getElementById('modal-grup-info').classList.add('show');
+  };
+  window.closeGrupInfo = function() { document.getElementById('modal-grup-info').classList.remove('show'); };
 
   window.triggerGrupAvatarChange = function() { document.getElementById('grup-photo-input') && document.getElementById('grup-photo-input').click(); };
 
