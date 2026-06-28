@@ -1126,10 +1126,54 @@
         <div id="gi-count" style="font-size:12px;color:var(--text-sec);"></div>
       </div>
       <!-- Members -->
-      <div style="font-size:11px;font-weight:600;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Anggota</div>
-      <div id="gi-member-list" style="background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;margin-bottom:16px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:10px;font-weight:800;color:#ffe600;letter-spacing:.12em;text-transform:uppercase;border-left:3px solid #ffe600;padding-left:8px;">Anggota</div>
+        <button id="gi-tambah-btn" onclick="openTambahAnggota()" style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#000;background:#ffe600;border:2px solid #000;border-radius:0;padding:5px 12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:.04em;text-transform:uppercase;box-shadow:2px 2px 0 #000;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='4px 4px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='2px 2px 0 #000'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Tambah
+        </button>
+      </div>
+      <div id="gi-member-list" style="background:#111;border:2.5px solid #fff;border-radius:0;overflow:hidden;margin-bottom:12px;box-shadow:3px 3px 0 #000;"></div>
       <!-- Leave group -->
-      <button id="gi-keluar-btn" style="width:100%;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:10px;padding:13px;color:#ff7070;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">Keluar Grup</button>
+      <button id="gi-keluar-btn" style="width:100%;background:rgba(255,60,172,0.1);border:2.5px solid #ff3cac;border-radius:0;padding:13px;color:#ff3cac;font-size:13px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;box-shadow:3px 3px 0 #ff3cac;">Keluar Grup</button>
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH ANGGOTA -->
+  <div class="confirm-overlay" id="modal-tambah-anggota" onclick="if(event.target===this)closeTambahAnggota()" style="align-items:flex-end;padding:0;z-index:310;">
+    <div style="width:100%;max-width:480px;margin:0 auto;background:#111;border:2.5px solid #fff;border-radius:0;border-bottom:none;padding:24px 20px max(28px,env(safe-area-inset-bottom));box-shadow:0 -6px 0 #ffe600;animation:slideUp .3s ease;max-height:75vh;overflow-y:auto;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-.01em;">Tambah Anggota</div>
+        <button onclick="closeTambahAnggota()" style="width:28px;height:28px;border-radius:0;background:#181818;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;padding:0;box-shadow:2px 2px 0 #000;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Manual input -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:10px;font-weight:800;color:#ffe600;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #ffe600;padding-left:8px;margin-bottom:8px;">Tambah Manual</div>
+        <div style="display:flex;gap:8px;">
+          <input id="tambah-nama-input" type="text" placeholder="Nama anggota..." maxlength="30"
+            style="flex:1;background:#000;border:2.5px solid #fff;border-radius:0;padding:11px 14px;color:#fff;outline:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;box-shadow:3px 3px 0 #000;"
+            onkeydown="if(event.key==='Enter')doTambahAnggota()"
+            onfocus="this.style.borderColor='#ffe600';this.style.boxShadow='3px 3px 0 #ffe600'"
+            onblur="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #000'"/>
+          <button onclick="doTambahAnggota()" style="background:#ffe600;color:#000;border:2.5px solid #000;border-radius:0;padding:11px 18px;font-size:12px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 #000;flex-shrink:0;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='5px 5px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
+            + Tambah
+          </button>
+        </div>
+        <div id="tambah-err" style="font-size:11px;color:#ff3cac;margin-top:4px;font-weight:700;min-height:16px;"></div>
+      </div>
+
+      <!-- From contacts -->
+      <div id="tambah-kontak-section" style="display:none;">
+        <div style="font-size:10px;font-weight:800;color:#ffe600;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #ffe600;padding-left:8px;margin-bottom:10px;">Dari Kontak</div>
+        <div id="tambah-kontak-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+
+      <!-- Already in grup note -->
+      <div style="margin-top:14px;font-size:11px;color:#444;text-align:center;">Anggota yang sudah ada tidak akan muncul</div>
     </div>
   </div>
 
@@ -1734,6 +1778,14 @@
 
     let lastDate = '';
     msgs.forEach(m => {
+      // System message
+      if (m.sender === 'system') {
+        const sys = document.createElement('div');
+        sys.style.cssText = 'text-align:center;margin:4px 0;';
+        sys.innerHTML = `<span style="font-size:11px;color:#555;background:#111;border:1.5px solid #222;padding:3px 12px;font-family:'Space Grotesk',sans-serif;font-weight:600;">${escapeHtml(m.text)}</span>`;
+        container.appendChild(sys);
+        return;
+      }
       // Date separator
       const msgDate = m.date || '';
       if (msgDate && msgDate !== lastDate) {
@@ -1913,6 +1965,112 @@
     document.getElementById('modal-grup-info').classList.add('show');
   };
   window.closeGrupInfo = function() { document.getElementById('modal-grup-info').classList.remove('show'); };
+
+  // ===== TAMBAH ANGGOTA =====
+  window.openTambahAnggota = function() {
+    const g = chatGrups[currentGrupIndex]; if (!g) return;
+    const myRole = getMyRole(g);
+    if (myRole !== 'owner' && myRole !== 'admin') {
+      showToast('Hanya Owner/Admin yang bisa tambah anggota', true); return;
+    }
+
+    // Reset input
+    const nameInput = document.getElementById('tambah-nama-input');
+    const errEl = document.getElementById('tambah-err');
+    if (nameInput) nameInput.value = '';
+    if (errEl) errEl.textContent = '';
+
+    // Show contacts that are NOT already in grup
+    const existingNames = (g.memberList||[]).map(m => m.name.toLowerCase());
+    const available = chatContacts.filter(c => !existingNames.includes(c.name.toLowerCase()));
+    const kontakSection = document.getElementById('tambah-kontak-section');
+    const kontakList = document.getElementById('tambah-kontak-list');
+
+    if (available.length > 0 && kontakSection && kontakList) {
+      kontakSection.style.display = 'block';
+      kontakList.innerHTML = '';
+      available.forEach(c => {
+        const bg = avatarColor(c.name);
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:2px solid #333;cursor:pointer;transition:border-color .12s,box-shadow .12s;box-shadow:2px 2px 0 #000;';
+        row.innerHTML = `
+          <div style="width:34px;height:34px;border-radius:0;background:${bg};border:2px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:#fff;">${getInitials(c.name)}</div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">${escapeHtml(c.name)}</div><div style="font-size:11px;color:#555;">${escapeHtml(c.handle||'')}</div></div>
+          <span style="font-size:10px;color:#000;background:#ffe600;border:1.5px solid #000;padding:3px 9px;font-weight:800;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.04em;">+ Tambah</span>`;
+        row.onmouseover = () => { row.style.borderColor='#ffe600'; row.style.boxShadow='3px 3px 0 #ffe600'; };
+        row.onmouseout = () => { row.style.borderColor='#333'; row.style.boxShadow='2px 2px 0 #000'; };
+        row.onclick = () => addMemberToGrup(c.name, c.handle||('@'+c.name.toLowerCase().replace(/\s+/g,'')), c.email||'', 'member');
+        kontakList.appendChild(row);
+      });
+    } else if (kontakSection) {
+      kontakSection.style.display = 'none';
+    }
+
+    closeGrupInfo();
+    document.getElementById('modal-tambah-anggota').classList.add('show');
+    setTimeout(() => { const ni = document.getElementById('tambah-nama-input'); if(ni) ni.focus(); }, 300);
+  };
+
+  window.closeTambahAnggota = function() {
+    document.getElementById('modal-tambah-anggota').classList.remove('show');
+    // Reopen grup info
+    openGrupInfo();
+  };
+
+  window.doTambahAnggota = function() {
+    const nameInput = document.getElementById('tambah-nama-input');
+    const errEl = document.getElementById('tambah-err');
+    const name = (nameInput ? nameInput.value : '').trim();
+    if (!name) { if (errEl) errEl.textContent = 'Nama tidak boleh kosong!'; return; }
+    const g = chatGrups[currentGrupIndex];
+    if (!g) return;
+    const already = (g.memberList||[]).some(m => m.name.toLowerCase() === name.toLowerCase());
+    if (already) { if (errEl) errEl.textContent = name + ' sudah ada di grup!'; return; }
+    if (errEl) errEl.textContent = '';
+    addMemberToGrup(name, '@'+name.toLowerCase().replace(/\s+/g,''), '', 'member');
+    if (nameInput) nameInput.value = '';
+  };
+
+  function addMemberToGrup(name, handle, email, role) {
+    const g = chatGrups[currentGrupIndex]; if (!g) return;
+    if (!g.memberList) g.memberList = [];
+    const already = g.memberList.some(m => m.name.toLowerCase() === name.toLowerCase());
+    if (already) { showToast(name + ' sudah ada di grup!', true); return; }
+    g.memberList.push({ name, handle, email: email||'', role: role||'member' });
+    g.members = g.memberList.length;
+    saveGrups();
+
+    // Update header
+    const gcMembers = document.getElementById('gc-header-members');
+    if (gcMembers) gcMembers.textContent = g.memberList.length + ' anggota';
+    renderContactList(chatContacts);
+
+    // Add system message to chat
+    const today = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+    const msgs = loadGrupMessages(currentGrupIndex);
+    msgs.push({ sender:'system', text: name + ' ditambahkan ke grup', time: gcTimeNow(), date: today });
+    saveGrupMessages(currentGrupIndex, msgs);
+    if (document.getElementById('s-grup-chat').classList.contains('active')) {
+      renderGrupMessages(currentGrupIndex);
+    }
+
+    showToast(name + ' berhasil ditambahkan! ✓');
+
+    // Refresh kontak list in modal
+    const kontakList = document.getElementById('tambah-kontak-list');
+    const existingNames = g.memberList.map(m => m.name.toLowerCase());
+    if (kontakList) {
+      const rows = kontakList.querySelectorAll('div');
+      rows.forEach(row => {
+        const nameEl = row.querySelector('div > div');
+        if (nameEl && existingNames.includes(nameEl.textContent.trim().toLowerCase())) {
+          row.style.opacity = '0.3';
+          row.style.pointerEvents = 'none';
+        }
+      });
+    }
+  }
+  // ===== END TAMBAH ANGGOTA =====
 
   window.triggerGrupAvatarChange = function() { document.getElementById('grup-photo-input') && document.getElementById('grup-photo-input').click(); };
 
