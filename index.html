@@ -1364,18 +1364,7 @@
   function saveContacts() { localStorage.setItem('pu_contacts', JSON.stringify(chatContacts)); }
   function saveGrups() { localStorage.setItem('pu_grups', JSON.stringify(chatGrups)); }
 
-  // Seed demo contacts if empty
-  if (chatContacts.length === 0) {
-    chatContacts = [
-      { id:'c1', name:'Andi Pratama', handle:'@andi', avatar:'' },
-      { id:'c2', name:'Budi Santoso', handle:'@budi', avatar:'' },
-      { id:'c3', name:'Citra Dewi', handle:'@citra', avatar:'' },
-      { id:'c4', name:'Dian Rahma', handle:'@dian', avatar:'' },
-      { id:'c5', name:'Eka Putra', handle:'@eka', avatar:'' },
-      { id:'c6', name:'Fajar Nugroho', handle:'@fajar', avatar:'' },
-    ];
-    saveContacts();
-  }
+
 
   function getInitials(name) {
     return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
