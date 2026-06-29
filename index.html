@@ -11,16 +11,16 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --black: #0a0a0a;
-      --surface: #111111;
-      --card: #181818;
-      --input-bg: #1a1a1a;
+      --black: #0b0b0b;
+      --surface: #141414;
+      --card: #1a1a1a;
+      --input-bg: #1e1e1e;
       --input-border: #000;
       --border: #000;
       --white: #ffffff;
-      --muted: #666;
-      --text-sec: #999;
-      --accent: #ffffff;
+      --muted: #555555;
+      --text-sec: #888888;
+      --accent: #00ff88;
       --accent2: #ff3cac;
       --accent3: #00e5ff;
       --radius: 0px;
@@ -29,9 +29,7 @@
       --shadow-sm: 3px 3px 0px #000;
     }
     body {
-      background: #0a0a0a;
-      background-image: radial-gradient(circle at 1px 1px, #1e1e1e 1px, transparent 0);
-      background-size: 28px 28px;
+      background: #0b0b0b;
       font-family: 'Space Grotesk', sans-serif;
       min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
@@ -98,7 +96,7 @@
     .forgot-link {
       display: block; text-align: right; font-size: 11px; font-weight: 700;
       letter-spacing: .06em; text-transform: uppercase;
-      color: #aaa; background: none; border: none; cursor: pointer; margin-top: 8px; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; padding: 0; width: 100%; }
+      color: #00ff88; background: none; border: none; cursor: pointer; margin-top: 8px; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; padding: 0; width: 100%; }
     .forgot-link:hover { text-decoration: underline; }
 
     /* PRIMARY BUTTON */
@@ -142,30 +140,30 @@
     .otp-row { display: flex; gap: 12px; margin: 28px 0 16px; }
     .otp-box { flex: 1; aspect-ratio: 1; background: #111; border: var(--bw) solid #fff; border-radius: 0; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); transition: box-shadow .15s; }
     .otp-box.filled { border-color: #ffffff; box-shadow: 4px 4px 0 #333fff; }
-    .otp-box input { background: transparent; border: none; outline: none; width: 100%; height: 100%; text-align: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 900; color: #fff; caret-color: #fff; }
-    .resend-link { display: block; text-align: center; font-size: 11px; color: #aaa; margin-bottom: 18px; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing:.06em; padding: 0; width: 100%; }
+    .otp-box input { background: transparent; border: none; outline: none; width: 100%; height: 100%; text-align: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 900; color: #00ff88; caret-color: #00ff88; }
+    .resend-link { display: block; text-align: center; font-size: 11px; color: #00ff88; margin-bottom: 18px; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing:.06em; padding: 0; width: 100%; }
     .resend-link:hover { color: #aaa; }
     .strength-bar { display: flex; gap: 4px; margin-top: 8px; }
     .strength-segment { flex: 1; height: 3px; border-radius: 2px; background: var(--input-border); transition: background .3s; }
     .strength-segment.weak   { background: #c0392b; }
     .strength-segment.medium { background: #e67e22; }
-    .strength-segment.strong { background: #fff; }
+    .strength-segment.strong { background: #00ff88; }
     .hint { font-size: 12px; color: var(--muted); margin-top: 6px; padding-left: 2px; }
     #toast {
       position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
-      background: #ffffff; border: 2.5px solid #000;
+      background: #1a2f23; border: 1px solid rgba(0,255,136,0.35);
       border-radius: 0; padding: 11px 20px;
-      font-size: 12px; font-weight: 800; color: #000;
+      font-size: 12px; font-weight: 600; color: #00ff88;
       font-family: 'Space Grotesk', sans-serif; letter-spacing: .04em; text-transform: uppercase;
       display: flex; align-items: center; gap: 8px;
       z-index: 9999; opacity: 0; pointer-events: none;
-      box-shadow: 4px 4px 0 #000;
-      transition: opacity .2s, transform .2s;
+      box-shadow: none;
+      transition: opacity .3s, transform .2s;
       transform: translateX(-50%) translateY(-8px);
       white-space: nowrap;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    #toast.toast-err { background: #ff3cac; color: #fff; border-color: #000; box-shadow: 4px 4px 0 #000; }
+    #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; box-shadow: none; }
     #toast svg { width: 15px; height: 15px; flex-shrink: 0; }
     #s-dashboard, #s-account, #s-send, #s-chat, #s-chat-nav, #s-manage-account, #s-donasi {
       position: fixed; inset: 0; z-index: 50;
@@ -251,7 +249,7 @@
     .slide-desc { font-size: 12px; color: var(--text-sec); line-height: 1.5; max-width: 280px; margin: 0 auto; }
     .slider-dots { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 2; display: flex; justify-content: center; gap: 6px; padding: 0; pointer-events: none; }
     .slider-dot { width: 16px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.35); box-shadow: 0 0 0 1px rgba(0,0,0,0.25); transition: background .3s, width .3s; cursor: pointer; pointer-events: auto; }
-    .slider-dot.active { background: #ffffff; width: 20px; }
+    .slider-dot.active { background: #00ff88; width: 20px; }
     .slide-video { padding: 0; overflow: hidden; }
     .slide-video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .dash-footer { text-align: center; font-size: 10px; color: #333; margin-top: auto; padding-top: 20px; padding-bottom: 8px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
@@ -326,9 +324,9 @@
     .acc-privacy-banner:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333fff; border-color: #ffffff; }
     .acc-privacy-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
     .acc-privacy-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px; }
-    .acc-privacy-icon { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #222; border: var(--bw) solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .acc-privacy-icon { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #0d2b1e; border: var(--bw) solid #00ff88; display: flex; align-items: center; justify-content: center; color: #00ff88; }
     .acc-privacy-icon svg { width: 22px; height: 22px; }
-    .acc-section-label { font-size: 10px; font-weight: 800; color: #ffffff; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; padding-left: 2px; border-left: 3px solid #fff; padding-left: 8px; }
+    .acc-section-label { font-size: 10px; font-weight: 800; color: #ffffff; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; padding-left: 2px; border-left: 3px solid #00ff88; padding-left: 8px; }
     .acc-menu { display: flex; flex-direction: column; gap: 0; }
     .acc-menu-group { background: #181818; border: var(--bw) solid #fff; border-radius: 0; overflow: hidden; box-shadow: var(--shadow); }
     .acc-menu-item { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-bottom: 2px solid #000; cursor: pointer; color: #fff; transition: background .12s; }
@@ -389,8 +387,8 @@
     .btn-primary.btn-danger { background: #ff3cac; color: #fff; border-color: #000; box-shadow: 4px 4px 0 #000; }
     .btn-primary.btn-danger:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #000; }
     #ma-status-label, #ma-method-label, #ma-since-label { font-size: 12.5px; }
-    .donasi-warning { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,60,172,0.08); border: var(--bw) solid #ff3cac; border-radius: 0; padding: 14px 16px; margin-top: 14px; box-shadow: 3px 3px 0 #ff3cac; }
-    .donasi-warning svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; color: #ff3cac; }
+    .donasi-warning { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.3); border-radius: 0; padding: 14px 16px; margin-top: 14px; }
+    .donasi-warning svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; color: #ff5c5c; }
     .donasi-warning-text { font-size: 12.5px; color: #ff9b9b; line-height: 1.55; }
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
     .dash-popup-overlay { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,0.6); }
@@ -565,7 +563,7 @@
             <span class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</span>
             <svg class="verified-badge" viewBox="0 0 24 24" width="14" height="14" onclick="openSosmedPopup()" style="cursor:pointer;">
               <circle cx="12" cy="12" r="11" fill="#2E9BF0"/>
-              <path d="M8.5 12.3l2.4 2.4 4.6-5.2" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.5 12.3l2.4 2.4 4.6-5.2" fill="none" stroke="#00ff88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!" onclick="triggerGreetingGlitch()" style="cursor:pointer;">User!</div>
@@ -737,15 +735,15 @@
       <p class="subtitle" style="margin-top:0;margin-bottom:24px;">Kelola data, keamanan, dan status akun kamu</p>
       <div style="display:flex;gap:8px;margin-bottom:20px;">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#ffffff"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#00ff88"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#00ff88" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span id="ma-status-label" style="font-size:11px;font-weight:600;color:#fff;">Aman</span>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" width="20" height="20"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="1.8" width="20" height="20"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           <span id="ma-method-label" style="font-size:11px;font-weight:600;color:#fff;">Email</span>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="1.8" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <span id="ma-since-label" style="font-size:11px;font-weight:600;color:#fff;">2026</span>
         </div>
       </div>
@@ -1112,7 +1110,7 @@
             onkeydown="if(event.key==='Enter')doTambahAnggota()"
             onfocus="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #333fff'"
             onblur="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #000'"/>
-          <button onclick="doTambahAnggota()" style="background:#fff;color:#000;border:2.5px solid #000;border-radius:0;padding:11px 18px;font-size:12px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 #000;flex-shrink:0;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='5px 5px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
+          <button onclick="doTambahAnggota()" style="background:#00ff88;color:#000;border:2.5px solid #000;border-radius:0;padding:11px 18px;font-size:12px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 #000;flex-shrink:0;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='5px 5px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
             + Tambah
           </button>
         </div>
