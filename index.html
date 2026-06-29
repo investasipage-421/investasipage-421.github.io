@@ -20,7 +20,7 @@
       --white: #ffffff;
       --muted: #666;
       --text-sec: #999;
-      --accent: #ffe600;
+      --accent: #ffffff;
       --accent2: #ff3cac;
       --accent3: #00e5ff;
       --radius: 0px;
@@ -48,7 +48,7 @@
       border: var(--bw) solid #fff;
       border-radius: 0;
       padding: 36px 28px;
-      box-shadow: 6px 6px 0px #ffe600;
+      box-shadow: 6px 6px 0px #333;
     }
 
     /* BACK BTN */
@@ -61,7 +61,7 @@
       box-shadow: var(--shadow-sm);
       transition: transform .1s, box-shadow .1s;
     }
-    .back-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #fff; }
+    .back-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; }
     .back-btn svg { width: 14px; height: 14px; }
 
     /* TITLE */
@@ -81,7 +81,7 @@
       box-shadow: var(--shadow-sm);
       transition: box-shadow .15s, transform .15s;
     }
-    .input-wrap:focus-within { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #ffe600; border-color: #ffe600; }
+    .input-wrap:focus-within { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333fff; border-color: #ffffff; }
     .input-wrap.err { border-color: #ff3cac !important; box-shadow: 4px 4px 0 #ff3cac !important; }
     .input-wrap svg { width: 16px; height: 16px; flex-shrink: 0; color: #555; }
     .input-wrap input {
@@ -98,15 +98,12 @@
     .forgot-link {
       display: block; text-align: right; font-size: 11px; font-weight: 700;
       letter-spacing: .06em; text-transform: uppercase;
-      color: #ffe600; background: none; border: none; cursor: pointer;
-      margin-top: 8px; margin-bottom: 4px;
-      font-family: 'Space Grotesk', sans-serif; padding: 0; width: 100%;
-    }
+      color: #aaa; background: none; border: none; cursor: pointer; margin-top: 8px; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; padding: 0; width: 100%; }
     .forgot-link:hover { text-decoration: underline; }
 
     /* PRIMARY BUTTON */
     .btn-primary {
-      width: 100%; background: #ffe600; color: #000;
+      width: 100%; background: #ffffff; color: #000;
       border: var(--bw) solid #000; border-radius: 0;
       padding: 15px; font-size: 14px; font-weight: 800;
       font-family: 'Space Grotesk', sans-serif; cursor: pointer;
@@ -114,7 +111,7 @@
       box-shadow: var(--shadow);
       transition: transform .1s, box-shadow .1s;
     }
-    .btn-primary:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #fff; }
+    .btn-primary:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; }
     .btn-primary:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #000; }
 
     /* DIVIDER */
@@ -132,31 +129,31 @@
       box-shadow: var(--shadow-sm);
       transition: transform .1s, box-shadow .1s;
     }
-    .btn-social:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #fff; color: #fff; }
+    .btn-social:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; color: #fff; }
     .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
 
     /* SWITCH TEXT */
     .switch-text { font-size: 12px; color: #555; text-align: center; margin-top: 18px; font-weight: 500; }
     .switch-text button {
-      color: #ffe600; font-weight: 700; cursor: pointer;
+      color: #ffffff; font-weight: 700; cursor: pointer;
       background: none; border: none; font-size: 12px;
       font-family: 'Space Grotesk', sans-serif; text-decoration: underline; padding: 0;
     }
     .otp-row { display: flex; gap: 12px; margin: 28px 0 16px; }
     .otp-box { flex: 1; aspect-ratio: 1; background: #111; border: var(--bw) solid #fff; border-radius: 0; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); transition: box-shadow .15s; }
-    .otp-box.filled { border-color: #ffe600; box-shadow: 4px 4px 0 #ffe600; }
-    .otp-box input { background: transparent; border: none; outline: none; width: 100%; height: 100%; text-align: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 900; color: #ffe600; caret-color: #ffe600; }
-    .resend-link { display: block; text-align: center; font-size: 11px; color: #ffe600; margin-bottom: 18px; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing:.06em; padding: 0; width: 100%; }
+    .otp-box.filled { border-color: #ffffff; box-shadow: 4px 4px 0 #333fff; }
+    .otp-box input { background: transparent; border: none; outline: none; width: 100%; height: 100%; text-align: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 900; color: #fff; caret-color: #fff; }
+    .resend-link { display: block; text-align: center; font-size: 11px; color: #aaa; margin-bottom: 18px; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing:.06em; padding: 0; width: 100%; }
     .resend-link:hover { color: #aaa; }
     .strength-bar { display: flex; gap: 4px; margin-top: 8px; }
     .strength-segment { flex: 1; height: 3px; border-radius: 2px; background: var(--input-border); transition: background .3s; }
     .strength-segment.weak   { background: #c0392b; }
     .strength-segment.medium { background: #e67e22; }
-    .strength-segment.strong { background: #ffe600; }
+    .strength-segment.strong { background: #fff; }
     .hint { font-size: 12px; color: var(--muted); margin-top: 6px; padding-left: 2px; }
     #toast {
       position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
-      background: #ffe600; border: 2.5px solid #000;
+      background: #ffffff; border: 2.5px solid #000;
       border-radius: 0; padding: 11px 20px;
       font-size: 12px; font-weight: 800; color: #000;
       font-family: 'Space Grotesk', sans-serif; letter-spacing: .04em; text-transform: uppercase;
@@ -200,7 +197,7 @@
     .glitching { animation: glitchSkew 2.2s ease-in-out; }
     .glitching::before, .glitching::after { content: attr(data-glitch-text); position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: #0a0a0a; }
     .glitching::before { color: #ff2e63; animation: glitchBefore 2.2s ease-in-out; mix-blend-mode: screen; }
-    .glitching::after { color: #ffe600; animation: glitchAfter 2.2s ease-in-out; mix-blend-mode: screen; }
+    .glitching::after { color: #ffffff; animation: glitchAfter 2.2s ease-in-out; mix-blend-mode: screen; }
     @keyframes glitchSkew {
       0%, 100% { transform: skewX(0deg); opacity: 1; }
       4%  { transform: skewX(4deg) translateX(-2px); opacity: .9; }
@@ -239,7 +236,7 @@
     .top-banner { border-radius: 0; aspect-ratio: 16/7; margin-bottom: 18px; background: #181818; border: var(--bw) solid #fff; background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: var(--shadow); }
     .action-row { display: flex; gap: 10px; margin-bottom: 20px; }
     .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 12px; cursor: pointer; font-size: 12px; font-weight: 700; color: #fff; font-family: 'Space Grotesk', sans-serif; letter-spacing:.04em; text-transform:uppercase; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .action-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #ffe600; border-color: #ffe600; }
+    .action-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #333fff; border-color: #ffffff; }
     .action-btn svg { width: 16px; height: 16px; }
     .action-btn.icon-only { flex: 0 0 48px; padding: 13px 0; }
     .slider-wrap { position: relative; border-radius: 0; overflow: hidden; background: #181818; border: var(--bw) solid #fff; margin-bottom: 20px; box-shadow: var(--shadow); }
@@ -254,7 +251,7 @@
     .slide-desc { font-size: 12px; color: var(--text-sec); line-height: 1.5; max-width: 280px; margin: 0 auto; }
     .slider-dots { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 2; display: flex; justify-content: center; gap: 6px; padding: 0; pointer-events: none; }
     .slider-dot { width: 16px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.35); box-shadow: 0 0 0 1px rgba(0,0,0,0.25); transition: background .3s, width .3s; cursor: pointer; pointer-events: auto; }
-    .slider-dot.active { background: #ffe600; width: 20px; }
+    .slider-dot.active { background: #ffffff; width: 20px; }
     .slide-video { padding: 0; overflow: hidden; }
     .slide-video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .dash-footer { text-align: center; font-size: 10px; color: #333; margin-top: auto; padding-top: 20px; padding-bottom: 8px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
@@ -277,7 +274,7 @@
       border: var(--bw) solid #fff;
       border-radius: 0;
       padding: 8px 12px;
-      box-shadow: 5px 5px 0 #ffe600;
+      box-shadow: 5px 5px 0 #333fff;
       pointer-events: auto;
       gap: 4px;
     }
@@ -298,7 +295,7 @@
     }
     .nav-item svg { width: 22px; height: 22px; display: block; }
     .nav-item.active {
-      background: #ffe600;
+      background: #ffffff;
       color: #000;
     }
     .nav-item:hover:not(.active) { color: #aaa; }
@@ -319,24 +316,24 @@
     .acc-avatar-img { width: 90px; height: 90px; border-radius: 0; object-fit: cover; display: block; border: var(--bw) solid #fff; background: #181818; box-shadow: var(--shadow-sm); }
     .acc-name-center { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -.01em; text-align: center; margin-bottom: 8px; position: relative; display: inline-block; cursor: pointer; }
     .acc-rating { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--white); }
-    .acc-rating svg { width: 13px; height: 13px; color: #ffe600; }
+    .acc-rating svg { width: 13px; height: 13px; color: #ffffff; }
     .acc-quick-row { display: flex; gap: 10px; margin-bottom: 12px; }
     .acc-quick-card { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 16px 8px; cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
     .acc-quick-card:hover { border-color: #444; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.4); }
     .acc-quick-card svg { width: 22px; height: 22px; color: var(--white); }
     .acc-quick-card span { font-size: 13px; font-weight: 600; color: var(--white); }
     .acc-privacy-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 16px 18px; margin-bottom: 14px; cursor: pointer; box-shadow: var(--shadow); transition: transform .1s, box-shadow .1s; }
-    .acc-privacy-banner:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #ffe600; border-color: #ffe600; }
+    .acc-privacy-banner:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333fff; border-color: #ffffff; }
     .acc-privacy-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
     .acc-privacy-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px; }
-    .acc-privacy-icon { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #ffe600; border: var(--bw) solid #000; display: flex; align-items: center; justify-content: center; color: #000; }
+    .acc-privacy-icon { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #222; border: var(--bw) solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; }
     .acc-privacy-icon svg { width: 22px; height: 22px; }
-    .acc-section-label { font-size: 10px; font-weight: 800; color: #ffe600; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; padding-left: 2px; border-left: 3px solid #ffe600; padding-left: 8px; }
+    .acc-section-label { font-size: 10px; font-weight: 800; color: #ffffff; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; padding-left: 2px; border-left: 3px solid #fff; padding-left: 8px; }
     .acc-menu { display: flex; flex-direction: column; gap: 0; }
     .acc-menu-group { background: #181818; border: var(--bw) solid #fff; border-radius: 0; overflow: hidden; box-shadow: var(--shadow); }
     .acc-menu-item { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-bottom: 2px solid #000; cursor: pointer; color: #fff; transition: background .12s; }
     .acc-menu-item:last-child { border-bottom: none; }
-    .acc-menu-item:hover { background: #ffe60022; }
+    .acc-menu-item:hover { background: #ffffff22; }
     .acc-menu-item-icon { width: 32px; height: 32px; border-radius: 0; background: #111; border: var(--bw) solid #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .acc-menu-item-icon svg { width: 17px; height: 17px; color: var(--white); }
     .acc-menu-item span { font-size: 15px; font-weight: 500; flex: 1; }
@@ -348,18 +345,18 @@
 
     .send-page-header { display: flex; align-items: center; margin-bottom: 18px; }
     .circle-back-btn { width: 40px; height: 40px; border-radius: 0; flex-shrink: 0; background: #181818; border: var(--bw) solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; padding: 0; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .circle-back-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #ffe600; }
+    .circle-back-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #333fff; }
     .circle-back-btn svg { width: 20px; height: 20px; }
     .chat-header-info { flex: 1; min-width: 0; margin-left: 4px; }
     .chat-header-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); letter-spacing: -.01em; }
-    .chat-header-status { font-size: 12px; color: #ffe600; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
-    .chat-header-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #ffe600; display: inline-block; }
-    .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: #ffe600; }
+    .chat-header-status { font-size: 12px; color: #ffffff; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+    .chat-header-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #ffffff; display: inline-block; }
+    .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: #ffffff; }
     .chat-header-avatar svg { width: 20px; height: 20px; }
     .chat-messages { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 14px; padding-bottom: 84px; }
     .chat-bubble { max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.55; word-break: break-word; white-space: pre-wrap; }
     .chat-bubble.bot { align-self: flex-start; background: #181818; border: var(--bw) solid #fff; color: #eee; border-radius: 0; box-shadow: 3px 3px 0 #000; }
-    .chat-bubble.user { align-self: flex-end; background: #ffe600; color: #000; border: var(--bw) solid #000; border-radius: 0; box-shadow: 3px 3px 0 #000; font-weight: 600; }
+    .chat-bubble.user { align-self: flex-end; background: #ffffff; color: #000; border: var(--bw) solid #000; border-radius: 0; box-shadow: 3px 3px 0 #000; font-weight: 600; }
     .chat-bubble-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
     .chat-bubble.user .chat-bubble-time { text-align: right; color: #999; }
     .chat-typing { align-self: flex-start; display: flex; gap: 4px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 4px; padding: 12px 16px; }
@@ -370,18 +367,18 @@
     .chat-input-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 51; background: #111; border-top: var(--bw) solid #fff; padding: 10px 14px max(10px, env(safe-area-inset-bottom)); display: flex; justify-content: center; }
     .chat-input-row { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 480px; }
     .chat-input-row input { flex: 1; background: #111; border: var(--bw) solid #fff; border-radius: 0; padding: 12px 16px; color: #fff; outline: none; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; }
-    .chat-input-row input:focus { border-color: #ffe600; box-shadow: 3px 3px 0 #ffe600; }
-    .chat-send-btn { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #ffe600; color: #000; border: var(--bw) solid #000; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
+    .chat-input-row input:focus { border-color: #ffffff; box-shadow: 3px 3px 0 #333fff; }
+    .chat-send-btn { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #ffffff; color: #000; border: var(--bw) solid #000; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
     .chat-send-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #000; }
     .chat-send-btn svg { width: 18px; height: 18px; }
     .send-anim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 9999; background: #0a0a0a; opacity: 0; }
     .send-anim-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-    .send-anim-path { fill: none; stroke: #ffe600; stroke-width: 2; stroke-dasharray: 8 8; }
-    .send-anim-plane { position: absolute; top: 0; left: 0; width: 36px; height: 36px; color: #ffe600; opacity: 0; offset-rotate: auto; }
+    .send-anim-path { fill: none; stroke: #ffffff; stroke-width: 2; stroke-dasharray: 8 8; }
+    .send-anim-plane { position: absolute; top: 0; left: 0; width: 36px; height: 36px; color: #ffffff; opacity: 0; offset-rotate: auto; }
     .send-anim-plane svg { width: 100%; height: 100%; }
     .confirm-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; padding: 24px; }
     .confirm-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .confirm-card { width: 100%; max-width: 340px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 28px 22px; text-align: center; box-shadow: 6px 6px 0 #ffe600; }
+    .confirm-card { width: 100%; max-width: 340px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 28px 22px; text-align: center; box-shadow: 6px 6px 0 #333fff; }
     .confirm-icon { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 16px; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; color: var(--white); }
     .confirm-icon svg { width: 24px; height: 24px; }
     .confirm-icon.danger { color: #ff5c5c; border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.08); }
@@ -398,25 +395,25 @@
     .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
     .dash-popup-overlay { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,0.6); }
     .dash-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .dash-popup-card { width: 100%; max-width: 320px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 28px 22px 22px; box-shadow: 6px 6px 0 #ffe600; animation: dashPopupIn .25s ease; position: relative; text-align: center; }
+    .dash-popup-card { width: 100%; max-width: 320px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 28px 22px 22px; box-shadow: 6px 6px 0 #333fff; animation: dashPopupIn .25s ease; position: relative; text-align: center; }
     @keyframes dashPopupIn { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .dash-popup-close { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-sec); cursor: pointer; transition: color .2s, border-color .2s; padding: 0; }
     .dash-popup-close:hover { color: var(--white); border-color: #444; }
     .dash-popup-close svg { width: 13px; height: 13px; }
     .dash-popup-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 6px; padding-right: 24px; }
     .dash-popup-body { font-size: 12.5px; color: var(--text-sec); line-height: 1.55; min-height: 54px; text-align: left; }
-    .dash-popup-cursor { display: inline-block; width: 2px; height: 13px; background: #ffe600; margin-left: 2px; vertical-align: -2px; animation: dashCursorBlink .85s steps(1) infinite; }
+    .dash-popup-cursor { display: inline-block; width: 2px; height: 13px; background: #ffffff; margin-left: 2px; vertical-align: -2px; animation: dashCursorBlink .85s steps(1) infinite; }
     @keyframes dashCursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
     .sosmed-popup-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; padding: 24px; }
     .sosmed-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .sosmed-popup-card { width: 100%; max-width: 340px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 26px 22px 22px; box-shadow: 6px 6px 0 #ffe600; animation: dashPopupIn .25s ease; position: relative; }
+    .sosmed-popup-card { width: 100%; max-width: 340px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 26px 22px 22px; box-shadow: 6px 6px 0 #333fff; animation: dashPopupIn .25s ease; position: relative; }
     .sosmed-popup-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .sosmed-popup-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); }
     .sosmed-popup-close { width: 28px; height: 28px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-sec); cursor: pointer; transition: color .2s, border-color .2s; padding: 0; flex-shrink: 0; }
     .sosmed-popup-close:hover { color: var(--white); border-color: #444; }
     .sosmed-popup-close svg { width: 13px; height: 13px; }
     .sosmed-link-card { display: flex; align-items: center; gap: 14px; background: #111; border: var(--bw) solid #fff; border-radius: 0; padding: 14px 16px; text-decoration: none; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .sosmed-link-card:hover { border-color: #ffe600; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #ffe600; }
+    .sosmed-link-card:hover { border-color: #ffffff; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #333fff; }
     .sosmed-link-card + .sosmed-link-card { margin-top: 10px; }
     .sosmed-link-img-wrap { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .sosmed-link-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
@@ -524,7 +521,7 @@
       <div class="err-msg" id="otp-err" style="text-align:center;margin-top:-4px;margin-bottom:8px;"></div>
       <div style="text-align:center;margin-bottom:16px;">
         <div style="font-size:11px;color:#444;margin-bottom:4px;">Kode kamu:</div>
-        <div style="font-size:28px;font-family:'Syne',sans-serif;font-weight:800;color:#ffe600;letter-spacing:10px;" id="otp-display">----</div>
+        <div style="font-size:28px;font-family:'Syne',sans-serif;font-weight:800;color:#ffffff;letter-spacing:10px;" id="otp-display">----</div>
       </div>
       <button class="resend-link" onclick="resendOtp()">Resend Code</button>
       <button class="btn-primary" onclick="doVerify()">Verify</button>
@@ -740,7 +737,7 @@
       <p class="subtitle" style="margin-top:0;margin-bottom:24px;">Kelola data, keamanan, dan status akun kamu</p>
       <div style="display:flex;gap:8px;margin-bottom:20px;">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#ffe600" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#ffe600"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#ffffff"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span id="ma-status-label" style="font-size:11px;font-weight:600;color:#fff;">Aman</span>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
@@ -843,58 +840,14 @@
     </div>
   </div>
 
-  <!-- CHAT NAV SCREEN — Temukan Sesama Pengguna -->
-  <div class="screen" id="s-chat-nav">
-    <div class="dash-inner" style="padding-bottom:110px;">
-      <!-- Header -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-        <div>
-          <div style="font-size:12px;color:var(--text-sec);margin-bottom:2px;">Orbitxy</div>
-          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.01em;">Chat</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-        <!-- Scan QR orang lain -->
-        <button onclick="go('s-scan-qr')" style="width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--white);padding:0;transition:border-color .2s;" title="Scan QR">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="19" width="2" height="2"/></svg>
-        </button>
-        <!-- + button with dropdown -->
-        <div style="position:relative;">
-          <button id="chat-plus-btn" onclick="toggleChatDropdown(event)" style="width:40px;height:40px;border-radius:50%;background:var(--white);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;padding:0;transition:background .2s;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <!-- Dropdown -->
-          <div id="chat-plus-dropdown" style="display:none;position:absolute;top:48px;right:0;background:#1e1e1e;border:1px solid rgba(255,255,255,0.10);border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:160px;z-index:200;animation:fadeIn .15s ease;">
-            <div onclick="openQrSaya()" style="display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07);transition:background .15s;" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background=''">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="19" width="2" height="2"/></svg>
-              <span style="font-size:13.5px;font-weight:500;color:#ddd;">QR Saya</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" style="margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
-            <div onclick="openBuatGrupModal()" style="display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;transition:background .15s;" onmouseover="this.style.background='#2a2a2a'" onmouseout="this.style.background=''">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-              <span style="font-size:13.5px;font-weight:500;color:#ddd;">Buat Grup</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" style="margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
-          </div>
-        </div>
-        </div><!-- end flex buttons -->
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:var(--input-bg);border:1px solid var(--input-border);border-radius:99px;padding:0 16px;margin-bottom:20px;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="chat-search" type="text" placeholder="Cari nama..." oninput="filterChatContacts(this.value)" style="background:transparent;border:none;outline:none;width:100%;padding:12px 0;font-size:13.5px;font-family:'DM Sans',sans-serif;color:#ccc;" autocomplete="off"/>
-      </div>
-
-      <!-- A-Z contact list -->
-      <div id="chat-contact-list"></div>
-
-      <!-- Empty state -->
-      <div id="chat-empty-state" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 0;gap:12px;">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <p style="font-size:13px;color:#444;text-align:center;">Belum ada kontak tersimpan<br><span style="font-size:12px;color:#333;">Tambah kontak lewat tombol +</span></p>
-      </div>
+  <!-- CHAT NAV SCREEN — Masih dalam perbaikan -->
+  <div class="screen" id="s-chat-nav-main">
+    <div class="dash-inner" style="align-items:center;justify-content:center;min-height:100vh;">
+      <p style="font-size:13px;color:#444;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">Masih dalam perbaikan</p>
     </div>
   </div>
 
-  <!-- SCAN QR ORANG LAIN -->
+    <!-- SCAN QR ORANG LAIN -->
   <div class="screen" id="s-scan-qr" style="background:#000;">
     <div style="width:100%;max-width:480px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:max(24px,env(safe-area-inset-top)) 18px 32px;position:relative;">
       <!-- Header -->
@@ -934,11 +887,11 @@
 
         <!-- Result box (hidden until scan) -->
         <div id="qr-result-box" style="display:none;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.35);border-radius:14px;padding:14px 18px;width:100%;max-width:300px;text-align:center;">
-          <div style="font-size:11px;color:#ffe600;margin-bottom:4px;font-weight:600;">QR Terdeteksi ✓</div>
+          <div style="font-size:11px;color:#ffffff;margin-bottom:4px;font-weight:600;">QR Terdeteksi ✓</div>
           <div id="qr-result-text" style="font-size:13px;color:#ddd;word-break:break-all;"></div>
         </div>
 
-        <button id="qr-cam-btn" onclick="startScanCamera()" style="background:#ffe600;color:#000;border:none;border-radius:99px;padding:14px 36px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity .2s;">
+        <button id="qr-cam-btn" onclick="startScanCamera()" style="background:#ffffff;color:#000;border:none;border-radius:99px;padding:14px 36px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity .2s;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           Buka Kamera
         </button>
@@ -1005,7 +958,7 @@
           <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Anggota</div>
         </div>
         <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
-          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:#ffe600;">✓</div>
+          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:#ffffff;">✓</div>
           <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Aktif</div>
         </div>
         <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
@@ -1101,7 +1054,7 @@
         <input type="text" id="gc-input" placeholder="Pesan..." autocomplete="off"
           onkeydown="if(event.key==='Enter')sendGrupMessage()"
           style="flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:22px;padding:11px 16px;color:#ccc;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;"/>
-        <button onclick="sendGrupMessage()" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:#ffe600;color:#000;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
+        <button onclick="sendGrupMessage()" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:#ffffff;color:#000;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
           <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="17" height="17"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
         </button>
       </div>
@@ -1127,8 +1080,8 @@
       </div>
       <!-- Members -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#ffe600;letter-spacing:.12em;text-transform:uppercase;border-left:3px solid #ffe600;padding-left:8px;">Anggota</div>
-        <button id="gi-tambah-btn" onclick="openTambahAnggota()" style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#000;background:#ffe600;border:2px solid #000;border-radius:0;padding:5px 12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:.04em;text-transform:uppercase;box-shadow:2px 2px 0 #000;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='4px 4px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='2px 2px 0 #000'">
+        <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:.12em;text-transform:uppercase;border-left:3px solid #fff;padding-left:8px;">Anggota</div>
+        <button id="gi-tambah-btn" onclick="openTambahAnggota()" style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#000;background:#fff;border:2px solid #fff;border-radius:0;padding:5px 12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:.04em;text-transform:uppercase;box-shadow:2px 2px 0 #000;color:#000;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='4px 4px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='2px 2px 0 #000'">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Tambah
         </button>
@@ -1141,7 +1094,7 @@
 
   <!-- MODAL TAMBAH ANGGOTA -->
   <div class="confirm-overlay" id="modal-tambah-anggota" onclick="if(event.target===this)closeTambahAnggota()" style="align-items:flex-end;padding:0;z-index:310;">
-    <div style="width:100%;max-width:480px;margin:0 auto;background:#111;border:2.5px solid #fff;border-radius:0;border-bottom:none;padding:24px 20px max(28px,env(safe-area-inset-bottom));box-shadow:0 -6px 0 #ffe600;animation:slideUp .3s ease;max-height:75vh;overflow-y:auto;">
+    <div style="width:100%;max-width:480px;margin:0 auto;background:#111;border:2.5px solid #fff;border-radius:0;border-bottom:none;padding:24px 20px max(28px,env(safe-area-inset-bottom));box-shadow:0 -6px 0 #ffffff;animation:slideUp .3s ease;max-height:75vh;overflow-y:auto;">
       <!-- Header -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
         <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-.01em;">Tambah Anggota</div>
@@ -1152,14 +1105,14 @@
 
       <!-- Manual input -->
       <div style="margin-bottom:16px;">
-        <div style="font-size:10px;font-weight:800;color:#ffe600;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #ffe600;padding-left:8px;margin-bottom:8px;">Tambah Manual</div>
+        <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #fff;padding-left:8px;margin-bottom:8px;">Tambah Manual</div>
         <div style="display:flex;gap:8px;">
           <input id="tambah-nama-input" type="text" placeholder="Nama anggota..." maxlength="30"
             style="flex:1;background:#000;border:2.5px solid #fff;border-radius:0;padding:11px 14px;color:#fff;outline:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;box-shadow:3px 3px 0 #000;"
             onkeydown="if(event.key==='Enter')doTambahAnggota()"
-            onfocus="this.style.borderColor='#ffe600';this.style.boxShadow='3px 3px 0 #ffe600'"
+            onfocus="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #333fff'"
             onblur="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #000'"/>
-          <button onclick="doTambahAnggota()" style="background:#ffe600;color:#000;border:2.5px solid #000;border-radius:0;padding:11px 18px;font-size:12px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 #000;flex-shrink:0;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='5px 5px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
+          <button onclick="doTambahAnggota()" style="background:#fff;color:#000;border:2.5px solid #000;border-radius:0;padding:11px 18px;font-size:12px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 #000;flex-shrink:0;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='5px 5px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
             + Tambah
           </button>
         </div>
@@ -1168,7 +1121,7 @@
 
       <!-- From contacts -->
       <div id="tambah-kontak-section" style="display:none;">
-        <div style="font-size:10px;font-weight:800;color:#ffe600;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #ffe600;padding-left:8px;margin-bottom:10px;">Dari Kontak</div>
+        <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #fff;padding-left:8px;margin-bottom:10px;">Dari Kontak</div>
         <div id="tambah-kontak-list" style="display:flex;flex-direction:column;gap:6px;"></div>
       </div>
 
@@ -1258,7 +1211,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const dashNav = document.getElementById('dash-bottom-nav');
-    const showNav = ['s-dashboard','s-account','s-chat-nav'].includes(id);
+    const showNav = ['s-dashboard','s-account','s-chat-nav-main'].includes(id);
     if (dashNav) dashNav.style.display = showNav ? 'flex' : 'none';
     window.scrollTo(0,0); manageSlideVideo(id);
     if (id !== 's-scan-qr' && typeof stopScanCamera === 'function') stopScanCamera();
@@ -1312,7 +1265,7 @@
     if (tab === 'home') {
       go('s-dashboard'); initSlider();
     } else if (tab === 'chat') {
-      go('s-chat-nav');
+      go('s-chat-nav-main');
     } else if (tab === 'account') {
       go('s-account');
     } else {
@@ -1803,7 +1756,7 @@
       // Sender name (for others)
       if (!isMe) {
         const senderEl = document.createElement('div');
-        senderEl.style.cssText = 'font-size:11px;font-weight:600;color:#ffe600;padding-left:12px;';
+        senderEl.style.cssText = 'font-size:11px;font-weight:600;color:#ffffff;padding-left:12px;';
         senderEl.textContent = m.senderName || 'Anggota';
         wrap.appendChild(senderEl);
       }
@@ -1859,7 +1812,7 @@
       // Role badge
       let badge = '';
       if (m.role === 'owner') badge = '<span style="font-size:10px;background:rgba(255,200,0,.15);color:#ffc800;border-radius:6px;padding:2px 8px;font-weight:700;">Owner</span>';
-      else if (m.role === 'admin') badge = '<span style="font-size:10px;background:rgba(0,255,136,.12);color:#ffe600;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>';
+      else if (m.role === 'admin') badge = '<span style="font-size:10px;background:rgba(0,255,136,.12);color:#ffffff;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>';
 
       // Action button — what can I do to this member?
       let actionBtn = '';
@@ -1870,7 +1823,7 @@
             actionBtn = `<button onclick="memberAction(${i},'demote')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Turunkan</button>`;
           } else {
             actionBtn = `
-              <button onclick="memberAction(${i},'promote')" style="font-size:11px;color:#ffe600;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:4px;white-space:nowrap;">Jadikan Admin</button>
+              <button onclick="memberAction(${i},'promote')" style="font-size:11px;color:#ffffff;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:4px;white-space:nowrap;">Jadikan Admin</button>
               <button onclick="memberAction(${i},'kick')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Keluarkan</button>`;
           }
         }
@@ -1996,8 +1949,8 @@
         row.innerHTML = `
           <div style="width:34px;height:34px;border-radius:0;background:${bg};border:2px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:#fff;">${getInitials(c.name)}</div>
           <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">${escapeHtml(c.name)}</div><div style="font-size:11px;color:#555;">${escapeHtml(c.handle||'')}</div></div>
-          <span style="font-size:10px;color:#000;background:#ffe600;border:1.5px solid #000;padding:3px 9px;font-weight:800;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.04em;">+ Tambah</span>`;
-        row.onmouseover = () => { row.style.borderColor='#ffe600'; row.style.boxShadow='3px 3px 0 #ffe600'; };
+          <span style="font-size:10px;color:#000;background:#ffffff;border:1.5px solid #000;padding:3px 9px;font-weight:800;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.04em;">+ Tambah</span>`;
+        row.onmouseover = () => { row.style.borderColor='#ffffff'; row.style.boxShadow='3px 3px 0 #333fff'; };
         row.onmouseout = () => { row.style.borderColor='#333'; row.style.boxShadow='2px 2px 0 #000'; };
         row.onclick = () => addMemberToGrup(c.name, c.handle||('@'+c.name.toLowerCase().replace(/\s+/g,'')), c.email||'', 'member');
         kontakList.appendChild(row);
@@ -2206,7 +2159,7 @@
     if (btn) {
       btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Buka Kamera';
       btn.onclick = startScanCamera;
-      btn.style.background = '#ffe600';
+      btn.style.background = '#ffffff';
       btn.style.color = '#000';
     }
     const status = document.getElementById('qr-scan-status');
