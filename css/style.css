@@ -1,0 +1,218 @@
+:root {
+  --ink: #3F3F3F;
+  --muted: #818181;
+  --border: #E1E1E1;
+  --field-bg: #F6F6F6;
+  --accent: #316FEA;
+  --cta: #FFC508;
+  --cta-shadow: #C99B06;
+  --orbit-1: #5B6CFF;
+  --orbit-2: #FF8A3D;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background: #ffffff;
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px 140px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mark {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  position: relative;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.mark svg { width: 100%; height: 100%; display: block; }
+
+h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.switch-line {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.switch-line a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+.switch-line a:hover { text-decoration: underline; }
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 5px 0 var(--border);
+  padding: 13px;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.google-btn:hover { background: #fafafa; }
+.google-btn:active {
+  box-shadow: none;
+  transform: translateY(5px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #b5b5b5;
+  font-size: 13px;
+  margin: 4px 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e3e3e3;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  border: 2px solid var(--border);
+  background: var(--field-bg);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+input::placeholder { color: var(--muted); }
+input:focus { border-color: var(--accent); }
+
+.pw-field { position: relative; }
+.pw-field input { padding-right: 48px; }
+.pw-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
+}
+
+.forgot {
+  text-align: right;
+  font-size: 13px;
+}
+.forgot a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+.forgot a:hover { text-decoration: underline; }
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 4px solid #D8D8D8;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+.bottom-bar-inner { width: 100%; max-width: 420px; }
+
+.submit-btn {
+  width: 100%;
+  background: var(--cta);
+  border: 2px solid var(--cta-shadow);
+  box-shadow: 0 5px 0 var(--cta-shadow);
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.submit-btn:active {
+  box-shadow: none;
+  transform: translateY(5px);
+}
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.back-btn {
+  align-self: flex-start;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--field-bg);
+  border: 2px solid var(--border);
+  color: var(--muted);
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.back-btn:hover { background: #efefef; }
+
+.forgot-desc {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
