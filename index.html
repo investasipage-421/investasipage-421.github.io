@@ -204,6 +204,32 @@
 
   .view { display: none; }
   .view.active { display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+  .back-btn {
+    align-self: flex-start;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--field-bg);
+    border: 2px solid var(--border);
+    color: var(--muted);
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .back-btn:hover { background: #efefef; }
+
+  .forgot-desc {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin: 0 0 28px;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
@@ -215,6 +241,16 @@
         <ellipse cx="32" cy="32" rx="28" ry="12" stroke="var(--orbit-1)" stroke-width="3" fill="none" transform="rotate(-20 32 32)"/>
         <circle cx="9" cy="22" r="4" fill="var(--orbit-1)" transform="rotate(-20 32 32)"/>
       </svg>
+    </div>
+
+    <!-- FORGOT PASSWORD VIEW -->
+    <div id="forgotView" class="view">
+      <button type="button" class="back-btn" onclick="showView('login')">‹</button>
+      <h1>Lupa Kata Sandi?</h1>
+      <p class="forgot-desc">Masukkan email kamu dan kami akan mengirimkan kode untuk reset kata sandi.</p>
+      <form onsubmit="return false;">
+        <input type="email" placeholder="Email">
+      </form>
     </div>
 
     <!-- LOGIN VIEW -->
@@ -242,7 +278,7 @@
           <button type="button" class="pw-toggle" onclick="togglePw('pw-login')">👁</button>
         </div>
 
-        <div class="forgot"><a href="#">Lupa kata sandi?</a></div>
+        <div class="forgot"><a onclick="showView('forgot')">Lupa kata sandi?</a></div>
       </form>
     </div>
 
@@ -295,7 +331,12 @@
     function showView(view) {
       document.getElementById('loginView').classList.toggle('active', view === 'login');
       document.getElementById('registerView').classList.toggle('active', view === 'register');
-      document.getElementById('submitBtn').textContent = view === 'login' ? 'Masuk' : 'Daftar Akun';
+      document.getElementById('forgotView').classList.toggle('active', view === 'forgot');
+
+      const btn = document.getElementById('submitBtn');
+      if (view === 'login') btn.textContent = 'Masuk';
+      else if (view === 'register') btn.textContent = 'Daftar Akun';
+      else btn.textContent = 'Kirim Kode';
     }
   </script>
 
