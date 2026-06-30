@@ -3,476 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masuk ke GuruPlus</title>
+<title>Masuk Orbit</title>
 <style>
-  :root{
-    --yellow: #FFCD43;
-    --yellow-dark: #E0A91E;
-    --orange: #FF6A39;
-    --text-dark: #2B2B2E;
-    --text-gray: #8A8A93;
-    --blue: #3B6EF5;
-    --border: #E3E3E8;
-    --field-bg: #F4F4F6;
+  :root {
+    --ink: #3F3F3F;
+    --muted: #818181;
+    --border: #E1E1E1;
+    --field-bg: #F6F6F6;
+    --accent: #316FEA;
+    --cta: #FFC508;
+    --cta-shadow: #C99B06;
+    --orbit-1: #5B6CFF;
+    --orbit-2: #FF8A3D;
   }
 
-  *{ box-sizing: border-box; }
+  * { box-sizing: border-box; }
 
-  html, body{
-    height: 100%;
-  }
-
-  body{
+  body {
     margin: 0;
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+    background: #ffffff;
+    color: var(--ink);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #fff;
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  }
-
-  .phone{
-    width: 100%;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .side-panel{
-    display: none;
-  }
-
-  .content{
-    width: 100%;
-    max-width: 460px;
-    margin: 0 auto;
-    padding: 64px 28px 0 28px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Layar lebar: form tetap polos di tengah, tanpa panel ilustrasi */
-  @media (min-width: 900px){
-    body{ background: #F6F7FB; }
-
-    .phone{
-      flex-direction: row;
-      max-width: 480px;
-      min-height: 0;
-      height: min(760px, 92vh);
-      margin: auto;
-      border-radius: 28px;
-      box-shadow: 0 24px 60px rgba(20,20,40,0.10);
-      overflow: hidden;
-    }
-
-    .side-panel{
-      display: none;
-    }
-
-    .content{
-      flex: 1;
-      max-width: 460px;
-      margin: 0 auto;
-      padding: 0 56px;
-      justify-content: center;
-    }
-
-    .mascot-wrap{ display: flex; }
-
-    .footer{ border-top: none; margin-top: 0; }
-    .submit-area{ padding: 18px 0 48px 0; }
-  }
-
-  /* ---------- Mascot ---------- */
-  .mascot-wrap{
-    display: flex;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 22px;
+    padding: 64px 16px 140px;
   }
-  .mascot{
-    position: relative;
-    width: 96px;
-    height: 110px;
+
+  .wrap {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .mascot-shadow{
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
+
+  /* Original mascot: a simple orbiting-dot mark, not affiliated with any third party */
+  .mark {
     width: 64px;
-    height: 14px;
-    background: #E7E7EC;
-    border-radius: 50%;
+    height: 64px;
+    margin-bottom: 18px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
   }
-  .pencil-cap{
-    position: absolute;
-    top: 0;
-    left: 8px;
-    width: 80px;
-    height: 22px;
-    background: #FF5A36;
-    border-radius: 10px 10px 0 0;
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
   }
-  .pencil-band{
-    position: absolute;
-    top: 20px;
-    left: 4px;
-    width: 88px;
-    height: 10px;
-    background: #C9CCD1;
-  }
-  .face{
-    position: absolute;
-    top: 28px;
-    left: 4px;
-    width: 88px;
-    height: 78px;
-    background: linear-gradient(180deg, #FFC93C 0%, #FFB23C 100%);
-    border-radius: 0 0 44px 44px;
-  }
-  .eyebrow{
-    position: absolute;
-    top: 36px;
-    width: 16px;
-    height: 8px;
-    border-top: 3px solid #2B2B2E;
-    border-radius: 50%;
-  }
-  .eyebrow.left{ left: 16px; }
-  .eyebrow.right{ left: 56px; transform: scaleX(-1); }
-  .eye{
-    position: absolute;
-    top: 44px;
-    width: 18px;
-    height: 18px;
-    background: #fff;
-    border-radius: 50%;
-    border: 2px solid #2B2B2E;
-  }
-  .eye.left{ left: 14px; }
-  .eye.right{ left: 56px; }
-  .pupil{
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 6px;
-    height: 6px;
-    background: #2B2B2E;
-    border-radius: 50%;
-  }
-  .nose{
-    position: absolute;
-    top: 62px;
-    left: 41px;
-    width: 6px;
-    height: 6px;
-    background: #E8923C;
-    border-radius: 50%;
-  }
-  .mouth{
-    position: absolute;
-    top: 74px;
-    left: 36px;
-    width: 16px;
-    height: 8px;
-    border-bottom: 3px solid #2B2B2E;
-    border-radius: 50%;
-  }
+  .mark svg { width: 100%; height: 100%; display: block; }
 
-  /* ---------- Headings ---------- */
-  h1.title{
-    margin: 0 0 10px 0;
-    text-align: center;
-    font-size: 28px;
+  h1 {
+    font-size: 26px;
     font-weight: 800;
-    color: var(--text-dark);
-    letter-spacing: -0.3px;
+    margin: 0 0 8px;
+    text-align: center;
   }
 
-  .subtitle{
-    text-align: center;
-    margin: 0 0 28px 0;
-    font-size: 15px;
-    color: var(--text-gray);
+  .signup-line {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 28px;
   }
-  .subtitle a{
-    color: var(--blue);
+  .signup-line a {
+    color: var(--accent);
     font-weight: 700;
     text-decoration: none;
   }
-  .subtitle a:hover{ text-decoration: underline; }
+  .signup-line a:hover { text-decoration: underline; }
 
-  /* ---------- Google button ---------- */
-  .btn-google{
+  form {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .google-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    padding: 16px 18px;
+    width: 100%;
     background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow: 0 3px 0 var(--border);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-dark);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 5px 0 var(--border);
+    padding: 13px;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--ink);
     cursor: pointer;
-    margin-bottom: 26px;
-    transition: transform .05s ease;
+    transition: all 0.15s ease;
   }
-  .btn-google:active{ transform: translateY(2px); box-shadow: 0 1px 0 var(--border); }
-  .btn-google svg{ width: 22px; height: 22px; }
+  .google-btn:hover { background: #fafafa; }
+  .google-btn:active {
+    box-shadow: none;
+    transform: translateY(5px);
+  }
 
-  /* ---------- Divider ---------- */
-  .divider{
+  .divider {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 26px;
+    gap: 16px;
+    color: #b5b5b5;
+    font-size: 13px;
+    margin: 4px 0;
   }
-  .divider .line{
+  .divider::before, .divider::after {
+    content: '';
     flex: 1;
     height: 1px;
-    background: var(--border);
-  }
-  .divider span{
-    font-size: 14px;
-    color: var(--text-gray);
-    white-space: nowrap;
+    background: #e3e3e3;
   }
 
-  /* ---------- Inputs ---------- */
-  .field{
-    position: relative;
-    margin-bottom: 18px;
-  }
-  .field input{
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
     width: 100%;
-    padding: 18px 16px;
+    border: 2px solid var(--border);
     background: var(--field-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    font-size: 16px;
-    color: var(--text-dark);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    color: var(--ink);
     outline: none;
-    transition: border-color .15s ease, background .15s ease;
+    transition: border-color 0.15s ease;
   }
-  .field input::placeholder{ color: #A6A6AE; }
-  .field input:focus{
-    border-color: var(--blue);
-    background: #fff;
-  }
-  .field.has-icon input{ padding-right: 48px; }
-  .eye-toggle{
+  input::placeholder { color: var(--muted); }
+  input:focus { border-color: var(--accent); }
+
+  .pw-field { position: relative; }
+  .pw-field input { padding-right: 48px; }
+  .pw-toggle {
     position: absolute;
     right: 14px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
+    color: var(--accent);
     cursor: pointer;
-    padding: 6px;
-    display: flex;
-    color: var(--blue);
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px;
   }
-  .eye-toggle svg{ width: 22px; height: 22px; }
 
-  .forgot{
+  .forgot {
     text-align: right;
-    margin-bottom: 18px;
+    font-size: 13px;
   }
-  .forgot a{
-    color: var(--blue);
-    font-size: 14px;
+  .forgot a {
+    color: var(--accent);
     font-weight: 700;
     text-decoration: none;
   }
-  .forgot a:hover{ text-decoration: underline; }
+  .forgot a:hover { text-decoration: underline; }
 
-  .error-msg{
-    font-size: 13px;
-    color: #E0483E;
-    margin: -10px 0 14px 4px;
-    min-height: 16px;
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 4px solid #D8D8D8;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
   }
+  .bottom-bar-inner { width: 100%; max-width: 420px; }
 
-  /* ---------- Footer / submit ---------- */
-  .footer{
-    margin-top: 8px;
-  }
-  .submit-area{
-    padding: 18px 28px 40px 28px;
-  }
-  .btn-submit{
+  .submit-btn {
     width: 100%;
-    padding: 18px;
-    background: linear-gradient(180deg, var(--yellow) 0%, #FFC22E 100%);
-    border: none;
-    border-bottom: 4px solid var(--yellow-dark);
-    border-radius: 16px;
+    background: var(--cta);
+    border: 2px solid var(--cta-shadow);
+    box-shadow: 0 5px 0 var(--cta-shadow);
+    border-radius: 12px;
+    padding: 14px;
     color: #fff;
-    font-size: 16px;
     font-weight: 800;
-    letter-spacing: 1px;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: transform .05s ease, filter .15s ease;
+    transition: all 0.15s ease;
   }
-  .btn-submit:hover{ filter: brightness(1.03); }
-  .btn-submit:active{ transform: translateY(2px); border-bottom-width: 2px; }
-  .btn-submit:disabled{
-    opacity: .6;
+  .submit-btn:active {
+    box-shadow: none;
+    transform: translateY(5px);
+  }
+  .submit-btn:disabled {
+    opacity: 0.7;
     cursor: not-allowed;
   }
-
-
 </style>
 </head>
 <body>
 
-<div class="phone">
-  <div class="content">
-
-    <div class="mascot-wrap">
-      <div class="mascot">
-        <div class="mascot-shadow"></div>
-        <div class="pencil-cap"></div>
-        <div class="pencil-band"></div>
-        <div class="face">
-          <div class="eyebrow left"></div>
-          <div class="eyebrow right"></div>
-          <div class="eye left"><div class="pupil"></div></div>
-          <div class="eye right"><div class="pupil"></div></div>
-          <div class="nose"></div>
-          <div class="mouth"></div>
-        </div>
-      </div>
-    </div>
-
-    <h1 class="title">Masuk ke GuruPlus</h1>
-    <p class="subtitle">Belum punya akun? <a href="#" id="daftarLink">Daftar akun</a></p>
-
-    <button type="button" class="btn-google" id="googleBtn">
-      <svg viewBox="0 0 48 48">
-        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
-        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
-        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
-        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+  <div class="wrap">
+    <div class="mark">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="10" fill="var(--orbit-2)"/>
+        <ellipse cx="32" cy="32" rx="28" ry="12" stroke="var(--orbit-1)" stroke-width="3" fill="none" transform="rotate(-20 32 32)"/>
+        <circle cx="9" cy="22" r="4" fill="var(--orbit-1)" transform="rotate(-20 32 32)"/>
       </svg>
-      Masuk dengan Google
-    </button>
-
-    <div class="divider">
-      <span class="line"></span>
-      <span>atau masuk manual</span>
-      <span class="line"></span>
     </div>
 
-    <form id="loginForm" novalidate>
-      <div class="field">
-        <input type="email" id="email" placeholder="Email" autocomplete="email" required>
+    <h1>Masuk Orbit</h1>
+    <div class="signup-line">Belum punya akun? <a href="#">Daftar akun</a></div>
+
+    <form onsubmit="return false;">
+      <button type="button" class="google-btn">
+        <svg width="22" height="22" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+          <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+          <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+          <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+        </svg>
+        <span>Masuk dengan Google</span>
+      </button>
+
+      <div class="divider">atau masuk manual</div>
+
+      <input type="email" placeholder="Email">
+
+      <div class="pw-field">
+        <input id="pw" type="password" placeholder="Kata sandi">
+        <button type="button" class="pw-toggle" onclick="togglePw()">👁</button>
       </div>
 
-      <div class="field has-icon">
-        <input type="password" id="password" placeholder="Kata sandi" autocomplete="current-password" required>
-        <button type="button" class="eye-toggle" id="toggleEye" aria-label="Tampilkan kata sandi">
-          <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-6 0-10-7-10-7a18.6 18.6 0 0 1 4.22-5.06"></path>
-            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"></path>
-            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
-            <line x1="1" y1="1" x2="23" y2="23"></line>
-          </svg>
-        </button>
-      </div>
-
-      <div class="error-msg" id="errorMsg"></div>
-
-      <div class="forgot">
-        <a href="#" id="forgotLink">Lupa kata sandi?</a>
-      </div>
+      <div class="forgot"><a href="#">Lupa kata sandi?</a></div>
     </form>
-
-    <div class="footer">
-      <div class="submit-area">
-        <button type="submit" form="loginForm" class="btn-submit" id="submitBtn">MASUK</button>
-      </div>
-    </div>
-
   </div>
-</div>
 
-<script>
-  const form = document.getElementById('loginForm');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const toggleEye = document.getElementById('toggleEye');
-  const eyeIcon = document.getElementById('eyeIcon');
-  const errorMsg = document.getElementById('errorMsg');
-  const submitBtn = document.getElementById('submitBtn');
-  const googleBtn = document.getElementById('googleBtn');
-  const daftarLink = document.getElementById('daftarLink');
-  const forgotLink = document.getElementById('forgotLink');
+  <div class="bottom-bar">
+    <div class="bottom-bar-inner">
+      <button type="button" class="submit-btn">Masuk</button>
+    </div>
+  </div>
 
-  // Toggle show/hide password
-  let isVisible = false;
-  toggleEye.addEventListener('click', () => {
-    isVisible = !isVisible;
-    passwordInput.type = isVisible ? 'text' : 'password';
-    eyeIcon.innerHTML = isVisible
-      ? '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle>'
-      : '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-6 0-10-7-10-7a18.6 18.6 0 0 1 4.22-5.06"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-  });
-
-  function validateEmail(value){
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    errorMsg.textContent = '';
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    if(!email || !password){
-      errorMsg.textContent = 'Email dan kata sandi wajib diisi.';
-      return;
+  <script>
+    function togglePw() {
+      const pw = document.getElementById('pw');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
     }
-    if(!validateEmail(email)){
-      errorMsg.textContent = 'Format email tidak valid.';
-      return;
-    }
-    if(password.length < 6){
-      errorMsg.textContent = 'Kata sandi minimal 6 karakter.';
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'MEMPROSES...';
-
-    // Simulasi proses login (ganti dengan pemanggilan API asli)
-    setTimeout(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'MASUK';
-      alert('Login berhasil (simulasi)!\nEmail: ' + email);
-    }, 1200);
-  });
-
-  googleBtn.addEventListener('click', () => {
-    alert('Arahkan ke proses Masuk dengan Google di sini.');
-  });
-
-  daftarLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Arahkan ke halaman Daftar Akun di sini.');
-  });
-
-  forgotLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Arahkan ke halaman Lupa Kata Sandi di sini.');
-  });
-</script>
+  </script>
 
 </body>
 </html>
