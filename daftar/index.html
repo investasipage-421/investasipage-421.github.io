@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daftar Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
+<style>
+  .error-msg {
+    font-size: 13px;
+    color: #e53e3e;
+    text-align: center;
+    display: none;
+    margin-top: -8px;
+  }
+  .loading { opacity: 0.7; pointer-events: none; }
+</style>
 </head>
 <body>
 
@@ -21,7 +31,7 @@
     <div class="switch-line">Sudah punya akun? <a href="/login">Masuk</a></div>
 
     <form onsubmit="return false;">
-      <button type="button" class="google-btn">
+      <button type="button" class="google-btn" onclick="daftarGoogle()">
         <svg width="22" height="22" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
           <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
@@ -33,8 +43,8 @@
 
       <div class="divider">atau daftar manual</div>
 
-      <input type="text" placeholder="Nama">
-      <input type="email" placeholder="Email">
+      <input id="nama" type="text" placeholder="Nama">
+      <input id="email" type="email" placeholder="Email">
 
       <div class="pw-field">
         <input id="pw" type="password" placeholder="Kata sandi">
@@ -45,20 +55,90 @@
         <input id="pw2" type="password" placeholder="Konfirmasi kata sandi">
         <button type="button" class="pw-toggle" onclick="togglePw('pw2')">👁</button>
       </div>
+
+      <p id="errorMsg" class="error-msg"></p>
     </form>
   </div>
 
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button type="button" class="submit-btn">Daftar Akun</button>
+      <button id="submitBtn" type="button" class="submit-btn" onclick="daftarEmail()">Daftar Akun</button>
     </div>
   </div>
 
-  <script>
-    function togglePw(id) {
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
+      authDomain: "orbitxy-6e79c.firebaseapp.com",
+      databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "orbitxy-6e79c",
+      storageBucket: "orbitxy-6e79c.firebasestorage.app",
+      messagingSenderId: "1064037228597",
+      appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function setLoading(loading) {
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = loading ? 'Memuat...' : 'Daftar Akun';
+      btn.classList.toggle('loading', loading);
+    }
+
+    window.togglePw = function(id) {
       const pw = document.getElementById(id);
       pw.type = pw.type === 'password' ? 'text' : 'password';
-    }
+    };
+
+    window.daftarEmail = async function() {
+      const nama = document.getElementById('nama').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const pw = document.getElementById('pw').value;
+      const pw2 = document.getElementById('pw2').value;
+
+      if (!nama || !email || !pw || !pw2) return showError('Semua kolom wajib diisi.');
+      if (pw !== pw2) return showError('Konfirmasi kata sandi tidak cocok.');
+      if (pw.length < 6) return showError('Kata sandi minimal 6 karakter.');
+
+      setLoading(true);
+      try {
+        const result = await createUserWithEmailAndPassword(auth, email, pw);
+        await updateProfile(result.user, { displayName: nama });
+        window.location.href = '/dashboard';
+      } catch (e) {
+        setLoading(false);
+        if (e.code === 'auth/email-already-in-use') {
+          showError('Email sudah terdaftar. Silakan masuk.');
+        } else if (e.code === 'auth/invalid-email') {
+          showError('Format email tidak valid.');
+        } else if (e.code === 'auth/weak-password') {
+          showError('Kata sandi terlalu lemah.');
+        } else {
+          showError('Terjadi kesalahan. Coba lagi.');
+        }
+      }
+    };
+
+    window.daftarGoogle = async function() {
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = '/dashboard';
+      } catch (e) {
+        showError('Daftar dengan Google gagal. Coba lagi.');
+      }
+    };
   </script>
 
 </body>
