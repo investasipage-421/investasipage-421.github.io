@@ -1,2367 +1,523 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>orbitxy.com</title>
-  <link rel="icon" type="image/jpeg" href="/favicon.jpg?v=2">
-  <link rel="apple-touch-icon" href="/favicon.jpg?v=2">
-  <link rel="manifest" href="/manifest.json">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --black: #0b0b0b;
-      --surface: #141414;
-      --card: #1a1a1a;
-      --input-bg: #1e1e1e;
-      --input-border: #000;
-      --border: #000;
-      --white: #ffffff;
-      --muted: #555555;
-      --text-sec: #888888;
-      --accent: #00ff88;
-      --accent2: #ff3cac;
-      --accent3: #00e5ff;
-      --radius: 0px;
-      --bw: 2.5px;
-      --shadow: 4px 4px 0px #000;
-      --shadow-sm: 3px 3px 0px #000;
-    }
-    body {
-      background: #0b0b0b;
-      font-family: 'Space Grotesk', sans-serif;
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow-x: hidden; padding: 40px 16px;
-    }
-    #app { position: relative; z-index: 1; width: 100%; max-width: 400px; }
-    .screen { display: none; animation: fadeIn .2s ease; }
-    .screen.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk ke GuruPlus</title>
+<style>
+  :root{
+    --yellow: #FFCD43;
+    --yellow-dark: #E0A91E;
+    --orange: #FF6A39;
+    --text-dark: #2B2B2E;
+    --text-gray: #8A8A93;
+    --blue: #3B6EF5;
+    --border: #E3E3E8;
+    --field-bg: #F4F4F6;
+  }
 
-    /* NEOBRUTALISM CARD */
-    .card {
-      background: #181818;
-      border: var(--bw) solid #fff;
-      border-radius: 0;
-      padding: 36px 28px;
-      box-shadow: 6px 6px 0px #333;
+  *{ box-sizing: border-box; }
+
+  html, body{
+    height: 100%;
+  }
+
+  body{
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .phone{
+    width: 100%;
+    flex: 1;
+    min-height: 100vh;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .side-panel{
+    display: none;
+  }
+
+  .content{
+    flex: 1;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 64px 28px 0 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Layar lebar: dua kolom, ilustrasi di kiri, form login di kanan */
+  @media (min-width: 900px){
+    body{ background: #F6F7FB; }
+
+    .phone{
+      flex-direction: row;
+      max-width: 1100px;
+      min-height: 0;
+      height: min(720px, 92vh);
+      margin: auto;
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(20,20,40,0.10);
+      overflow: hidden;
     }
 
-    /* BACK BTN */
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-      color: #fff; background: #000; border: var(--bw) solid #fff;
-      cursor: pointer; margin-bottom: 28px; padding: 6px 14px;
-      font-family: 'Space Grotesk', sans-serif;
-      box-shadow: var(--shadow-sm);
-      transition: transform .1s, box-shadow .1s;
-    }
-    .back-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; }
-    .back-btn svg { width: 14px; height: 14px; }
-
-    /* TITLE */
-    .title {
-      font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 900;
-      color: #fff; line-height: 1.05; margin-bottom: 28px; letter-spacing: -.02em;
-      text-transform: uppercase;
-    }
-    .subtitle { font-size: 13px; color: #999; margin-top: -18px; margin-bottom: 24px; line-height: 1.6; }
-
-    /* INPUTS */
-    .input-group { margin-bottom: 10px; }
-    .input-wrap {
-      display: flex; align-items: center; gap: 12px;
-      background: #111; border: var(--bw) solid #fff;
-      border-radius: 0; padding: 0 14px;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow .15s, transform .15s;
-    }
-    .input-wrap:focus-within { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333fff; border-color: #ffffff; }
-    .input-wrap.err { border-color: #ff3cac !important; box-shadow: 4px 4px 0 #ff3cac !important; }
-    .input-wrap svg { width: 16px; height: 16px; flex-shrink: 0; color: #555; }
-    .input-wrap input {
-      background: transparent; border: none; outline: none;
-      width: 100%; padding: 14px 0; font-size: 14px;
-      font-family: 'Space Grotesk', sans-serif; color: #fff; font-weight: 500;
-    }
-    .input-wrap input::placeholder { color: #333; }
-    .err-msg { font-size: 11px; color: #ff3cac; margin-top: 4px; padding-left: 2px; min-height: 14px; font-weight: 600; }
-    .show-pass-btn { background: none; border: none; cursor: pointer; color: #555; padding: 0; display: flex; align-items: center; }
-    .show-pass-btn svg { width: 16px; height: 16px; }
-
-    /* FORGOT LINK */
-    .forgot-link {
-      display: block; text-align: right; font-size: 11px; font-weight: 700;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: #00ff88; background: none; border: none; cursor: pointer; margin-top: 8px; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; padding: 0; width: 100%; }
-    .forgot-link:hover { text-decoration: underline; }
-
-    /* PRIMARY BUTTON */
-    .btn-primary {
-      width: 100%; background: #ffffff; color: #000;
-      border: var(--bw) solid #000; border-radius: 0;
-      padding: 15px; font-size: 14px; font-weight: 800;
-      font-family: 'Space Grotesk', sans-serif; cursor: pointer;
-      margin-top: 14px; letter-spacing: .05em; text-transform: uppercase;
-      box-shadow: var(--shadow);
-      transition: transform .1s, box-shadow .1s;
-    }
-    .btn-primary:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; }
-    .btn-primary:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #000; }
-
-    /* DIVIDER */
-    .divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
-    .divider-line { flex: 1; height: 2px; background: #222; }
-    .divider-text { font-size: 11px; color: #444; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
-
-    /* SOCIAL BTN */
-    .btn-social {
-      width: 100%; background: #181818; border: var(--bw) solid #fff;
-      border-radius: 0; padding: 13px 16px; font-size: 13px;
-      font-family: 'Space Grotesk', sans-serif; font-weight: 600;
-      color: #ccc; cursor: pointer; display: flex; align-items: center;
-      justify-content: center; gap: 10px; margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      transition: transform .1s, box-shadow .1s;
-    }
-    .btn-social:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; color: #fff; }
-    .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-    /* SWITCH TEXT */
-    .switch-text { font-size: 12px; color: #555; text-align: center; margin-top: 18px; font-weight: 500; }
-    .switch-text button {
-      color: #ffffff; font-weight: 700; cursor: pointer;
-      background: none; border: none; font-size: 12px;
-      font-family: 'Space Grotesk', sans-serif; text-decoration: underline; padding: 0;
-    }
-    .otp-row { display: flex; gap: 12px; margin: 28px 0 16px; }
-    .otp-box { flex: 1; aspect-ratio: 1; background: #111; border: var(--bw) solid #fff; border-radius: 0; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); transition: box-shadow .15s; }
-    .otp-box.filled { border-color: #ffffff; box-shadow: 4px 4px 0 #333fff; }
-    .otp-box input { background: transparent; border: none; outline: none; width: 100%; height: 100%; text-align: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 900; color: #00ff88; caret-color: #00ff88; }
-    .resend-link { display: block; text-align: center; font-size: 11px; color: #00ff88; margin-bottom: 18px; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing:.06em; padding: 0; width: 100%; }
-    .resend-link:hover { color: #aaa; }
-    .strength-bar { display: flex; gap: 4px; margin-top: 8px; }
-    .strength-segment { flex: 1; height: 3px; border-radius: 2px; background: var(--input-border); transition: background .3s; }
-    .strength-segment.weak   { background: #c0392b; }
-    .strength-segment.medium { background: #e67e22; }
-    .strength-segment.strong { background: #00ff88; }
-    .hint { font-size: 12px; color: var(--muted); margin-top: 6px; padding-left: 2px; }
-    #toast {
-      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
-      background: #1a2f23; border: 1px solid rgba(0,255,136,0.35);
-      border-radius: 0; padding: 11px 20px;
-      font-size: 12px; font-weight: 600; color: #00ff88;
-      font-family: 'Space Grotesk', sans-serif; letter-spacing: .04em; text-transform: uppercase;
-      display: flex; align-items: center; gap: 8px;
-      z-index: 9999; opacity: 0; pointer-events: none;
-      box-shadow: none;
-      transition: opacity .3s, transform .2s;
-      transform: translateX(-50%) translateY(-8px);
-      white-space: nowrap;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    #toast.toast-err { background: #2f1a1a; border-color: rgba(255,80,80,0.35); color: #ff7070; box-shadow: none; }
-    #toast svg { width: 15px; height: 15px; flex-shrink: 0; }
-    #s-dashboard, #s-account, #s-send, #s-chat, #s-chat-nav, #s-manage-account, #s-donasi {
-      position: fixed; inset: 0; z-index: 50;
-      background: #0a0a0a; overflow-y: auto;
-    }
-    #s-dashboard .dash-inner, #s-account .dash-inner, #s-send .dash-inner, #s-chat .dash-inner, #s-chat-nav .dash-inner, #s-manage-account .dash-inner, #s-donasi .dash-inner {
-      width: 100%; max-width: 480px; margin: 0 auto;
-      min-height: 100%;
-      padding: max(24px, env(safe-area-inset-top)) 18px 120px;
-      display: flex; flex-direction: column;
-    }
-    #s-chat { overflow: hidden; }
-    #s-chat .dash-inner { height: 100%; min-height: 0; padding-bottom: 0; overflow: hidden; }
-    .chat-header-bar { flex-shrink: 0; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-    .chat-scroll { flex: 1; min-height: 0; overflow-y: auto; margin: 0 -18px; padding: 0 18px; }
-    .dash-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
-    .dash-greeting-text { flex: 1; min-width: 0; padding-right: 4px; }
-    .dash-greeting-sub-row { display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
-    .dash-greeting-sub { font-size: 14px; color: var(--text-sec); }
-    .verified-badge { flex-shrink: 0; display: block; width: 14px; height: 14px; aspect-ratio: 1/1; cursor: pointer; }
-    .dash-greeting-name {
-      font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
-      color: var(--white); letter-spacing: -.01em;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      position: relative; display: inline-block;
-    }
-    .dash-header-video { width: 52px; height: 52px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--card); border: 1px solid var(--border); }
-    .dash-header-video video { width: 100%; height: 100%; object-fit: cover; display: block; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; pointer-events: none; }
-    .glitching { animation: glitchSkew 2.2s ease-in-out; }
-    .glitching::before, .glitching::after { content: attr(data-glitch-text); position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: #0a0a0a; }
-    .glitching::before { color: #ff2e63; animation: glitchBefore 2.2s ease-in-out; mix-blend-mode: screen; }
-    .glitching::after { color: #ffffff; animation: glitchAfter 2.2s ease-in-out; mix-blend-mode: screen; }
-    @keyframes glitchSkew {
-      0%, 100% { transform: skewX(0deg); opacity: 1; }
-      4%  { transform: skewX(4deg) translateX(-2px); opacity: .9; }
-      8%  { transform: skewX(-3deg) translateX(2px); opacity: 1; }
-      12% { transform: skewX(0deg); opacity: .85; }
-      16% { transform: skewX(2deg); opacity: 1; }
-      40% { transform: skewX(0deg); opacity: 1; }
-      42% { transform: skewX(-2deg) translateX(1px); opacity: .9; }
-      45% { transform: skewX(0deg); opacity: 1; }
-      70% { transform: skewX(0deg); }
-      72% { transform: skewX(3deg) translateX(-1px); opacity: .9; }
-      75% { transform: skewX(0deg); opacity: 1; }
-    }
-    @keyframes glitchBefore {
-      0%, 100%   { clip-path: inset(0 0 100% 0); transform: translate(0,0); opacity: 0; }
-      3%, 7%     { clip-path: inset(10% 0 60% 0); transform: translate(-3px,-1px); opacity: .8; }
-      4%, 6%     { opacity: 0; }
-      8%         { clip-path: inset(0 0 100% 0); opacity: 0; }
-      40%        { opacity: 0; }
-      41%, 44%   { clip-path: inset(40% 0 20% 0); transform: translate(2px,1px); opacity: .75; }
-      45%        { opacity: 0; }
-      71%, 74%   { clip-path: inset(70% 0 5% 0); transform: translate(-2px,0); opacity: .8; }
-      76%        { opacity: 0; }
-    }
-    @keyframes glitchAfter {
-      0%, 100%   { clip-path: inset(100% 0 0 0); transform: translate(0,0); opacity: 0; }
-      3%, 7%     { clip-path: inset(55% 0 15% 0); transform: translate(3px,1px); opacity: .8; }
-      4%, 6%     { opacity: 0; }
-      8%         { clip-path: inset(100% 0 0 0); opacity: 0; }
-      40%        { opacity: 0; }
-      41%, 44%   { clip-path: inset(15% 0 50% 0); transform: translate(-2px,-1px); opacity: .75; }
-      45%        { opacity: 0; }
-      71%, 74%   { clip-path: inset(5% 0 70% 0); transform: translate(2px,0); opacity: .8; }
-      76%        { opacity: 0; }
-    }
-    .top-banner { border-radius: 0; aspect-ratio: 16/7; margin-bottom: 18px; background: #181818; border: var(--bw) solid #fff; background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: var(--shadow); }
-    .action-row { display: flex; gap: 10px; margin-bottom: 20px; }
-    .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 12px; cursor: pointer; font-size: 12px; font-weight: 700; color: #fff; font-family: 'Space Grotesk', sans-serif; letter-spacing:.04em; text-transform:uppercase; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .action-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #333fff; border-color: #ffffff; }
-    .action-btn svg { width: 16px; height: 16px; }
-    .action-btn.icon-only { flex: 0 0 48px; padding: 13px 0; }
-    .slider-wrap { position: relative; border-radius: 0; overflow: hidden; background: #181818; border: var(--bw) solid #fff; margin-bottom: 20px; box-shadow: var(--shadow); }
-    .slider-track { display: flex; width: 100%; transition: transform .45s cubic-bezier(.22,.61,.36,1); touch-action: pan-y; cursor: grab; }
-    .slider-track.dragging { transition: none; cursor: grabbing; }
-    .slide { flex: 0 0 100%; aspect-ratio: 16/7; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 22px 20px; background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; }
-    .slide.has-img .slide-content { display: none; }
-    .slide-content { position: relative; z-index: 1; }
-    .slide-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
-    .slide-icon svg { width: 18px; height: 18px; color: var(--muted); }
-    .slide-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: var(--white); margin-bottom: 6px; }
-    .slide-desc { font-size: 12px; color: var(--text-sec); line-height: 1.5; max-width: 280px; margin: 0 auto; }
-    .slider-dots { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 2; display: flex; justify-content: center; gap: 6px; padding: 0; pointer-events: none; }
-    .slider-dot { width: 16px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.35); box-shadow: 0 0 0 1px rgba(0,0,0,0.25); transition: background .3s, width .3s; cursor: pointer; pointer-events: auto; }
-    .slider-dot.active { background: #00ff88; width: 20px; }
-    .slide-video { padding: 0; overflow: hidden; }
-    .slide-video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-    .dash-footer { text-align: center; font-size: 10px; color: #333; margin-top: auto; padding-top: 20px; padding-bottom: 8px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
-
-    /* ===== BOTTOM NAV — SINGLE PILL ===== */
-    .bottom-nav-wrap {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 51;
-      display: none;
-      justify-content: center;
-      pointer-events: none;
-    }
-    .bottom-nav {
-      display: flex;
-      align-items: center;
-      background: #111;
-      border: var(--bw) solid #fff;
-      border-radius: 0;
-      padding: 8px 12px;
-      box-shadow: 5px 5px 0 #333fff;
-      pointer-events: auto;
-      gap: 4px;
-    }
-    .nav-item {
+    .side-panel{
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      width: 52px;
-      height: 44px;
-      border-radius: 0;
-      background: transparent;
-      border: none;
-      color: #444;
-      transition: background .15s, color .15s;
-      position: relative;
+      gap: 18px;
+      background: linear-gradient(160deg, #FFE7A8 0%, #FFD25C 55%, #FFB23C 100%);
+      padding: 40px;
     }
-    .nav-item svg { width: 22px; height: 22px; display: block; }
-    .nav-item.active {
-      background: #ffffff;
-      color: #000;
+    .side-panel .mascot{ transform: scale(1.7); margin-bottom: 14px; }
+    .side-panel h2{
+      color: #5C3B00;
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0;
+      text-align: center;
     }
-    .nav-item:hover:not(.active) { color: #aaa; }
-    /* subtle active dot */
-    .nav-item.active::after { display: none; }
-    /* divider between items */
-    .nav-divider {
-      width: 2px;
-      height: 22px;
-      background: #222;
-      flex-shrink: 0;
+    .side-panel p{
+      color: #7A5A12;
+      font-size: 15px;
+      text-align: center;
+      max-width: 320px;
+      margin: 0;
     }
-    /* ===== END BOTTOM NAV ===== */
 
-    /* ACCOUNT */
-    .acc-top-section { display: flex; flex-direction: column; align-items: center; padding-top: 10px; margin-bottom: 20px; }
-    .acc-avatar-wrap { position: relative; width: 90px; height: 90px; margin-bottom: 14px; cursor: pointer; }
-    .acc-avatar-img { width: 90px; height: 90px; border-radius: 0; object-fit: cover; display: block; border: var(--bw) solid #fff; background: #181818; box-shadow: var(--shadow-sm); }
-    .acc-name-center { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -.01em; text-align: center; margin-bottom: 8px; position: relative; display: inline-block; cursor: pointer; }
-    .acc-rating { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--white); }
-    .acc-rating svg { width: 13px; height: 13px; color: #ffffff; }
-    .acc-quick-row { display: flex; gap: 10px; margin-bottom: 12px; }
-    .acc-quick-card { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 16px 8px; cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
-    .acc-quick-card:hover { border-color: #444; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.4); }
-    .acc-quick-card svg { width: 22px; height: 22px; color: var(--white); }
-    .acc-quick-card span { font-size: 13px; font-weight: 600; color: var(--white); }
-    .acc-privacy-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 16px 18px; margin-bottom: 14px; cursor: pointer; box-shadow: var(--shadow); transition: transform .1s, box-shadow .1s; }
-    .acc-privacy-banner:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333fff; border-color: #ffffff; }
-    .acc-privacy-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-    .acc-privacy-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; max-width: 220px; }
-    .acc-privacy-icon { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #0d2b1e; border: var(--bw) solid #00ff88; display: flex; align-items: center; justify-content: center; color: #00ff88; }
-    .acc-privacy-icon svg { width: 22px; height: 22px; }
-    .acc-section-label { font-size: 10px; font-weight: 800; color: #ffffff; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; padding-left: 2px; border-left: 3px solid #00ff88; padding-left: 8px; }
-    .acc-menu { display: flex; flex-direction: column; gap: 0; }
-    .acc-menu-group { background: #181818; border: var(--bw) solid #fff; border-radius: 0; overflow: hidden; box-shadow: var(--shadow); }
-    .acc-menu-item { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-bottom: 2px solid #000; cursor: pointer; color: #fff; transition: background .12s; }
-    .acc-menu-item:last-child { border-bottom: none; }
-    .acc-menu-item:hover { background: #ffffff22; }
-    .acc-menu-item-icon { width: 32px; height: 32px; border-radius: 0; background: #111; border: var(--bw) solid #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .acc-menu-item-icon svg { width: 17px; height: 17px; color: var(--white); }
-    .acc-menu-item span { font-size: 15px; font-weight: 500; flex: 1; }
-    .acc-menu-item-sub { align-items: flex-start; }
-    .acc-menu-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-    .acc-menu-sub { font-size: 12px; color: var(--text-sec); font-weight: 400; }
-    .acc-menu-chevron { color: #444; flex-shrink: 0; }
-    .acc-menu-chevron svg { width: 16px; height: 16px; display: block; }
+    .content{
+      flex: 1;
+      max-width: 460px;
+      margin: 0;
+      padding: 0 56px;
+      justify-content: center;
+    }
 
-    .send-page-header { display: flex; align-items: center; margin-bottom: 18px; }
-    .circle-back-btn { width: 40px; height: 40px; border-radius: 0; flex-shrink: 0; background: #181818; border: var(--bw) solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; padding: 0; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .circle-back-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #333fff; }
-    .circle-back-btn svg { width: 20px; height: 20px; }
-    .chat-header-info { flex: 1; min-width: 0; margin-left: 4px; }
-    .chat-header-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); letter-spacing: -.01em; }
-    .chat-header-status { font-size: 12px; color: #ffffff; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
-    .chat-header-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #ffffff; display: inline-block; }
-    .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: #ffffff; }
-    .chat-header-avatar svg { width: 20px; height: 20px; }
-    .chat-messages { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 14px; padding-bottom: 84px; }
-    .chat-bubble { max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.55; word-break: break-word; white-space: pre-wrap; }
-    .chat-bubble.bot { align-self: flex-start; background: #181818; border: var(--bw) solid #fff; color: #eee; border-radius: 0; box-shadow: 3px 3px 0 #000; }
-    .chat-bubble.user { align-self: flex-end; background: #ffffff; color: #000; border: var(--bw) solid #000; border-radius: 0; box-shadow: 3px 3px 0 #000; font-weight: 600; }
-    .chat-bubble-time { font-size: 10px; color: var(--muted); margin-top: 4px; }
-    .chat-bubble.user .chat-bubble-time { text-align: right; color: #999; }
-    .chat-typing { align-self: flex-start; display: flex; gap: 4px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 4px; padding: 12px 16px; }
-    .chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: chatTypingBounce 1.2s infinite ease-in-out; }
-    .chat-typing span:nth-child(2) { animation-delay: .15s; }
-    .chat-typing span:nth-child(3) { animation-delay: .3s; }
-    @keyframes chatTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
-    .chat-input-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 51; background: #111; border-top: var(--bw) solid #fff; padding: 10px 14px max(10px, env(safe-area-inset-bottom)); display: flex; justify-content: center; }
-    .chat-input-row { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 480px; }
-    .chat-input-row input { flex: 1; background: #111; border: var(--bw) solid #fff; border-radius: 0; padding: 12px 16px; color: #fff; outline: none; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 500; }
-    .chat-input-row input:focus { border-color: #ffffff; box-shadow: 3px 3px 0 #333fff; }
-    .chat-send-btn { width: 44px; height: 44px; border-radius: 0; flex-shrink: 0; background: #ffffff; color: #000; border: var(--bw) solid #000; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .chat-send-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #000; }
-    .chat-send-btn svg { width: 18px; height: 18px; }
-    .send-anim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 9999; background: #0a0a0a; opacity: 0; }
-    .send-anim-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-    .send-anim-path { fill: none; stroke: #ffffff; stroke-width: 2; stroke-dasharray: 8 8; }
-    .send-anim-plane { position: absolute; top: 0; left: 0; width: 36px; height: 36px; color: #ffffff; opacity: 0; offset-rotate: auto; }
-    .send-anim-plane svg { width: 100%; height: 100%; }
-    .confirm-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; padding: 24px; }
-    .confirm-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .confirm-card { width: 100%; max-width: 340px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 28px 22px; text-align: center; box-shadow: 6px 6px 0 #333fff; }
-    .confirm-icon { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 16px; background: var(--input-bg); border: 1px solid var(--input-border); display: flex; align-items: center; justify-content: center; color: var(--white); }
-    .confirm-icon svg { width: 24px; height: 24px; }
-    .confirm-icon.danger { color: #ff5c5c; border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.08); }
-    .confirm-title { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 800; color: var(--white); margin-bottom: 10px; line-height: 1.3; }
-    .confirm-desc { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
-    .btn-ghost-cancel { width: 100%; background: none; border: none; cursor: pointer; color: var(--text-sec); font-size: 13.5px; font-weight: 500; font-family: 'DM Sans', sans-serif; padding: 13px; margin-top: 6px; transition: color .2s; }
-    .btn-ghost-cancel:hover { color: var(--white); }
-    .btn-primary.btn-danger { background: #ff3cac; color: #fff; border-color: #000; box-shadow: 4px 4px 0 #000; }
-    .btn-primary.btn-danger:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #000; }
-    #ma-status-label, #ma-method-label, #ma-since-label { font-size: 12.5px; }
-    .donasi-warning { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.3); border-radius: 0; padding: 14px 16px; margin-top: 14px; }
-    .donasi-warning svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; color: #ff5c5c; }
-    .donasi-warning-text { font-size: 12.5px; color: #ff9b9b; line-height: 1.55; }
-    .donasi-warning-text b { color: #ffb3b3; font-weight: 700; }
-    .dash-popup-overlay { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,0.6); }
-    .dash-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .dash-popup-card { width: 100%; max-width: 320px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 28px 22px 22px; box-shadow: 6px 6px 0 #333fff; animation: dashPopupIn .25s ease; position: relative; text-align: center; }
-    @keyframes dashPopupIn { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .dash-popup-close { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-sec); cursor: pointer; transition: color .2s, border-color .2s; padding: 0; }
-    .dash-popup-close:hover { color: var(--white); border-color: #444; }
-    .dash-popup-close svg { width: 13px; height: 13px; }
-    .dash-popup-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 6px; padding-right: 24px; }
-    .dash-popup-body { font-size: 12.5px; color: var(--text-sec); line-height: 1.55; min-height: 54px; text-align: left; }
-    .dash-popup-cursor { display: inline-block; width: 2px; height: 13px; background: #ffffff; margin-left: 2px; vertical-align: -2px; animation: dashCursorBlink .85s steps(1) infinite; }
-    @keyframes dashCursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-    .sosmed-popup-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; padding: 24px; }
-    .sosmed-popup-overlay.show { display: flex; animation: fadeIn .2s ease; }
-    .sosmed-popup-card { width: 100%; max-width: 340px; background: #181818; border: var(--bw) solid #fff; border-radius: 0; padding: 26px 22px 22px; box-shadow: 6px 6px 0 #333fff; animation: dashPopupIn .25s ease; position: relative; }
-    .sosmed-popup-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .sosmed-popup-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: var(--white); }
-    .sosmed-popup-close { width: 28px; height: 28px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-sec); cursor: pointer; transition: color .2s, border-color .2s; padding: 0; flex-shrink: 0; }
-    .sosmed-popup-close:hover { color: var(--white); border-color: #444; }
-    .sosmed-popup-close svg { width: 13px; height: 13px; }
-    .sosmed-link-card { display: flex; align-items: center; gap: 14px; background: #111; border: var(--bw) solid #fff; border-radius: 0; padding: 14px 16px; text-decoration: none; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .1s, box-shadow .1s; }
-    .sosmed-link-card:hover { border-color: #ffffff; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #333fff; }
-    .sosmed-link-card + .sosmed-link-card { margin-top: 10px; }
-    .sosmed-link-img-wrap { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .sosmed-link-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
-    .sosmed-link-handle { font-size: 12px; color: var(--text-sec); }
-    .sosmed-link-arrow { color: var(--muted); flex-shrink: 0; }
-    .sosmed-link-arrow svg { width: 16px; height: 16px; display: block; }
-  </style>
+    .mascot-wrap{ display: none; }
+
+    .footer{ border-top: none; margin-top: 0; }
+    .submit-area{ padding: 18px 0 48px 0; }
+  }
+
+  /* ---------- Mascot ---------- */
+  .mascot-wrap{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .mascot{
+    position: relative;
+    width: 96px;
+    height: 110px;
+  }
+  .mascot-shadow{
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 14px;
+    background: #E7E7EC;
+    border-radius: 50%;
+  }
+  .pencil-cap{
+    position: absolute;
+    top: 0;
+    left: 8px;
+    width: 80px;
+    height: 22px;
+    background: #FF5A36;
+    border-radius: 10px 10px 0 0;
+  }
+  .pencil-band{
+    position: absolute;
+    top: 20px;
+    left: 4px;
+    width: 88px;
+    height: 10px;
+    background: #C9CCD1;
+  }
+  .face{
+    position: absolute;
+    top: 28px;
+    left: 4px;
+    width: 88px;
+    height: 78px;
+    background: linear-gradient(180deg, #FFC93C 0%, #FFB23C 100%);
+    border-radius: 0 0 44px 44px;
+  }
+  .eyebrow{
+    position: absolute;
+    top: 36px;
+    width: 16px;
+    height: 8px;
+    border-top: 3px solid #2B2B2E;
+    border-radius: 50%;
+  }
+  .eyebrow.left{ left: 16px; }
+  .eyebrow.right{ left: 56px; transform: scaleX(-1); }
+  .eye{
+    position: absolute;
+    top: 44px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid #2B2B2E;
+  }
+  .eye.left{ left: 14px; }
+  .eye.right{ left: 56px; }
+  .pupil{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 6px;
+    height: 6px;
+    background: #2B2B2E;
+    border-radius: 50%;
+  }
+  .nose{
+    position: absolute;
+    top: 62px;
+    left: 41px;
+    width: 6px;
+    height: 6px;
+    background: #E8923C;
+    border-radius: 50%;
+  }
+  .mouth{
+    position: absolute;
+    top: 74px;
+    left: 36px;
+    width: 16px;
+    height: 8px;
+    border-bottom: 3px solid #2B2B2E;
+    border-radius: 50%;
+  }
+
+  /* ---------- Headings ---------- */
+  h1.title{
+    margin: 0 0 10px 0;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.3px;
+  }
+
+  .subtitle{
+    text-align: center;
+    margin: 0 0 28px 0;
+    font-size: 15px;
+    color: var(--text-gray);
+  }
+  .subtitle a{
+    color: var(--blue);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .subtitle a:hover{ text-decoration: underline; }
+
+  /* ---------- Google button ---------- */
+  .btn-google{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 3px 0 var(--border);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    margin-bottom: 26px;
+    transition: transform .05s ease;
+  }
+  .btn-google:active{ transform: translateY(2px); box-shadow: 0 1px 0 var(--border); }
+  .btn-google svg{ width: 22px; height: 22px; }
+
+  /* ---------- Divider ---------- */
+  .divider{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+  .divider .line{
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider span{
+    font-size: 14px;
+    color: var(--text-gray);
+    white-space: nowrap;
+  }
+
+  /* ---------- Inputs ---------- */
+  .field{
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .field input{
+    width: 100%;
+    padding: 18px 16px;
+    background: var(--field-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    font-size: 16px;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .field input::placeholder{ color: #A6A6AE; }
+  .field input:focus{
+    border-color: var(--blue);
+    background: #fff;
+  }
+  .field.has-icon input{ padding-right: 48px; }
+  .eye-toggle{
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    color: var(--blue);
+  }
+  .eye-toggle svg{ width: 22px; height: 22px; }
+
+  .forgot{
+    text-align: right;
+    margin-bottom: 18px;
+  }
+  .forgot a{
+    color: var(--blue);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .forgot a:hover{ text-decoration: underline; }
+
+  .error-msg{
+    font-size: 13px;
+    color: #E0483E;
+    margin: -10px 0 14px 4px;
+    min-height: 16px;
+  }
+
+  /* ---------- Footer / submit ---------- */
+  .footer{
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .submit-area{
+    padding: 18px 28px 28px 28px;
+  }
+  .btn-submit{
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(180deg, var(--yellow) 0%, #FFC22E 100%);
+    border: none;
+    border-bottom: 4px solid var(--yellow-dark);
+    border-radius: 16px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform .05s ease, filter .15s ease;
+  }
+  .btn-submit:hover{ filter: brightness(1.03); }
+  .btn-submit:active{ transform: translateY(2px); border-bottom-width: 2px; }
+  .btn-submit:disabled{
+    opacity: .6;
+    cursor: not-allowed;
+  }
+
+
+</style>
 </head>
 <body>
-<div id="toast">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-  <span id="toast-msg">Berhasil!</span>
+
+<div class="phone">
+  <div class="side-panel">
+    <div class="mascot">
+      <div class="mascot-shadow"></div>
+      <div class="pencil-cap"></div>
+      <div class="pencil-band"></div>
+      <div class="face">
+        <div class="eyebrow left"></div>
+        <div class="eyebrow right"></div>
+        <div class="eye left"><div class="pupil"></div></div>
+        <div class="eye right"><div class="pupil"></div></div>
+        <div class="nose"></div>
+        <div class="mouth"></div>
+      </div>
+    </div>
+    <h2>Belajar makin seru bareng GuruPlus</h2>
+    <p>Akses materi, latihan soal, dan kelas guru favoritmu kapan saja.</p>
+  </div>
+
+  <div class="content">
+
+    <div class="mascot-wrap">
+      <div class="mascot">
+        <div class="mascot-shadow"></div>
+        <div class="pencil-cap"></div>
+        <div class="pencil-band"></div>
+        <div class="face">
+          <div class="eyebrow left"></div>
+          <div class="eyebrow right"></div>
+          <div class="eye left"><div class="pupil"></div></div>
+          <div class="eye right"><div class="pupil"></div></div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="title">Masuk ke GuruPlus</h1>
+    <p class="subtitle">Belum punya akun? <a href="#" id="daftarLink">Daftar akun</a></p>
+
+    <button type="button" class="btn-google" id="googleBtn">
+      <svg viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+      </svg>
+      Masuk dengan Google
+    </button>
+
+    <div class="divider">
+      <span class="line"></span>
+      <span>atau masuk manual</span>
+      <span class="line"></span>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <input type="email" id="email" placeholder="Email" autocomplete="email" required>
+      </div>
+
+      <div class="field has-icon">
+        <input type="password" id="password" placeholder="Kata sandi" autocomplete="current-password" required>
+        <button type="button" class="eye-toggle" id="toggleEye" aria-label="Tampilkan kata sandi">
+          <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-6 0-10-7-10-7a18.6 18.6 0 0 1 4.22-5.06"></path>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"></path>
+            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="forgot">
+        <a href="#" id="forgotLink">Lupa kata sandi?</a>
+      </div>
+    </form>
+
+    <div class="footer">
+      <div class="submit-area">
+        <button type="submit" form="loginForm" class="btn-submit" id="submitBtn">MASUK</button>
+      </div>
+    </div>
+
+  </div>
 </div>
-<div id="app">
 
-  <!-- LOGIN -->
-  <div class="screen active" id="s-login">
-    <div class="card">
-      <h1 class="title" style="font-size:28px;line-height:1.2;">Hey,<br>Welcome<br>Back</h1>
-      <div class="input-group">
-        <div class="input-wrap" id="lw-email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <input type="email" placeholder="Email id" id="l-email" autocomplete="email"/>
-        </div>
-        <div class="err-msg" id="l-email-err"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-wrap" id="lw-pass">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="Password" id="l-pass"/>
-          <button class="show-pass-btn" onclick="togglePass('l-pass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-        <div class="err-msg" id="l-pass-err"></div>
-      </div>
-      <button class="forgot-link" onclick="go('s-forgot')">Forget password?</button>
-      <button class="btn-primary" onclick="doEmailLogin()">Sign In</button>
-      <p class="switch-text">Don't have an account? <button onclick="go('s-register')">Sign up</button></p>
-    </div>
-  </div>
+<script>
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const toggleEye = document.getElementById('toggleEye');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const errorMsg = document.getElementById('errorMsg');
+  const submitBtn = document.getElementById('submitBtn');
+  const googleBtn = document.getElementById('googleBtn');
+  const daftarLink = document.getElementById('daftarLink');
+  const forgotLink = document.getElementById('forgotLink');
 
-  <!-- REGISTER -->
-  <div class="screen" id="s-register">
-    <div class="card">
-      <button class="back-btn" onclick="go('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      <h1 class="title">Let's get<br>Started</h1>
-      <div class="input-group">
-        <div class="input-wrap" id="rw-email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <input type="email" placeholder="Email id" id="r-email"/>
-        </div>
-        <div class="err-msg" id="r-email-err"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-wrap" id="rw-pass">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="Password" id="r-pass" oninput="checkStrength(this.value,'rs')"/>
-          <button class="show-pass-btn" onclick="togglePass('r-pass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-        <div class="strength-bar"><div class="strength-segment" id="rs1"></div><div class="strength-segment" id="rs2"></div><div class="strength-segment" id="rs3"></div><div class="strength-segment" id="rs4"></div></div>
-        <div class="err-msg" id="r-pass-err"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-wrap" id="rw-cpass">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M9 16l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="Confirm Password" id="r-cpass"/>
-          <button class="show-pass-btn" onclick="togglePass('r-cpass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-        <div class="err-msg" id="r-cpass-err"></div>
-      </div>
-      <button class="btn-primary" onclick="doRegister()">Sign Up</button>
-      <p class="switch-text">Already have an account? <button onclick="go('s-login')">Login</button></p>
-    </div>
-  </div>
-
-  <!-- FORGOT PASSWORD -->
-  <div class="screen" id="s-forgot">
-    <div class="card">
-      <button class="back-btn" onclick="go('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      <h1 class="title">Forget<br>Password?</h1>
-      <p class="subtitle">Enter your email address and we'll send you a link to reset your password.</p>
-      <div class="input-group">
-        <div class="input-wrap" id="fw-email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <input type="email" placeholder="Email" id="f-email"/>
-        </div>
-        <div class="err-msg" id="f-email-err"></div>
-      </div>
-      <button class="btn-primary" onclick="doForgot()">Send</button>
-      <p class="switch-text" style="margin-top:24px">Remember your password? <button onclick="go('s-login')">Sign in</button></p>
-    </div>
-  </div>
-
-  <!-- VERIFY EMAIL (OTP) -->
-  <div class="screen" id="s-verify">
-    <div class="card">
-      <button class="back-btn" id="verify-back-btn" onclick="go('s-forgot')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      <h1 class="title">Verify<br>Your Email</h1>
-      <p class="subtitle" id="verify-subtitle">Masukkan 4 digit kode yang dikirim ke email kamu</p>
-      <div class="otp-row" id="otp-row">
-        <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
-        <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
-        <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
-        <div class="otp-box"><input type="text" maxlength="1" inputmode="numeric"/></div>
-      </div>
-      <div class="err-msg" id="otp-err" style="text-align:center;margin-top:-4px;margin-bottom:8px;"></div>
-      <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:11px;color:#444;margin-bottom:4px;">Kode kamu:</div>
-        <div style="font-size:28px;font-family:'Syne',sans-serif;font-weight:800;color:#ffffff;letter-spacing:10px;" id="otp-display">----</div>
-      </div>
-      <button class="resend-link" onclick="resendOtp()">Resend Code</button>
-      <button class="btn-primary" onclick="doVerify()">Verify</button>
-    </div>
-  </div>
-
-  <!-- CREATE NEW PASSWORD -->
-  <div class="screen" id="s-newpass">
-    <div class="card">
-      <button class="back-btn" id="newpass-back-btn" onclick="go('s-forgot')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
-      <h1 class="title" id="newpass-title">Create<br>New Password</h1>
-      <p class="subtitle" id="newpass-subtitle">Your new password must be different from previously used password</p>
-      <div class="input-group">
-        <div class="input-wrap" id="nw-pass">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="New password" id="n-pass" oninput="checkStrength(this.value,'np')"/>
-          <button class="show-pass-btn" onclick="togglePass('n-pass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-        <div class="strength-bar"><div class="strength-segment" id="np1"></div><div class="strength-segment" id="np2"></div><div class="strength-segment" id="np3"></div><div class="strength-segment" id="np4"></div></div>
-        <p class="hint">Min. 8 characters, include uppercase &amp; symbol</p>
-        <div class="err-msg" id="n-pass-err"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-wrap" id="nw-cpass">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M9 16l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input type="password" placeholder="Confirm password" id="n-cpass"/>
-          <button class="show-pass-btn" onclick="togglePass('n-cpass',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-        <div class="err-msg" id="n-cpass-err"></div>
-      </div>
-      <button class="btn-primary" onclick="doSavePass()">Save</button>
-    </div>
-  </div>
-
-  <!-- DASHBOARD -->
-  <div class="screen" id="s-dashboard">
-    <div class="dash-inner">
-      <div class="dash-header">
-        <div class="dash-greeting-text">
-          <div class="dash-greeting-sub-row">
-            <span class="dash-greeting-sub" id="dash-greeting-sub">Good Afternoon</span>
-            <svg class="verified-badge" viewBox="0 0 24 24" width="14" height="14" onclick="openSosmedPopup()" style="cursor:pointer;">
-              <circle cx="12" cy="12" r="11" fill="#2E9BF0"/>
-              <path d="M8.5 12.3l2.4 2.4 4.6-5.2" fill="none" stroke="#00ff88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="dash-greeting-name" id="dash-greeting-name" data-glitch-text="User!" onclick="triggerGreetingGlitch()" style="cursor:pointer;">User!</div>
-        </div>
-        <div class="dash-header-video">
-          <video src="https://files.catbox.moe/sxccc2.mp4" autoplay muted loop playsinline preload="auto" controlsList="nodownload nofullscreen noremoteplayback" disablePictureInPicture oncontextmenu="return false;"></video>
-        </div>
-      </div>
-      <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="setAvatarFromFile(this)"/>
-      <div class="top-banner" id="top-banner" style="background-image:url('https://i.ibb.co.com/wht8b4FG/Hello-20260613-121636-0000.jpg')"></div>
-      <div class="action-row">
-        <div class="action-btn" onclick="playSendAnimation(openSendPage)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Keluhan
-        </div>
-        <div class="action-btn" onclick="playSendAnimation(openDonasiPage)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="21" y2="14"/><line x1="14" y1="21" x2="21" y2="21"/><line x1="17" y1="14" x2="17" y2="21"/></svg>
-          Donasi
-        </div>
-        <div class="action-btn icon-only" onclick="openSosmedPopup()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-        </div>
-      </div>
-      <div class="slider-wrap">
-        <div class="slider-track" id="slider-track">
-          <div class="slide has-img" data-index="0" style="background-image:url('https://i.ibb.co.com/d4hRH6Wj/orbitxy-com-20260614-075731-0000.jpg')">
-            <div class="slide-content">
-              <div class="slide-icon" style="display:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-              <div class="slide-title">Promo Banner #1</div>
-              <div class="slide-desc">Slide ke-1</div>
-            </div>
-          </div>
-          <div class="slide slide-video" data-index="1">
-            <video class="slide-video-el" src="https://files.catbox.moe/byyqm3.mp4" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-          <div class="slide" data-index="2">
-            <div class="slide-content">
-              <div class="slide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-              <div class="slide-title">Promo Banner #3</div>
-              <div class="slide-desc">Slide ke-3</div>
-            </div>
-          </div>
-        </div>
-        <div class="slider-dots" id="slider-dots">
-          <div class="slider-dot active" data-go="0"></div>
-          <div class="slider-dot" data-go="1"></div>
-          <div class="slider-dot" data-go="2"></div>
-        </div>
-      </div>
-      <div class="dash-footer">© 2026 orbitxy.com inc. · Semua hak dilindungi</div>
-    </div>
-  </div>
-
-  <!-- ACCOUNT SCREEN -->
-  <div class="screen" id="s-account">
-    <div class="dash-inner">
-      <div class="acc-top-section">
-        <div class="acc-avatar-wrap" onclick="document.getElementById('avatar-input').click()" title="Tap untuk ganti foto">
-          <img id="dash-avatar" class="acc-avatar-img" src="" alt="avatar"/>
-        </div>
-        <div class="acc-name-center" id="acc-name" data-glitch-text="User" onclick="triggerAccountNameGlitch()">User</div>
-      </div>
-      <div class="acc-section-label">Fitur</div>
-      <div class="acc-menu">
-        <div class="acc-menu-group">
-          <div class="acc-menu-item" onclick="playSendAnimation(openChatPage, '#ff3b3b')">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-            <span>Messages</span>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-          <div class="acc-menu-item acc-menu-item-sub" onclick="showToast('Business profile')">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-            <div class="acc-menu-text">
-              <span>Setup your business profile</span>
-              <div class="acc-menu-sub">Automate work travel &amp; meal expenses</div>
-            </div>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-          <div class="acc-menu-item" onclick="playSendAnimation(openManageAccountPage, '#ffffff')">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <span>Manage account</span>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Legal')">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
-            <span>Legal</span>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- KELUHAN PAGE -->
-  <div class="screen" id="s-send">
-    <div class="dash-inner">
-      <div class="send-page-header">
-        <button class="circle-back-btn" onclick="go('s-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
-      </div>
-      <h1 class="title" style="font-size:30px;margin-bottom:8px;">Keluhan</h1>
-      <p class="subtitle" style="margin-top:0;margin-bottom:20px;">Sampaikan keluhan atau masukan kamu tentang aplikasi ini</p>
-      <div class="input-group">
-        <div class="input-wrap" id="cw-text" style="align-items:flex-start;padding:14px 16px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin-top:2px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <textarea id="complaint-text" placeholder="Tulis keluhan kamu di sini..." rows="3" style="background:transparent;border:none;outline:none;width:100%;resize:vertical;font-size:14px;font-family:'DM Sans',sans-serif;color:#ccc;padding:0;line-height:1.6;"></textarea>
-        </div>
-        <div class="err-msg" id="complaint-err"></div>
-      </div>
-      <button class="btn-primary" onclick="submitComplaint()">Kirim Keluhan</button>
-    </div>
-  </div>
-
-  <!-- DONASI PAGE -->
-  <div class="screen" id="s-donasi">
-    <div class="dash-inner">
-      <div class="send-page-header">
-        <button class="circle-back-btn" onclick="go('s-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
-      </div>
-      <h1 class="title" style="font-size:30px;margin-bottom:8px;">Donasi</h1>
-      <p class="subtitle" style="margin-top:0;margin-bottom:22px;">Dukung pengembangan orbitxy dengan donasi kamu</p>
-      <div class="acc-privacy-banner" style="margin-top:4px;margin-bottom:0;" onclick="window.open('https://sociabuzz.com/orbitxy/donate', '_blank')">
-        <div class="acc-privacy-text">
-          <div class="acc-privacy-title">Donasi via SociaBuzz</div>
-          <div class="acc-privacy-desc">Bayar langsung lewat QRIS &amp; e-wallet di halaman resmi SociaBuzz</div>
-        </div>
-        <div class="acc-privacy-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </div>
-      </div>
-      <div class="donasi-warning">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <div class="donasi-warning-text"><b>Waspada penipuan.</b><br/>Tombol di atas adalah satu-satunya cara resmi untuk berdonasi ke orbitxy. Kami tidak pernah membagikan link donasi lewat chat, DM, atau media lain.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CHAT ADMIN (BOT) -->
-  <div class="screen" id="s-chat">
-    <div class="dash-inner">
-      <div class="send-page-header chat-header-bar">
-        <button class="circle-back-btn" onclick="go('s-account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <div class="chat-header-info">
-          <div class="chat-header-name">Admin Support</div>
-          <div class="chat-header-status">Online</div>
-        </div>
-        <div class="chat-header-avatar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="8.5" cy="16" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="16" r="1.2" fill="currentColor" stroke="none"/><path d="M12 11V7"/><circle cx="12" cy="5" r="1.5"/><path d="M7 11V9a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg>
-        </div>
-      </div>
-      <div class="chat-scroll" id="chat-scroll">
-        <div class="chat-messages" id="chat-messages"></div>
-      </div>
-    </div>
-    <div class="chat-input-bar">
-      <div class="chat-input-row">
-        <input type="text" id="chat-input" placeholder="Tulis pesan ke admin..." autocomplete="off" onkeydown="if(event.key==='Enter')sendChatMessage()"/>
-        <button class="chat-send-btn" onclick="sendChatMessage()"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MANAGE ACCOUNT PAGE -->
-  <div class="screen" id="s-manage-account">
-    <div class="dash-inner">
-      <div class="send-page-header">
-        <button class="circle-back-btn" onclick="go('s-account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg></button>
-      </div>
-      <h1 class="title" style="font-size:30px;margin-bottom:6px;">Manage<br>Account</h1>
-      <p class="subtitle" style="margin-top:0;margin-bottom:24px;">Kelola data, keamanan, dan status akun kamu</p>
-      <div style="display:flex;gap:8px;margin-bottom:20px;">
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10" stroke="#00ff88"/><path d="M8 12.5l2.5 2.5 5-5" stroke="#00ff88" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span id="ma-status-label" style="font-size:11px;font-weight:600;color:#fff;">Aman</span>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="1.8" width="20" height="20"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          <span id="ma-method-label" style="font-size:11px;font-weight:600;color:#fff;">Email</span>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="1.8" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span id="ma-since-label" style="font-size:11px;font-weight:600;color:#fff;">2026</span>
-        </div>
-      </div>
-      <div class="acc-menu" style="margin-bottom:8px;">
-        <div class="acc-menu-group">
-          <div class="acc-menu-item" onclick="openChangePasswordPage()">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-            <span>Ubah password</span>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-          <div class="acc-menu-item" onclick="downloadAccountData()">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-            <div class="acc-menu-text">
-              <span>Unduh data akun</span>
-              <div class="acc-menu-sub">Ekspor info profil &amp; riwayat aktivitas kamu</div>
-            </div>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-          <div class="acc-menu-item" onclick="openDeactivateModal()">
-            <div class="acc-menu-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
-            <span>Nonaktifkan sementara</span>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-          <div class="acc-menu-item" onclick="openDeleteModal()">
-            <div class="acc-menu-item-icon" style="background:rgba(255,92,92,0.1);border-color:rgba(255,92,92,0.25);"><svg viewBox="0 0 24 24" fill="none" stroke="#ff5c5c" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
-            <span style="color:#ff7070;">Hapus akun</span>
-            <div class="acc-menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="#ff5c5c" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></div>
-          </div>
-        </div>
-      </div>
-      <p class="hint" style="text-align:center;margin-top:18px;">Punya pertanyaan sebelum menghapus akun? <span style="text-decoration:underline;color:#aaa;cursor:pointer;" onclick="playSendAnimation(openChatPage, '#ff3b3b')">Chat admin dulu</span></p>
-    </div>
-  </div>
-
-  <!-- DEACTIVATE CONFIRM MODAL -->
-  <div class="confirm-overlay" id="modal-deactivate">
-    <div class="confirm-card">
-      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
-      <div class="confirm-title">Nonaktifkan akun sementara?</div>
-      <div class="confirm-desc">Profil dan riwayat kamu akan disembunyikan. Kamu bisa mengaktifkannya kembali kapan saja dengan login ulang.</div>
-      <button class="btn-primary" style="margin-top:18px;" onclick="confirmDeactivate()">Ya, nonaktifkan</button>
-      <button class="btn-ghost-cancel" onclick="closeModal('modal-deactivate')">Batal</button>
-    </div>
-  </div>
-
-  <!-- DELETE CONFIRM MODAL -->
-  <div class="confirm-overlay" id="modal-delete">
-    <div class="confirm-card">
-      <div class="confirm-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
-      <div class="confirm-title">Hapus akun secara permanen?</div>
-      <div class="confirm-desc">Semua data kamu akan dihapus dan tidak dapat dikembalikan.</div>
-      <div class="input-group" style="margin-top:14px;text-align:left;">
-        <div class="input-wrap" id="del-confirm-wrap">
-          <input type="text" placeholder='Ketik "HAPUS" untuk konfirmasi' id="del-confirm-input" oninput="this.parentElement.classList.remove('err')"/>
-        </div>
-      </div>
-      <button class="btn-primary btn-danger" style="margin-top:6px;" onclick="confirmDelete()">Hapus akun saya</button>
-      <button class="btn-ghost-cancel" onclick="closeModal('modal-delete')">Batal</button>
-    </div>
-  </div>
-
-  <!-- SOSMED POPUP -->
-  <div class="sosmed-popup-overlay" id="sosmed-popup" onclick="if(event.target===this)closeSosmedPopup()">
-    <div class="sosmed-popup-card">
-      <div class="sosmed-popup-header">
-        <div class="sosmed-popup-title">Ikuti kami 👋</div>
-        <button class="sosmed-popup-close" onclick="closeSosmedPopup()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-      </div>
-      <a href="https://www.instagram.com/orbitxy_gaming?igsh=MTJwcWpxcWZtZGlrOA==" target="_blank" class="sosmed-link-card">
-        <div class="sosmed-link-img-wrap" style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);border-radius:14px;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="#fff" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg>
-        </div>
-        <div style="flex:1;min-width:0;"><div class="sosmed-link-name">Instagram</div></div>
-        <div class="sosmed-link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <a href="https://tiktok.com/@orbitxy7" target="_blank" class="sosmed-link-card">
-        <div class="sosmed-link-img-wrap" style="background:#010101;border-radius:14px;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z" fill="#fff"/></svg>
-        </div>
-        <div style="flex:1;min-width:0;"><div class="sosmed-link-name">TikTok</div></div>
-        <div class="sosmed-link-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-    </div>
-  </div>
-
-  <!-- DASHBOARD POPUP -->
-  <div class="dash-popup-overlay" id="dash-popup">
-    <div class="dash-popup-card">
-      <button class="dash-popup-close" onclick="closeDashPopup()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-      <div class="dash-popup-title">Kenalan yuk 👋</div>
-      <div class="dash-popup-body"><span id="dash-popup-typed"></span><span class="dash-popup-cursor"></span></div>
-    </div>
-  </div>
-
-  <!-- CHAT NAV SCREEN — Masih dalam perbaikan -->
-  <div class="screen" id="s-chat-nav-main">
-    <div class="dash-inner" style="align-items:center;justify-content:center;min-height:100vh;">
-      <p style="font-size:13px;color:#444;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">Masih dalam perbaikan</p>
-    </div>
-  </div>
-
-    <!-- SCAN QR ORANG LAIN -->
-  <div class="screen" id="s-scan-qr" style="background:#000;">
-    <div style="width:100%;max-width:480px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:max(24px,env(safe-area-inset-top)) 18px 32px;position:relative;">
-      <!-- Header -->
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;position:relative;z-index:10;">
-        <button onclick="stopScanCamera();go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;padding:0;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;">Scan QR</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:1px;">Arahkan ke QR Code teman</div>
-        </div>
-      </div>
-
-      <!-- Camera area -->
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
-        <div style="position:relative;width:100%;max-width:300px;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:#111;">
-          <!-- Live video -->
-          <video id="qr-video" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></video>
-          <!-- Dark overlay with transparent center -->
-          <div style="position:absolute;inset:0;pointer-events:none;">
-            <!-- Corner brackets -->
-            <div style="position:absolute;top:12px;left:12px;width:44px;height:44px;border-top:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:6px 0 0 0;z-index:2;"></div>
-            <div style="position:absolute;top:12px;right:12px;width:44px;height:44px;border-top:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 6px 0 0;z-index:2;"></div>
-            <div style="position:absolute;bottom:12px;left:12px;width:44px;height:44px;border-bottom:3px solid #00ff88;border-left:3px solid #00ff88;border-radius:0 0 0 6px;z-index:2;"></div>
-            <div style="position:absolute;bottom:12px;right:12px;width:44px;height:44px;border-bottom:3px solid #00ff88;border-right:3px solid #00ff88;border-radius:0 0 6px 0;z-index:2;"></div>
-            <!-- Scan line -->
-            <div id="scan-line-bar" style="position:absolute;left:16px;right:16px;height:2px;background:linear-gradient(90deg,transparent,#00ff88,transparent);z-index:3;animation:scanLineMove 2s linear infinite;"></div>
-          </div>
-          <!-- Camera off state -->
-          <div id="qr-cam-off" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#111;">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.4"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/><line x1="1" y1="1" x2="23" y2="23" stroke="#444"/></svg>
-            <span style="font-size:12px;color:#444;">Kamera belum aktif</span>
-          </div>
-        </div>
-
-        <p id="qr-scan-status" style="font-size:13px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.6;">Tekan tombol untuk buka kamera belakang</p>
-
-        <!-- Result box (hidden until scan) -->
-        <div id="qr-result-box" style="display:none;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.35);border-radius:14px;padding:14px 18px;width:100%;max-width:300px;text-align:center;">
-          <div style="font-size:11px;color:#ffffff;margin-bottom:4px;font-weight:600;">QR Terdeteksi ✓</div>
-          <div id="qr-result-text" style="font-size:13px;color:#ddd;word-break:break-all;"></div>
-        </div>
-
-        <button id="qr-cam-btn" onclick="startScanCamera()" style="background:#ffffff;color:#000;border:none;border-radius:99px;padding:14px 36px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity .2s;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Buka Kamera
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- QR SAYA SCREEN -->
-  <div class="screen" id="s-qr-saya">
-    <div class="dash-inner" style="align-items:stretch;">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;">
-        <button onclick="go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">QR Saya</div>
-          <div style="font-size:12px;color:var(--text-sec);margin-top:1px;">Bagikan ke teman kamu</div>
-        </div>
-      </div>
-      <!-- QR Card -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-        <div style="background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:28px;padding:28px 24px 24px;width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;box-shadow:0 12px 40px rgba(0,0,0,0.5);">
-          <!-- Avatar -->
-          <div id="qr-avatar-display" style="width:64px;height:64px;border-radius:50%;background:var(--input-bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div id="qr-name-display" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);margin-bottom:2px;">User</div>
-          <div id="qr-handle-display" style="font-size:11.5px;color:var(--text-sec);margin-bottom:20px;">@user</div>
-          <!-- QR Code -->
-          <div style="background:#fff;border-radius:16px;padding:14px;margin-bottom:16px;">
-            <div id="qr-code-container" style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;"></div>
-          </div>
-          <div style="font-size:11px;color:#555;text-align:center;">Scan untuk tambahkan kontak</div>
-        </div>
-        <!-- Share button -->
-        <button onclick="shareQr()" style="margin-top:20px;background:var(--white);color:#000;border:none;border-radius:99px;padding:13px 32px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Bagikan QR
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- GRUP DETAIL SCREEN -->
-  <div class="screen" id="s-grup-detail">
-    <div class="dash-inner" style="align-items:stretch;">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:0;">
-        <button onclick="go('s-chat-nav')" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-      </div>
-      <!-- Grup hero -->
-      <div style="display:flex;flex-direction:column;align-items:center;padding:28px 0 24px;">
-        <div id="grup-detail-avatar" onclick="triggerGrupAvatarChange()" style="width:88px;height:88px;border-radius:50%;background:var(--card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:14px;position:relative;">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div id="grup-detail-name" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.01em;margin-bottom:4px;text-align:center;">Nama Grup</div>
-        <div id="grup-detail-count" style="font-size:12px;color:var(--text-sec);">0 anggota</div>
-      </div>
-      <!-- Info cards -->
-      <div style="display:flex;gap:10px;margin-bottom:20px;">
-        <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
-          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:var(--white);" id="grup-detail-members-count">0</div>
-          <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Anggota</div>
-        </div>
-        <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
-          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:#ffffff;">✓</div>
-          <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Aktif</div>
-        </div>
-        <div style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 10px;text-align:center;">
-          <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:var(--white);" id="grup-detail-created">2026</div>
-          <div style="font-size:11px;color:var(--text-sec);margin-top:2px;">Dibuat</div>
-        </div>
-      </div>
-      <!-- Members list -->
-      <div style="font-size:11px;font-weight:600;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding-left:4px;">Anggota</div>
-      <div id="grup-detail-member-list" style="background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:18px;overflow:hidden;"></div>
-    </div>
-  </div>
-
-  <!-- MODAL BUAT GRUP -->
-  <div class="confirm-overlay" id="modal-buat-grup" onclick="if(event.target===this)closeBuatGrupModal()" style="align-items:flex-end;padding:0;">
-    <div style="width:100%;max-width:480px;margin:0 auto;background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:28px 28px 0 0;padding:28px 22px 40px;box-shadow:0 -20px 60px rgba(0,0,0,0.6);animation:slideUp .3s ease;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
-        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);">Buat Grup</div>
-        <button onclick="closeBuatGrupModal()" style="width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-sec);cursor:pointer;padding:0;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <!-- Foto grup -->
-      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:20px;">
-        <div id="grup-photo-preview" onclick="document.getElementById('grup-photo-input').click()" style="width:80px;height:80px;border-radius:50%;background:var(--card);border:2px dashed var(--input-border);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:8px;position:relative;transition:border-color .2s;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
-        <input type="file" id="grup-photo-input" accept="image/*" style="display:none" onchange="setGrupPhoto(this)"/>
-        <span style="font-size:12px;color:#555;">Tap untuk pilih foto grup</span>
-      </div>
-      <!-- Nama grup input -->
-      <div style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;padding:0 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;" id="grup-name-wrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <input type="text" id="grup-name-input" placeholder="Nama grup..." style="background:transparent;border:none;outline:none;width:100%;padding:13px 0;font-size:14px;font-family:'DM Sans',sans-serif;color:#ccc;" maxlength="40"/>
-      </div>
-      <div class="err-msg" id="grup-name-err" style="margin-top:-8px;margin-bottom:8px;"></div>
-      <button class="btn-primary" onclick="buatGrup()" style="margin-top:4px;">Buat Grup</button>
-    </div>
-  </div>
-
-  <style>
-    @keyframes slideUp { from { transform: translateY(100%); opacity:0; } to { transform: translateY(0); opacity:1; } }
-    @keyframes scanLineMove { 0% { top: 14px; } 50% { top: calc(100% - 16px); } 100% { top: 14px; } }
-    .contact-letter-header { font-size:11px;font-weight:700;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:6px 4px 6px;margin-top:10px; }
-    .contact-item { display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border-radius:14px;margin-bottom:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);transition:border-color .15s,background .15s; }
-    .contact-item:hover { border-color:#333;background:#1e1e1e; }
-    .contact-avatar { width:42px;height:42px;border-radius:50%;background:var(--input-bg);border:1px solid var(--input-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);overflow:hidden; }
-    .contact-avatar img { width:100%;height:100%;object-fit:cover; }
-    .contact-name { font-size:14px;font-weight:600;color:var(--white);flex:1; }
-    .contact-handle { font-size:11.5px;color:var(--text-sec);margin-top:1px; }
-    .grup-item { display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border-radius:14px;margin-bottom:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);transition:border-color .15s; }
-    .grup-item:hover { border-color:#333; }
-    .grup-avatar { width:42px;height:42px;border-radius:50%;background:var(--input-bg);border:1px solid var(--input-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden; }
-    .grup-avatar img { width:100%;height:100%;object-fit:cover; }
-    #s-qr-saya, #s-scan-qr, #s-grup-detail { position:fixed;inset:0;z-index:50;background:var(--black);overflow-y:auto; }
-    #s-grup-chat.active { display:flex !important; flex-direction:column; }
-    #s-qr-saya .dash-inner, #s-scan-qr .dash-inner, #s-grup-detail .dash-inner { width:100%;max-width:480px;margin:0 auto;min-height:100%;padding:max(24px,env(safe-area-inset-top)) 18px 40px;display:flex;flex-direction:column; }
-  </style>
-
-  <!-- GRUP CHAT SCREEN -->
-  <div class="screen" id="s-grup-chat" style="position:fixed;inset:0;z-index:50;background:var(--black);">
-    <!-- Header -->
-    <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:max(16px,env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--border);background:var(--surface);">
-      <button onclick="go('s-chat-nav')" style="width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;padding:0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <!-- Avatar -->
-      <div id="gc-header-avatar" style="width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div style="flex:1;min-width:0;">
-        <div id="gc-header-name" style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Grup</div>
-        <div id="gc-header-members" style="font-size:11px;color:var(--text-sec);margin-top:1px;">0 anggota</div>
-      </div>
-      <!-- Info button -->
-      <button onclick="openGrupInfo()" style="width:36px;height:36px;border-radius:50%;background:transparent;border:none;display:flex;align-items:center;justify-content:center;color:#666;cursor:pointer;padding:0;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12.01" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
-      </button>
-    </div>
-
-    <!-- Messages area -->
-    <div id="gc-messages-scroll" style="flex:1;overflow-y:auto;padding:14px 14px 90px;">
-      <div id="gc-messages" style="display:flex;flex-direction:column;gap:8px;"></div>
-    </div>
-
-    <!-- Input bar -->
-    <div style="position:fixed;bottom:0;left:0;right:0;z-index:52;background:var(--surface);border-top:1px solid var(--border);padding:10px 12px max(10px,env(safe-area-inset-bottom));display:flex;justify-content:center;">
-      <div style="display:flex;align-items:center;gap:8px;width:100%;max-width:480px;">
-        <!-- Attachment -->
-        <button onclick="showToast('Lampiran segera hadir 📎')" style="width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:#666;cursor:pointer;padding:0;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-        </button>
-        <input type="text" id="gc-input" placeholder="Pesan..." autocomplete="off"
-          onkeydown="if(event.key==='Enter')sendGrupMessage()"
-          style="flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:22px;padding:11px 16px;color:#ccc;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;"/>
-        <button onclick="sendGrupMessage()" style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:#ffffff;color:#000;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
-          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="17" height="17"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- GRUP INFO BOTTOM SHEET -->
-  <div class="confirm-overlay" id="modal-grup-info" onclick="if(event.target===this)closeGrupInfo()" style="align-items:flex-end;padding:0;">
-    <div style="width:100%;max-width:480px;margin:0 auto;background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:28px 28px 0 0;padding:24px 20px max(28px,env(safe-area-inset-bottom));box-shadow:0 -20px 60px rgba(0,0,0,0.6);animation:slideUp .3s ease;max-height:70vh;overflow-y:auto;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
-        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);">Info Grup</div>
-        <button onclick="closeGrupInfo()" style="width:26px;height:26px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-sec);cursor:pointer;padding:0;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <!-- Grup avatar + name -->
-      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:20px;">
-        <div id="gi-avatar" style="width:72px;height:72px;border-radius:50%;background:var(--card);border:2px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div id="gi-name" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:2px;"></div>
-        <div id="gi-count" style="font-size:12px;color:var(--text-sec);"></div>
-      </div>
-      <!-- Members -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:.12em;text-transform:uppercase;border-left:3px solid #fff;padding-left:8px;">Anggota</div>
-        <button id="gi-tambah-btn" onclick="openTambahAnggota()" style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#000;background:#fff;border:2px solid #fff;border-radius:0;padding:5px 12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;letter-spacing:.04em;text-transform:uppercase;box-shadow:2px 2px 0 #000;color:#000;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='4px 4px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='2px 2px 0 #000'">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Tambah
-        </button>
-      </div>
-      <div id="gi-member-list" style="background:#111;border:2.5px solid #fff;border-radius:0;overflow:hidden;margin-bottom:12px;box-shadow:3px 3px 0 #000;"></div>
-      <!-- Leave group -->
-      <button id="gi-keluar-btn" style="width:100%;background:rgba(255,60,172,0.1);border:2.5px solid #ff3cac;border-radius:0;padding:13px;color:#ff3cac;font-size:13px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;box-shadow:3px 3px 0 #ff3cac;">Keluar Grup</button>
-    </div>
-  </div>
-
-  <!-- MODAL TAMBAH ANGGOTA -->
-  <div class="confirm-overlay" id="modal-tambah-anggota" onclick="if(event.target===this)closeTambahAnggota()" style="align-items:flex-end;padding:0;z-index:310;">
-    <div style="width:100%;max-width:480px;margin:0 auto;background:#111;border:2.5px solid #fff;border-radius:0;border-bottom:none;padding:24px 20px max(28px,env(safe-area-inset-bottom));box-shadow:0 -6px 0 #ffffff;animation:slideUp .3s ease;max-height:75vh;overflow-y:auto;">
-      <!-- Header -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-.01em;">Tambah Anggota</div>
-        <button onclick="closeTambahAnggota()" style="width:28px;height:28px;border-radius:0;background:#181818;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;padding:0;box-shadow:2px 2px 0 #000;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-
-      <!-- Manual input -->
-      <div style="margin-bottom:16px;">
-        <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #fff;padding-left:8px;margin-bottom:8px;">Tambah Manual</div>
-        <div style="display:flex;gap:8px;">
-          <input id="tambah-nama-input" type="text" placeholder="Nama anggota..." maxlength="30"
-            style="flex:1;background:#000;border:2.5px solid #fff;border-radius:0;padding:11px 14px;color:#fff;outline:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;box-shadow:3px 3px 0 #000;"
-            onkeydown="if(event.key==='Enter')doTambahAnggota()"
-            onfocus="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #333fff'"
-            onblur="this.style.borderColor='#fff';this.style.boxShadow='3px 3px 0 #000'"/>
-          <button onclick="doTambahAnggota()" style="background:#00ff88;color:#000;border:2.5px solid #000;border-radius:0;padding:11px 18px;font-size:12px;font-weight:800;font-family:'Space Grotesk',sans-serif;cursor:pointer;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 #000;flex-shrink:0;transition:transform .1s,box-shadow .1s;" onmouseover="this.style.transform='translate(-1px,-1px)';this.style.boxShadow='5px 5px 0 #000'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
-            + Tambah
-          </button>
-        </div>
-        <div id="tambah-err" style="font-size:11px;color:#ff3cac;margin-top:4px;font-weight:700;min-height:16px;"></div>
-      </div>
-
-      <!-- From contacts -->
-      <div id="tambah-kontak-section" style="display:none;">
-        <div style="font-size:10px;font-weight:800;color:#ffffff;letter-spacing:.1em;text-transform:uppercase;border-left:3px solid #fff;padding-left:8px;margin-bottom:10px;">Dari Kontak</div>
-        <div id="tambah-kontak-list" style="display:flex;flex-direction:column;gap:6px;"></div>
-      </div>
-
-      <!-- Already in grup note -->
-      <div style="margin-top:14px;font-size:11px;color:#444;text-align:center;">Anggota yang sudah ada tidak akan muncul</div>
-    </div>
-  </div>
-
-  <!-- ===== BOTTOM NAV — SINGLE PILL KAPSUL ===== -->
-  <div class="bottom-nav-wrap" id="dash-bottom-nav">
-    <div class="bottom-nav">
-      <!-- Home -->
-      <div class="nav-item active" id="nav-home" onclick="goDashTab('home')" title="Home">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path id="icon-home-body" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#ffffff" stroke="none"/>
-          <rect id="icon-home-door" x="9.5" y="14.5" width="5" height="7" rx="1" fill="#1c1c1c" stroke="none"/>
-        </svg>
-      </div>
-      <!-- Divider -->
-      <div class="nav-divider"></div>
-      <!-- Chat -->
-      <div class="nav-item" id="nav-chat" onclick="goDashTab('chat')" title="Chat">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path id="icon-chat-bubble" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="#555" stroke-width="1.8" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <!-- Divider -->
-      <div class="nav-divider"></div>
-      <!-- Account -->
-      <div class="nav-item" id="nav-account" onclick="goDashTab('account')" title="Account">
-        <svg viewBox="0 0 24 24" fill="none">
-          <circle id="icon-acc-head" cx="12" cy="7" r="4" fill="none" stroke="#555" stroke-width="1.8"/>
-          <path id="icon-acc-body" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#555" stroke-width="1.8"/>
-        </svg>
-      </div>
-    </div>
-  </div>
-  <!-- ===== END BOTTOM NAV ===== -->
-
-</div>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
-    authDomain: "orbitxy-6e79c.firebaseapp.com",
-    databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "orbitxy-6e79c",
-    storageBucket: "orbitxy-6e79c.firebasestorage.app",
-    messagingSenderId: "1064037228597",
-    appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
-  const googleProvider = new GoogleAuthProvider();
-  googleProvider.setCustomParameters({ prompt: 'select_account' });
-
-  const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e1e1e'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23555'/%3E%3Cpath d='M50 60c-22 0-34 12-34 28v12h68V88c0-16-12-28-34-28z' fill='%23555'/%3E%3C/svg%3E";
-
-  let currentOtp = '', verifyMode = 'forgot', pendingGoogleCred = null, pendingForgotEmail = null;
-  let registeredAccounts = JSON.parse(localStorage.getItem('pu_accounts') || '{}');
-  let currentUserEmail = null;
-  let complaintsList = JSON.parse(localStorage.getItem('pu_complaints') || '[]');
-
-  function saveComplaints() { localStorage.setItem('pu_complaints', JSON.stringify(complaintsList)); }
-  complaintsList.forEach(c => { if (!c.id) c.id = 'c_' + Date.now(); if (typeof c.likes !== 'number') c.likes = 0; if (typeof c.dislikes !== 'number') c.dislikes = 0; delete c.myVote; });
-  saveComplaints();
-  function saveAccounts() { localStorage.setItem('pu_accounts', JSON.stringify(registeredAccounts)); }
-  function escapeHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-
-  window.openSosmedPopup = function() { document.getElementById('sosmed-popup').classList.add('show'); };
-  window.closeSosmedPopup = function() { document.getElementById('sosmed-popup').classList.remove('show'); };
-
-  onAuthStateChanged(auth, async user => {
-    if (user) {
-      if (pendingGoogleCred) return;
-      try { await user.getIdToken(true); if (registeredAccounts[user.email]) showDashboard(user, 'Google'); else await signOut(auth); }
-      catch(e) { await signOut(auth); if (registeredAccounts[user.email]) { delete registeredAccounts[user.email]; saveAccounts(); } }
-    }
+  // Toggle show/hide password
+  let isVisible = false;
+  toggleEye.addEventListener('click', () => {
+    isVisible = !isVisible;
+    passwordInput.type = isVisible ? 'text' : 'password';
+    eyeIcon.innerHTML = isVisible
+      ? '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle>'
+      : '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-6 0-10-7-10-7a18.6 18.6 0 0 1 4.22-5.06"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
   });
 
-  window.go = function(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    const dashNav = document.getElementById('dash-bottom-nav');
-    const showNav = ['s-dashboard','s-account','s-chat-nav-main'].includes(id);
-    if (dashNav) dashNav.style.display = showNav ? 'flex' : 'none';
-    window.scrollTo(0,0); manageSlideVideo(id);
-    if (id !== 's-scan-qr' && typeof stopScanCamera === 'function') stopScanCamera();
-    if (id === 's-dashboard' && typeof triggerGreetingGlitch === 'function') triggerGreetingGlitch();
-    if (id === 's-account' && typeof triggerAccountNameGlitch === 'function') triggerAccountNameGlitch();
-  };
-
-  function manageSlideVideo(screenId) {
-    const vid = document.querySelector('.slide-video-el'); if (!vid) return;
-    if (screenId === 's-dashboard') vid.play().catch(()=>{}); else vid.pause();
+  function validateEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  // Update icon states for all 3 nav items
-  function setNavActive(tab) {
-    // Reset all
-    document.querySelectorAll('#dash-bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    errorMsg.textContent = '';
 
-    // Home icon
-    const homeBody = document.getElementById('icon-home-body');
-    const homeDoor = document.getElementById('icon-home-door');
-    if (homeBody) { homeBody.setAttribute('fill','none'); homeBody.setAttribute('stroke','#555'); homeBody.setAttribute('stroke-width','1.8'); }
-    if (homeDoor) { homeDoor.setAttribute('fill','none'); homeDoor.setAttribute('stroke','none'); }
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
-    // Chat icon
-    const chatBubble = document.getElementById('icon-chat-bubble');
-    if (chatBubble) { chatBubble.setAttribute('fill','none'); chatBubble.setAttribute('stroke','#555'); }
-
-    // Account icon
-    const accHead = document.getElementById('icon-acc-head');
-    const accBody = document.getElementById('icon-acc-body');
-    if (accHead) { accHead.setAttribute('fill','none'); accHead.setAttribute('stroke','#555'); }
-    if (accBody) { accBody.setAttribute('stroke','#555'); }
-
-    // Activate selected
-    if (tab === 'home') {
-      document.getElementById('nav-home').classList.add('active');
-      if (homeBody) { homeBody.setAttribute('fill','#000'); homeBody.setAttribute('stroke','none'); }
-      if (homeDoor) { homeDoor.setAttribute('fill','#1c1c1c'); homeDoor.setAttribute('stroke','none'); }
-    } else if (tab === 'chat') {
-      document.getElementById('nav-chat').classList.add('active');
-      if (chatBubble) { chatBubble.setAttribute('fill','rgba(255,255,255,0.12)'); chatBubble.setAttribute('stroke','#ffffff'); }
-    } else if (tab === 'account') {
-      document.getElementById('nav-account').classList.add('active');
-      if (accHead) { accHead.setAttribute('fill','#000'); accHead.setAttribute('stroke','none'); }
-      if (accBody) { accBody.setAttribute('stroke','#000'); }
-    }
-  }
-
-  window.goDashTab = function(tab) {
-    setNavActive(tab);
-    if (tab === 'home') {
-      go('s-dashboard'); initSlider();
-    } else if (tab === 'chat') {
-      go('s-chat-nav-main');
-    } else if (tab === 'account') {
-      go('s-account');
-    } else {
-      showToast(tab.charAt(0).toUpperCase() + tab.slice(1) + ' (segera hadir)');
-    }
-  };
-
-  window.showToast = function(msg, isErr) {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-msg').textContent = msg;
-    t.classList.toggle('toast-err', !!isErr); t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  };
-
-  function getConnSpeedFactor() {
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection; if (!conn) return 1;
-    const map = {'4g':1,'3g':.5,'2g':.25,'slow-2g':.12};
-    let f = map[conn.effectiveType] !== undefined ? map[conn.effectiveType] : 1;
-    if (typeof conn.downlink === 'number' && conn.downlink > 0) { const df = Math.min(1, conn.downlink/5); f = Math.min(f, Math.max(df, .12)); }
-    return Math.max(f, .12);
-  }
-
-  window.playSendAnimation = function(onDone, color) {
-    const w = window.innerWidth, h = window.innerHeight, midY = h/2, amp = Math.min(h*.07,40), segs = 4;
-    const animColor = color || 'var(--accent)'; let points = [];
-    for (let i = 0; i <= segs; i++) { const x = (w*i)/segs; let y = (i===0||i===segs) ? midY : midY+(i%2===1?-amp:amp); points.push([x,y]); }
-    let d = `M ${points[0][0]} ${points[0][1]}`;
-    for (let i = 1; i < points.length-1; i++) { const mx=(points[i][0]+points[i+1][0])/2, my=(points[i][1]+points[i+1][1])/2; d += ` Q ${points[i][0]} ${points[i][1]} ${mx} ${my}`; }
-    d += ` L ${points[points.length-1][0]} ${points[points.length-1][1]}`;
-    const animId = 'sa-'+Date.now(); const overlay = document.createElement('div'); overlay.className='send-anim-overlay';
-    overlay.innerHTML = `<svg class="send-anim-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><defs><clipPath id="${animId}-clip"><rect x="0" y="0" width="0" height="${h}"></rect></clipPath></defs><path class="send-anim-path" d="${d}" clip-path="url(#${animId}-clip)"></path></svg><div class="send-anim-plane"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>`;
-    document.body.appendChild(overlay);
-    const path = overlay.querySelector('.send-anim-path'), plane = overlay.querySelector('.send-anim-plane'), clipRect = overlay.querySelector(`#${animId}-clip rect`);
-    plane.style.offsetPath = `path('${d}')`; path.style.stroke = animColor; plane.style.color = animColor;
-    let progress = 0, lastTime = null, doneTriggered = false;
-    function frame(t) {
-      if (lastTime===null) lastTime=t; const dt=t-lastTime; lastTime=t;
-      progress += (dt/1400)*getConnSpeedFactor(); if (progress>1) progress=1;
-      clipRect.setAttribute('width', String(w*progress)); plane.style.offsetDistance=(progress*100)+'%';
-      let opacity = progress<.12?progress/.12:progress>.85?(1-progress)/.15:1;
-      overlay.style.opacity=String(opacity); plane.style.opacity=String(opacity);
-      if (!doneTriggered && progress>=.5) { doneTriggered=true; if (typeof onDone==='function') onDone(); }
-      if (progress<1) requestAnimationFrame(frame); else overlay.remove();
-    }
-    requestAnimationFrame(frame);
-  };
-
-  window.setErr = function(wrapId, errId, msg) {
-    if (wrapId) { const w = document.getElementById(wrapId); if (w) w.classList.toggle('err', !!msg); }
-    const e = document.getElementById(errId); if (e) e.textContent = msg||''; return !!msg;
-  };
-  window.togglePass = function(id, btn) { const inp = document.getElementById(id); inp.type = inp.type==='password'?'text':'password'; btn.style.color = inp.type==='text'?'#bbb':''; };
-  window.checkStrength = function(val, prefix) {
-    const segs = [1,2,3,4].map(i => document.getElementById(prefix+i)); segs.forEach(s => s.className='strength-segment');
-    if (!val) return; let score=0;
-    if (val.length>=8) score++; if (/[A-Z]/.test(val)) score++; if (/[0-9]/.test(val)) score++; if (/[^A-Za-z0-9]/.test(val)) score++;
-    const cls = score<=1?'weak':score<=3?'medium':'strong';
-    for (let i=0;i<score;i++) segs[i].classList.add(cls);
-  };
-
-  const validDomains = ['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com','icloud.com','me.com','mac.com','protonmail.com','proton.me','mail.com','zoho.com','yandex.com','aol.com','live.com','msn.com','googlemail.com','rocketmail.com','inbox.com'];
-  function checkEmail(email) {
-    if (!email) return 'Email wajib diisi';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Format email tidak valid';
-    const domain = email.split('@')[1].toLowerCase();
-    if (!validDomains.includes(domain)) return 'Gunakan email valid (contoh: @gmail.com, @yahoo.com)';
-    return '';
-  }
-
-  function generateOtp() {
-    currentOtp = String(Math.floor(1000+Math.random()*9000));
-    document.getElementById('otp-display').textContent = currentOtp;
-    document.getElementById('otp-err').textContent = '';
-    const inputs = document.querySelectorAll('#otp-row input');
-    inputs.forEach((inp,i) => {
-      inp.value=''; inp.parentElement.classList.remove('filled');
-      inp.oninput = () => { inp.value=inp.value.replace(/[^0-9]/g,''); inp.parentElement.classList.toggle('filled',!!inp.value); if (inp.value&&i<inputs.length-1) inputs[i+1].focus(); };
-      inp.onkeydown = e => { if (e.key==='Backspace'&&!inp.value&&i>0) inputs[i-1].focus(); };
-    });
-    inputs[0].focus();
-  }
-  window.resendOtp = function() { generateOtp(); showToast('Kode baru dikirim ulang 🔄'); };
-
-  window.openSendPage = function() { go('s-send'); const ta=document.getElementById('complaint-text'); if(ta) ta.value=''; setErr('cw-text','complaint-err',''); };
-
-  window.submitComplaint = async function() {
-    const textarea = document.getElementById('complaint-text'), btn = document.querySelector('#s-send .btn-primary'), text = textarea.value.trim();
-    if (setErr('cw-text','complaint-err',!text?'Tulis keluhan terlebih dahulu':'')) return;
-    if (btn) { btn.disabled=true; btn.textContent='Mengirim...'; }
-    const complaintData = { email: currentUserEmail||'anonim', name: currentUserEmail?currentUserEmail.split('@')[0]:'Anonim', text, timestamp: new Date().toISOString(), waktu: new Date().toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}) };
-    complaintsList.unshift({...complaintData, id:'c_'+Date.now(), likes:0, dislikes:0}); saveComplaints();
-    let dbOk = false;
-    for (let attempt=1;attempt<=2;attempt++) {
-      try { const keluhanRef = ref(db,'keluhan'); await push(keluhanRef, complaintData); dbOk=true; break; }
-      catch(err) { console.error('[Keluhan] Attempt '+attempt+' gagal:', err.code); if (attempt===1) await new Promise(r=>setTimeout(r,1000)); }
-    }
-    if (btn) { btn.disabled=false; btn.textContent='Kirim Keluhan'; }
-    textarea.value = '';
-    showToast(dbOk ? 'Keluhan berhasil dikirim! Terima kasih 🙏' : 'Gagal ke database — ubah Rules Firebase dulu! ⚠️', !dbOk);
-    setTimeout(()=>go('s-dashboard'), 1400);
-  };
-
-  window.openDonasiPage = function() { go('s-donasi'); };
-
-  function chatStorageKey() { return 'pu_chat_'+(currentUserEmail||'guest'); }
-  function loadChatMessages() { return JSON.parse(localStorage.getItem(chatStorageKey())||'[]'); }
-  function saveChatMessages(msgs) { localStorage.setItem(chatStorageKey(), JSON.stringify(msgs)); }
-  function chatTimeNow() { return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
-
-  const BAD_WORDS = ['anjing','anjg','asu','asuu','bangsat','bgst','kontol','kntl','memek','mmk','tai','taik','goblok','tolol','bego','babi','jancok','jancuk','kampret','brengsek','sialan','pantek','kunyuk','bajingan','keparat','pepek','ngentot','pukimak','lonte','jembut','peler','dancuk','cuk','perek','bencong','banci','fuck','shit','bitch','asshole','bastard','dick','pussy','motherfucker','cunt'];
-  function censorText(str) {
-    let result = str;
-    BAD_WORDS.forEach(word => { const regex = new RegExp('\\b('+word+')(\\w*)','gi'); result = result.replace(regex, match => match.length<=1?'*':match[0]+'*'.repeat(match.length-1)); });
-    return result;
-  }
-
-  window.openChatPage = function() {
-    go('s-chat'); let msgs = loadChatMessages();
-    if (msgs.length===0) { msgs.push({sender:'bot',text:'Halo! 👋 Saya Admin Bot orbitxy. Ada yang bisa saya bantu hari ini?',time:chatTimeNow()}); saveChatMessages(msgs); }
-    renderChatMessages(msgs);
-  };
-
-  window.openManageAccountPage = function() {
-    go('s-manage-account'); const email=currentUserEmail, acc=email?registeredAccounts[email]:null;
-    document.getElementById('ma-status-label').textContent='Aman';
-    document.getElementById('ma-method-label').textContent=acc&&acc.method==='google'?'Google':'Email';
-    document.getElementById('ma-since-label').textContent=acc&&acc.createdYear?acc.createdYear:'2026';
-  };
-
-  window.openChangePasswordPage = function() {
-    verifyMode='change-from-manage';
-    document.getElementById('newpass-title').innerHTML='Ganti<br>Password';
-    document.getElementById('newpass-subtitle').textContent='Masukkan password baru untuk akun kamu';
-    document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value='';
-    setErr('nw-pass','n-pass-err',''); setErr('nw-cpass','n-cpass-err','');
-    const backBtn=document.getElementById('newpass-back-btn'); if(backBtn) backBtn.onclick=()=>openManageAccountPage();
-    go('s-newpass');
-  };
-
-  window.openModal = function(id) { const m=document.getElementById(id); if(m) m.classList.add('show'); };
-  window.closeModal = function(id) { const m=document.getElementById(id); if(m) m.classList.remove('show'); };
-  window.openDeactivateModal = function() { openModal('modal-deactivate'); };
-  window.openDeleteModal = function() { const i=document.getElementById('del-confirm-input'); if(i){i.value='';document.getElementById('del-confirm-wrap').classList.remove('err');} openModal('modal-delete'); };
-
-  window.confirmDeactivate = function() {
-    closeModal('modal-deactivate'); const email=currentUserEmail;
-    if (email&&registeredAccounts[email]) { registeredAccounts[email].deactivated=true; saveAccounts(); }
-    showToast('Akun berhasil dinonaktifkan sementara 😴');
-    setTimeout(async()=>{ try{await signOut(auth);}catch(e){} go('s-login'); }, 1200);
-  };
-
-  window.confirmDelete = function() {
-    const input=document.getElementById('del-confirm-input'), val=(input.value||'').trim().toUpperCase();
-    if (val!=='HAPUS') { document.getElementById('del-confirm-wrap').classList.add('err'); showToast('Ketik "HAPUS" untuk konfirmasi',true); return; }
-    const email=currentUserEmail; closeModal('modal-delete');
-    if (email) {
-      delete registeredAccounts[email]; saveAccounts();
-      localStorage.removeItem('pu_chat_'+email); localStorage.removeItem('pu_votes_'+email);
-      (async()=>{ try{ if(auth.currentUser&&auth.currentUser.email===email) await deleteUser(auth.currentUser); }catch(e){} })();
-    }
-    showToast('Akun berhasil dihapus secara permanen 🗑️');
-    setTimeout(()=>go('s-login'), 1200);
-  };
-
-  window.downloadAccountData = function() {
-    const email=currentUserEmail||'guest', acc=registeredAccounts[email]||{};
-    const data = { email, name:acc.name||(email.split('@')[0]), method:acc.method||'email', complaints:complaintsList.length, exportedAt:new Date().toISOString() };
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}), url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='account-data-'+email.split('@')[0]+'.json';
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    showToast('Data akun berhasil diunduh 📥');
-  };
-
-  window.renderChatMessages = function(msgs) {
-    const container=document.getElementById('chat-messages'); container.innerHTML='';
-    (msgs||loadChatMessages()).forEach(m => {
-      const bubble=document.createElement('div'); bubble.className='chat-bubble '+(m.sender==='user'?'user':'bot');
-      bubble.innerHTML=`${escapeHtml(m.text)}<div class="chat-bubble-time">${escapeHtml(m.time)}</div>`;
-      container.appendChild(bubble);
-    });
-    const scroller=document.getElementById('chat-scroll'); scroller.scrollTop=scroller.scrollHeight;
-  };
-
-  function getBotReply(text) {
-    const t=text.toLowerCase();
-    if (/(halo|hai|hi|pagi|siang|sore|malam)/.test(t)) return 'Halo juga! Senang bisa membantu. Ada pertanyaan seputar akun, saldo, atau transaksi?';
-    if (/(keluhan|komplain|masalah|error|gagal|bug)/.test(t)) return 'Terima kasih sudah melaporkan. Keluhan kamu sudah kami catat dan akan ditindaklanjuti oleh tim kami secepatnya 🙏.';
-    if (/(saldo|balance|dana|uang)/.test(t)) return 'Untuk melihat saldo dan riwayat transaksi, silakan buka halaman Home di tab bawah ya.';
-    if (/(password|kata sandi|lupa)/.test(t)) return 'Kalau lupa password, kamu bisa reset lewat halaman login menggunakan tombol "Forget password?".';
-    if (/(akun|profil|email)/.test(t)) return 'Untuk pengaturan akun dan profil, silakan buka menu Account di tab bawah.';
-    if (/(terima kasih|makasih|thanks|thx)/.test(t)) return 'Sama-sama! Senang bisa membantu 😊 Ada hal lain yang bisa saya bantu?';
-    if (/(bye|sampai jumpa|dadah)/.test(t)) return 'Sampai jumpa! Jangan ragu untuk chat lagi kalau butuh bantuan ya 👋';
-    const fallback=['Baik, dicatat ya. Tim support kami akan segera meninjau pesan kamu.','Terima kasih atas pesannya. Apakah ada detail tambahan yang bisa kamu berikan?','Pesan kamu sudah kami terima. Mohon ditunggu, kami akan segera membalas.'];
-    return fallback[Math.floor(Math.random()*fallback.length)];
-  }
-
-  window.sendChatMessage = function() {
-    const input=document.getElementById('chat-input'), raw=input.value.trim(); if (!raw) return;
-    const text=censorText(raw), wasCensored=text!==raw;
-    let msgs=loadChatMessages(); msgs.push({sender:'user',text,time:chatTimeNow()}); saveChatMessages(msgs); renderChatMessages(msgs); input.value='';
-    if (wasCensored) showToast('Pesan mengandung kata tidak pantas dan telah disensor 🤐',true);
-    const container=document.getElementById('chat-messages'), scroller=document.getElementById('chat-scroll');
-    const typing=document.createElement('div'); typing.className='chat-typing'; typing.id='chat-typing-indicator'; typing.innerHTML='<span></span><span></span><span></span>';
-    container.appendChild(typing); scroller.scrollTop=scroller.scrollHeight;
-    setTimeout(()=>{
-      const ind=document.getElementById('chat-typing-indicator'); if(ind) ind.remove();
-      let m=loadChatMessages(); const reply=wasCensored?'Mohon gunakan bahasa yang sopan ya 🙏 Tim kami tetap siap membantu masalah kamu.':getBotReply(text);
-      m.push({sender:'bot',text:reply,time:chatTimeNow()}); saveChatMessages(m); renderChatMessages(m);
-    }, 900+Math.random()*700);
-  };
-
-  window.setAvatar = function(url) { const avatar=document.getElementById('dash-avatar'); avatar.src=url; avatar.style.display='block'; };
-  window.setAvatarFromFile = function(input) { const file=input.files&&input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>setAvatar(e.target.result); reader.readAsDataURL(file); };
-
-  function getGreetingByTime() { const h=new Date().getHours(); if(h<11) return 'Good Morning'; if(h<15) return 'Good Afternoon'; if(h<19) return 'Good Evening'; return 'Good Night'; }
-
-  const glitchTimers = {};
-  window.triggerNameGlitch = function(elId) {
-    const el=document.getElementById(elId); if(!el) return;
-    el.classList.remove('glitching'); void el.offsetWidth; el.classList.add('glitching');
-    if (glitchTimers[elId]) clearTimeout(glitchTimers[elId]);
-    glitchTimers[elId] = setTimeout(()=>el.classList.remove('glitching'), 2300);
-  };
-
-  window.setGreetingName = function(name) {
-    const el=document.getElementById('dash-greeting-name'), finalText=name+'!';
-    el.textContent=finalText; el.setAttribute('data-glitch-text',finalText); triggerNameGlitch('dash-greeting-name');
-  };
-  window.triggerGreetingGlitch = function() { triggerNameGlitch('dash-greeting-name'); };
-  window.triggerAccountNameGlitch = function() { triggerNameGlitch('acc-name'); };
-  window.setAccountName = function(name) { const el=document.getElementById('acc-name'); el.textContent=name; el.setAttribute('data-glitch-text',name); };
-  window.setTopBannerImage = function(url) { document.getElementById('top-banner').style.backgroundImage=`url('${url}')`; };
-
-  const sliderTrack=document.getElementById('slider-track'), sliderDots=document.querySelectorAll('.slider-dot'), slides=document.querySelectorAll('.slide');
-  let sliderIndex=0, autoSlideTimer=null;
-  function updateSlider() {
-    sliderTrack.style.transform=`translateX(-${sliderIndex*100}%)`;
-    sliderDots.forEach((d,i)=>d.classList.toggle('active',i===sliderIndex));
-    const vid=document.querySelector('.slide-video-el'); if(vid) { if(sliderIndex===1) vid.play().catch(()=>{}); else vid.pause(); }
-  }
-  function goToSlide(i) { sliderIndex=(i+slides.length)%slides.length; updateSlider(); }
-  function nextSlide() { goToSlide(sliderIndex+1); }
-  function startAutoSlide() { stopAutoSlide(); autoSlideTimer=setInterval(nextSlide,4000); }
-  function stopAutoSlide() { if(autoSlideTimer) clearInterval(autoSlideTimer); }
-  sliderDots.forEach(dot=>{ dot.addEventListener('click',()=>{ goToSlide(parseInt(dot.dataset.go,10)); startAutoSlide(); }); });
-  let isDragging=false, startX=0, currentTranslate=0;
-  function getX(e) { return e.touches?e.touches[0].clientX:e.clientX; }
-  sliderTrack.addEventListener('pointerdown',e=>{ isDragging=true; startX=getX(e); currentTranslate=-sliderIndex*sliderTrack.offsetWidth; sliderTrack.classList.add('dragging'); stopAutoSlide(); });
-  sliderTrack.addEventListener('pointermove',e=>{ if(!isDragging) return; sliderTrack.style.transform=`translateX(${currentTranslate+getX(e)-startX}px)`; });
-  function endDrag(e) {
-    if(!isDragging) return; isDragging=false; sliderTrack.classList.remove('dragging');
-    const dx=(e.clientX!==undefined?e.clientX:(e.changedTouches?e.changedTouches[0].clientX:startX))-startX;
-    const threshold=sliderTrack.offsetWidth*.15;
-    if(dx>threshold) goToSlide(sliderIndex-1); else if(dx<-threshold) goToSlide(sliderIndex+1); else updateSlider();
-    startAutoSlide();
-  }
-  sliderTrack.addEventListener('pointerup',endDrag);
-  sliderTrack.addEventListener('pointerleave',e=>{ if(isDragging) endDrag(e); });
-  window.setSlideImage = function(index, url, title, desc) {
-    const slide=slides[index]; if(!slide) return;
-    slide.style.backgroundImage=`url('${url}')`; slide.classList.add('has-img');
-    if(title!==undefined) slide.querySelector('.slide-title').textContent=title;
-    if(desc!==undefined) slide.querySelector('.slide-desc').textContent=desc;
-    const icon=slide.querySelector('.slide-icon'); if(icon) icon.style.display='none';
-  };
-  function initSlider() { updateSlider(); startAutoSlide(); }
-
-  const DASH_POPUP_INTRO = "Halo! 👋 Aku konten kreator di balik orbitxy. Di sini aku berbagi konten seputar dunia digital & teknologi. Makasih udah mampir, semoga betah ya! ✨";
-  let dashPopupTypeTimer = null;
-  function typeDashPopupIntro() {
-    const target=document.getElementById('dash-popup-typed'); if(!target) return;
-    if(dashPopupTypeTimer) clearInterval(dashPopupTypeTimer); target.textContent=''; let i=0;
-    dashPopupTypeTimer=setInterval(()=>{ target.textContent=DASH_POPUP_INTRO.slice(0,i+1); i++; if(i>=DASH_POPUP_INTRO.length) clearInterval(dashPopupTypeTimer); },32);
-  }
-  window.closeDashPopup = function() { const p=document.getElementById('dash-popup'); if(p) p.classList.remove('show'); if(dashPopupTypeTimer) clearInterval(dashPopupTypeTimer); };
-  window.openDashPopup = function() { const p=document.getElementById('dash-popup'); if(p) p.classList.add('show'); typeDashPopupIntro(); };
-
-  // ===== CHAT NAV — KONTAK & GRUP =====
-  const _dummyNames = ['Andi Pratama','Budi Santoso','Citra Dewi','Dian Rahma','Eka Putra','Fajar Nugroho'];
-  const _rawC = JSON.parse(localStorage.getItem('pu_contacts') || '[]');
-  if (_rawC.some(c => _dummyNames.includes(c.name))) localStorage.removeItem('pu_contacts');
-  let chatContacts = JSON.parse(localStorage.getItem('pu_contacts') || '[]');
-  let chatGrups = JSON.parse(localStorage.getItem('pu_grups') || '[]');
-  let currentGrupPhoto = null;
-  let currentGrupIndex = null;
-
-  function saveContacts() { localStorage.setItem('pu_contacts', JSON.stringify(chatContacts)); }
-  function saveGrups() { localStorage.setItem('pu_grups', JSON.stringify(chatGrups)); }
-
-
-
-  function getInitials(name) {
-    return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  }
-
-  const AVATAR_COLORS = ['#2d6a4f','#1d3557','#6a2d3f','#3a2d6a','#2d5a6a','#6a4a2d'];
-  function avatarColor(name) { let h=0; for(let c of name) h+=c.charCodeAt(0); return AVATAR_COLORS[h%AVATAR_COLORS.length]; }
-
-  function renderContactList(contacts) {
-    const list = document.getElementById('chat-contact-list');
-    const emptyEl = document.getElementById('chat-empty-state');
-    if (!list) return;
-    list.innerHTML = '';
-
-    // Grups section
-    if (chatGrups.length > 0) {
-      const gl = document.createElement('div');
-      gl.innerHTML = '<div class="contact-letter-header">Grup</div>';
-      chatGrups.forEach((g, idx) => {
-        const el = document.createElement('div');
-        el.className = 'grup-item';
-        const avatarHtml = g.photo
-          ? `<img src="${g.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`
-          : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
-        el.innerHTML = `
-          <div class="grup-avatar">${avatarHtml}</div>
-          <div style="flex:1;min-width:0;">
-            <div class="contact-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(g.name)}</div>
-            <div class="contact-handle">${g.members ? g.members + ' anggota' : '0 anggota'}</div>
-          </div>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
-        el.onclick = () => openGrupDetail(idx);
-        gl.appendChild(el);
-      });
-      list.appendChild(gl);
-    }
-
-    if (contacts.length === 0) {
-      if (chatGrups.length === 0) { emptyEl.style.display='flex'; }
+    if(!email || !password){
+      errorMsg.textContent = 'Email dan kata sandi wajib diisi.';
       return;
     }
-    emptyEl.style.display='none';
-
-    // Group by first letter
-    const grouped = {};
-    contacts.forEach(c => {
-      const letter = c.name[0].toUpperCase();
-      if (!grouped[letter]) grouped[letter] = [];
-      grouped[letter].push(c);
-    });
-
-    Object.keys(grouped).sort().forEach(letter => {
-      const section = document.createElement('div');
-      section.innerHTML = `<div class="contact-letter-header">${letter}</div>`;
-      grouped[letter].forEach(c => {
-        const el = document.createElement('div');
-        el.className = 'contact-item';
-        const bg = avatarColor(c.name);
-        const avatarHtml = c.avatar
-          ? `<img src="${c.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`
-          : `<span style="color:#fff;font-size:15px;font-family:'Syne',sans-serif;font-weight:800;">${getInitials(c.name)}</span>`;
-        el.innerHTML = `
-          <div class="contact-avatar" style="background:${bg};">${avatarHtml}</div>
-          <div style="flex:1;min-width:0;">
-            <div class="contact-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(c.name)}</div>
-            <div class="contact-handle">${escapeHtml(c.handle||'')}</div>
-          </div>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
-        el.onclick = () => showToast('Chat dengan ' + c.name + ' segera hadir 💬');
-        section.appendChild(el);
-      });
-      list.appendChild(section);
-    });
-  }
-
-  window.filterChatContacts = function(q) {
-    if (!q) { renderContactList(chatContacts); return; }
-    const filtered = chatContacts.filter(c => c.name.toLowerCase().includes(q.toLowerCase()) || (c.handle||'').toLowerCase().includes(q.toLowerCase()));
-    renderContactList(filtered);
-  };
-
-  // Hook go() to render contacts when opening chat-nav
-  const _origGo = window.go;
-  window.go = function(id) {
-    _origGo(id);
-    if (id === 's-chat-nav') {
-      const si = document.getElementById('chat-search'); if (si) si.value='';
-      renderContactList(chatContacts);
+    if(!validateEmail(email)){
+      errorMsg.textContent = 'Format email tidak valid.';
+      return;
     }
-  };
+    if(password.length < 6){
+      errorMsg.textContent = 'Kata sandi minimal 6 karakter.';
+      return;
+    }
 
-  // Grup modal
-  window.openBuatGrupModal = function() {
-    currentGrupPhoto = null;
-    const preview = document.getElementById('grup-photo-preview');
-    if (preview) preview.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
-    const ni = document.getElementById('grup-name-input'); if (ni) ni.value='';
-    const ne = document.getElementById('grup-name-err'); if (ne) ne.textContent='';
-    document.getElementById('modal-buat-grup').classList.add('show');
-  };
-  window.closeBuatGrupModal = function() { document.getElementById('modal-buat-grup').classList.remove('show'); };
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'MEMPROSES...';
 
-  window.setGrupPhoto = function(input) {
-    const file = input.files && input.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      currentGrupPhoto = e.target.result;
-      const preview = document.getElementById('grup-photo-preview');
-      if (preview) preview.innerHTML = `<img src="${currentGrupPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
-    };
-    reader.readAsDataURL(file);
-  };
-
-  window.buatGrup = function() {
-    const nameInput = document.getElementById('grup-name-input');
-    const name = (nameInput ? nameInput.value : '').trim();
-    const errEl = document.getElementById('grup-name-err');
-    if (!name) { if (errEl) errEl.textContent = 'Nama grup wajib diisi'; return; }
-    if (errEl) errEl.textContent = '';
-    const ownerEmail = currentUserEmail || 'saya';
-    const ownerName = (registeredAccounts[ownerEmail] && registeredAccounts[ownerEmail].name) || ownerEmail.split('@')[0] || 'Saya';
-    const grup = { id:'g_'+Date.now(), name, photo: currentGrupPhoto||'', members:1, created: new Date().getFullYear().toString(), ownerEmail, memberList:[{ name: ownerName, handle:'@'+ownerName.toLowerCase().replace(/\s+/g,''), email: ownerEmail, role:'owner' }] };
-    chatGrups.unshift(grup);
-    saveGrups();
-    closeBuatGrupModal();
-    showToast('Grup "' + name + '" berhasil dibuat! 🎉');
-    renderContactList(chatContacts);
-  };
-
-  function grupAvatarHtml(g, size) {
-    if (g.photo) return `<img src="${g.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
-    return `<svg width="${size||28}" height="${size||28}" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
-  }
-
-  function grupChatKey(idx) { return 'pu_gchat_' + idx; }
-  function loadGrupMessages(idx) { return JSON.parse(localStorage.getItem(grupChatKey(idx)) || '[]'); }
-  function saveGrupMessages(idx, msgs) { localStorage.setItem(grupChatKey(idx), JSON.stringify(msgs)); }
-  function gcTimeNow() { return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
-
-  window.openGrupDetail = function(idx) {
-    currentGrupIndex = idx;
-    const g = chatGrups[idx]; if (!g) return;
-
-    // Set header
-    const hName = document.getElementById('gc-header-name');
-    const hMembers = document.getElementById('gc-header-members');
-    const hAvatar = document.getElementById('gc-header-avatar');
-    if (hName) hName.textContent = g.name;
-    if (hMembers) hMembers.textContent = (g.members||1) + ' anggota';
-    if (hAvatar) hAvatar.innerHTML = grupAvatarHtml(g, 20);
-
-    // Render messages
-    renderGrupMessages(idx);
-    go('s-grup-chat');
-
-    // Scroll to bottom
+    // Simulasi proses login (ganti dengan pemanggilan API asli)
     setTimeout(() => {
-      const scroll = document.getElementById('gc-messages-scroll');
-      if (scroll) scroll.scrollTop = scroll.scrollHeight;
-    }, 80);
-  };
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'MASUK';
+      alert('Login berhasil (simulasi)!\nEmail: ' + email);
+    }, 1200);
+  });
 
-  window.renderGrupMessages = function(idx) {
-    const msgs = loadGrupMessages(idx);
-    const container = document.getElementById('gc-messages');
-    if (!container) return;
-    container.innerHTML = '';
+  googleBtn.addEventListener('click', () => {
+    alert('Arahkan ke proses Masuk dengan Google di sini.');
+  });
 
-    if (msgs.length === 0) {
-      container.innerHTML = '<div style="text-align:center;padding:40px 0;"><p style="font-size:12px;color:#444;">Belum ada pesan. Mulai percakapan! 👋</p></div>';
-      return;
-    }
+  daftarLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Arahkan ke halaman Daftar Akun di sini.');
+  });
 
-    let lastDate = '';
-    msgs.forEach(m => {
-      // System message
-      if (m.sender === 'system') {
-        const sys = document.createElement('div');
-        sys.style.cssText = 'text-align:center;margin:4px 0;';
-        sys.innerHTML = `<span style="font-size:11px;color:#555;background:#111;border:1.5px solid #222;padding:3px 12px;font-family:'Space Grotesk',sans-serif;font-weight:600;">${escapeHtml(m.text)}</span>`;
-        container.appendChild(sys);
-        return;
-      }
-      // Date separator
-      const msgDate = m.date || '';
-      if (msgDate && msgDate !== lastDate) {
-        lastDate = msgDate;
-        const sep = document.createElement('div');
-        sep.style.cssText = 'text-align:center;margin:8px 0;';
-        sep.innerHTML = `<span style="font-size:11px;color:#444;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:3px 12px;">${msgDate}</span>`;
-        container.appendChild(sep);
-      }
-
-      const isMe = m.sender === 'me';
-      const wrap = document.createElement('div');
-      wrap.style.cssText = `display:flex;flex-direction:column;align-items:${isMe?'flex-end':'flex-start'};gap:2px;`;
-
-      // Sender name (for others)
-      if (!isMe) {
-        const senderEl = document.createElement('div');
-        senderEl.style.cssText = 'font-size:11px;font-weight:600;color:#ffffff;padding-left:12px;';
-        senderEl.textContent = m.senderName || 'Anggota';
-        wrap.appendChild(senderEl);
-      }
-
-      const bubble = document.createElement('div');
-      bubble.style.cssText = `max-width:78%;padding:9px 13px;border-radius:${isMe?'16px 16px 4px 16px':'16px 16px 16px 4px'};font-size:13.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap;background:${isMe?'var(--white)':'var(--card)'};color:${isMe?'#000':'#ddd'};border:${isMe?'none':'1px solid var(--border)'};`;
-      bubble.innerHTML = `${escapeHtml(m.text)}<div style="font-size:10px;color:${isMe?'#999':'var(--muted)'};margin-top:4px;text-align:${isMe?'right':'left'};">${m.time}${isMe?' ✓✓':''}</div>`;
-      wrap.appendChild(bubble);
-      container.appendChild(wrap);
-    });
-
-    const scroll = document.getElementById('gc-messages-scroll');
-    if (scroll) scroll.scrollTop = scroll.scrollHeight;
-  };
-
-  window.sendGrupMessage = function() {
-    const input = document.getElementById('gc-input');
-    const raw = (input ? input.value : '').trim();
-    if (!raw || currentGrupIndex === null) return;
-    const text = censorText(raw);
-    const email = currentUserEmail || 'user';
-    const name = (registeredAccounts[email] && registeredAccounts[email].name) || email.split('@')[0] || 'Saya';
-    const today = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
-    const msg = { sender:'me', senderName: name, text, time: gcTimeNow(), date: today };
-    const msgs = loadGrupMessages(currentGrupIndex);
-    msgs.push(msg);
-    saveGrupMessages(currentGrupIndex, msgs);
-    input.value = '';
-    renderGrupMessages(currentGrupIndex);
-  };
-
-  // Role helpers
-  function getMyRole(g) {
-    const email = currentUserEmail || 'saya';
-    const m = (g.memberList||[]).find(x => x.email === email);
-    return m ? m.role : null; // 'owner','admin','member'
-  }
-  function isOwner(g) { return getMyRole(g) === 'owner'; }
-  function isAdmin(g) { return getMyRole(g) === 'admin' || isOwner(g); }
-
-  function renderGrupInfoMembers(g) {
-    const giMl = document.getElementById('gi-member-list'); if (!giMl) return;
-    giMl.innerHTML = '';
-    const myRole = getMyRole(g);
-    const members = g.memberList || [];
-    members.forEach((m, i) => {
-      const row = document.createElement('div');
-      row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);';
-      if (i === members.length-1) row.style.borderBottom = 'none';
-      const bg = avatarColor(m.name);
-      const isMe = m.email === (currentUserEmail||'saya');
-
-      // Role badge
-      let badge = '';
-      if (m.role === 'owner') badge = '<span style="font-size:10px;background:rgba(255,200,0,.15);color:#ffc800;border-radius:6px;padding:2px 8px;font-weight:700;">Owner</span>';
-      else if (m.role === 'admin') badge = '<span style="font-size:10px;background:rgba(0,255,136,.12);color:#ffffff;border-radius:6px;padding:2px 8px;font-weight:600;">Admin</span>';
-
-      // Action button — what can I do to this member?
-      let actionBtn = '';
-      if (!isMe && m.role !== 'owner') {
-        // Owner can do anything to non-owner
-        if (myRole === 'owner') {
-          if (m.role === 'admin') {
-            actionBtn = `<button onclick="memberAction(${i},'demote')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Turunkan</button>`;
-          } else {
-            actionBtn = `
-              <button onclick="memberAction(${i},'promote')" style="font-size:11px;color:#ffffff;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:4px;white-space:nowrap;">Jadikan Admin</button>
-              <button onclick="memberAction(${i},'kick')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Keluarkan</button>`;
-          }
-        }
-        // Admin can kick member (not admin/owner)
-        else if (myRole === 'admin' && m.role === 'member') {
-          actionBtn = `<button onclick="memberAction(${i},'kick')" style="font-size:11px;color:#ff9b9b;background:rgba(255,92,92,0.1);border:1px solid rgba(255,92,92,0.25);border-radius:8px;padding:3px 9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">Keluarkan</button>`;
-        }
-      }
-
-      row.innerHTML = `
-        <div style="width:34px;height:34px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#fff;">${getInitials(m.name)}</div>
-        <div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:600;color:var(--white);">${escapeHtml(m.name)}${isMe?' <span style=\"font-size:10px;color:#888;\">(Kamu)</span>':''}</div><div style="font-size:11px;color:var(--text-sec);">${escapeHtml(m.handle||'')}</div></div>
-        <div style="display:flex;gap:4px;flex-shrink:0;">${badge}${actionBtn}</div>`;
-      giMl.appendChild(row);
-    });
-  }
-
-  window.memberAction = function(memberIdx, action) {
-    const g = chatGrups[currentGrupIndex]; if (!g) return;
-    const m = g.memberList[memberIdx]; if (!m) return;
-    const myRole = getMyRole(g);
-
-    // Security checks
-    if (m.role === 'owner') { showToast('Owner tidak bisa diubah statusnya', true); return; }
-    if (action === 'kick' && m.role === 'admin' && myRole !== 'owner') { showToast('Hanya owner yang bisa mengeluarkan admin', true); return; }
-    if (action === 'demote' && myRole !== 'owner') { showToast('Hanya owner yang bisa menurunkan admin', true); return; }
-
-    if (action === 'kick') {
-      if (!confirm('Keluarkan ' + m.name + ' dari grup?')) return;
-      g.memberList.splice(memberIdx, 1);
-      g.members = g.memberList.length;
-      showToast(m.name + ' dikeluarkan dari grup');
-    } else if (action === 'promote') {
-      g.memberList[memberIdx].role = 'admin';
-      showToast(m.name + ' dijadikan Admin ✓');
-    } else if (action === 'demote') {
-      g.memberList[memberIdx].role = 'member';
-      showToast(m.name + ' diturunkan jadi Member');
-    }
-
-    saveGrups();
-    // Re-render
-    const gcMembers = document.getElementById('gc-header-members');
-    if (gcMembers) gcMembers.textContent = g.memberList.length + ' anggota';
-    renderGrupInfoMembers(g);
-    renderContactList(chatContacts);
-  };
-
-  window.openGrupInfo = function() {
-    const g = chatGrups[currentGrupIndex]; if (!g) return;
-    const giName = document.getElementById('gi-name');
-    const giCount = document.getElementById('gi-count');
-    const giAvatar = document.getElementById('gi-avatar');
-    if (giName) giName.textContent = g.name;
-    if (giCount) giCount.textContent = (g.memberList||[]).length + ' anggota';
-    if (giAvatar) giAvatar.innerHTML = grupAvatarHtml(g, 30);
-    renderGrupInfoMembers(g);
-
-    // Show/hide keluar button based on role
-    const keluarBtn = document.getElementById('gi-keluar-btn');
-    const myRole = getMyRole(g);
-    if (keluarBtn) {
-      if (myRole === 'owner') {
-        keluarBtn.textContent = 'Hapus Grup';
-        keluarBtn.onclick = () => {
-          if (!confirm('Hapus grup "' + g.name + '" secara permanen?')) return;
-          chatGrups.splice(currentGrupIndex, 1);
-          saveGrups();
-          closeGrupInfo();
-          go('s-chat-nav');
-          renderContactList(chatContacts);
-          showToast('Grup dihapus');
-        };
-      } else {
-        keluarBtn.textContent = 'Keluar Grup';
-        keluarBtn.onclick = () => {
-          if (!confirm('Keluar dari grup "' + g.name + '"?')) return;
-          const email = currentUserEmail || 'saya';
-          g.memberList = g.memberList.filter(x => x.email !== email);
-          g.members = g.memberList.length;
-          saveGrups();
-          closeGrupInfo();
-          chatGrups.splice(currentGrupIndex, 1); // remove from my list
-          saveGrups();
-          go('s-chat-nav');
-          renderContactList(chatContacts);
-          showToast('Kamu keluar dari grup');
-        };
-      }
-    }
-
-    document.getElementById('modal-grup-info').classList.add('show');
-  };
-  window.closeGrupInfo = function() { document.getElementById('modal-grup-info').classList.remove('show'); };
-
-  // ===== TAMBAH ANGGOTA =====
-  window.openTambahAnggota = function() {
-    const g = chatGrups[currentGrupIndex]; if (!g) return;
-    const myRole = getMyRole(g);
-    if (myRole !== 'owner' && myRole !== 'admin') {
-      showToast('Hanya Owner/Admin yang bisa tambah anggota', true); return;
-    }
-
-    // Reset input
-    const nameInput = document.getElementById('tambah-nama-input');
-    const errEl = document.getElementById('tambah-err');
-    if (nameInput) nameInput.value = '';
-    if (errEl) errEl.textContent = '';
-
-    // Show contacts that are NOT already in grup
-    const existingNames = (g.memberList||[]).map(m => m.name.toLowerCase());
-    const available = chatContacts.filter(c => !existingNames.includes(c.name.toLowerCase()));
-    const kontakSection = document.getElementById('tambah-kontak-section');
-    const kontakList = document.getElementById('tambah-kontak-list');
-
-    if (available.length > 0 && kontakSection && kontakList) {
-      kontakSection.style.display = 'block';
-      kontakList.innerHTML = '';
-      available.forEach(c => {
-        const bg = avatarColor(c.name);
-        const row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:2px solid #333;cursor:pointer;transition:border-color .12s,box-shadow .12s;box-shadow:2px 2px 0 #000;';
-        row.innerHTML = `
-          <div style="width:34px;height:34px;border-radius:0;background:${bg};border:2px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:#fff;">${getInitials(c.name)}</div>
-          <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">${escapeHtml(c.name)}</div><div style="font-size:11px;color:#555;">${escapeHtml(c.handle||'')}</div></div>
-          <span style="font-size:10px;color:#000;background:#ffffff;border:1.5px solid #000;padding:3px 9px;font-weight:800;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.04em;">+ Tambah</span>`;
-        row.onmouseover = () => { row.style.borderColor='#ffffff'; row.style.boxShadow='3px 3px 0 #333fff'; };
-        row.onmouseout = () => { row.style.borderColor='#333'; row.style.boxShadow='2px 2px 0 #000'; };
-        row.onclick = () => addMemberToGrup(c.name, c.handle||('@'+c.name.toLowerCase().replace(/\s+/g,'')), c.email||'', 'member');
-        kontakList.appendChild(row);
-      });
-    } else if (kontakSection) {
-      kontakSection.style.display = 'none';
-    }
-
-    closeGrupInfo();
-    document.getElementById('modal-tambah-anggota').classList.add('show');
-    setTimeout(() => { const ni = document.getElementById('tambah-nama-input'); if(ni) ni.focus(); }, 300);
-  };
-
-  window.closeTambahAnggota = function() {
-    document.getElementById('modal-tambah-anggota').classList.remove('show');
-    // Reopen grup info
-    openGrupInfo();
-  };
-
-  window.doTambahAnggota = function() {
-    const nameInput = document.getElementById('tambah-nama-input');
-    const errEl = document.getElementById('tambah-err');
-    const name = (nameInput ? nameInput.value : '').trim();
-    if (!name) { if (errEl) errEl.textContent = 'Nama tidak boleh kosong!'; return; }
-    const g = chatGrups[currentGrupIndex];
-    if (!g) return;
-    const already = (g.memberList||[]).some(m => m.name.toLowerCase() === name.toLowerCase());
-    if (already) { if (errEl) errEl.textContent = name + ' sudah ada di grup!'; return; }
-    if (errEl) errEl.textContent = '';
-    addMemberToGrup(name, '@'+name.toLowerCase().replace(/\s+/g,''), '', 'member');
-    if (nameInput) nameInput.value = '';
-  };
-
-  function addMemberToGrup(name, handle, email, role) {
-    const g = chatGrups[currentGrupIndex]; if (!g) return;
-    if (!g.memberList) g.memberList = [];
-    const already = g.memberList.some(m => m.name.toLowerCase() === name.toLowerCase());
-    if (already) { showToast(name + ' sudah ada di grup!', true); return; }
-    g.memberList.push({ name, handle, email: email||'', role: role||'member' });
-    g.members = g.memberList.length;
-    saveGrups();
-
-    // Update header
-    const gcMembers = document.getElementById('gc-header-members');
-    if (gcMembers) gcMembers.textContent = g.memberList.length + ' anggota';
-    renderContactList(chatContacts);
-
-    // Add system message to chat
-    const today = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-    const msgs = loadGrupMessages(currentGrupIndex);
-    msgs.push({ sender:'system', text: name + ' ditambahkan ke grup', time: gcTimeNow(), date: today });
-    saveGrupMessages(currentGrupIndex, msgs);
-    if (document.getElementById('s-grup-chat').classList.contains('active')) {
-      renderGrupMessages(currentGrupIndex);
-    }
-
-    showToast(name + ' berhasil ditambahkan! ✓');
-
-    // Refresh kontak list in modal
-    const kontakList = document.getElementById('tambah-kontak-list');
-    const existingNames = g.memberList.map(m => m.name.toLowerCase());
-    if (kontakList) {
-      const rows = kontakList.querySelectorAll('div');
-      rows.forEach(row => {
-        const nameEl = row.querySelector('div > div');
-        if (nameEl && existingNames.includes(nameEl.textContent.trim().toLowerCase())) {
-          row.style.opacity = '0.3';
-          row.style.pointerEvents = 'none';
-        }
-      });
-    }
-  }
-  // ===== END TAMBAH ANGGOTA =====
-
-  window.triggerGrupAvatarChange = function() { document.getElementById('grup-photo-input') && document.getElementById('grup-photo-input').click(); };
-
-  // Dropdown toggle
-  window.toggleChatDropdown = function(e) {
-    e.stopPropagation();
-    const dd = document.getElementById('chat-plus-dropdown');
-    const btn = document.getElementById('chat-plus-btn');
-    if (!dd) return;
-    const isOpen = dd.style.display === 'block';
-    dd.style.display = isOpen ? 'none' : 'block';
-    if (!isOpen) {
-      btn.style.background = '#e8e8e8';
-      setTimeout(() => {
-        document.addEventListener('click', closeChatDropdown, { once: true });
-      }, 10);
-    } else {
-      btn.style.background = '';
-    }
-  };
-  function closeChatDropdown() {
-    const dd = document.getElementById('chat-plus-dropdown');
-    const btn = document.getElementById('chat-plus-btn');
-    if (dd) dd.style.display = 'none';
-    if (btn) btn.style.background = '';
-  }
-
-  // ===== SCAN QR KAMERA BELAKANG =====
-  let scanStream = null;
-  let scanAnimFrame = null;
-  let scanCanvas = null;
-  let scanCtx = null;
-
-  window.startScanCamera = async function() {
-    const video = document.getElementById('qr-video');
-    const btn = document.getElementById('qr-cam-btn');
-    const status = document.getElementById('qr-scan-status');
-    const camOff = document.getElementById('qr-cam-off');
-    const resultBox = document.getElementById('qr-result-box');
-    if (!video) return;
-
-    try {
-      // Stop existing stream
-      if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); }
-
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
-      });
-      scanStream = stream;
-      video.srcObject = stream;
-      await video.play();
-
-      if (camOff) camOff.style.display = 'none';
-      if (btn) { btn.textContent = '⏹ Stop Kamera'; btn.onclick = stopScanCamera; btn.style.background = '#ff5c5c'; btn.style.color = '#fff'; }
-      if (status) status.textContent = 'Arahkan ke QR Code teman kamu...';
-      if (resultBox) resultBox.style.display = 'none';
-
-      // Setup canvas for QR scanning
-      scanCanvas = document.createElement('canvas');
-      scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
-      startQRScan(video);
-
-    } catch(e) {
-      // Fallback: try without exact facingMode
-      try {
-        const stream2 = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-        scanStream = stream2;
-        video.srcObject = stream2;
-        await video.play();
-        if (camOff) camOff.style.display = 'none';
-        if (btn) { btn.textContent = '⏹ Stop Kamera'; btn.onclick = stopScanCamera; btn.style.background = '#ff5c5c'; btn.style.color = '#fff'; }
-        if (status) status.textContent = 'Arahkan ke QR Code teman kamu...';
-        scanCanvas = document.createElement('canvas');
-        scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
-        startQRScan(video);
-      } catch(e2) {
-        if (status) status.textContent = 'Kamera tidak dapat diakses. Izinkan akses kamera di browser.';
-        showToast('Izinkan akses kamera dulu ya 📷', true);
-      }
-    }
-  };
-
-  function startQRScan(video) {
-    if (scanAnimFrame) cancelAnimationFrame(scanAnimFrame);
-
-    function tick() {
-      if (!scanStream || !video.videoWidth) { scanAnimFrame = requestAnimationFrame(tick); return; }
-      scanCanvas.width = video.videoWidth;
-      scanCanvas.height = video.videoHeight;
-      scanCtx.drawImage(video, 0, 0);
-
-      // Use BarcodeDetector if available (Chrome Android)
-      if (window.BarcodeDetector) {
-        const detector = new BarcodeDetector({ formats: ['qr_code'] });
-        detector.detect(scanCanvas).then(codes => {
-          if (codes.length > 0) {
-            onQRDetected(codes[0].rawValue);
-            return;
-          }
-          scanAnimFrame = requestAnimationFrame(tick);
-        }).catch(() => { scanAnimFrame = requestAnimationFrame(tick); });
-      } else {
-        // BarcodeDetector not available
-        const status = document.getElementById('qr-scan-status');
-        if (status && !status.textContent.includes('BarcodeDetector')) {
-          status.textContent = 'Kamera aktif ✓ — Browser ini belum support auto-scan. Pakai Chrome terbaru untuk scan otomatis.';
-        }
-        scanAnimFrame = requestAnimationFrame(tick);
-      }
-    }
-    scanAnimFrame = requestAnimationFrame(tick);
-  }
-
-  function onQRDetected(text) {
-    stopScanCamera();
-    const resultBox = document.getElementById('qr-result-box');
-    const resultText = document.getElementById('qr-result-text');
-    const status = document.getElementById('qr-scan-status');
-    if (resultBox) resultBox.style.display = 'block';
-    if (resultText) resultText.textContent = text;
-    if (status) status.textContent = 'QR berhasil dibaca!';
-    showToast('QR berhasil di-scan! ✅');
-  }
-
-  window.stopScanCamera = function() {
-    if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
-    if (scanAnimFrame) { cancelAnimationFrame(scanAnimFrame); scanAnimFrame = null; }
-    const video = document.getElementById('qr-video');
-    if (video) { video.srcObject = null; }
-    const camOff = document.getElementById('qr-cam-off');
-    if (camOff) camOff.style.display = 'flex';
-    const btn = document.getElementById('qr-cam-btn');
-    if (btn) {
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Buka Kamera';
-      btn.onclick = startScanCamera;
-      btn.style.background = '#ffffff';
-      btn.style.color = '#000';
-    }
-    const status = document.getElementById('qr-scan-status');
-    if (status) status.textContent = 'Tekan tombol untuk buka kamera belakang';
-  };
-  // ===== END SCAN QR =====
-
-  // Load qrcode.js library
-  function loadQRLib(cb) {
-    if (window.QRCode) { cb(); return; }
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-    s.onload = cb;
-    document.head.appendChild(s);
-  }
-
-  window.openQrSaya = function() {
-    closeChatDropdown();
-    const email = currentUserEmail || 'user@orbitxy.com';
-    const name = (registeredAccounts[email] && registeredAccounts[email].name) || email.split('@')[0];
-    const handle = '@' + name.toLowerCase().replace(/\s+/g, '');
-
-    const nameEl = document.getElementById('qr-name-display');
-    const handleEl = document.getElementById('qr-handle-display');
-    const avatarEl = document.getElementById('qr-avatar-display');
-    if (nameEl) nameEl.textContent = name;
-    if (handleEl) handleEl.textContent = handle;
-
-    const dashAvatar = document.getElementById('dash-avatar');
-    if (avatarEl) {
-      if (dashAvatar && dashAvatar.src && !dashAvatar.src.includes('data:image/svg')) {
-        avatarEl.innerHTML = '<img src="' + dashAvatar.src + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
-      } else {
-        avatarEl.style.background = '#2d6a4f';
-        avatarEl.innerHTML = '<span style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:#fff;">' + name[0].toUpperCase() + '</span>';
-      }
-    }
-
-    go('s-qr-saya');
-
-    // Generate real scannable QR
-    loadQRLib(() => {
-      const container = document.getElementById('qr-code-container');
-      if (!container) return;
-      container.innerHTML = '';
-      new QRCode(container, {
-        text: 'orbitxy://user/' + handle + '?name=' + encodeURIComponent(name),
-        width: 180,
-        height: 180,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    });
-  };
-
-  window.shareQr = function() {
-    const container = document.getElementById('qr-code-container');
-    const img = container && container.querySelector('img');
-    if (img) {
-      const link = document.createElement('a');
-      link.download = 'qr-orbitxy.png';
-      link.href = img.src;
-      link.click();
-      showToast('QR berhasil diunduh 📥');
-    } else {
-      showToast('QR belum siap, coba lagi');
-    }
-  };
-
-  // ===== END CHAT NAV =====
-
-  window.doLogout = async function() { try{await signOut(auth);}catch(e){} stopAutoSlide(); go('s-login'); showToast('Berhasil logout 👋'); };
-
-  window.doEmailLogin = async function() {
-    const email=document.getElementById('l-email').value.trim(), pass=document.getElementById('l-pass').value;
-    let hasErr=false;
-    hasErr=setErr('lw-email','l-email-err',checkEmail(email))||hasErr;
-    hasErr=setErr('lw-pass','l-pass-err',!pass?'Password wajib diisi':'')||hasErr;
-    if(hasErr) return;
-    const acc=registeredAccounts[email];
-    if(!acc) { setErr('lw-email','l-email-err','Akun belum terdaftar. Silakan Sign Up dulu.'); return; }
-    if(acc.password!==pass) { setErr('lw-pass','l-pass-err','Password salah!'); return; }
-    try {
-      await signInWithEmailAndPassword(auth,email,pass); await signOut(auth);
-      showToast('Login berhasil! Selamat datang 👋');
-      showDashboard({displayName:acc.name||email,email,photoURL:acc.photoURL||null},'Email & Password');
-    } catch(e) {
-      if(e.code==='auth/user-disabled') setErr('lw-email','l-email-err','Akun kamu sedang ditangguhkan. Hubungi admin.');
-      else if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'||e.code==='auth/invalid-login-credentials') { delete registeredAccounts[email]; saveAccounts(); setErr('lw-email','l-email-err','Akun telah dihapus. Silakan registrasi ulang.'); }
-      else { showToast('Login berhasil! Selamat datang 👋'); showDashboard({displayName:acc.name||email,email,photoURL:acc.photoURL||null},'Email & Password'); }
-    }
-  };
-
-  window.doGoogleLogin = async function() {
-    try {
-      const result=await signInWithPopup(auth,googleProvider), user=result.user;
-      if(!registeredAccounts[user.email]) { try{await deleteUser(user);}catch(e){} pendingGoogleCred={email:user.email,displayName:user.displayName,photoURL:user.photoURL,type:'google'}; showToast('Akun belum ada, daftar dulu ya 👇',true); setTimeout(()=>{ go('s-register'); const rEmail=document.getElementById('r-email'); if(rEmail) rEmail.value=user.email; },1000); return; }
-      try{await user.getIdToken(true);}catch(e){ delete registeredAccounts[user.email]; saveAccounts(); showToast('Akun belum ada, daftar dulu ya 👇',true); setTimeout(()=>go('s-register'),1000); return; }
-      showToast('Login berhasil! Selamat datang 👋'); showDashboard(user,'Google');
-    } catch(e) {
-      if(e.code==='auth/user-disabled'||e.code==='auth/user-not-found'||e.code==='auth/invalid-user-token') { showToast('Akun belum ada, daftar dulu ya 👇',true); setTimeout(()=>go('s-register'),1200); }
-      else if(e.code!=='auth/popup-closed-by-user') showToast('Login Google gagal: '+e.message,true);
-    }
-  };
-
-  window.doRegister = async function() {
-    const email=document.getElementById('r-email').value.trim(), pass=document.getElementById('r-pass').value, cpass=document.getElementById('r-cpass').value;
-    let hasErr=false;
-    hasErr=setErr('rw-email','r-email-err',checkEmail(email))||hasErr;
-    hasErr=setErr('rw-pass','r-pass-err',!pass?'Password wajib diisi':pass.length<8?'Password minimal 8 karakter':'')||hasErr;
-    hasErr=setErr('rw-cpass','r-cpass-err',!cpass?'Konfirmasi password wajib diisi':pass!==cpass?'Password tidak cocok!':'')||hasErr;
-    if(hasErr) return;
-    if(registeredAccounts[email]) { setErr('rw-email','r-email-err','Email sudah terdaftar. Silakan login.'); return; }
-    pendingGoogleCred={email,password:pass,type:'email'}; verifyMode='register-email';
-    document.getElementById('verify-subtitle').textContent='Masukkan 4 digit kode verifikasi';
-    document.getElementById('verify-back-btn').onclick=()=>go('s-register');
-    go('s-verify'); generateOtp();
-  };
-
-  window.doGoogleRegister = async function() {
-    try {
-      const result=await signInWithPopup(auth,googleProvider), user=result.user, email=user.email;
-      if(registeredAccounts[email]) { await signOut(auth); showToast('Akun sudah ada, silakan login 👇',true); setTimeout(()=>go('s-login'),1000); return; }
-      pendingGoogleCred={email,displayName:user.displayName,photoURL:user.photoURL,type:'google'};
-      try{await deleteUser(user);}catch(e){}
-      verifyMode='register-google';
-      document.getElementById('verify-subtitle').textContent='Verifikasi akun Google kamu';
-      document.getElementById('verify-back-btn').onclick=()=>go('s-register');
-      document.getElementById('newpass-title').innerHTML='Buat<br>Password';
-      document.getElementById('newpass-subtitle').textContent='Buat password untuk login ke akun kamu';
-      go('s-verify'); generateOtp();
-    } catch(e) { if(e.code!=='auth/popup-closed-by-user') showToast('Google gagal: '+e.message,true); }
-  };
-
-  window.doVerify = async function() {
-    const inputs=document.querySelectorAll('#otp-row input'), entered=Array.from(inputs).map(i=>i.value).join('');
-    if(entered.length<4) { document.getElementById('otp-err').textContent='Masukkan 4 digit kode terlebih dahulu'; return; }
-    if(entered!==currentOtp) { document.getElementById('otp-err').textContent='Kode salah! Coba lagi atau kirim ulang kode'; inputs.forEach(i=>{i.value='';i.parentElement.classList.remove('filled');}); inputs[0].focus(); return; }
-    document.getElementById('otp-err').textContent=''; showToast('Kode benar! ✅');
-    if(verifyMode==='forgot') { document.getElementById('newpass-title').innerHTML='Create<br>New Password'; document.getElementById('newpass-subtitle').textContent='Your new password must be different from previously used password'; document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value=''; setTimeout(()=>go('s-newpass'),800); }
-    else if(verifyMode==='register-email') {
-      const {email,password}=pendingGoogleCred;
-      try{await createUserWithEmailAndPassword(auth,email,password);await signOut(auth);}catch(e){console.log('Firebase register note:',e.code);}
-      registeredAccounts[email]={password,name:email.split('@')[0],method:'email'}; saveAccounts(); pendingGoogleCred=null;
-      showToast('Registrasi berhasil! Silakan login 🎉'); setTimeout(()=>go('s-login'),1800);
-    } else if(verifyMode==='register-google') {
-      document.getElementById('newpass-title').innerHTML='Buat<br>Password'; document.getElementById('newpass-subtitle').textContent='Buat password untuk login ke akun kamu';
-      document.getElementById('n-pass').value=''; document.getElementById('n-cpass').value=''; setTimeout(()=>go('s-newpass'),800);
-    }
-  };
-
-  window.doForgot = function() {
-    const email=document.getElementById('f-email').value.trim();
-    if(!setErr('fw-email','f-email-err',checkEmail(email))) {
-      pendingForgotEmail=email; verifyMode='forgot';
-      document.getElementById('newpass-title').innerHTML='Create<br>New Password'; document.getElementById('newpass-subtitle').textContent='Your new password must be different from previously used password';
-      document.getElementById('verify-subtitle').textContent='Masukkan 4 digit kode verifikasi';
-      document.getElementById('verify-back-btn').onclick=()=>go('s-forgot');
-      setTimeout(()=>{ go('s-verify'); generateOtp(); },300);
-    }
-  };
-
-  window.doSavePass = async function() {
-    const np=document.getElementById('n-pass').value, cp=document.getElementById('n-cpass').value;
-    let hasErr=false;
-    hasErr=setErr('nw-pass','n-pass-err',!np?'Password baru wajib diisi':np.length<8?'Minimal 8 karakter':'')||hasErr;
-    hasErr=setErr('nw-cpass','n-cpass-err',!cp?'Konfirmasi password wajib diisi':np!==cp?'Password tidak cocok!':'')||hasErr;
-    if(hasErr) return;
-    if(verifyMode==='forgot') {
-      const email=pendingForgotEmail;
-      if(email) {
-        const oldPass=registeredAccounts[email]?registeredAccounts[email].password:null;
-        if(registeredAccounts[email]) registeredAccounts[email].password=np; else registeredAccounts[email]={password:np,name:email.split('@')[0],method:'email'};
-        saveAccounts();
-        if(oldPass) { try{const uc=await signInWithEmailAndPassword(auth,email,oldPass);await updatePassword(uc.user,np);await signOut(auth);}catch(e){} }
-      }
-      pendingForgotEmail=null; showToast('Password berhasil diubah! Silakan login 🔐'); setTimeout(()=>go('s-login'),1800);
-    } else if(verifyMode==='register-google') {
-      const{email,displayName,photoURL}=pendingGoogleCred;
-      registeredAccounts[email]={password:np,name:displayName||email.split('@')[0],photoURL,method:'google'};
-      saveAccounts(); showToast('Registrasi berhasil! Silakan login 🎉'); pendingGoogleCred=null; setTimeout(()=>go('s-login'),1800);
-    } else if(verifyMode==='change-from-manage') {
-      const email=currentUserEmail;
-      if(email) {
-        const oldPass=registeredAccounts[email]?registeredAccounts[email].password:null;
-        if(registeredAccounts[email]) registeredAccounts[email].password=np; else registeredAccounts[email]={password:np,name:email.split('@')[0],method:'email'};
-        saveAccounts();
-        if(oldPass) { try{const uc=await signInWithEmailAndPassword(auth,email,oldPass);await updatePassword(uc.user,np);await signOut(auth);}catch(e){} }
-      }
-      showToast('Password berhasil diubah! 🔐'); setTimeout(()=>openManageAccountPage(),900);
-    }
-  };
-
-  function showDashboard(user, method) {
-    currentUserEmail=user.email||null;
-    const avatar=document.getElementById('dash-avatar');
-    avatar.src=user.photoURL||DEFAULT_AVATAR; avatar.style.display='block';
-    document.getElementById('dash-greeting-sub').textContent=getGreetingByTime();
-    const displayName=(user.displayName||user.email||'User').split('@')[0];
-    setGreetingName(displayName); setAccountName(displayName);
-    setNavActive('home');
-    go('s-dashboard'); initSlider(); openDashPopup();
-  }
+  forgotLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Arahkan ke halaman Lupa Kata Sandi di sini.');
+  });
 </script>
+
 </body>
 </html>
