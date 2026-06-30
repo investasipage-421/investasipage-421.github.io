@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masuk Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
+<style>
+  .error-msg {
+    font-size: 13px;
+    color: #e53e3e;
+    text-align: center;
+    display: none;
+    margin-top: -8px;
+  }
+  .loading { opacity: 0.7; pointer-events: none; }
+</style>
 </head>
 <body>
 
@@ -21,7 +31,7 @@
     <div class="switch-line">Belum punya akun? <a href="/daftar">Daftar akun</a></div>
 
     <form onsubmit="return false;">
-      <button type="button" class="google-btn">
+      <button type="button" class="google-btn" onclick="loginGoogle()">
         <svg width="22" height="22" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
           <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
@@ -33,12 +43,13 @@
 
       <div class="divider">atau masuk manual</div>
 
-      <input type="email" placeholder="Email">
-
+      <input id="email" type="email" placeholder="Email">
       <div class="pw-field">
         <input id="pw" type="password" placeholder="Kata sandi">
         <button type="button" class="pw-toggle" onclick="togglePw()">👁</button>
       </div>
+
+      <p id="errorMsg" class="error-msg"></p>
 
       <div class="forgot"><a href="/forget-password">Lupa kata sandi?</a></div>
     </form>
@@ -46,15 +57,74 @@
 
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button type="button" class="submit-btn">Masuk</button>
+      <button id="submitBtn" type="button" class="submit-btn" onclick="loginEmail()">Masuk</button>
     </div>
   </div>
 
-  <script>
-    function togglePw() {
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
+      authDomain: "orbitxy-6e79c.firebaseapp.com",
+      databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "orbitxy-6e79c",
+      storageBucket: "orbitxy-6e79c.firebasestorage.app",
+      messagingSenderId: "1064037228597",
+      appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function setLoading(loading) {
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = loading ? 'Memuat...' : 'Masuk';
+      btn.classList.toggle('loading', loading);
+    }
+
+    window.togglePw = function() {
       const pw = document.getElementById('pw');
       pw.type = pw.type === 'password' ? 'text' : 'password';
-    }
+    };
+
+    window.loginEmail = async function() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('pw').value;
+      if (!email || !password) return showError('Email dan kata sandi wajib diisi.');
+      setLoading(true);
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = '/dashboard';
+      } catch (e) {
+        setLoading(false);
+        if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+          showError('Email atau kata sandi salah.');
+        } else if (e.code === 'auth/invalid-email') {
+          showError('Format email tidak valid.');
+        } else {
+          showError('Terjadi kesalahan. Coba lagi.');
+        }
+      }
+    };
+
+    window.loginGoogle = async function() {
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = '/dashboard';
+      } catch (e) {
+        showError('Login Google gagal. Coba lagi.');
+      }
+    };
   </script>
 
 </body>
