@@ -216,16 +216,9 @@
         const result = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(result.user, { displayName: nama });
 
-        // Kirim email verifikasi via Firebase (link otomatis dikirim Firebase)
+        // Kirim email verifikasi via Firebase
         await sendEmailVerification(result.user, {
           url: "https://orbitxy.com/login"
-        });
-
-        // Kirim notifikasi via EmailJS
-        await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          nama:  nama,
-          email: email,
-          link:  "Cek email kamu untuk link verifikasi dari Orbit (cek juga folder spam)."
         });
 
         setLoading(false);
