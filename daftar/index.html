@@ -6,13 +6,6 @@
 <title>Daftar Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
 <style>
-  .error-msg {
-    font-size: 13px;
-    color: #e53e3e;
-    text-align: center;
-    display: none;
-    margin-top: -8px;
-  }
   .loading { opacity: 0.7; pointer-events: none; }
   .submit-btn:disabled {
     background: #E0E0E0;
@@ -21,6 +14,100 @@
     color: #A0A0A0;
     cursor: not-allowed;
     transform: none;
+  }
+
+  /* Error panel */
+  .error-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #FFE4E4;
+    border-top: 4px solid #FFBBBB;
+    padding: 20px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .error-panel.show { transform: translateY(0); }
+  .error-panel-inner { width: 100%; max-width: 420px; }
+  .error-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #CC0000;
+    font-weight: 800;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .error-icon {
+    background: #CC0000;
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .error-panel-msg {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3F3F3F;
+    margin: 0;
+  }
+
+  /* Success panel */
+  .success-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #E6FFED;
+    border-top: 4px solid #A8E6BB;
+    padding: 20px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .success-panel.show { transform: translateY(0); }
+  .success-panel-inner { width: 100%; max-width: 420px; }
+  .success-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2E7D32;
+    font-weight: 800;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .success-icon {
+    background: #2E7D32;
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .success-panel-msg {
+    font-size: 15px;
+    font-weight: 700;
+    color: #3F3F3F;
+    margin: 0;
   }
 </style>
 </head>
@@ -63,11 +150,32 @@
         <input id="pw2" type="password" placeholder="Konfirmasi kata sandi" oninput="cekInput()">
         <button type="button" class="pw-toggle" onclick="togglePw('pw2')">👁</button>
       </div>
-
-      <p id="errorMsg" class="error-msg"></p>
     </form>
   </div>
 
+  <!-- Error panel -->
+  <div id="errorPanel" class="error-panel">
+    <div class="error-panel-inner">
+      <div class="error-panel-title">
+        <span class="error-icon">!</span>
+        Oops...
+      </div>
+      <p id="errorMsg" class="error-panel-msg"></p>
+    </div>
+  </div>
+
+  <!-- Success panel -->
+  <div id="successPanel" class="success-panel">
+    <div class="success-panel-inner">
+      <div class="success-panel-title">
+        <span class="success-icon">✓</span>
+        Akun Dibuat!
+      </div>
+      <p class="success-panel-msg">Silakan login menggunakan akun yang sudah kamu daftarkan.</p>
+    </div>
+  </div>
+
+  <!-- Tombol Daftar -->
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
       <button id="submitBtn" type="button" class="submit-btn" onclick="daftarEmail()" disabled>Daftar Akun</button>
@@ -92,10 +200,22 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    let errorTimer = null;
+
     function showError(msg) {
-      const el = document.getElementById('errorMsg');
-      el.textContent = msg;
-      el.style.display = 'block';
+      document.getElementById('errorMsg').textContent = msg;
+      document.getElementById('errorPanel').classList.add('show');
+      if (errorTimer) clearTimeout(errorTimer);
+      errorTimer = setTimeout(() => {
+        document.getElementById('errorPanel').classList.remove('show');
+      }, 5000);
+    }
+
+    function showSuccess() {
+      document.getElementById('successPanel').classList.add('show');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 5000);
     }
 
     function setLoading(loading) {
@@ -109,8 +229,7 @@
       const email = document.getElementById('email').value.trim();
       const pw = document.getElementById('pw').value;
       const pw2 = document.getElementById('pw2').value;
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = !(nama && email && pw && pw2);
+      document.getElementById('submitBtn').disabled = !(nama && email && pw && pw2);
     };
 
     window.togglePw = function(id) {
@@ -131,18 +250,11 @@
       try {
         const result = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(result.user, { displayName: nama });
-        window.location.href = '/dashboard';
+        setLoading(false);
+        showSuccess();
       } catch (e) {
         setLoading(false);
-        if (e.code === 'auth/email-already-in-use') {
-          showError('Email sudah terdaftar. Silakan masuk.');
-        } else if (e.code === 'auth/invalid-email') {
-          showError('Format email tidak valid.');
-        } else if (e.code === 'auth/weak-password') {
-          showError('Kata sandi terlalu lemah.');
-        } else {
-          showError('Terjadi kesalahan. Coba lagi.');
-        }
+        showError('Email atau kata sandi salah. Silakan coba lagi.');
       }
     };
 
