@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selesaikan Profilmu - Orbit</title>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  body {
+    padding: 0;
+    justify-content: flex-start;
+    background: #fff;
+  }
+
+  /* Header */
+  .ob-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #fff;
+    z-index: 100;
+    padding: 16px 16px 0;
+    max-width: 100%;
+  }
+  .ob-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 420px;
+    margin: 0 auto 10px;
+  }
+  .ob-nav-btn {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: #F0F0F0;
+    border: 2px solid #D8D8D8;
+    font-size: 18px;
+    color: #818181;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .ob-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .ob-nav-btn:hover:not(:disabled) { background: #E5E5E5; }
+
+  .ob-title-wrap { text-align: center; }
+  .ob-title-wrap h2 { font-size: 15px; font-weight: 800; margin: 0; color: #3F3F3F; }
+  .ob-title-wrap span { font-size: 12px; color: #818181; font-weight: 600; }
+
+  /* Progress bar */
+  .ob-progress-wrap {
+    max-width: 420px;
+    margin: 0 auto;
+    height: 6px;
+    background: #E5E5E5;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .ob-progress-bar {
+    height: 100%;
+    background: #316FEA;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* Content */
+  .ob-content {
+    padding: 100px 16px 120px;
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .ob-question {
+    font-size: 24px;
+    font-weight: 800;
+    color: #3F3F3F;
+    margin: 0 0 24px;
+    line-height: 1.3;
+  }
+
+  /* Step views */
+  .step { display: none; }
+  .step.active { display: block; }
+
+  /* Avatar grid */
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .avatar-card {
+    border: 2px solid #E1E1E1;
+    border-radius: 16px;
+    padding: 16px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: #fff;
+    aspect-ratio: 1;
+  }
+  .avatar-card:hover { border-color: #316FEA; background: #F0F5FF; }
+  .avatar-card.selected {
+    border-color: #316FEA;
+    background: #EEF3FF;
+    box-shadow: 0 0 0 3px #316FEA33;
+  }
+  .avatar-card svg { width: 100%; height: auto; }
+
+  /* Source options */
+  .source-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .source-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 2px solid #E1E1E1;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.15s;
+    font-size: 15px;
+    font-weight: 700;
+    color: #3F3F3F;
+  }
+  .source-item:hover { border-color: #316FEA; background: #F0F5FF; }
+  .source-item.selected {
+    border-color: #316FEA;
+    background: #EEF3FF;
+    box-shadow: 0 0 0 3px #316FEA33;
+  }
+  .source-icon {
+    width: 40px; height: 40px;
+    background: #E5E5E5;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Bottom bar */
+  .ob-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 4px solid #D8D8D8;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .ob-bottom-inner { width: 100%; max-width: 420px; }
+  .ob-next-btn {
+    width: 100%;
+    background: var(--cta);
+    border: 2px solid var(--cta-shadow);
+    box-shadow: 0 5px 0 var(--cta-shadow);
+    border-radius: 12px;
+    padding: 14px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .ob-next-btn:active { box-shadow: none; transform: translateY(5px); }
+  .ob-next-btn:disabled {
+    background: #E0E0E0;
+    border-color: #C8C8C8;
+    box-shadow: 0 5px 0 #C8C8C8;
+    color: #A0A0A0;
+    cursor: not-allowed;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="ob-header">
+    <div class="ob-header-row">
+      <button class="ob-nav-btn" id="btnBack" onclick="prevStep()" disabled>←</button>
+      <div class="ob-title-wrap">
+        <h2>Selesaikan profilmu</h2>
+        <span id="stepLabel">1 dari 2</span>
+      </div>
+      <button class="ob-nav-btn" id="btnSkip" onclick="nextStep(true)" title="Lewati">⏭</button>
+    </div>
+    <div class="ob-progress-wrap">
+      <div class="ob-progress-bar" id="progressBar" style="width:50%"></div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="ob-content">
+
+    <!-- STEP 1: Pilih Avatar -->
+    <div class="step active" id="step1">
+      <p class="ob-question">Pilih avatarmu</p>
+      <div class="avatar-grid">
+
+        <!-- Avatar 1: Cowok kulit terang -->
+        <div class="avatar-card" onclick="pilihAvatar(this, 'av1')">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="38" r="26" fill="#FFDAB9"/>
+            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
+            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
+            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
+            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#FFDAB9"/>
+            <!-- rambut -->
+            <path d="M24 36 Q24 10 50 10 Q76 10 76 36 Q76 20 50 18 Q24 20 24 36Z" fill="#2c1810"/>
+            <!-- mata -->
+            <circle cx="42" cy="38" r="2.5" fill="#333"/>
+            <circle cx="58" cy="38" r="2.5" fill="#333"/>
+            <!-- senyum -->
+            <path d="M44 46 Q50 51 56 46" stroke="#c0775a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <!-- dasi -->
+            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
+          </svg>
+        </div>
+
+        <!-- Avatar 2: Cowok kulit gelap -->
+        <div class="avatar-card" onclick="pilihAvatar(this, 'av2')">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="38" r="26" fill="#8D5524"/>
+            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
+            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
+            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
+            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#8D5524"/>
+            <path d="M24 36 Q24 10 50 10 Q76 10 76 36 Q76 20 50 18 Q24 20 24 36Z" fill="#1a0a00"/>
+            <circle cx="42" cy="38" r="2.5" fill="#333"/>
+            <circle cx="58" cy="38" r="2.5" fill="#333"/>
+            <path d="M44 46 Q50 51 56 46" stroke="#6b3a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
+          </svg>
+        </div>
+
+        <!-- Avatar 3: Cewek rambut panjang kulit terang -->
+        <div class="avatar-card" onclick="pilihAvatar(this, 'av3')">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="38" r="26" fill="#FFDAB9"/>
+            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
+            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
+            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
+            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#FFDAB9"/>
+            <!-- rambut panjang -->
+            <path d="M24 36 Q22 70 28 80 Q32 65 32 60 L28 60 Q28 20 50 14 Q72 20 72 60 L68 60 Q68 65 72 80 Q78 70 76 36 Q76 10 50 10 Q24 10 24 36Z" fill="#2c1810"/>
+            <circle cx="42" cy="38" r="2.5" fill="#333"/>
+            <circle cx="58" cy="38" r="2.5" fill="#333"/>
+            <path d="M44 46 Q50 51 56 46" stroke="#c0775a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
+          </svg>
+        </div>
+
+        <!-- Avatar 4: Cewek rambut panjang kulit gelap -->
+        <div class="avatar-card" onclick="pilihAvatar(this, 'av4')">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="38" r="26" fill="#8D5524"/>
+            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
+            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
+            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
+            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#8D5524"/>
+            <path d="M24 36 Q22 70 28 80 Q32 65 32 60 L28 60 Q28 20 50 14 Q72 20 72 60 L68 60 Q68 65 72 80 Q78 70 76 36 Q76 10 50 10 Q24 10 24 36Z" fill="#1a0a00"/>
+            <circle cx="42" cy="38" r="2.5" fill="#333"/>
+            <circle cx="58" cy="38" r="2.5" fill="#333"/>
+            <path d="M44 46 Q50 51 56 46" stroke="#6b3a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
+          </svg>
+        </div>
+
+        <!-- Avatar 5: Cewek hijab kulit terang -->
+        <div class="avatar-card" onclick="pilihAvatar(this, 'av5')">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
+            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
+            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
+            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#FFDAB9"/>
+            <!-- hijab -->
+            <path d="M20 50 Q20 10 50 10 Q80 10 80 50 Q80 80 50 82 Q20 80 20 50Z" fill="#5c6bc0"/>
+            <circle cx="50" cy="40" r="20" fill="#FFDAB9"/>
+            <path d="M30 50 Q30 82 50 84 Q70 82 70 50 Q70 72 50 72 Q30 72 30 50Z" fill="#5c6bc0"/>
+            <circle cx="42" cy="40" r="2.5" fill="#333"/>
+            <circle cx="58" cy="40" r="2.5" fill="#333"/>
+            <path d="M44 48 Q50 53 56 48" stroke="#c0775a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polygon points="50,68 46,78 50,75 54,78" fill="#1565C0"/>
+          </svg>
+        </div>
+
+        <!-- Avatar 6: Cewek hijab kulit gelap -->
+        <div class="avatar-card" onclick="pilihAvatar(this, 'av6')">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
+            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
+            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
+            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#8D5524"/>
+            <path d="M20 50 Q20 10 50 10 Q80 10 80 50 Q80 80 50 82 Q20 80 20 50Z" fill="#4a148c"/>
+            <circle cx="50" cy="40" r="20" fill="#8D5524"/>
+            <path d="M30 50 Q30 82 50 84 Q70 82 70 50 Q70 72 50 72 Q30 72 30 50Z" fill="#4a148c"/>
+            <circle cx="42" cy="40" r="2.5" fill="#333"/>
+            <circle cx="58" cy="40" r="2.5" fill="#333"/>
+            <path d="M44 48 Q50 53 56 48" stroke="#6b3a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polygon points="50,68 46,78 50,75 54,78" fill="#1565C0"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STEP 2: Tau dari mana -->
+    <div class="step" id="step2">
+      <p class="ob-question">Kamu tau Orbit dari mana?</p>
+      <div class="source-list">
+        <div class="source-item" onclick="pilihSumber(this, 'instagram')">
+          <div class="source-icon">📸</div>
+          Instagram
+        </div>
+        <div class="source-item" onclick="pilihSumber(this, 'tiktok')">
+          <div class="source-icon">🎵</div>
+          TikTok
+        </div>
+        <div class="source-item" onclick="pilihSumber(this, 'youtube')">
+          <div class="source-icon">▶️</div>
+          YouTube
+        </div>
+        <div class="source-item" onclick="pilihSumber(this, 'whatsapp')">
+          <div class="source-icon">💬</div>
+          WhatsApp
+        </div>
+        <div class="source-item" onclick="pilihSumber(this, 'teman')">
+          <div class="source-icon">👥</div>
+          Teman
+        </div>
+        <div class="source-item" onclick="pilihSumber(this, 'guru')">
+          <div class="source-icon">👨‍🏫</div>
+          Guru
+        </div>
+        <div class="source-item" onclick="pilihSumber(this, 'lainnya')">
+          <div class="source-icon">✨</div>
+          Lainnya
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="ob-bottom">
+    <div class="ob-bottom-inner">
+      <button class="ob-next-btn" id="nextBtn" onclick="nextStep(false)" disabled>Lanjut</button>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 2;
+    let selectedAvatar = null;
+    let selectedSumber = null;
+
+    function updateUI() {
+      // Steps
+      document.querySelectorAll('.step').forEach((el, i) => {
+        el.classList.toggle('active', i + 1 === currentStep);
+      });
+
+      // Progress
+      document.getElementById('progressBar').style.width = (currentStep / totalSteps * 100) + '%';
+      document.getElementById('stepLabel').textContent = currentStep + ' dari ' + totalSteps;
+
+      // Back btn
+      document.getElementById('btnBack').disabled = currentStep === 1;
+
+      // Next btn
+      updateNextBtn();
+    }
+
+    function updateNextBtn() {
+      const btn = document.getElementById('nextBtn');
+      if (currentStep === 1) {
+        btn.disabled = !selectedAvatar;
+        btn.textContent = 'LANJUT';
+      } else {
+        btn.disabled = !selectedSumber;
+        btn.textContent = 'SELESAI';
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) { currentStep--; updateUI(); }
+    }
+
+    function nextStep(skip) {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateUI();
+      } else {
+        // Selesai — simpan ke localStorage lalu ke dashboard
+        localStorage.setItem('orbit_avatar', selectedAvatar);
+        localStorage.setItem('orbit_sumber', selectedSumber);
+        console.log('selesai');
+      }
+    }
+
+    function pilihAvatar(el, id) {
+      document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedAvatar = id;
+      updateNextBtn();
+    }
+
+    function pilihSumber(el, id) {
+      document.querySelectorAll('.source-item').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedSumber = id;
+      updateNextBtn();
+    }
+  </script>
+
+</body>
+</html>
