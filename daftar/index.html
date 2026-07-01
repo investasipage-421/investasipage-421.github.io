@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daftar Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
   .loading { opacity: 0.7; pointer-events: none; }
   .submit-btn:disabled {
@@ -16,12 +17,9 @@
     transform: none;
   }
 
-  /* Error panel */
   .error-panel {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     z-index: 999;
     background: #FFE4E4;
     border-top: 4px solid #FFBBBB;
@@ -35,40 +33,20 @@
   .error-panel.show { transform: translateY(0); }
   .error-panel-inner { width: 100%; max-width: 420px; }
   .error-panel-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #CC0000;
-    font-weight: 800;
-    font-size: 18px;
-    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+    color: #CC0000; font-weight: 800; font-size: 18px; margin-bottom: 6px;
   }
   .error-icon {
-    background: #CC0000;
-    color: white;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 900;
-    flex-shrink: 0;
+    background: #CC0000; color: white; border-radius: 50%;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; flex-shrink: 0;
   }
-  .error-panel-msg {
-    font-size: 15px;
-    font-weight: 700;
-    color: #3F3F3F;
-    margin: 0;
-  }
+  .error-panel-msg { font-size: 15px; font-weight: 700; color: #3F3F3F; margin: 0; }
 
-  /* Success panel */
   .success-panel {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     z-index: 999;
     background: #E6FFED;
     border-top: 4px solid #A8E6BB;
@@ -82,33 +60,16 @@
   .success-panel.show { transform: translateY(0); }
   .success-panel-inner { width: 100%; max-width: 420px; }
   .success-panel-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #2E7D32;
-    font-weight: 800;
-    font-size: 18px;
-    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+    color: #2E7D32; font-weight: 800; font-size: 18px; margin-bottom: 6px;
   }
   .success-icon {
-    background: #2E7D32;
-    color: white;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 900;
-    flex-shrink: 0;
+    background: #2E7D32; color: white; border-radius: 50%;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; flex-shrink: 0;
   }
-  .success-panel-msg {
-    font-size: 15px;
-    font-weight: 700;
-    color: #3F3F3F;
-    margin: 0;
-  }
+  .success-panel-msg { font-size: 15px; font-weight: 700; color: #3F3F3F; margin: 0; }
 </style>
 </head>
 <body>
@@ -171,7 +132,7 @@
         <span class="success-icon">✓</span>
         Akun Dibuat!
       </div>
-      <p class="success-panel-msg">Silakan login menggunakan akun yang sudah kamu daftarkan.</p>
+      <p class="success-panel-msg">Link verifikasi sudah dikirim ke email kamu. Cek inbox atau folder spam, lalu klik link-nya sebelum masuk.</p>
     </div>
   </div>
 
@@ -184,7 +145,14 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // Ganti dengan kredensial EmailJS kamu
+    const EMAILJS_PUBLIC_KEY  = '6XJwFyAjqoA0nIis3';
+    const EMAILJS_SERVICE_ID  = 'service_qbvxohl';
+    const EMAILJS_TEMPLATE_ID = 'template_wf2m7va';
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
 
     const firebaseConfig = {
       apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
@@ -213,9 +181,7 @@
 
     function showSuccess() {
       document.getElementById('successPanel').classList.add('show');
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 5000);
+      setTimeout(() => { window.location.href = '/login'; }, 5000);
     }
 
     function setLoading(loading) {
@@ -225,10 +191,10 @@
     }
 
     window.cekInput = function() {
-      const nama = document.getElementById('nama').value.trim();
+      const nama  = document.getElementById('nama').value.trim();
       const email = document.getElementById('email').value.trim();
-      const pw = document.getElementById('pw').value;
-      const pw2 = document.getElementById('pw2').value;
+      const pw    = document.getElementById('pw').value;
+      const pw2   = document.getElementById('pw2').value;
       document.getElementById('submitBtn').disabled = !(nama && email && pw && pw2);
     };
 
@@ -238,10 +204,10 @@
     };
 
     window.daftarEmail = async function() {
-      const nama = document.getElementById('nama').value.trim();
+      const nama  = document.getElementById('nama').value.trim();
       const email = document.getElementById('email').value.trim();
-      const pw = document.getElementById('pw').value;
-      const pw2 = document.getElementById('pw2').value;
+      const pw    = document.getElementById('pw').value;
+      const pw2   = document.getElementById('pw2').value;
 
       if (pw !== pw2) return showError('Konfirmasi kata sandi tidak cocok.');
       if (pw.length < 6) return showError('Kata sandi minimal 6 karakter.');
@@ -250,11 +216,31 @@
       try {
         const result = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(result.user, { displayName: nama });
+
+        // Ambil link verifikasi Firebase lalu kirim via EmailJS
+        await sendEmailVerification(result.user);
+        const token = await result.user.getIdToken();
+        const verifyLink = `https://orbitxy-6e79c.firebaseapp.com/__/auth/action?mode=verifyEmail&oobCode=${token}`;
+
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          nama:  nama,
+          email: email,
+          link:  verifyLink
+        });
+
         setLoading(false);
         showSuccess();
       } catch (e) {
         setLoading(false);
-        showError('Email atau kata sandi salah. Silakan coba lagi.');
+        if (e.code === 'auth/email-already-in-use') {
+          showError('Email sudah terdaftar. Silakan masuk.');
+        } else if (e.code === 'auth/invalid-email') {
+          showError('Format email tidak valid.');
+        } else if (e.code === 'auth/weak-password') {
+          showError('Kata sandi terlalu lemah.');
+        } else {
+          showError('Terjadi kesalahan. Coba lagi.');
+        }
       }
     };
 
