@@ -6,13 +6,6 @@
 <title>Masuk Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
 <style>
-  .error-msg {
-    font-size: 13px;
-    color: #e53e3e;
-    text-align: center;
-    display: none;
-    margin-top: -8px;
-  }
   .loading { opacity: 0.7; pointer-events: none; }
   .submit-btn:disabled {
     background: #E0E0E0;
@@ -21,6 +14,42 @@
     color: #A0A0A0;
     cursor: not-allowed;
     transform: none;
+  }
+  .error-box {
+    display: none;
+    width: 100%;
+    background: #FFE4E4;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 4px;
+  }
+  .error-box-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #CC0000;
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .error-box-title span.icon {
+    background: #CC0000;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .error-box-msg {
+    font-size: 14px;
+    font-weight: 700;
+    color: #3F3F3F;
+    margin: 0;
   }
 </style>
 </head>
@@ -57,7 +86,13 @@
         <button type="button" class="pw-toggle" onclick="togglePw()">👁</button>
       </div>
 
-      <p id="errorMsg" class="error-msg"></p>
+      <div id="errorBox" class="error-box">
+        <div class="error-box-title">
+          <span class="icon">!</span>
+          Oops...
+        </div>
+        <p id="errorMsg" class="error-box-msg"></p>
+      </div>
 
       <div class="forgot"><a href="/forget-password">Lupa kata sandi?</a></div>
     </form>
@@ -88,9 +123,12 @@
     const provider = new GoogleAuthProvider();
 
     function showError(msg) {
-      const el = document.getElementById('errorMsg');
-      el.textContent = msg;
-      el.style.display = 'block';
+      document.getElementById('errorMsg').textContent = msg;
+      document.getElementById('errorBox').style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('errorBox').style.display = 'none';
     }
 
     function setLoading(loading) {
@@ -102,8 +140,8 @@
     window.cekInput = function() {
       const email = document.getElementById('email').value.trim();
       const pw = document.getElementById('pw').value;
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = !(email && pw);
+      document.getElementById('submitBtn').disabled = !(email && pw);
+      hideError();
     };
 
     window.togglePw = function() {
@@ -114,6 +152,7 @@
     window.loginEmail = async function() {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('pw').value;
+      hideError();
       setLoading(true);
       try {
         await signInWithEmailAndPassword(auth, email, password);
@@ -121,9 +160,11 @@
       } catch (e) {
         setLoading(false);
         if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
-          showError('Email atau kata sandi salah.');
+          showError('Email atau kata sandi salah. Silakan coba lagi.');
         } else if (e.code === 'auth/invalid-email') {
           showError('Format email tidak valid.');
+        } else if (e.code === 'auth/too-many-requests') {
+          showError('Terlalu banyak percobaan. Coba lagi nanti.');
         } else {
           showError('Terjadi kesalahan. Coba lagi.');
         }
@@ -131,6 +172,7 @@
     };
 
     window.loginGoogle = async function() {
+      hideError();
       try {
         await signInWithPopup(auth, provider);
         window.location.href = '/dashboard';
