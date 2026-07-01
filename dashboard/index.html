@@ -12,25 +12,23 @@
     background: #fff;
   }
 
-  /* Header */
   .ob-header {
     position: fixed;
     top: 0; left: 0; right: 0;
     background: #fff;
     z-index: 100;
-    padding: 16px 16px 0;
-    max-width: 100%;
+    padding: 14px 16px 0;
   }
   .ob-header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 420px;
+    max-width: 480px;
     margin: 0 auto 10px;
   }
   .ob-nav-btn {
-    width: 42px; height: 42px;
-    border-radius: 10px;
+    width: 44px; height: 44px;
+    border-radius: 12px;
     background: #F0F0F0;
     border: 2px solid #D8D8D8;
     font-size: 18px;
@@ -38,55 +36,23 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.15s;
+    flex-shrink: 0;
   }
-  .ob-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-  .ob-nav-btn:hover:not(:disabled) { background: #E5E5E5; }
-
-  /* Popup modal */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    opacity: 0;
+  .ob-nav-btn.decorative {
+    opacity: 0.35;
+    cursor: default;
     pointer-events: none;
-    transition: opacity 0.25s ease;
   }
-  .modal-overlay.show {
-    opacity: 1;
-    pointer-events: all;
-  }
-  .modal-box {
-    background: #fff;
-    border-radius: 24px;
-    padding: 36px 24px 32px;
-    width: 100%;
-    max-width: 340px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transform: scale(0.9);
-    transition: transform 0.25s ease;
-  }
-  .modal-overlay.show .modal-box { transform: scale(1); }
-  .modal-mark { width: 72px; height: 72px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
-  .modal-text { font-size: 20px; font-weight: 800; color: #3F3F3F; line-height: 1.4; margin: 0; }
-  .ob-nav-btn:hover:not(:disabled) { background: #E5E5E5; }
+  .ob-nav-btn:hover:not(.decorative) { background: #E5E5E5; }
 
-  .ob-title-wrap { text-align: center; }
-  .ob-title-wrap h2 { font-size: 15px; font-weight: 800; margin: 0; color: #3F3F3F; }
+  .ob-title-wrap { text-align: center; flex: 1; }
+  .ob-title-wrap h2 { font-size: 16px; font-weight: 800; margin: 0; color: #3F3F3F; }
   .ob-title-wrap span { font-size: 12px; color: #818181; font-weight: 600; }
 
-  /* Progress bar */
   .ob-progress-wrap {
-    max-width: 420px;
-    margin: 0 auto;
-    height: 6px;
+    max-width: 480px;
+    margin: 0 auto 2px;
+    height: 7px;
     background: #E5E5E5;
     border-radius: 99px;
     overflow: hidden;
@@ -98,23 +64,21 @@
     transition: width 0.4s ease;
   }
 
-  /* Content */
   .ob-content {
-    padding: 100px 16px 120px;
-    max-width: 420px;
+    padding: 90px 16px 110px;
+    max-width: 480px;
     margin: 0 auto;
     width: 100%;
   }
 
   .ob-question {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 800;
     color: #3F3F3F;
-    margin: 0 0 24px;
+    margin: 0 0 20px;
     line-height: 1.3;
   }
 
-  /* Step views */
   .step { display: none; }
   .step.active { display: block; }
 
@@ -122,60 +86,62 @@
   .avatar-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 14px;
   }
   .avatar-card {
-    border: 2px solid #E1E1E1;
-    border-radius: 16px;
-    padding: 16px 8px;
+    border: 2.5px solid #E8E8E8;
+    border-radius: 18px;
+    padding: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s;
+    transition: all 0.18s;
     background: #fff;
+    overflow: hidden;
     aspect-ratio: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
-  .avatar-card:hover { border-color: #316FEA; background: #F0F5FF; }
+  .avatar-card:hover { border-color: #316FEA; transform: scale(1.03); }
   .avatar-card.selected {
     border-color: #316FEA;
-    background: #EEF3FF;
-    box-shadow: 0 0 0 3px #316FEA33;
+    box-shadow: 0 0 0 3px #316FEA44, 0 4px 12px rgba(49,111,234,0.15);
   }
-  .avatar-card svg { width: 100%; height: auto; }
+  .avatar-card img, .avatar-card svg {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
-  /* Source options */
-  .source-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  /* Source list */
+  .source-list { display: flex; flex-direction: column; gap: 12px; }
   .source-item {
     display: flex;
     align-items: center;
     gap: 14px;
-    border: 2px solid #E1E1E1;
-    border-radius: 14px;
-    padding: 14px 16px;
+    border: 2.5px solid #E8E8E8;
+    border-radius: 16px;
+    padding: 16px 18px;
     cursor: pointer;
     background: #fff;
     transition: all 0.15s;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: #3F3F3F;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
   }
-  .source-item:hover { border-color: #316FEA; background: #F0F5FF; }
+  .source-item:hover { border-color: #316FEA; background: #F5F8FF; }
   .source-item.selected {
     border-color: #316FEA;
     background: #EEF3FF;
     box-shadow: 0 0 0 3px #316FEA33;
   }
   .source-icon {
-    width: 40px; height: 40px;
-    background: #E5E5E5;
+    width: 42px; height: 42px;
+    background: #EFEFEF;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
+    font-size: 22px;
     flex-shrink: 0;
   }
 
@@ -184,23 +150,22 @@
     position: fixed;
     bottom: 0; left: 0; right: 0;
     background: #fff;
-    border-top: 4px solid #D8D8D8;
-    padding: 16px;
-    display: flex;
-    justify-content: center;
+    border-top: 3px solid #E8E8E8;
+    padding: 14px 16px 24px;
+    display: flex; justify-content: center;
   }
-  .ob-bottom-inner { width: 100%; max-width: 420px; }
+  .ob-bottom-inner { width: 100%; max-width: 480px; }
   .ob-next-btn {
     width: 100%;
     background: var(--cta);
     border: 2px solid var(--cta-shadow);
     box-shadow: 0 5px 0 var(--cta-shadow);
-    border-radius: 12px;
-    padding: 14px;
+    border-radius: 14px;
+    padding: 15px;
     color: #fff;
     font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.03em;
+    font-size: 16px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -214,265 +179,355 @@
     cursor: not-allowed;
     transform: none;
   }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.show { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: #fff;
+    border-radius: 28px;
+    padding: 40px 28px 36px;
+    width: 100%; max-width: 340px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    transform: scale(0.88);
+    transition: transform 0.25s cubic-bezier(0.34,1.4,0.64,1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal-overlay.show .modal-box { transform: scale(1); }
+  .modal-mark { width: 80px; height: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  .modal-text { font-size: 20px; font-weight: 800; color: #3F3F3F; line-height: 1.45; margin: 0; }
 </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="ob-header">
-    <div class="ob-header-row">
-      <button class="ob-nav-btn" id="btnBack" onclick="prevStep()" disabled>←</button>
-      <div class="ob-title-wrap">
-        <h2>Selesaikan profilmu</h2>
-        <span id="stepLabel">1 dari 2</span>
+<div class="ob-header">
+  <div class="ob-header-row">
+    <button class="ob-nav-btn" id="btnBack" onclick="prevStep()">←</button>
+    <div class="ob-title-wrap">
+      <h2>Selesaikan profilmu</h2>
+      <span id="stepLabel">1 dari 2</span>
+    </div>
+    <button class="ob-nav-btn decorative">⏭</button>
+  </div>
+  <div class="ob-progress-wrap">
+    <div class="ob-progress-bar" id="progressBar" style="width:50%"></div>
+  </div>
+</div>
+
+<div class="ob-content">
+
+  <!-- STEP 1: Pilih Avatar -->
+  <div class="step active" id="step1">
+    <p class="ob-question">Pilih avatarmu</p>
+    <div class="avatar-grid">
+
+      <!-- Cowok kulit terang -->
+      <div class="avatar-card" onclick="pilihAvatar(this,'av1')">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="220" fill="#f8f8f8"/>
+          <!-- badan seragam putih -->
+          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
+          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
+          <!-- leher -->
+          <rect x="85" y="128" width="30" height="22" fill="#FDDCB5"/>
+          <!-- kepala -->
+          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#FDDCB5"/>
+          <!-- rambut -->
+          <ellipse cx="100" cy="78" rx="48" ry="30" fill="#1a0f00"/>
+          <rect x="52" y="78" width="18" height="36" rx="8" fill="#1a0f00"/>
+          <rect x="130" y="78" width="18" height="36" rx="8" fill="#1a0f00"/>
+          <!-- telinga -->
+          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
+          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
+          <!-- alis -->
+          <path d="M78 95 Q88 91 96 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M104 95 Q112 91 122 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- mata -->
+          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
+          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
+          <circle cx="88" cy="104" r="5" fill="#2c1810"/>
+          <circle cx="114" cy="104" r="5" fill="#2c1810"/>
+          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
+          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
+          <!-- hidung -->
+          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#e8b98a"/>
+          <!-- senyum -->
+          <path d="M88 126 Q100 134 112 126" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- dasi -->
+          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
+          <!-- emblem -->
+          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
+          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
+        </svg>
       </div>
-      <button class="ob-nav-btn" id="btnSkip" onclick="nextStep(true)" title="Lewati">⏭</button>
-    </div>
-    <div class="ob-progress-wrap">
-      <div class="ob-progress-bar" id="progressBar" style="width:50%"></div>
+
+      <!-- Cowok kulit gelap -->
+      <div class="avatar-card" onclick="pilihAvatar(this,'av2')">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="220" fill="#f8f8f8"/>
+          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
+          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
+          <rect x="85" y="128" width="30" height="22" fill="#8D5524"/>
+          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#8D5524"/>
+          <ellipse cx="100" cy="78" rx="48" ry="30" fill="#0d0600"/>
+          <rect x="52" y="78" width="18" height="36" rx="8" fill="#0d0600"/>
+          <rect x="130" y="78" width="18" height="36" rx="8" fill="#0d0600"/>
+          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#8D5524"/>
+          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#8D5524"/>
+          <path d="M78 95 Q88 91 96 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M104 95 Q112 91 122 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
+          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
+          <circle cx="88" cy="104" r="5" fill="#1a0a00"/>
+          <circle cx="114" cy="104" r="5" fill="#1a0a00"/>
+          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
+          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
+          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#6b3a1f"/>
+          <path d="M88 126 Q100 134 112 126" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
+          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
+          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
+        </svg>
+      </div>
+
+      <!-- Cewek rambut pendek kulit terang -->
+      <div class="avatar-card" onclick="pilihAvatar(this,'av3')">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="220" fill="#f8f8f8"/>
+          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
+          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
+          <rect x="85" y="128" width="30" height="22" fill="#FDDCB5"/>
+          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#FDDCB5"/>
+          <!-- rambut bob -->
+          <ellipse cx="100" cy="80" rx="50" ry="32" fill="#1a0f00"/>
+          <rect x="50" y="80" width="16" height="50" rx="8" fill="#1a0f00"/>
+          <rect x="134" y="80" width="16" height="50" rx="8" fill="#1a0f00"/>
+          <rect x="50" y="120" width="100" height="16" rx="8" fill="#1a0f00"/>
+          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
+          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
+          <path d="M78 95 Q88 91 96 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M104 95 Q112 91 122 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
+          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
+          <circle cx="88" cy="104" r="5" fill="#2c1810"/>
+          <circle cx="114" cy="104" r="5" fill="#2c1810"/>
+          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
+          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
+          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#e8b98a"/>
+          <path d="M88 126 Q100 134 112 126" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
+          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
+          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
+        </svg>
+      </div>
+
+      <!-- Cewek rambut pendek kulit gelap -->
+      <div class="avatar-card" onclick="pilihAvatar(this,'av4')">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="220" fill="#f8f8f8"/>
+          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
+          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
+          <rect x="85" y="128" width="30" height="22" fill="#8D5524"/>
+          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#8D5524"/>
+          <ellipse cx="100" cy="80" rx="50" ry="32" fill="#0d0600"/>
+          <rect x="50" y="80" width="16" height="50" rx="8" fill="#0d0600"/>
+          <rect x="134" y="80" width="16" height="50" rx="8" fill="#0d0600"/>
+          <rect x="50" y="120" width="100" height="16" rx="8" fill="#0d0600"/>
+          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#8D5524"/>
+          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#8D5524"/>
+          <path d="M78 95 Q88 91 96 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M104 95 Q112 91 122 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
+          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
+          <circle cx="88" cy="104" r="5" fill="#1a0a00"/>
+          <circle cx="114" cy="104" r="5" fill="#1a0a00"/>
+          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
+          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
+          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#6b3a1f"/>
+          <path d="M88 126 Q100 134 112 126" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
+          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
+          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
+        </svg>
+      </div>
+
+      <!-- Cewek hijab kulit terang -->
+      <div class="avatar-card" onclick="pilihAvatar(this,'av5')">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="220" fill="#f8f8f8"/>
+          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
+          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
+          <rect x="85" y="130" width="30" height="18" fill="#FDDCB5"/>
+          <!-- hijab luar -->
+          <ellipse cx="100" cy="95" rx="56" ry="62" fill="#5c6bc0"/>
+          <!-- wajah -->
+          <ellipse cx="100" cy="108" rx="40" ry="44" fill="#FDDCB5"/>
+          <!-- hijab dalam (frame wajah) -->
+          <path d="M60 95 Q60 148 100 152 Q140 148 140 95 Q140 140 100 142 Q60 140 60 95Z" fill="#5c6bc0"/>
+          <ellipse cx="52" cy="112" rx="7" ry="9" fill="#FDDCB5"/>
+          <ellipse cx="148" cy="112" rx="7" ry="9" fill="#FDDCB5"/>
+          <path d="M80 98 Q90 94 98 98" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M102 98 Q110 94 120 98" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="89" cy="107" rx="7" ry="8" fill="#fff"/>
+          <ellipse cx="111" cy="107" rx="7" ry="8" fill="#fff"/>
+          <circle cx="90" cy="108" r="5" fill="#2c1810"/>
+          <circle cx="112" cy="108" r="5" fill="#2c1810"/>
+          <circle cx="91" cy="106" r="1.5" fill="#fff"/>
+          <circle cx="113" cy="106" r="1.5" fill="#fff"/>
+          <ellipse cx="100" cy="119" rx="5" ry="3.5" fill="#e8b98a"/>
+          <path d="M89 129 Q100 137 111 129" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <polygon points="100,163 95,182 100,178 105,182" fill="#1565C0"/>
+          <circle cx="70" cy="170" r="8" fill="#FFC107"/>
+          <circle cx="70" cy="170" r="5" fill="#FF8F00"/>
+        </svg>
+      </div>
+
+      <!-- Cewek hijab kulit gelap -->
+      <div class="avatar-card" onclick="pilihAvatar(this,'av6')">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="220" fill="#f8f8f8"/>
+          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
+          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
+          <rect x="85" y="130" width="30" height="18" fill="#8D5524"/>
+          <ellipse cx="100" cy="95" rx="56" ry="62" fill="#4a148c"/>
+          <ellipse cx="100" cy="108" rx="40" ry="44" fill="#8D5524"/>
+          <path d="M60 95 Q60 148 100 152 Q140 148 140 95 Q140 140 100 142 Q60 140 60 95Z" fill="#4a148c"/>
+          <ellipse cx="52" cy="112" rx="7" ry="9" fill="#8D5524"/>
+          <ellipse cx="148" cy="112" rx="7" ry="9" fill="#8D5524"/>
+          <path d="M80 98 Q90 94 98 98" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M102 98 Q110 94 120 98" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="89" cy="107" rx="7" ry="8" fill="#fff"/>
+          <ellipse cx="111" cy="107" rx="7" ry="8" fill="#fff"/>
+          <circle cx="90" cy="108" r="5" fill="#1a0a00"/>
+          <circle cx="112" cy="108" r="5" fill="#1a0a00"/>
+          <circle cx="91" cy="106" r="1.5" fill="#fff"/>
+          <circle cx="113" cy="106" r="1.5" fill="#fff"/>
+          <ellipse cx="100" cy="119" rx="5" ry="3.5" fill="#6b3a1f"/>
+          <path d="M89 129 Q100 137 111 129" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <polygon points="100,163 95,182 100,178 105,182" fill="#1565C0"/>
+          <circle cx="70" cy="170" r="8" fill="#FFC107"/>
+          <circle cx="70" cy="170" r="5" fill="#FF8F00"/>
+        </svg>
+      </div>
+
     </div>
   </div>
 
-  <!-- Content -->
-  <div class="ob-content">
-
-    <!-- STEP 1: Pilih Avatar -->
-    <div class="step active" id="step1">
-      <p class="ob-question">Pilih avatarmu</p>
-      <div class="avatar-grid">
-
-        <!-- Avatar 1: Cowok kulit terang -->
-        <div class="avatar-card" onclick="pilihAvatar(this, 'av1')">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="38" r="26" fill="#FFDAB9"/>
-            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
-            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
-            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
-            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#FFDAB9"/>
-            <!-- rambut -->
-            <path d="M24 36 Q24 10 50 10 Q76 10 76 36 Q76 20 50 18 Q24 20 24 36Z" fill="#2c1810"/>
-            <!-- mata -->
-            <circle cx="42" cy="38" r="2.5" fill="#333"/>
-            <circle cx="58" cy="38" r="2.5" fill="#333"/>
-            <!-- senyum -->
-            <path d="M44 46 Q50 51 56 46" stroke="#c0775a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <!-- dasi -->
-            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
-          </svg>
-        </div>
-
-        <!-- Avatar 2: Cowok kulit gelap -->
-        <div class="avatar-card" onclick="pilihAvatar(this, 'av2')">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="38" r="26" fill="#8D5524"/>
-            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
-            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
-            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
-            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#8D5524"/>
-            <path d="M24 36 Q24 10 50 10 Q76 10 76 36 Q76 20 50 18 Q24 20 24 36Z" fill="#1a0a00"/>
-            <circle cx="42" cy="38" r="2.5" fill="#333"/>
-            <circle cx="58" cy="38" r="2.5" fill="#333"/>
-            <path d="M44 46 Q50 51 56 46" stroke="#6b3a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
-          </svg>
-        </div>
-
-        <!-- Avatar 3: Cewek rambut panjang kulit terang -->
-        <div class="avatar-card" onclick="pilihAvatar(this, 'av3')">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="38" r="26" fill="#FFDAB9"/>
-            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
-            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
-            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
-            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#FFDAB9"/>
-            <!-- rambut panjang -->
-            <path d="M24 36 Q22 70 28 80 Q32 65 32 60 L28 60 Q28 20 50 14 Q72 20 72 60 L68 60 Q68 65 72 80 Q78 70 76 36 Q76 10 50 10 Q24 10 24 36Z" fill="#2c1810"/>
-            <circle cx="42" cy="38" r="2.5" fill="#333"/>
-            <circle cx="58" cy="38" r="2.5" fill="#333"/>
-            <path d="M44 46 Q50 51 56 46" stroke="#c0775a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
-          </svg>
-        </div>
-
-        <!-- Avatar 4: Cewek rambut panjang kulit gelap -->
-        <div class="avatar-card" onclick="pilihAvatar(this, 'av4')">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="38" r="26" fill="#8D5524"/>
-            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
-            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
-            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
-            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#8D5524"/>
-            <path d="M24 36 Q22 70 28 80 Q32 65 32 60 L28 60 Q28 20 50 14 Q72 20 72 60 L68 60 Q68 65 72 80 Q78 70 76 36 Q76 10 50 10 Q24 10 24 36Z" fill="#1a0a00"/>
-            <circle cx="42" cy="38" r="2.5" fill="#333"/>
-            <circle cx="58" cy="38" r="2.5" fill="#333"/>
-            <path d="M44 46 Q50 51 56 46" stroke="#6b3a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <polygon points="50,68 46,80 50,77 54,80" fill="#1565C0"/>
-          </svg>
-        </div>
-
-        <!-- Avatar 5: Cewek hijab kulit terang -->
-        <div class="avatar-card" onclick="pilihAvatar(this, 'av5')">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
-            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
-            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
-            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#FFDAB9"/>
-            <!-- hijab -->
-            <path d="M20 50 Q20 10 50 10 Q80 10 80 50 Q80 80 50 82 Q20 80 20 50Z" fill="#5c6bc0"/>
-            <circle cx="50" cy="40" r="20" fill="#FFDAB9"/>
-            <path d="M30 50 Q30 82 50 84 Q70 82 70 50 Q70 72 50 72 Q30 72 30 50Z" fill="#5c6bc0"/>
-            <circle cx="42" cy="40" r="2.5" fill="#333"/>
-            <circle cx="58" cy="40" r="2.5" fill="#333"/>
-            <path d="M44 48 Q50 53 56 48" stroke="#c0775a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <polygon points="50,68 46,78 50,75 54,78" fill="#1565C0"/>
-          </svg>
-        </div>
-
-        <!-- Avatar 6: Cewek hijab kulit gelap -->
-        <div class="avatar-card" onclick="pilihAvatar(this, 'av6')">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="50" cy="110" rx="38" ry="22" fill="#1a237e"/>
-            <rect x="28" y="60" width="44" height="40" rx="8" fill="#fff"/>
-            <rect x="28" y="60" width="44" height="8" rx="4" fill="#1a237e"/>
-            <ellipse cx="50" cy="60" rx="18" ry="6" fill="#8D5524"/>
-            <path d="M20 50 Q20 10 50 10 Q80 10 80 50 Q80 80 50 82 Q20 80 20 50Z" fill="#4a148c"/>
-            <circle cx="50" cy="40" r="20" fill="#8D5524"/>
-            <path d="M30 50 Q30 82 50 84 Q70 82 70 50 Q70 72 50 72 Q30 72 30 50Z" fill="#4a148c"/>
-            <circle cx="42" cy="40" r="2.5" fill="#333"/>
-            <circle cx="58" cy="40" r="2.5" fill="#333"/>
-            <path d="M44 48 Q50 53 56 48" stroke="#6b3a1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <polygon points="50,68 46,78 50,75 54,78" fill="#1565C0"/>
-          </svg>
-        </div>
-
+  <!-- STEP 2: Tau dari mana -->
+  <div class="step" id="step2">
+    <p class="ob-question">Kamu tau Orbit dari mana?</p>
+    <div class="source-list">
+      <div class="source-item" onclick="pilihSumber(this,'instagram')">
+        <div class="source-icon">📸</div> Instagram
+      </div>
+      <div class="source-item" onclick="pilihSumber(this,'tiktok')">
+        <div class="source-icon">🎵</div> TikTok
+      </div>
+      <div class="source-item" onclick="pilihSumber(this,'youtube')">
+        <div class="source-icon">▶️</div> YouTube
+      </div>
+      <div class="source-item" onclick="pilihSumber(this,'whatsapp')">
+        <div class="source-icon">💬</div> WhatsApp
+      </div>
+      <div class="source-item" onclick="pilihSumber(this,'teman')">
+        <div class="source-icon">👥</div> Teman
+      </div>
+      <div class="source-item" onclick="pilihSumber(this,'guru')">
+        <div class="source-icon">👨‍🏫</div> Guru
+      </div>
+      <div class="source-item" onclick="pilihSumber(this,'lainnya')">
+        <div class="source-icon">✨</div> Lainnya
       </div>
     </div>
-
-    <!-- STEP 2: Tau dari mana -->
-    <div class="step" id="step2">
-      <p class="ob-question">Kamu tau Orbit dari mana?</p>
-      <div class="source-list">
-        <div class="source-item" onclick="pilihSumber(this, 'instagram')">
-          <div class="source-icon">📸</div>
-          Instagram
-        </div>
-        <div class="source-item" onclick="pilihSumber(this, 'tiktok')">
-          <div class="source-icon">🎵</div>
-          TikTok
-        </div>
-        <div class="source-item" onclick="pilihSumber(this, 'youtube')">
-          <div class="source-icon">▶️</div>
-          YouTube
-        </div>
-        <div class="source-item" onclick="pilihSumber(this, 'whatsapp')">
-          <div class="source-icon">💬</div>
-          WhatsApp
-        </div>
-        <div class="source-item" onclick="pilihSumber(this, 'teman')">
-          <div class="source-icon">👥</div>
-          Teman
-        </div>
-        <div class="source-item" onclick="pilihSumber(this, 'guru')">
-          <div class="source-icon">👨‍🏫</div>
-          Guru
-        </div>
-        <div class="source-item" onclick="pilihSumber(this, 'lainnya')">
-          <div class="source-icon">✨</div>
-          Lainnya
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Modal popup -->
-  <div class="modal-overlay" id="modalOverlay" onclick="tutupModal()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <svg class="modal-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="10" fill="#FF8A3D"/>
-        <ellipse cx="32" cy="32" rx="28" ry="12" stroke="#5B6CFF" stroke-width="3" fill="none" transform="rotate(-20 32 32)"/>
-        <circle cx="9" cy="22" r="4" fill="#5B6CFF" transform="rotate(-20 32 32)"/>
-      </svg>
-      <p class="modal-text">Tolong selesaikan profilmu untuk melanjutkan ke Orbit!</p>
-    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="tutupModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <svg class="modal-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="10" fill="#FF8A3D"/>
+      <ellipse cx="32" cy="32" rx="28" ry="12" stroke="#5B6CFF" stroke-width="3" fill="none" transform="rotate(-20 32 32)"/>
+      <circle cx="9" cy="22" r="4" fill="#5B6CFF" transform="rotate(-20 32 32)"/>
+    </svg>
+    <p class="modal-text">Tolong selesaikan profilmu untuk melanjutkan ke Orbit!</p>
   </div>
+</div>
 
-  <!-- Bottom bar -->
-  <div class="ob-bottom">
-    <div class="ob-bottom-inner">
-      <button class="ob-next-btn" id="nextBtn" onclick="nextStep(false)" disabled>Lanjut</button>
-    </div>
+<!-- Bottom bar -->
+<div class="ob-bottom">
+  <div class="ob-bottom-inner">
+    <button class="ob-next-btn" id="nextBtn" onclick="nextStep()" disabled>Lanjut</button>
   </div>
+</div>
 
-  <script>
-    let currentStep = 1;
-    const totalSteps = 2;
-    let selectedAvatar = null;
-    let selectedSumber = null;
+<script>
+  let currentStep = 1;
+  const totalSteps = 2;
+  let selectedAvatar = null;
+  let selectedSumber = null;
 
-    function updateUI() {
-      // Steps
-      document.querySelectorAll('.step').forEach((el, i) => {
-        el.classList.toggle('active', i + 1 === currentStep);
-      });
+  function updateUI() {
+    document.querySelectorAll('.step').forEach((el, i) => {
+      el.classList.toggle('active', i + 1 === currentStep);
+    });
+    document.getElementById('progressBar').style.width = (currentStep / totalSteps * 100) + '%';
+    document.getElementById('stepLabel').textContent = currentStep + ' dari ' + totalSteps;
+    updateNextBtn();
+  }
 
-      // Progress
-      document.getElementById('progressBar').style.width = (currentStep / totalSteps * 100) + '%';
-      document.getElementById('stepLabel').textContent = currentStep + ' dari ' + totalSteps;
-
-      // Back btn
-      document.getElementById('btnBack').disabled = false;
-
-      // Next btn
-      updateNextBtn();
+  function updateNextBtn() {
+    const btn = document.getElementById('nextBtn');
+    if (currentStep === 1) {
+      btn.disabled = !selectedAvatar;
+      btn.textContent = 'LANJUT';
+    } else {
+      btn.disabled = !selectedSumber;
+      btn.textContent = 'SELESAI';
     }
+  }
 
-    function updateNextBtn() {
-      const btn = document.getElementById('nextBtn');
-      if (currentStep === 1) {
-        btn.disabled = !selectedAvatar;
-        btn.textContent = 'LANJUT';
-      } else {
-        btn.disabled = !selectedSumber;
-        btn.textContent = 'SELESAI';
-      }
+  function prevStep() {
+    if (currentStep > 1) { currentStep--; updateUI(); }
+    else { document.getElementById('modalOverlay').classList.add('show'); }
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) { currentStep++; updateUI(); }
+    else {
+      localStorage.setItem('orbit_avatar', selectedAvatar);
+      localStorage.setItem('orbit_sumber', selectedSumber);
+      window.location.href = '/home';
     }
+  }
 
-    function prevStep() {
-      if (currentStep > 1) { currentStep--; updateUI(); }
-      else { document.getElementById('modalOverlay').classList.add('show'); }
-    }
+  function pilihAvatar(el, id) {
+    document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedAvatar = id;
+    updateNextBtn();
+  }
 
-    window.tutupModal = function() {
-      document.getElementById('modalOverlay').classList.remove('show');
-    };
+  function pilihSumber(el, id) {
+    document.querySelectorAll('.source-item').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedSumber = id;
+    updateNextBtn();
+  }
 
-    function nextStep(skip) {
-      if (currentStep < totalSteps) {
-        currentStep++;
-        updateUI();
-      } else {
-        // Selesai — simpan ke localStorage lalu ke dashboard
-        localStorage.setItem('orbit_avatar', selectedAvatar);
-        localStorage.setItem('orbit_sumber', selectedSumber);
-        console.log('selesai');
-      }
-    }
-
-    function pilihAvatar(el, id) {
-      document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedAvatar = id;
-      updateNextBtn();
-    }
-
-    function pilihSumber(el, id) {
-      document.querySelectorAll('.source-item').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedSumber = id;
-      updateNextBtn();
-    }
-  </script>
+  window.tutupModal = function() {
+    document.getElementById('modalOverlay').classList.remove('show');
+  };
+</script>
 
 </body>
 </html>
