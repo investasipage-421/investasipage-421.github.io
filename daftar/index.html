@@ -147,12 +147,11 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    // Ganti dengan kredensial EmailJS kamu
     const EMAILJS_PUBLIC_KEY  = '6XJwFyAjqoA0nIis3';
     const EMAILJS_SERVICE_ID  = 'service_qbvxohl';
     const EMAILJS_TEMPLATE_ID = 'template_wf2m7va';
 
-    emailjs.init(EMAILJS_PUBLIC_KEY);
+    window.emailjs.init(EMAILJS_PUBLIC_KEY);
 
     const firebaseConfig = {
       apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
@@ -217,15 +216,16 @@
         const result = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(result.user, { displayName: nama });
 
-        // Ambil link verifikasi Firebase lalu kirim via EmailJS
-        await sendEmailVerification(result.user);
-        const token = await result.user.getIdToken();
-        const verifyLink = `https://orbitxy-6e79c.firebaseapp.com/__/auth/action?mode=verifyEmail&oobCode=${token}`;
+        // Kirim email verifikasi via Firebase (link otomatis dikirim Firebase)
+        await sendEmailVerification(result.user, {
+          url: "https://orbitxy.com/login"
+        });
 
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        // Kirim notifikasi via EmailJS
+        await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
           nama:  nama,
           email: email,
-          link:  verifyLink
+          link:  "Cek email kamu untuk link verifikasi dari Orbit (cek juga folder spam)."
         });
 
         setLoading(false);
