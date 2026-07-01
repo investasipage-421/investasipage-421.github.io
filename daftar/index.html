@@ -14,6 +14,14 @@
     margin-top: -8px;
   }
   .loading { opacity: 0.7; pointer-events: none; }
+  .submit-btn:disabled {
+    background: #E0E0E0;
+    border-color: #C8C8C8;
+    box-shadow: 0 5px 0 #C8C8C8;
+    color: #A0A0A0;
+    cursor: not-allowed;
+    transform: none;
+  }
 </style>
 </head>
 <body>
@@ -43,16 +51,16 @@
 
       <div class="divider">atau daftar manual</div>
 
-      <input id="nama" type="text" placeholder="Nama">
-      <input id="email" type="email" placeholder="Email">
+      <input id="nama" type="text" placeholder="Nama" oninput="cekInput()">
+      <input id="email" type="email" placeholder="Email" oninput="cekInput()">
 
       <div class="pw-field">
-        <input id="pw" type="password" placeholder="Kata sandi">
+        <input id="pw" type="password" placeholder="Kata sandi" oninput="cekInput()">
         <button type="button" class="pw-toggle" onclick="togglePw('pw')">👁</button>
       </div>
 
       <div class="pw-field">
-        <input id="pw2" type="password" placeholder="Konfirmasi kata sandi">
+        <input id="pw2" type="password" placeholder="Konfirmasi kata sandi" oninput="cekInput()">
         <button type="button" class="pw-toggle" onclick="togglePw('pw2')">👁</button>
       </div>
 
@@ -62,11 +70,10 @@
 
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button id="submitBtn" type="button" class="submit-btn" onclick="daftarEmail()">Daftar Akun</button>
+      <button id="submitBtn" type="button" class="submit-btn" onclick="daftarEmail()" disabled>Daftar Akun</button>
     </div>
   </div>
 
-  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -97,6 +104,15 @@
       btn.classList.toggle('loading', loading);
     }
 
+    window.cekInput = function() {
+      const nama = document.getElementById('nama').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const pw = document.getElementById('pw').value;
+      const pw2 = document.getElementById('pw2').value;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = !(nama && email && pw && pw2);
+    };
+
     window.togglePw = function(id) {
       const pw = document.getElementById(id);
       pw.type = pw.type === 'password' ? 'text' : 'password';
@@ -108,7 +124,6 @@
       const pw = document.getElementById('pw').value;
       const pw2 = document.getElementById('pw2').value;
 
-      if (!nama || !email || !pw || !pw2) return showError('Semua kolom wajib diisi.');
       if (pw !== pw2) return showError('Konfirmasi kata sandi tidak cocok.');
       if (pw.length < 6) return showError('Kata sandi minimal 6 karakter.');
 
