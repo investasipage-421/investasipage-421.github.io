@@ -16,7 +16,6 @@
     transform: none;
   }
 
-  /* Error panel - full width, replaces bottom bar */
   .error-panel {
     position: fixed;
     bottom: 0;
@@ -65,26 +64,7 @@
     font-size: 15px;
     font-weight: 700;
     color: #3F3F3F;
-    margin: 0 0 18px;
-  }
-  .error-retry-btn {
-    width: 100%;
-    background: var(--cta);
-    border: 2px solid var(--cta-shadow);
-    box-shadow: 0 5px 0 var(--cta-shadow);
-    border-radius: 12px;
-    padding: 14px;
-    color: #fff;
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .error-retry-btn:active {
-    box-shadow: none;
-    transform: translateY(5px);
+    margin: 0;
   }
 </style>
 </head>
@@ -125,14 +105,7 @@
     </form>
   </div>
 
-  <!-- Normal bottom bar -->
-  <div id="bottomBar" class="bottom-bar">
-    <div class="bottom-bar-inner">
-      <button id="submitBtn" type="button" class="submit-btn" onclick="loginEmail()" disabled>Masuk</button>
-    </div>
-  </div>
-
-  <!-- Error panel (replaces bottom bar on error) -->
+  <!-- Error panel -->
   <div id="errorPanel" class="error-panel">
     <div class="error-panel-inner">
       <div class="error-panel-title">
@@ -140,7 +113,13 @@
         Oops...
       </div>
       <p id="errorMsg" class="error-panel-msg"></p>
-      <button type="button" class="error-retry-btn" onclick="tutupError()">Masuk</button>
+    </div>
+  </div>
+
+  <!-- Tombol Masuk (satu-satunya) -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-inner">
+      <button id="submitBtn" type="button" class="submit-btn" onclick="loginEmail()" disabled>Masuk</button>
     </div>
   </div>
 
@@ -162,16 +141,16 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    let toastTimer = null;
+
     function showError(msg) {
       document.getElementById('errorMsg').textContent = msg;
       document.getElementById('errorPanel').classList.add('show');
-      document.getElementById('bottomBar').style.display = 'none';
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        document.getElementById('errorPanel').classList.remove('show');
+      }, 5000);
     }
-
-    window.tutupError = function() {
-      document.getElementById('errorPanel').classList.remove('show');
-      document.getElementById('bottomBar').style.display = 'flex';
-    };
 
     function setLoading(loading) {
       const btn = document.getElementById('submitBtn');
