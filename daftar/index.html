@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daftar Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
   .loading { opacity: 0.7; pointer-events: none; }
   .submit-btn:disabled {
@@ -143,15 +142,12 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const EMAILJS_PUBLIC_KEY  = '6XJwFyAjqoA0nIis3';
-    const EMAILJS_SERVICE_ID  = 'service_qbvxohl';
-    const EMAILJS_TEMPLATE_ID = 'template_wf2m7va';
 
-    window.emailjs.init(EMAILJS_PUBLIC_KEY);
 
     const firebaseConfig = {
       apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
@@ -162,6 +158,11 @@
       messagingSenderId: "1064037228597",
       appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
     };
+
+    const EMAILJS_PUBLIC_KEY  = '6XJwFyAjqoA0nIis3';
+    const EMAILJS_SERVICE_ID  = 'service_qbvxohl';
+    const EMAILJS_TEMPLATE_ID = 'template_wf2m7va';
+    window.emailjs.init(EMAILJS_PUBLIC_KEY);
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -216,10 +217,7 @@
         const result = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(result.user, { displayName: nama });
 
-        // Kirim email verifikasi via Firebase
-        await sendEmailVerification(result.user, {
-          url: "https://orbitxy.com/login"
-        });
+
 
         setLoading(false);
         showSuccess();
