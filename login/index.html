@@ -14,6 +14,14 @@
     margin-top: -8px;
   }
   .loading { opacity: 0.7; pointer-events: none; }
+  .submit-btn:disabled {
+    background: #E0E0E0;
+    border-color: #C8C8C8;
+    box-shadow: 0 5px 0 #C8C8C8;
+    color: #A0A0A0;
+    cursor: not-allowed;
+    transform: none;
+  }
 </style>
 </head>
 <body>
@@ -43,9 +51,9 @@
 
       <div class="divider">atau masuk manual</div>
 
-      <input id="email" type="email" placeholder="Email">
+      <input id="email" type="email" placeholder="Email" oninput="cekInput()">
       <div class="pw-field">
-        <input id="pw" type="password" placeholder="Kata sandi">
+        <input id="pw" type="password" placeholder="Kata sandi" oninput="cekInput()">
         <button type="button" class="pw-toggle" onclick="togglePw()">👁</button>
       </div>
 
@@ -57,11 +65,10 @@
 
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button id="submitBtn" type="button" class="submit-btn" onclick="loginEmail()">Masuk</button>
+      <button id="submitBtn" type="button" class="submit-btn" onclick="loginEmail()" disabled>Masuk</button>
     </div>
   </div>
 
-  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -92,6 +99,13 @@
       btn.classList.toggle('loading', loading);
     }
 
+    window.cekInput = function() {
+      const email = document.getElementById('email').value.trim();
+      const pw = document.getElementById('pw').value;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = !(email && pw);
+    };
+
     window.togglePw = function() {
       const pw = document.getElementById('pw');
       pw.type = pw.type === 'password' ? 'text' : 'password';
@@ -100,7 +114,6 @@
     window.loginEmail = async function() {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('pw').value;
-      if (!email || !password) return showError('Email dan kata sandi wajib diisi.');
       setLoading(true);
       try {
         await signInWithEmailAndPassword(auth, email, password);
