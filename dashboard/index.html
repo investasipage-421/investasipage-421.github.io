@@ -42,6 +42,42 @@
   .ob-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .ob-nav-btn:hover:not(:disabled) { background: #E5E5E5; }
 
+  /* Popup modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modal-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 36px 24px 32px;
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.25s ease;
+  }
+  .modal-overlay.show .modal-box { transform: scale(1); }
+  .modal-mark { width: 72px; height: 72px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  .modal-text { font-size: 20px; font-weight: 800; color: #3F3F3F; line-height: 1.4; margin: 0; }
+  .ob-nav-btn:hover:not(:disabled) { background: #E5E5E5; }
+
   .ob-title-wrap { text-align: center; }
   .ob-title-wrap h2 { font-size: 15px; font-weight: 800; margin: 0; color: #3F3F3F; }
   .ob-title-wrap span { font-size: 12px; color: #818181; font-weight: 600; }
@@ -349,6 +385,18 @@
 
   </div>
 
+  <!-- Modal popup -->
+  <div class="modal-overlay" id="modalOverlay" onclick="tutupModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <svg class="modal-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="10" fill="#FF8A3D"/>
+        <ellipse cx="32" cy="32" rx="28" ry="12" stroke="#5B6CFF" stroke-width="3" fill="none" transform="rotate(-20 32 32)"/>
+        <circle cx="9" cy="22" r="4" fill="#5B6CFF" transform="rotate(-20 32 32)"/>
+      </svg>
+      <p class="modal-text">Tolong selesaikan profilmu untuk melanjutkan ke Orbit!</p>
+    </div>
+  </div>
+
   <!-- Bottom bar -->
   <div class="ob-bottom">
     <div class="ob-bottom-inner">
@@ -373,7 +421,7 @@
       document.getElementById('stepLabel').textContent = currentStep + ' dari ' + totalSteps;
 
       // Back btn
-      document.getElementById('btnBack').disabled = currentStep === 1;
+      document.getElementById('btnBack').disabled = false;
 
       // Next btn
       updateNextBtn();
@@ -392,7 +440,12 @@
 
     function prevStep() {
       if (currentStep > 1) { currentStep--; updateUI(); }
+      else { document.getElementById('modalOverlay').classList.add('show'); }
     }
+
+    window.tutupModal = function() {
+      document.getElementById('modalOverlay').classList.remove('show');
+    };
 
     function nextStep(skip) {
       if (currentStep < totalSteps) {
