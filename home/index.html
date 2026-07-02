@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit</title>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  body {
+    padding: 0;
+    justify-content: flex-start;
+    background: #F6F6F6;
+    min-height: 100vh;
+  }
+
+  /* Top bar */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #fff;
+    border-bottom: 2px solid #E1E1E1;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+  }
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-logo { width: 32px; height: 32px; }
+  .topbar-name { font-size: 18px; font-weight: 800; color: var(--orbit-1); }
+  .avatar-sm {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #EEF3FF;
+    border: 2px solid var(--orbit-1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
+
+  /* Content */
+  .content {
+    padding: 80px 16px 100px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Under construction */
+  .wip-box {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 32px 16px;
+  }
+  .wip-box.active { display: flex; }
+  .wip-icon { font-size: 64px; margin-bottom: 16px; }
+  .wip-title { font-size: 20px; font-weight: 800; color: #3F3F3F; margin-bottom: 8px; }
+  .wip-msg { font-size: 14px; color: #818181; }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 2px solid #E1E1E1;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 8px 0 20px;
+    z-index: 100;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 10px;
+    transition: all 0.15s;
+    font-size: 10px;
+    font-weight: 700;
+    color: #A0A0A0;
+    border: none;
+    background: none;
+  }
+  .nav-item.active { color: var(--orbit-1); }
+  .nav-item .nav-icon { font-size: 22px; }
+
+  /* Tanya AI center button */
+  .nav-item.center-btn {
+    margin-top: -28px;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+  .center-btn-inner {
+    width: 60px; height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #FFC508, #FFD740);
+    border: 3px solid #C99B06;
+    box-shadow: 0 5px 0 #C99B06;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    margin-bottom: 4px;
+  }
+  .nav-item.center-btn:active .center-btn-inner {
+    box-shadow: none;
+    transform: translateY(5px);
+  }
+  .center-btn-inner svg { width: 36px; height: 36px; }
+  .nav-item.center-btn span:last-child { font-size: 10px; font-weight: 800; color: #C99B06; }
+
+  /* Notif dot */
+  .notif-dot {
+    width: 10px; height: 10px;
+    background: #FF3D00;
+    border-radius: 50%;
+    position: absolute;
+    top: -2px; right: -2px;
+  }
+  .nav-icon-wrap { position: relative; display: inline-flex; }
+</style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <svg class="topbar-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="10" fill="#FF8A3D"/>
+        <ellipse cx="32" cy="32" rx="28" ry="12" stroke="#5B6CFF" stroke-width="3" fill="none" transform="rotate(-20 32 32)"/>
+        <circle cx="9" cy="22" r="4" fill="#5B6CFF" transform="rotate(-20 32 32)"/>
+      </svg>
+      <span class="topbar-name">Orbit</span>
+    </div>
+    <div class="avatar-sm" id="avatarBtn">👤</div>
+  </div>
+
+  <!-- Content tabs -->
+  <div class="content">
+    <div class="wip-box active" id="tab-beranda">
+      <div class="wip-icon">🏠</div>
+      <div class="wip-title">Beranda</div>
+      <div class="wip-msg">Sedang diperbaiki, harap tunggu ya!</div>
+    </div>
+    <div class="wip-box" id="tab-belajar">
+      <div class="wip-icon">📚</div>
+      <div class="wip-title">Belajar</div>
+      <div class="wip-msg">Sedang diperbaiki, harap tunggu ya!</div>
+    </div>
+    <div class="wip-box" id="tab-tanyaai">
+      <div class="wip-icon">🤖</div>
+      <div class="wip-title">Tanya AI</div>
+      <div class="wip-msg">Sedang diperbaiki, harap tunggu ya!</div>
+    </div>
+    <div class="wip-box" id="tab-catatan">
+      <div class="wip-icon">📝</div>
+      <div class="wip-title">Catatan</div>
+      <div class="wip-msg">Sedang diperbaiki, harap tunggu ya!</div>
+    </div>
+    <div class="wip-box" id="tab-lainnya">
+      <div class="wip-icon">⚙️</div>
+      <div class="wip-title">Lainnya</div>
+      <div class="wip-msg">Sedang diperbaiki, harap tunggu ya!</div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button class="nav-item active" id="nav-beranda" onclick="pindahTab('beranda')">
+      <div class="nav-icon-wrap"><span class="nav-icon">🏠</span></div>
+      <span>Beranda</span>
+    </button>
+
+    <button class="nav-item" id="nav-belajar" onclick="pindahTab('belajar')">
+      <div class="nav-icon-wrap">
+        <span class="nav-icon">▶️</span>
+        <span class="notif-dot"></span>
+      </div>
+      <span>Belajar</span>
+    </button>
+
+    <!-- Tanya AI (tengah) -->
+    <button class="nav-item center-btn" id="nav-tanyaai" onclick="pindahTab('tanyaai')">
+      <div class="center-btn-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="28" r="16" fill="#FF8A3D"/>
+          <ellipse cx="26" cy="25" rx="3" ry="4" fill="#fff"/>
+          <ellipse cx="38" cy="25" rx="3" ry="4" fill="#fff"/>
+          <circle cx="27" cy="26" r="2" fill="#333"/>
+          <circle cx="39" cy="26" r="2" fill="#333"/>
+          <path d="M26 34 Q32 39 38 34" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="16" y="2" width="32" height="8" rx="4" fill="#FF3D00"/>
+        </svg>
+      </div>
+      <span>Tanya AI</span>
+    </button>
+
+    <button class="nav-item" id="nav-catatan" onclick="pindahTab('catatan')">
+      <div class="nav-icon-wrap"><span class="nav-icon">🔖</span></div>
+      <span>Catatan</span>
+    </button>
+
+    <button class="nav-item" id="nav-lainnya" onclick="pindahTab('lainnya')">
+      <div class="nav-icon-wrap"><span class="nav-icon">•••</span></div>
+      <span>Lainnya</span>
+    </button>
+  </div>
+
+  <script>
+    function pindahTab(tab) {
+      // Sembunyikan semua tab
+      document.querySelectorAll('.wip-box').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      // Tampilkan tab yang dipilih
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('nav-' + tab).classList.add('active');
+    }
+  </script>
+
+  <!-- Firebase cek login -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
+      authDomain: "orbitxy-6e79c.firebaseapp.com",
+      databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "orbitxy-6e79c",
+      storageBucket: "orbitxy-6e79c.firebasestorage.app",
+      messagingSenderId: "1064037228597",
+      appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = '/login';
+      } else {
+        document.getElementById('avatarBtn').textContent = 
+          user.displayName ? user.displayName.charAt(0).toUpperCase() : '👤';
+      }
+    });
+  </script>
+
+</body>
+</html>
