@@ -15,59 +15,30 @@
     cursor: not-allowed;
     transform: none;
   }
-
   .error-panel {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     z-index: 999;
     background: #FFE4E4;
     border-top: 4px solid #FFBBBB;
     padding: 20px 16px 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
     transform: translateY(100%);
     transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
   }
-  .error-panel.show {
-    transform: translateY(0);
-  }
-  .error-panel-inner {
-    width: 100%;
-    max-width: 420px;
-  }
+  .error-panel.show { transform: translateY(0); }
+  .error-panel-inner { width: 100%; max-width: 420px; }
   .error-panel-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #CC0000;
-    font-weight: 800;
-    font-size: 18px;
-    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+    color: #CC0000; font-weight: 800; font-size: 18px; margin-bottom: 6px;
   }
   .error-icon {
-    background: #CC0000;
-    color: white;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 900;
-    flex-shrink: 0;
+    background: #CC0000; color: white; border-radius: 50%;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; flex-shrink: 0;
   }
-  .error-panel-msg {
-    font-size: 15px;
-    font-weight: 700;
-    color: #3F3F3F;
-    margin: 0;
-  }
-
-  /* Info panel (verifikasi email) */
+  .error-panel-msg { font-size: 15px; font-weight: 700; color: #3F3F3F; margin: 0; }
   .info-panel {
     position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -75,9 +46,7 @@
     background: #E3F0FF;
     border-top: 4px solid #90C3F9;
     padding: 20px 16px 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
     transform: translateY(100%);
     transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
   }
@@ -126,42 +95,69 @@
       <input id="email" type="email" placeholder="Email" oninput="cekInput()">
       <div class="pw-field">
         <input id="pw" type="password" placeholder="Kata sandi" oninput="cekInput()">
-        <button type="button" class="pw-toggle" onclick="togglePw()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="1" x2="23" y2="23" stroke="#316FEA" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button type="button" class="pw-toggle" id="toggleBtn" onclick="togglePw()">
+          <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="1" y1="1" x2="23" y2="23" stroke="#316FEA" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
       </div>
 
       <div class="forgot"><a href="/forget-password">Lupa kata sandi?</a></div>
     </form>
   </div>
 
-  <!-- Error panel -->
   <div id="errorPanel" class="error-panel">
     <div class="error-panel-inner">
-      <div class="error-panel-title">
-        <span class="error-icon">!</span>
-        Oops...
-      </div>
+      <div class="error-panel-title"><span class="error-icon">!</span>Oops...</div>
       <p id="errorMsg" class="error-panel-msg"></p>
     </div>
   </div>
 
-  <!-- Info panel verifikasi email -->
   <div id="infoPanel" class="info-panel">
     <div class="info-panel-inner">
-      <div class="info-panel-title">
-        <span class="info-icon">i</span>
-        Verifikasi Email
-      </div>
+      <div class="info-panel-title"><span class="info-icon">i</span>Verifikasi Email</div>
       <p class="info-panel-msg">Email belum diverifikasi. Silakan cek email Anda terlebih dahulu.</p>
     </div>
   </div>
 
-  <!-- Tombol Masuk (satu-satunya) -->
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
       <button id="submitBtn" type="button" class="submit-btn" onclick="loginEmail()" disabled>Masuk</button>
     </div>
   </div>
 
+  <!-- Script biasa untuk fungsi HTML -->
+  <script>
+    // Placeholder untuk fungsi Firebase (diisi setelah module load)
+    function loginEmail() { if (window._loginEmail) window._loginEmail(); }
+    function loginGoogle() { if (window._loginGoogle) window._loginGoogle(); }
+
+    const eyeOpenSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#316FEA" stroke-width="2"/></svg>`;
+    const eyeClosedSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="1" x2="23" y2="23" stroke="#316FEA" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+    function cekInput() {
+      const email = document.getElementById('email').value.trim();
+      const pw = document.getElementById('pw').value;
+      document.getElementById('submitBtn').disabled = !(email && pw);
+    }
+
+    function togglePw() {
+      const pw = document.getElementById('pw');
+      const btn = document.getElementById('toggleBtn');
+      if (pw.type === 'password') {
+        pw.type = 'text';
+        btn.innerHTML = eyeOpenSVG;
+      } else {
+        pw.type = 'password';
+        btn.innerHTML = eyeClosedSVG;
+      }
+    }
+  </script>
+
+  <!-- Firebase module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -187,18 +183,14 @@
       const panel = document.getElementById('infoPanel');
       panel.classList.add('show');
       if (infoTimer) clearTimeout(infoTimer);
-      infoTimer = setTimeout(() => {
-        panel.classList.remove('show');
-      }, 5000);
+      infoTimer = setTimeout(() => panel.classList.remove('show'), 5000);
     }
 
     function showError(msg) {
       document.getElementById('errorMsg').textContent = msg;
       document.getElementById('errorPanel').classList.add('show');
       if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        document.getElementById('errorPanel').classList.remove('show');
-      }, 5000);
+      toastTimer = setTimeout(() => document.getElementById('errorPanel').classList.remove('show'), 5000);
     }
 
     function setLoading(loading) {
@@ -207,34 +199,18 @@
       btn.classList.toggle('loading', loading);
     }
 
-    window.cekInput = function() {
-      const email = document.getElementById('email').value.trim();
-      const pw = document.getElementById('pw').value;
-      document.getElementById('submitBtn').disabled = !(email && pw);
-    };
-
-    const eyeOpen = ;
-    const eyeClosed = ;
-
-    window.togglePw = function() {
-      const pw = document.getElementById('pw');
-      const btn = pw.nextElementSibling;
-      if (pw.type === 'password') {
-        pw.type = 'text';
-        btn.innerHTML = eyeOpen;
-      } else {
-        pw.type = 'password';
-        btn.innerHTML = eyeClosed;
-      }
-    };
-
-    window.loginEmail = async function() {
+    window._loginEmail = async function() {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('pw').value;
       setLoading(true);
       try {
         const result = await signInWithEmailAndPassword(auth, email, password);
-
+        if (!result.user.emailVerified) {
+          await signOut(auth);
+          setLoading(false);
+          showInfo();
+          return;
+        }
         window.location.href = '/dashboard';
       } catch (e) {
         setLoading(false);
@@ -242,7 +218,7 @@
       }
     };
 
-    window.loginGoogle = async function() {
+    window._loginGoogle = async function() {
       try {
         await signInWithPopup(auth, provider);
         window.location.href = '/dashboard';
