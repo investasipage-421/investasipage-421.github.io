@@ -39,6 +39,9 @@
     transition: all 0.15s;
     flex-shrink: 0;
     font-weight: 700;
+    line-height: 1;
+    padding: 0;
+    padding-bottom: 3px;
   }
   .ob-nav-btn:active:not(.decorative) {
     box-shadow: none;
@@ -216,7 +219,7 @@
 
 <div class="ob-header">
   <div class="ob-header-row">
-    <button class="ob-nav-btn" id="btnBack" onclick="prevStep()">←</button>
+    <button class="ob-nav-btn" id="btnBack" onclick="prevStep()"><span style="display:flex;align-items:center;justify-content:center;line-height:1;">←</span></button>
     <div class="ob-title-wrap">
       <h2>Selesaikan profilmu</h2>
       <span id="stepLabel">1 dari 2</span>
