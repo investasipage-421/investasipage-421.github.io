@@ -160,7 +160,7 @@
   <!-- Firebase module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
@@ -205,12 +205,6 @@
       setLoading(true);
       try {
         const result = await signInWithEmailAndPassword(auth, email, password);
-        if (!result.user.emailVerified) {
-          await signOut(auth);
-          setLoading(false);
-          showInfo();
-          return;
-        }
         window.location.href = '/dashboard';
       } catch (e) {
         setLoading(false);
