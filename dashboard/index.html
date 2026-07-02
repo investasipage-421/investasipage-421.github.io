@@ -132,23 +132,7 @@
     overflow: hidden;
   }
 
-  /* Checkmark selected */
-  .avatar-card.selected::after {
-    content: "✓";
-    position: absolute;
-    top: -8px; right: -8px;
-    width: 22px; height: 22px;
-    background: #316FEA;
-    color: white;
-    border-radius: 50%;
-    font-size: 13px;
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 22px;
-    text-align: center;
-  }
+
 
   /* Source list */
   .source-list { display: flex; flex-direction: column; gap: 12px; }
@@ -274,190 +258,32 @@
 
       <!-- Cowok kulit terang -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av1')">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="220" fill="#fff" rx="17"/>
-  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
-  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
-  <rect x="84" y="133" width="32" height="22" fill="#FDDCB5"/>
-  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#FDDCB5"/>
-  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
-  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
-  <path d="M48 95 Q48 52 100 52 Q152 52 152 95 Q148 68 100 65 Q52 68 48 95Z" fill="#1a0f00"/>
-  <rect x="48" y="90" width="14" height="30" rx="7" fill="#1a0f00"/>
-  <rect x="138" y="90" width="14" height="30" rx="7" fill="#1a0f00"/>
-  <path d="M80 92 Q90 87 98 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M102 92 Q110 87 120 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <circle cx="90" cy="102" r="5.5" fill="#1a0f00"/>
-  <circle cx="112" cy="102" r="5.5" fill="#1a0f00"/>
-  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
-  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
-  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#e8b98a"/>
-  <path d="M89 125 Q100 133 111 125" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
-  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
-  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
-  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
-  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
-  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
-</svg>
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAA/AD8DASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAkBBQYHCAoE/8QAMRAAAgEDAwQABQMCBwAAAAAAAQIDBAUGABESBwgTIQkUFSJBFiMxGFEyMzRCcaGl/8QAGQEAAgMBAAAAAAAAAAAAAAAAAAIEBQYD/8QAJREAAgICAAUEAwAAAAAAAAAAAQIAAwQREiEiQYExYXGxMpGh/9oADAMBAAIRAxEAPwCKrTTVVG59nYD+dEJTTTfVSxY7kkn+50QlNNV5EqF3PEHfb8aoSCSQNh/bRCNNNNEI1kPTzB7n1Lzex4pZkV7leKyOjhLhiiFm25vxVmCKN2YgHZVJ29ax7XR3w7yP6wcBUgHf58/+fU652sURmHYR614nCnuZvfIPhF3ins00ti6j0Vwuo4+KmuNqekgf7hy5SpLKy7LuRsh3IA9b7iz4n8JXOKy4yJk2a2C00IiLJNaop66VpNxspSRYAF25HlyJ3AHE77iSkdQ8ePUP9CivH6q+lfW/p/hk/wBH5vD5fJx4f5n28eXL87be9VzPqHj3T76F+oK/6eb5dYLHbv2ZJPPWTcvFF9injy4t9zbKNvZGs0M3J/HfM+0vji4/rrl8yPPqF8JuqtWEzVmJZm96ySkpmc26tolgir5A2/GN/IfCeG4AfmC227IpJWPeJOUyKdiCwB3O3/f416N22H41AJnnRfJcMvOaCO03O645i95qbLV5HT2+X5JZopfEOcgBSMsWjPEtv+4v87jeywch7eIWHcgZlC16KCYBpppq3lbGty9nPUG3dL+5nAchuzRxW2OuaknnmmWKOBaiJ6fzO7elRPNzYn8Kdaa00rqHUqe8ZWKsGHaehufE7FR5TPmTWuJshFtFua4pE0lR8ortL4VA3O3Ni3FRux2/nYbfMkGO5tPFR1tjNe1jnpq6mN5s0iJTz+PnDNA08QUyIrH7oyWjYlTxbca4T7RviU2mjxmDFusVfU01ZQRLHR5QYpKn5uMeglSEDP5R6AkAbmNy/FgWfv3H8vsWV2inutjvNvvNrqOXhraCqSeGTixVuLoSDsysDsfRBH41j7qrKG0+/Y9ppqrEuHR5Eu4G/vXNvdv3F9MulHTLO8fudyt1fkt0oJ6FsbonDVU809OEUzqjBokKOjF2KngPt5NxU2Xuq7/sU6AT3XF7PTy5F1BgiCiieF0o6J3jjkjeeQ8ealJQ4WLkTxKs0ZIOog8lyO45hkd1v13qfnLtdKqWtq6goqeWaRy7txUBRuzE7AAD8AanYeG1nW/IfciZWUE6E5n6lt0001pJRRppq84XiVxz7MbFjFoRJLteq+C20aSuEVpppFjjBY+gOTD3+NEJ1p2KfDru/dLG+W5XVVuMdNomeGGrplVau6zKeLLTc1KrGh3DTFWHJeChiHMcj+J3nD+nfX6z9BbB03udksltsnzNPX0qlqUgAuZOB5MYmIZDOzl2nYqV3Jc7/wClnTy1dJMDsGFWGHxWOxW+CipmdUEkvEENJJwVVMjkc2YKOTOx2965QqeqNxk+KLBYkpoI6aOw/p55ASWkg+Ua5czv/DeUhfX+0f8AOmFCXgixdgDcU3PSQazok6m1O4LsO6P9yTtX5Hjz2fInCg3+wutLWsBxG0h4tHL9qKgMiOVX0pXUUffR2DXPtDmtd8t16bJsHu9VJSwVc8AhqaKf7njp5gCVcmJSRIvHkY5N0TZeUrWLdfspu/W224tVJZPolbdrvblSKlnWrRaPzcW5mUo2/jTl9q/4vQPsrmHdT0Xj7g+37NMGHFa640Je3yM4jVKyIiWnLMVbihlRA+w34FgNt9Rqbq7lJqPIEjyDo/3xOjKynq+f3PODppprvFn/2Q==" style="width:100%;height:100%;object-fit:cover;border-radius:17px;display:block;"/>
       </div>
 
       <!-- Cowok kulit gelap -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av2')">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="220" fill="#fff" rx="17"/>
-  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
-  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
-  <rect x="84" y="133" width="32" height="22" fill="#8D5524"/>
-  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#8D5524"/>
-  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#8D5524"/>
-  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#8D5524"/>
-  <path d="M48 95 Q48 52 100 52 Q152 52 152 95 Q148 68 100 65 Q52 68 48 95Z" fill="#0d0600"/>
-  <rect x="48" y="90" width="14" height="30" rx="7" fill="#0d0600"/>
-  <rect x="138" y="90" width="14" height="30" rx="7" fill="#0d0600"/>
-  <path d="M80 92 Q90 87 98 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M102 92 Q110 87 120 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <circle cx="90" cy="102" r="5.5" fill="#0d0600"/>
-  <circle cx="112" cy="102" r="5.5" fill="#0d0600"/>
-  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
-  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
-  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#6b3a1f"/>
-  <path d="M89 125 Q100 133 111 125" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
-  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
-  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
-  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
-  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
-  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
-</svg>
+        <img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:17px;display:block;"/>
       </div>
 
       <!-- Cewek rambut pendek kulit terang -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av3')">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="220" fill="#fff" rx="17"/>
-  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
-  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
-  <rect x="84" y="133" width="32" height="22" fill="#FDDCB5"/>
-  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#FDDCB5"/>
-  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
-  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
-  <path d="M48 90 Q48 52 100 52 Q152 52 152 90 Q150 70 100 68 Q50 70 48 90Z" fill="#1a0f00"/>
-  <rect x="44" y="88" width="16" height="55" rx="8" fill="#1a0f00"/>
-  <rect x="140" y="88" width="16" height="55" rx="8" fill="#1a0f00"/>
-  <rect x="44" y="130" width="112" height="14" rx="7" fill="#1a0f00"/>
-  <path d="M80 92 Q90 87 98 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M102 92 Q110 87 120 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <circle cx="90" cy="102" r="5.5" fill="#1a0f00"/>
-  <circle cx="112" cy="102" r="5.5" fill="#1a0f00"/>
-  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
-  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
-  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#e8b98a"/>
-  <path d="M89 125 Q100 133 111 125" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
-  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
-  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
-  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
-  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
-  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
-</svg>
+        <img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:17px;display:block;"/>
       </div>
 
       <!-- Cewek rambut pendek kulit gelap -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av4')">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="220" fill="#fff" rx="17"/>
-  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
-  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
-  <rect x="84" y="133" width="32" height="22" fill="#8D5524"/>
-  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#8D5524"/>
-  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#8D5524"/>
-  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#8D5524"/>
-  <path d="M48 90 Q48 52 100 52 Q152 52 152 90 Q150 70 100 68 Q50 70 48 90Z" fill="#0d0600"/>
-  <rect x="44" y="88" width="16" height="55" rx="8" fill="#0d0600"/>
-  <rect x="140" y="88" width="16" height="55" rx="8" fill="#0d0600"/>
-  <rect x="44" y="130" width="112" height="14" rx="7" fill="#0d0600"/>
-  <path d="M80 92 Q90 87 98 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M102 92 Q110 87 120 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <circle cx="90" cy="102" r="5.5" fill="#0d0600"/>
-  <circle cx="112" cy="102" r="5.5" fill="#0d0600"/>
-  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
-  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
-  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#6b3a1f"/>
-  <path d="M89 125 Q100 133 111 125" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
-  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
-  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
-  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
-  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
-  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
-</svg>
+        <img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:17px;display:block;"/>
       </div>
 
       <!-- Cewek hijab kulit terang -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av5')">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="220" fill="#fff" rx="17"/>
-  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
-  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
-  <rect x="82" y="138" width="36" height="16" fill="#FDDCB5"/>
-  <ellipse cx="100" cy="100" rx="60" ry="68" fill="#5c6bc0"/>
-  <ellipse cx="100" cy="108" rx="44" ry="48" fill="#FDDCB5"/>
-  <path d="M56 118 Q56 160 100 164 Q144 160 144 118" fill="#5c6bc0"/>
-  <path d="M80 92 Q90 87 98 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M102 92 Q110 87 120 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <circle cx="90" cy="102" r="5.5" fill="#1a0f00"/>
-  <circle cx="112" cy="102" r="5.5" fill="#1a0f00"/>
-  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
-  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
-  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#e8b98a"/>
-  <path d="M89 125 Q100 133 111 125" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
-  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
-  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
-  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
-  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
-  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
-</svg>
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAA/AD8DASIAAhEBAxEB/8QAHgAAAQQCAwEAAAAAAAAAAAAAAAECBwkECAUGCgP/xAAwEAACAQMDBAEDAgUFAAAAAAABAgMEBREABhIHCBMhIhQxQQkVMkJRYXEWI1KBkf/EABkBAAMBAQEAAAAAAAAAAAAAAAACBAUGA//EACURAAICAQMDBAMAAAAAAAAAAAECAAMRBCFBEiIxBRNhkTJxgf/aAAwDAQACEQMRAD8Aqq0aNGiENGnZCjAAJ/J0hckkn2T+dEImjTxJnHL5fjB00qQM/j+uiETRo0aIQ0oHrOD7+x0mpk7Qemdk6xdxOzto7ljnqLHWy1ElTBBKYmlEVNLMELD2FZolVuOG4k4KnBCuwRSx4jKCxCjmdu7eeyLeHXrptuvdtLTSUUFPSMu3/NIsS3WsSVfIi8h7jCLLHzJVfKyjlhJAILvOwdybeuF3oLpYrhbq+zoktwpaqmeOWkRiiq8iEZVSZIwGIwTInv5Lm+qzbq2lZN40/Ta2yU1vvVJZlukFkpKVoooaAS+BWTiojVQ44hAcj16xr4dQrvsXat42jdN2wUKXSsuiWKxVtRQGomWrq1ZRDG6ozReRUIZiVXAwx1hL6i/WcrsfE120SdIIbceZ5/vsdOHy9fb/ADq4Xqt+mp0i6g1FVXWmmrtk3GVZWH7JKv0hlb+FmgdWART/ACRGMYJHr0RVfunonv7Y7X5r3s69UFNYar6K51j0UjUtLMeHFXnUGP5CWIqeWGEqFSQyk6lGqrvHb5mfbp3p/KdI0aVxhj9v+tJquTQ1MfaH1Ci6ZdyXT2/VLUsdJHcRQzzVs4hhghqVemkmdzgKI1mZ8kgfH2QNQ5p6HOBg8s+tKyh1KnmMp6SCOJ6GJtu2Shv8+7HtUDX1KA0TXKKm8lWaVWMnhUqC7Ly+XBc5OPRONYFAdt9RaalFTY5qxbPVQVtINwWKemanqAnKKaEVMSkSKGPzT2hJBIORrRrtM/UntFNtqHbHWCuqKWst8KpS7n8UtV9Wg9BKhUVn8oGP9wBufstxYZffqwbssm6bVBdLJebfebZPy8Nbb6qOeCTixVuLoSpwykHB+4I/GuPuqsoOHB+DOnqsS4dn1OWIzrVDvA7uOmm0OnfUnYcl+NZvSe0VFpFppaaZmWWpg4AmXh4gFWYMw55wrL7b46we8Hv5tXQaor9n7Xpv3jf8YQTfUxOtJblkiWRHYkDysUkQqqHj7PJgV4tUjdblW325VlyuFXNW19XK9RUVVTIXlmkZss7MfbMSSST7OSdXaPRF8WWbDj5keq1QXsTc8zGlAHHH3x7/APdM0rHkc4A/xpNdJMKGjRrn+n2y63qRv3bW0rbLBBcb9c6a1U0tUzLCks8qxIzlQSFDOCSATjOAdEJuV2Nfpp1HcvtSDfu879Vbe2TPNLDRUtrCNW3AIXjeRZHDJCiyjiMo7NwkHFBxc2CbSvO0enXX6z9BbH02uVmslvsIq6a40hBpSFDEyGPLN4mIZTOz82nbiykt5DsVsPZtD082jZNsWgMllstup7bRRytydY4UEa8m/J4quT/XOtQarqhc2/VJp7HHTwR0q2L/AE9K/ss8H0jXLl/ZvKVX1/KP76YUpeCLBkAZi+89JBQ4ztJR69dhXR3uLrqq8bk27LbNzVMEUBvtkqTTVSrGRxLL8oZG4jhykjc8cAEcVxVN3w9g157RWtl9pL2Nz7Ju1U9JBXSQ+GppJ8M6QTLkhiY1YiRSAxjkyqfHlartvuE3LdeuFLtid7K1jmvN3tjxRUc6VcSUizlG8hkKMT4l5fEfxeh/xkDuW6QRde+g29diMIvqLvbnSieeVo446xCJaZ3ZQWCLMkZbAOQCMHONS03V3KTWdgSP6Dgz1dWU937+55udGjRqiJP/2Q==" style="width:100%;height:100%;object-fit:cover;border-radius:17px;display:block;"/>
       </div>
 
       <!-- Cewek hijab kulit gelap -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av6')">
-        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="220" fill="#fff" rx="17"/>
-  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
-  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
-  <rect x="82" y="138" width="36" height="16" fill="#8D5524"/>
-  <ellipse cx="100" cy="100" rx="60" ry="68" fill="#4a148c"/>
-  <ellipse cx="100" cy="108" rx="44" ry="48" fill="#8D5524"/>
-  <path d="M56 118 Q56 160 100 164 Q144 160 144 118" fill="#4a148c"/>
-  <path d="M80 92 Q90 87 98 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M102 92 Q110 87 120 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
-  <circle cx="90" cy="102" r="5.5" fill="#0d0600"/>
-  <circle cx="112" cy="102" r="5.5" fill="#0d0600"/>
-  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
-  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
-  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#6b3a1f"/>
-  <path d="M89 125 Q100 133 111 125" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
-  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
-  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
-  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
-  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
-  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
-</svg>
+        <img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:17px;display:block;"/>
       </div>
 
     </div>
