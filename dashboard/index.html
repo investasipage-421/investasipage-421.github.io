@@ -97,29 +97,57 @@
     grid-template-columns: 1fr 1fr;
     gap: 14px;
   }
+  /* Avatar card - tombol style dengan shadow bawah */
   .avatar-card {
-    border: 2.5px solid #E8E8E8;
-    border-radius: 18px;
+    border: 2.5px solid #D8D8D8;
+    border-radius: 20px;
     padding: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.18s;
     background: #fff;
-    overflow: hidden;
+    overflow: visible;
     aspect-ratio: 1;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 6px 0 #C8C8C8;
+    transition: box-shadow 0.12s ease, transform 0.12s ease, border-color 0.15s;
+    position: relative;
   }
-  .avatar-card:hover { border-color: #316FEA; transform: scale(1.03); }
+  .avatar-card:active {
+    box-shadow: none;
+    transform: translateY(6px);
+  }
   .avatar-card.selected {
     border-color: #316FEA;
-    box-shadow: 0 0 0 3px #316FEA44, 0 4px 12px rgba(49,111,234,0.15);
+    box-shadow: 0 6px 0 #1a4fbb;
   }
-  .avatar-card img, .avatar-card svg {
+  .avatar-card.selected:active {
+    box-shadow: none;
+    transform: translateY(6px);
+  }
+  .avatar-card svg {
     width: 100%; height: 100%;
-    object-fit: cover;
     display: block;
+    border-radius: 17px;
+    overflow: hidden;
+  }
+
+  /* Checkmark selected */
+  .avatar-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: -8px; right: -8px;
+    width: 22px; height: 22px;
+    background: #316FEA;
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 22px;
+    text-align: center;
   }
 
   /* Source list */
@@ -128,30 +156,36 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    border: 2.5px solid #E8E8E8;
+    border: 2.5px solid #D8D8D8;
     border-radius: 16px;
-    padding: 16px 18px;
+    padding: 14px 18px;
     cursor: pointer;
     background: #fff;
-    transition: all 0.15s;
     font-size: 16px;
     font-weight: 700;
     color: #3F3F3F;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    box-shadow: 0 5px 0 #C8C8C8;
+    transition: box-shadow 0.12s ease, transform 0.12s ease, border-color 0.15s;
   }
-  .source-item:hover { border-color: #316FEA; background: #F5F8FF; }
+  .source-item:active {
+    box-shadow: none;
+    transform: translateY(5px);
+  }
   .source-item.selected {
     border-color: #316FEA;
     background: #EEF3FF;
-    box-shadow: 0 0 0 3px #316FEA33;
+    box-shadow: 0 5px 0 #1a4fbb;
+  }
+  .source-item.selected:active {
+    box-shadow: none;
+    transform: translateY(5px);
   }
   .source-icon {
-    width: 42px; height: 42px;
-    background: #EFEFEF;
-    border-radius: 50%;
+    width: 44px; height: 44px;
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
     flex-shrink: 0;
+    overflow: hidden;
   }
 
   /* Bottom bar */
@@ -241,190 +275,189 @@
       <!-- Cowok kulit terang -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av1')">
         <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="220" fill="#f8f8f8"/>
-          <!-- badan seragam putih -->
-          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
-          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
-          <!-- leher -->
-          <rect x="85" y="128" width="30" height="22" fill="#FDDCB5"/>
-          <!-- kepala -->
-          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#FDDCB5"/>
-          <!-- rambut -->
-          <ellipse cx="100" cy="78" rx="48" ry="30" fill="#1a0f00"/>
-          <rect x="52" y="78" width="18" height="36" rx="8" fill="#1a0f00"/>
-          <rect x="130" y="78" width="18" height="36" rx="8" fill="#1a0f00"/>
-          <!-- telinga -->
-          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
-          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
-          <!-- alis -->
-          <path d="M78 95 Q88 91 96 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M104 95 Q112 91 122 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <!-- mata -->
-          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
-          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
-          <circle cx="88" cy="104" r="5" fill="#2c1810"/>
-          <circle cx="114" cy="104" r="5" fill="#2c1810"/>
-          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
-          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
-          <!-- hidung -->
-          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#e8b98a"/>
-          <!-- senyum -->
-          <path d="M88 126 Q100 134 112 126" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- dasi -->
-          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
-          <!-- emblem -->
-          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
-          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
-        </svg>
+  <rect width="200" height="220" fill="#fff" rx="17"/>
+  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
+  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
+  <rect x="84" y="133" width="32" height="22" fill="#FDDCB5"/>
+  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#FDDCB5"/>
+  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
+  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
+  <path d="M48 95 Q48 52 100 52 Q152 52 152 95 Q148 68 100 65 Q52 68 48 95Z" fill="#1a0f00"/>
+  <rect x="48" y="90" width="14" height="30" rx="7" fill="#1a0f00"/>
+  <rect x="138" y="90" width="14" height="30" rx="7" fill="#1a0f00"/>
+  <path d="M80 92 Q90 87 98 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M102 92 Q110 87 120 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <circle cx="90" cy="102" r="5.5" fill="#1a0f00"/>
+  <circle cx="112" cy="102" r="5.5" fill="#1a0f00"/>
+  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
+  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
+  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#e8b98a"/>
+  <path d="M89 125 Q100 133 111 125" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
+  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
+  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
+  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
+  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
+</svg>
       </div>
 
       <!-- Cowok kulit gelap -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av2')">
         <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="220" fill="#f8f8f8"/>
-          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
-          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
-          <rect x="85" y="128" width="30" height="22" fill="#8D5524"/>
-          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#8D5524"/>
-          <ellipse cx="100" cy="78" rx="48" ry="30" fill="#0d0600"/>
-          <rect x="52" y="78" width="18" height="36" rx="8" fill="#0d0600"/>
-          <rect x="130" y="78" width="18" height="36" rx="8" fill="#0d0600"/>
-          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#8D5524"/>
-          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#8D5524"/>
-          <path d="M78 95 Q88 91 96 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M104 95 Q112 91 122 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
-          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
-          <circle cx="88" cy="104" r="5" fill="#1a0a00"/>
-          <circle cx="114" cy="104" r="5" fill="#1a0a00"/>
-          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
-          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
-          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#6b3a1f"/>
-          <path d="M88 126 Q100 134 112 126" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
-          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
-          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
-        </svg>
+  <rect width="200" height="220" fill="#fff" rx="17"/>
+  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
+  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
+  <rect x="84" y="133" width="32" height="22" fill="#8D5524"/>
+  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#8D5524"/>
+  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#8D5524"/>
+  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#8D5524"/>
+  <path d="M48 95 Q48 52 100 52 Q152 52 152 95 Q148 68 100 65 Q52 68 48 95Z" fill="#0d0600"/>
+  <rect x="48" y="90" width="14" height="30" rx="7" fill="#0d0600"/>
+  <rect x="138" y="90" width="14" height="30" rx="7" fill="#0d0600"/>
+  <path d="M80 92 Q90 87 98 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M102 92 Q110 87 120 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <circle cx="90" cy="102" r="5.5" fill="#0d0600"/>
+  <circle cx="112" cy="102" r="5.5" fill="#0d0600"/>
+  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
+  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
+  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#6b3a1f"/>
+  <path d="M89 125 Q100 133 111 125" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
+  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
+  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
+  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
+  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
+</svg>
       </div>
 
       <!-- Cewek rambut pendek kulit terang -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av3')">
         <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="220" fill="#f8f8f8"/>
-          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
-          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
-          <rect x="85" y="128" width="30" height="22" fill="#FDDCB5"/>
-          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#FDDCB5"/>
-          <!-- rambut bob -->
-          <ellipse cx="100" cy="80" rx="50" ry="32" fill="#1a0f00"/>
-          <rect x="50" y="80" width="16" height="50" rx="8" fill="#1a0f00"/>
-          <rect x="134" y="80" width="16" height="50" rx="8" fill="#1a0f00"/>
-          <rect x="50" y="120" width="100" height="16" rx="8" fill="#1a0f00"/>
-          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
-          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#FDDCB5"/>
-          <path d="M78 95 Q88 91 96 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M104 95 Q112 91 122 95" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
-          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
-          <circle cx="88" cy="104" r="5" fill="#2c1810"/>
-          <circle cx="114" cy="104" r="5" fill="#2c1810"/>
-          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
-          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
-          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#e8b98a"/>
-          <path d="M88 126 Q100 134 112 126" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
-          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
-          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
-        </svg>
+  <rect width="200" height="220" fill="#fff" rx="17"/>
+  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
+  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
+  <rect x="84" y="133" width="32" height="22" fill="#FDDCB5"/>
+  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#FDDCB5"/>
+  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
+  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#FDDCB5"/>
+  <path d="M48 90 Q48 52 100 52 Q152 52 152 90 Q150 70 100 68 Q50 70 48 90Z" fill="#1a0f00"/>
+  <rect x="44" y="88" width="16" height="55" rx="8" fill="#1a0f00"/>
+  <rect x="140" y="88" width="16" height="55" rx="8" fill="#1a0f00"/>
+  <rect x="44" y="130" width="112" height="14" rx="7" fill="#1a0f00"/>
+  <path d="M80 92 Q90 87 98 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M102 92 Q110 87 120 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <circle cx="90" cy="102" r="5.5" fill="#1a0f00"/>
+  <circle cx="112" cy="102" r="5.5" fill="#1a0f00"/>
+  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
+  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
+  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#e8b98a"/>
+  <path d="M89 125 Q100 133 111 125" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
+  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
+  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
+  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
+  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
+</svg>
       </div>
 
       <!-- Cewek rambut pendek kulit gelap -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av4')">
         <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="220" fill="#f8f8f8"/>
-          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
-          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
-          <rect x="85" y="128" width="30" height="22" fill="#8D5524"/>
-          <ellipse cx="100" cy="108" rx="48" ry="52" fill="#8D5524"/>
-          <ellipse cx="100" cy="80" rx="50" ry="32" fill="#0d0600"/>
-          <rect x="50" y="80" width="16" height="50" rx="8" fill="#0d0600"/>
-          <rect x="134" y="80" width="16" height="50" rx="8" fill="#0d0600"/>
-          <rect x="50" y="120" width="100" height="16" rx="8" fill="#0d0600"/>
-          <ellipse cx="52" cy="108" rx="8" ry="10" fill="#8D5524"/>
-          <ellipse cx="148" cy="108" rx="8" ry="10" fill="#8D5524"/>
-          <path d="M78 95 Q88 91 96 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M104 95 Q112 91 122 95" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <ellipse cx="87" cy="103" rx="7" ry="8" fill="#fff"/>
-          <ellipse cx="113" cy="103" rx="7" ry="8" fill="#fff"/>
-          <circle cx="88" cy="104" r="5" fill="#1a0a00"/>
-          <circle cx="114" cy="104" r="5" fill="#1a0a00"/>
-          <circle cx="89" cy="102" r="1.5" fill="#fff"/>
-          <circle cx="115" cy="102" r="1.5" fill="#fff"/>
-          <ellipse cx="100" cy="116" rx="5" ry="3.5" fill="#6b3a1f"/>
-          <path d="M88 126 Q100 134 112 126" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <polygon points="100,165 95,185 100,181 105,185" fill="#1565C0"/>
-          <circle cx="70" cy="172" r="8" fill="#FFC107"/>
-          <circle cx="70" cy="172" r="5" fill="#FF8F00"/>
-        </svg>
+  <rect width="200" height="220" fill="#fff" rx="17"/>
+  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
+  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
+  <rect x="84" y="133" width="32" height="22" fill="#8D5524"/>
+  <ellipse cx="100" cy="108" rx="52" ry="56" fill="#8D5524"/>
+  <ellipse cx="48" cy="110" rx="9" ry="11" fill="#8D5524"/>
+  <ellipse cx="152" cy="110" rx="9" ry="11" fill="#8D5524"/>
+  <path d="M48 90 Q48 52 100 52 Q152 52 152 90 Q150 70 100 68 Q50 70 48 90Z" fill="#0d0600"/>
+  <rect x="44" y="88" width="16" height="55" rx="8" fill="#0d0600"/>
+  <rect x="140" y="88" width="16" height="55" rx="8" fill="#0d0600"/>
+  <rect x="44" y="130" width="112" height="14" rx="7" fill="#0d0600"/>
+  <path d="M80 92 Q90 87 98 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M102 92 Q110 87 120 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <circle cx="90" cy="102" r="5.5" fill="#0d0600"/>
+  <circle cx="112" cy="102" r="5.5" fill="#0d0600"/>
+  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
+  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
+  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#6b3a1f"/>
+  <path d="M89 125 Q100 133 111 125" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
+  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
+  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
+  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
+  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
+</svg>
       </div>
 
       <!-- Cewek hijab kulit terang -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av5')">
         <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="220" fill="#f8f8f8"/>
-          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
-          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
-          <rect x="85" y="130" width="30" height="18" fill="#FDDCB5"/>
-          <!-- hijab luar -->
-          <ellipse cx="100" cy="95" rx="56" ry="62" fill="#5c6bc0"/>
-          <!-- wajah -->
-          <ellipse cx="100" cy="108" rx="40" ry="44" fill="#FDDCB5"/>
-          <!-- hijab dalam (frame wajah) -->
-          <path d="M60 95 Q60 148 100 152 Q140 148 140 95 Q140 140 100 142 Q60 140 60 95Z" fill="#5c6bc0"/>
-          <ellipse cx="52" cy="112" rx="7" ry="9" fill="#FDDCB5"/>
-          <ellipse cx="148" cy="112" rx="7" ry="9" fill="#FDDCB5"/>
-          <path d="M80 98 Q90 94 98 98" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M102 98 Q110 94 120 98" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <ellipse cx="89" cy="107" rx="7" ry="8" fill="#fff"/>
-          <ellipse cx="111" cy="107" rx="7" ry="8" fill="#fff"/>
-          <circle cx="90" cy="108" r="5" fill="#2c1810"/>
-          <circle cx="112" cy="108" r="5" fill="#2c1810"/>
-          <circle cx="91" cy="106" r="1.5" fill="#fff"/>
-          <circle cx="113" cy="106" r="1.5" fill="#fff"/>
-          <ellipse cx="100" cy="119" rx="5" ry="3.5" fill="#e8b98a"/>
-          <path d="M89 129 Q100 137 111 129" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <polygon points="100,163 95,182 100,178 105,182" fill="#1565C0"/>
-          <circle cx="70" cy="170" r="8" fill="#FFC107"/>
-          <circle cx="70" cy="170" r="5" fill="#FF8F00"/>
-        </svg>
+  <rect width="200" height="220" fill="#fff" rx="17"/>
+  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
+  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
+  <rect x="82" y="138" width="36" height="16" fill="#FDDCB5"/>
+  <ellipse cx="100" cy="100" rx="60" ry="68" fill="#5c6bc0"/>
+  <ellipse cx="100" cy="108" rx="44" ry="48" fill="#FDDCB5"/>
+  <path d="M56 118 Q56 160 100 164 Q144 160 144 118" fill="#5c6bc0"/>
+  <path d="M80 92 Q90 87 98 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M102 92 Q110 87 120 92" stroke="#2c1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <circle cx="90" cy="102" r="5.5" fill="#1a0f00"/>
+  <circle cx="112" cy="102" r="5.5" fill="#1a0f00"/>
+  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
+  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
+  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#e8b98a"/>
+  <path d="M89 125 Q100 133 111 125" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
+  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
+  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
+  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
+  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
+</svg>
       </div>
 
       <!-- Cewek hijab kulit gelap -->
       <div class="avatar-card" onclick="pilihAvatar(this,'av6')">
         <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="220" fill="#f8f8f8"/>
-          <rect x="40" y="145" width="120" height="90" rx="12" fill="#fff"/>
-          <rect x="40" y="145" width="120" height="20" rx="6" fill="#1a237e"/>
-          <rect x="85" y="130" width="30" height="18" fill="#8D5524"/>
-          <ellipse cx="100" cy="95" rx="56" ry="62" fill="#4a148c"/>
-          <ellipse cx="100" cy="108" rx="40" ry="44" fill="#8D5524"/>
-          <path d="M60 95 Q60 148 100 152 Q140 148 140 95 Q140 140 100 142 Q60 140 60 95Z" fill="#4a148c"/>
-          <ellipse cx="52" cy="112" rx="7" ry="9" fill="#8D5524"/>
-          <ellipse cx="148" cy="112" rx="7" ry="9" fill="#8D5524"/>
-          <path d="M80 98 Q90 94 98 98" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M102 98 Q110 94 120 98" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <ellipse cx="89" cy="107" rx="7" ry="8" fill="#fff"/>
-          <ellipse cx="111" cy="107" rx="7" ry="8" fill="#fff"/>
-          <circle cx="90" cy="108" r="5" fill="#1a0a00"/>
-          <circle cx="112" cy="108" r="5" fill="#1a0a00"/>
-          <circle cx="91" cy="106" r="1.5" fill="#fff"/>
-          <circle cx="113" cy="106" r="1.5" fill="#fff"/>
-          <ellipse cx="100" cy="119" rx="5" ry="3.5" fill="#6b3a1f"/>
-          <path d="M89 129 Q100 137 111 129" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <polygon points="100,163 95,182 100,178 105,182" fill="#1565C0"/>
-          <circle cx="70" cy="170" r="8" fill="#FFC107"/>
-          <circle cx="70" cy="170" r="5" fill="#FF8F00"/>
-        </svg>
+  <rect width="200" height="220" fill="#fff" rx="17"/>
+  <rect x="30" y="150" width="140" height="80" fill="#fff"/>
+  <rect x="30" y="150" width="140" height="16" rx="4" fill="#1a237e"/>
+  <rect x="82" y="138" width="36" height="16" fill="#8D5524"/>
+  <ellipse cx="100" cy="100" rx="60" ry="68" fill="#4a148c"/>
+  <ellipse cx="100" cy="108" rx="44" ry="48" fill="#8D5524"/>
+  <path d="M56 118 Q56 160 100 164 Q144 160 144 118" fill="#4a148c"/>
+  <path d="M80 92 Q90 87 98 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M102 92 Q110 87 120 92" stroke="#1a0a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="89" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <ellipse cx="111" cy="101" rx="7.5" ry="8.5" fill="#fff"/>
+  <circle cx="90" cy="102" r="5.5" fill="#0d0600"/>
+  <circle cx="112" cy="102" r="5.5" fill="#0d0600"/>
+  <circle cx="91.5" cy="100" r="2" fill="#fff"/>
+  <circle cx="113.5" cy="100" r="2" fill="#fff"/>
+  <ellipse cx="100" cy="115" rx="4.5" ry="3" fill="#6b3a1f"/>
+  <path d="M89 125 Q100 133 111 125" stroke="#6b3a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M30 166 L60 155 L100 165 L140 155 L170 166 L170 220 L30 220Z" fill="#fff"/>
+  <path d="M85 155 L100 168 L115 155" fill="none" stroke="#ddd" stroke-width="1.5"/>
+  <polygon points="100,165 96,190 100,185 104,190" fill="#1a237e"/>
+  <polygon points="96,165 104,165 102,172 98,172" fill="#1565C0"/>
+  <circle cx="68" cy="178" r="9" fill="#FFC107"/>
+  <circle cx="68" cy="178" r="6" fill="#FF8F00"/>
+</svg>
       </div>
 
     </div>
