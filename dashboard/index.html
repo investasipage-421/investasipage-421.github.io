@@ -74,7 +74,7 @@
   }
 
   .ob-content {
-    padding: 90px 16px 110px;
+    padding: 90px 16px 30px;
     max-width: 480px;
     margin: 0 auto;
     width: 100%;
@@ -172,40 +172,7 @@
     overflow: hidden;
   }
 
-  /* Bottom bar */
-  .ob-bottom {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: #fff;
-    border-top: 3px solid #E8E8E8;
-    padding: 14px 16px 24px;
-    display: flex; justify-content: center;
-  }
-  .ob-bottom-inner { width: 100%; max-width: 480px; }
-  .ob-next-btn {
-    width: 100%;
-    background: var(--cta);
-    border: 2px solid var(--cta-shadow);
-    box-shadow: 0 5px 0 var(--cta-shadow);
-    border-radius: 14px;
-    padding: 15px;
-    color: #fff;
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .ob-next-btn:active { box-shadow: none; transform: translateY(5px); }
-  .ob-next-btn:disabled {
-    background: #E0E0E0;
-    border-color: #C8C8C8;
-    box-shadow: 0 5px 0 #C8C8C8;
-    color: #A0A0A0;
-    cursor: not-allowed;
-    transform: none;
-  }
+
 
   /* Modal */
   .modal-overlay {
@@ -388,12 +355,7 @@
   </div>
 </div>
 
-<!-- Bottom bar -->
-<div class="ob-bottom">
-  <div class="ob-bottom-inner">
-    <button class="ob-next-btn" id="nextBtn" onclick="nextStep()" disabled>Lanjut</button>
-  </div>
-</div>
+
 
 <script>
   let currentStep = 1;
