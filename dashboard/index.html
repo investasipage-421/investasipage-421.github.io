@@ -373,14 +373,7 @@
   }
 
   function updateNextBtn() {
-    const btn = document.getElementById('nextBtn');
-    if (currentStep === 1) {
-      btn.disabled = !selectedAvatar;
-      btn.textContent = 'LANJUT';
-    } else {
-      btn.disabled = !selectedSumber;
-      btn.textContent = 'SELESAI';
-    }
+    // tombol lanjut sudah dihapus
   }
 
   function prevStep() {
@@ -388,27 +381,22 @@
     else { document.getElementById('modalOverlay').classList.add('show'); }
   }
 
-  function nextStep() {
-    if (currentStep < totalSteps) { currentStep++; updateUI(); }
-    else {
-      localStorage.setItem('orbit_avatar', selectedAvatar);
-      localStorage.setItem('orbit_sumber', selectedSumber);
-      window.location.href = '/home';
-    }
-  }
-
   function pilihAvatar(el, id) {
     document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     selectedAvatar = id;
-    updateNextBtn();
+    setTimeout(() => { currentStep = 2; updateUI(); }, 300);
   }
 
   function pilihSumber(el, id) {
     document.querySelectorAll('.source-item').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     selectedSumber = id;
-    updateNextBtn();
+    setTimeout(() => {
+      localStorage.setItem('orbit_avatar', selectedAvatar);
+      localStorage.setItem('orbit_sumber', selectedSumber);
+      window.location.href = '/home';
+    }, 300);
   }
 
   window.tutupModal = function() {
