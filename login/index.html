@@ -205,7 +205,12 @@
       setLoading(true);
       try {
         const result = await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = '/dashboard';
+        // Cek apakah sudah pernah isi profil
+        if (localStorage.getItem('orbit_avatar')) {
+          window.location.href = '/home';
+        } else {
+          window.location.href = '/dashboard';
+        }
       } catch (e) {
         setLoading(false);
         showError('Email atau kata sandi salah. Silakan coba lagi.');
@@ -215,7 +220,11 @@
     window._loginGoogle = async function() {
       try {
         await signInWithPopup(auth, provider);
-        window.location.href = '/dashboard';
+        if (localStorage.getItem('orbit_avatar')) {
+          window.location.href = '/home';
+        } else {
+          window.location.href = '/dashboard';
+        }
       } catch (e) {
         showError('Login Google gagal. Coba lagi.');
       }
