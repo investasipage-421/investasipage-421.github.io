@@ -133,8 +133,7 @@
     left: 0; right: 0;
     bottom: 84px;
     background: #fff;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+    border-top: 2px solid #E8E8E8;
     z-index: 201;
     transform: translateY(110%);
     transition: transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1);
@@ -150,7 +149,7 @@
     width: 40px; height: 4px;
     background: #D9D9D9;
     border-radius: 99px;
-    margin: 12px auto 8px;
+    margin: 10px auto 6px;
   }
 
   .lainnya-item {
@@ -362,9 +361,18 @@
     }
 
     function bukaLainnya() {
-      document.getElementById('lainnyaPanel').classList.add('show');
-      document.getElementById('lainnyaOverlay').classList.add('show');
-      document.getElementById('nav-lainnya').classList.add('active');
+      const panel = document.getElementById('lainnyaPanel');
+      const overlay = document.getElementById('lainnyaOverlay');
+      const btn = document.getElementById('nav-lainnya');
+      if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        overlay.classList.remove('show');
+        btn.classList.remove('active');
+      } else {
+        panel.classList.add('show');
+        overlay.classList.add('show');
+        btn.classList.add('active');
+      }
     }
 
     function tutupLainnya() {
