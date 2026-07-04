@@ -72,49 +72,71 @@
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
-    padding: 8px 0 20px;
+    padding: 8px 8px 20px;
     z-index: 100;
   }
   .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     cursor: pointer;
-    padding: 4px 10px;
-    border-radius: 10px;
-    transition: all 0.15s;
     font-size: 10px;
     font-weight: 700;
     color: #A0A0A0;
     border: none;
     background: none;
+    padding: 0;
+  }
+  .nav-box {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: #F0F0F0;
+    border: 2px solid #D8D8D8;
+    box-shadow: 0 4px 0 #C8C8C8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    transition: all 0.15s ease;
+  }
+  .nav-item:active .nav-box {
+    box-shadow: none;
+    transform: translateY(4px);
+  }
+  .nav-item.active .nav-box {
+    background: #EEF3FF;
+    border-color: #316FEA;
+    box-shadow: 0 4px 0 #1a4fbb;
+  }
+  .nav-item.active:active .nav-box {
+    box-shadow: none;
+    transform: translateY(4px);
   }
   .nav-item.active { color: var(--orbit-1); }
-  .nav-item .nav-icon { font-size: 22px; }
+  .nav-box svg { color: #A0A0A0; }
+  .nav-item.active .nav-box svg { color: #316FEA; }
 
-  /* Tanya AI center button */
+  /* Tanya AI center button - sama tinggi dengan yang lain */
   .nav-item.center-btn {
-    margin-top: -28px;
+    margin-top: 0;
     padding: 0;
     background: none;
     border: none;
   }
   .center-btn-inner {
-    width: 60px; height: 60px;
-    border-radius: 18px;
+    width: 48px; height: 48px;
+    border-radius: 14px;
     background: linear-gradient(135deg, #FFC508, #FFD740);
-    border: 3px solid #C99B06;
-    box-shadow: 0 5px 0 #C99B06;
+    border: 2px solid #C99B06;
+    box-shadow: 0 4px 0 #C99B06;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.15s;
-    margin-bottom: 4px;
+    margin-bottom: 0;
   }
   .nav-item.center-btn:active .center-btn-inner {
     box-shadow: none;
-    transform: translateY(5px);
+    transform: translateY(4px);
   }
-  .center-btn-inner svg { width: 36px; height: 36px; }
+  .center-btn-inner svg { width: 28px; height: 28px; }
   .nav-item.center-btn span:last-child { font-size: 10px; font-weight: 800; color: #C99B06; }
 
   /* Notif dot */
@@ -175,52 +197,59 @@
   <!-- Bottom nav -->
   <div class="bottom-nav">
     <button class="nav-item active" id="nav-beranda" onclick="pindahTab('beranda')">
-      <div class="nav-icon-wrap"><span class="nav-icon">🏠</span></div>
+      <div class="nav-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z" fill="currentColor"/>
+</svg></div>
       <span>Beranda</span>
     </button>
 
     <button class="nav-item" id="nav-belajar" onclick="pindahTab('belajar')">
-      <div class="nav-icon-wrap">
-        <span class="nav-icon">▶️</span>
+      <div class="nav-box" style="position:relative;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="3" width="18" height="18" rx="4" fill="currentColor" opacity="0.15"/>
+  <path d="M10 8.5L16 12L10 15.5V8.5Z" fill="currentColor"/>
+</svg>
         <span class="notif-dot"></span>
       </div>
       <span>Belajar</span>
     </button>
 
-    <!-- Tanya AI (tengah) -->
     <button class="nav-item center-btn" id="nav-tanyaai" onclick="pindahTab('tanyaai')">
-      <div class="center-btn-inner">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="28" r="16" fill="#FF8A3D"/>
-          <ellipse cx="26" cy="25" rx="3" ry="4" fill="#fff"/>
-          <ellipse cx="38" cy="25" rx="3" ry="4" fill="#fff"/>
-          <circle cx="27" cy="26" r="2" fill="#333"/>
-          <circle cx="39" cy="26" r="2" fill="#333"/>
-          <path d="M26 34 Q32 39 38 34" stroke="#c8855a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <rect x="16" y="2" width="32" height="8" rx="4" fill="#FF3D00"/>
-        </svg>
-      </div>
+      <div class="center-btn-inner"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="8" y="14" width="48" height="42" rx="10" fill="#FF8A3D"/>
+  <rect x="8" y="14" width="48" height="12" rx="6" fill="#FF3D00"/>
+  <ellipse cx="24" cy="38" rx="7" ry="8" fill="#fff"/>
+  <ellipse cx="40" cy="38" rx="7" ry="8" fill="#fff"/>
+  <circle cx="25" cy="39" r="4" fill="#1a0f00"/>
+  <circle cx="41" cy="39" r="4" fill="#1a0f00"/>
+  <circle cx="26.5" cy="37" r="1.5" fill="#fff"/>
+  <circle cx="42.5" cy="37" r="1.5" fill="#fff"/>
+  <path d="M24 50 Q32 55 40 50" stroke="#c8855a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg></div>
       <span>Tanya AI</span>
     </button>
 
     <button class="nav-item" id="nav-catatan" onclick="pindahTab('catatan')">
-      <div class="nav-icon-wrap"><span class="nav-icon">🔖</span></div>
+      <div class="nav-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 3H18C18.55 3 19 3.45 19 4V21L12 17.5L5 21V4C5 3.45 5.45 3 6 3Z" fill="currentColor"/>
+</svg></div>
       <span>Catatan</span>
     </button>
 
     <button class="nav-item" id="nav-lainnya" onclick="pindahTab('lainnya')">
-      <div class="nav-icon-wrap"><span class="nav-icon">•••</span></div>
+      <div class="nav-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="5" cy="12" r="2" fill="currentColor"/>
+  <circle cx="12" cy="12" r="2" fill="currentColor"/>
+  <circle cx="19" cy="12" r="2" fill="currentColor"/>
+</svg></div>
       <span>Lainnya</span>
     </button>
   </div>
 
   <script>
     function pindahTab(tab) {
-      // Sembunyikan semua tab
       document.querySelectorAll('.wip-box').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-      // Tampilkan tab yang dipilih
       document.getElementById('tab-' + tab).classList.add('active');
       document.getElementById('nav-' + tab).classList.add('active');
     }
