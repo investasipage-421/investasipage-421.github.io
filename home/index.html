@@ -134,6 +134,7 @@
     left: 0; right: 0;
     bottom: 86px;
     background: #fff;
+    border-bottom: 2.5px solid #D8D8D8;
     z-index: 199;
     padding-bottom: 4px;
     opacity: 0;
@@ -372,6 +373,11 @@
       document.getElementById('lainnyaPanel').classList.remove('show');
       document.getElementById('lainnyaOverlay').classList.remove('show');
       document.getElementById('nav-lainnya').classList.remove('active');
+      // Kembalikan tab aktif ke beranda
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.wip-box').forEach(el => el.classList.remove('active'));
+      document.getElementById('nav-beranda').classList.add('active');
+      document.getElementById('tab-beranda').classList.add('active');
     }
   </script>
 
