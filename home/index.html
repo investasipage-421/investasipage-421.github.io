@@ -117,13 +117,14 @@
 
   /* Lainnya overlay */
   .lainnya-overlay {
-    position: fixed; inset: 0;
-    bottom: 84px;
-    background: rgba(0,0,0,0.3);
-    z-index: 200;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    bottom: 86px;
+    background: rgba(0,0,0,0.15);
+    z-index: 198;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.2s ease;
   }
   .lainnya-overlay.show { opacity: 1; pointer-events: all; }
 
@@ -131,11 +132,10 @@
   .lainnya-panel {
     position: fixed;
     left: 0; right: 0;
-    bottom: 84px;
+    bottom: 86px;
     background: #fff;
-    border-top: 2px solid #E8E8E8;
-    z-index: 201;
-    padding-bottom: 8px;
+    z-index: 199;
+    padding-bottom: 4px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
