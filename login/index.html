@@ -96,7 +96,7 @@
       <div class="pw-field">
         <input id="pw" type="password" placeholder="Kata sandi" oninput="cekInput()">
         <button type="button" class="pw-toggle" id="toggleBtn" onclick="togglePw()">
-          <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -129,14 +129,9 @@
     </div>
   </div>
 
-  <!-- Script biasa untuk fungsi HTML -->
   <script>
-    // Placeholder untuk fungsi Firebase (diisi setelah module load)
-    function loginEmail() { if (window._loginEmail) window._loginEmail(); }
-    function loginGoogle() { if (window._loginGoogle) window._loginGoogle(); }
-
-    const eyeOpenSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#316FEA" stroke-width="2"/></svg>`;
-    const eyeClosedSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="1" x2="23" y2="23" stroke="#316FEA" stroke-width="2" stroke-linecap="round"/></svg>`;
+    const eyeOpenSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#316FEA" stroke-width="2"/></svg>`;
+    const eyeClosedSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" stroke="#316FEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="1" x2="23" y2="23" stroke="#316FEA" stroke-width="2" stroke-linecap="round"/></svg>`;
 
     function cekInput() {
       const email = document.getElementById('email').value.trim();
@@ -155,12 +150,14 @@
         btn.innerHTML = eyeClosedSVG;
       }
     }
+
+    function loginEmail() { if (window._loginEmail) window._loginEmail(); }
+    function loginGoogle() { if (window._loginGoogle) window._loginGoogle(); }
   </script>
 
-  <!-- Firebase module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, linkWithPopup, fetchSignInMethodsForEmail, linkWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
@@ -177,20 +174,14 @@
     const provider = new GoogleAuthProvider();
 
     let toastTimer = null;
-    let infoTimer = null;
-
-    function showInfo() {
-      const panel = document.getElementById('infoPanel');
-      panel.classList.add('show');
-      if (infoTimer) clearTimeout(infoTimer);
-      infoTimer = setTimeout(() => panel.classList.remove('show'), 5000);
-    }
 
     function showError(msg) {
       document.getElementById('errorMsg').textContent = msg;
       document.getElementById('errorPanel').classList.add('show');
       if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => document.getElementById('errorPanel').classList.remove('show'), 5000);
+      toastTimer = setTimeout(() => {
+        document.getElementById('errorPanel').classList.remove('show');
+      }, 5000);
     }
 
     function setLoading(loading) {
@@ -199,48 +190,34 @@
       btn.classList.toggle('loading', loading);
     }
 
+    function redirect() {
+      if (localStorage.getItem('orbit_avatar')) {
+        window.location.href = '/home';
+      } else {
+        window.location.href = '/dashboard';
+      }
+    }
+
     window._loginEmail = async function() {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('pw').value;
       setLoading(true);
       try {
-        const result = await signInWithEmailAndPassword(auth, email, password);
-        // Cek apakah sudah pernah isi profil
-        if (localStorage.getItem('orbit_avatar')) {
-          window.location.href = '/home';
-        } else {
-          window.location.href = '/dashboard';
-        }
+        await signInWithEmailAndPassword(auth, email, password);
+        redirect();
       } catch (e) {
         setLoading(false);
-        if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
-          // Cek apakah email ini pakai Google
-          try {
-            const { fetchSignInMethodsForEmail } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
-            const emailVal = document.getElementById('email').value.trim();
-            const methods = await fetchSignInMethodsForEmail(auth, emailVal);
-            if (methods.includes('google.com')) {
-              // Langsung login Google otomatis
-              showError('Akun ini menggunakan Google. Mengalihkan ke Google login...');
-              setTimeout(async () => {
-                try {
-                  await signInWithPopup(auth, provider);
-                  if (localStorage.getItem('orbit_avatar')) {
-                    window.location.href = '/home';
-                  } else {
-                    window.location.href = '/dashboard';
-                  }
-                } catch {
-                  showError('Login Google gagal. Coba lagi.');
-                }
-              }, 1500);
-            } else {
-              showError('Email atau kata sandi salah. Silakan coba lagi.');
-            }
-          } catch {
+        // Kalau gagal, coba otomatis login Google tanpa tanya
+        try {
+          const result = await signInWithPopup(auth, provider);
+          // Cek apakah email Google sama dengan yang diketik
+          if (result.user.email === email) {
+            redirect();
+          } else {
+            await result.user.delete();
             showError('Email atau kata sandi salah. Silakan coba lagi.');
           }
-        } else {
+        } catch (e2) {
           showError('Email atau kata sandi salah. Silakan coba lagi.');
         }
       }
@@ -248,38 +225,10 @@
 
     window._loginGoogle = async function() {
       try {
-        const result = await signInWithPopup(auth, provider);
-        if (localStorage.getItem('orbit_avatar')) {
-          window.location.href = '/home';
-        } else {
-          window.location.href = '/dashboard';
-        }
+        await signInWithPopup(auth, provider);
+        redirect();
       } catch (e) {
-        if (e.code === 'auth/account-exists-with-different-credential') {
-          // Email sudah ada akun manual - minta user masukkan password dulu
-          const email = e.customData?.email;
-          const pw = prompt('Email ini sudah terdaftar manual. Masukkan kata sandi kamu untuk menghubungkan akun Google:');
-          if (pw) {
-            try {
-              // Login manual dulu
-              const result = await signInWithEmailAndPassword(auth, email, pw);
-              // Link akun Google ke akun manual
-              await linkWithPopup(result.user, provider);
-              showError('Akun Google berhasil dihubungkan! Sekarang kamu bisa login dengan keduanya.');
-              setTimeout(() => {
-                if (localStorage.getItem('orbit_avatar')) {
-                  window.location.href = '/home';
-                } else {
-                  window.location.href = '/dashboard';
-                }
-              }, 1500);
-            } catch (linkErr) {
-              showError('Gagal menghubungkan akun. Pastikan kata sandi benar.');
-            }
-          }
-        } else {
-          showError('Login Google gagal. Coba lagi.');
-        }
+        showError('Login Google gagal. Coba lagi.');
       }
     };
   </script>
