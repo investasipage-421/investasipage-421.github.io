@@ -160,7 +160,7 @@
   <!-- Firebase module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, linkWithPopup, fetchSignInMethodsForEmail, linkWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
@@ -213,20 +213,73 @@
         }
       } catch (e) {
         setLoading(false);
-        showError('Email atau kata sandi salah. Silakan coba lagi.');
+        if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
+          // Cek apakah email ini pakai Google
+          try {
+            const { fetchSignInMethodsForEmail } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+            const emailVal = document.getElementById('email').value.trim();
+            const methods = await fetchSignInMethodsForEmail(auth, emailVal);
+            if (methods.includes('google.com')) {
+              // Langsung login Google otomatis
+              showError('Akun ini menggunakan Google. Mengalihkan ke Google login...');
+              setTimeout(async () => {
+                try {
+                  await signInWithPopup(auth, provider);
+                  if (localStorage.getItem('orbit_avatar')) {
+                    window.location.href = '/home';
+                  } else {
+                    window.location.href = '/dashboard';
+                  }
+                } catch {
+                  showError('Login Google gagal. Coba lagi.');
+                }
+              }, 1500);
+            } else {
+              showError('Email atau kata sandi salah. Silakan coba lagi.');
+            }
+          } catch {
+            showError('Email atau kata sandi salah. Silakan coba lagi.');
+          }
+        } else {
+          showError('Email atau kata sandi salah. Silakan coba lagi.');
+        }
       }
     };
 
     window._loginGoogle = async function() {
       try {
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
         if (localStorage.getItem('orbit_avatar')) {
           window.location.href = '/home';
         } else {
           window.location.href = '/dashboard';
         }
       } catch (e) {
-        showError('Login Google gagal. Coba lagi.');
+        if (e.code === 'auth/account-exists-with-different-credential') {
+          // Email sudah ada akun manual - minta user masukkan password dulu
+          const email = e.customData?.email;
+          const pw = prompt('Email ini sudah terdaftar manual. Masukkan kata sandi kamu untuk menghubungkan akun Google:');
+          if (pw) {
+            try {
+              // Login manual dulu
+              const result = await signInWithEmailAndPassword(auth, email, pw);
+              // Link akun Google ke akun manual
+              await linkWithPopup(result.user, provider);
+              showError('Akun Google berhasil dihubungkan! Sekarang kamu bisa login dengan keduanya.');
+              setTimeout(() => {
+                if (localStorage.getItem('orbit_avatar')) {
+                  window.location.href = '/home';
+                } else {
+                  window.location.href = '/dashboard';
+                }
+              }, 1500);
+            } catch (linkErr) {
+              showError('Gagal menghubungkan akun. Pastikan kata sandi benar.');
+            }
+          }
+        } else {
+          showError('Login Google gagal. Coba lagi.');
+        }
       }
     };
   </script>
