@@ -135,14 +135,14 @@
     background: #fff;
     border-top: 2px solid #E8E8E8;
     z-index: 201;
-    transform: translateY(110%);
-    transition: transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1);
     padding-bottom: 8px;
-    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
   }
   .lainnya-panel.show {
-    transform: translateY(0);
-    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
   }
 
   .lainnya-handle {
