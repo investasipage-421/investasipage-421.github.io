@@ -410,8 +410,6 @@
 
     window.keluarAkun = async function() {
       await signOut(auth);
-      localStorage.removeItem('orbit_avatar');
-      localStorage.removeItem('orbit_sumber');
       window.location.href = '/login';
     };
   </script>
