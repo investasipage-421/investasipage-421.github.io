@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masuk Orbit</title>        
+<title>Masuk Orbit</title>
 <link rel="stylesheet" href="/css/style.css">
 <style>
   .loading { opacity: 0.7; pointer-events: none; }
@@ -216,8 +216,8 @@
       }, 5000);
     }
 
-    function redirect() {
-      if (localStorage.getItem('orbit_avatar')) {
+    function redirect(uid) {
+      if (localStorage.getItem('orbit_avatar_' + uid)) {
         window.location.href = '/home';
       } else {
         window.location.href = '/dashboard';
@@ -229,8 +229,8 @@
       const password = document.getElementById('pw').value;
       setLoading(true);
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        redirect();
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        redirect(result.user.uid);
       } catch (e) {
         setLoading(false);
         if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
@@ -243,8 +243,8 @@
 
     window._loginGoogle = async function() {
       try {
-        await signInWithPopup(auth, provider);
-        redirect();
+        const result2 = await signInWithPopup(auth, provider);
+        redirect(result2.user.uid);
       } catch (e) {
         showError('Login Google gagal. Coba lagi.');
       }
