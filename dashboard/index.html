@@ -358,8 +358,11 @@
 
 
 <script>
-  // Cek UID dari URL param atau Firebase nanti
-  // Sementara pakai generic check, akan diupdate setelah Firebase load
+  // Cek onboarding langsung dari script biasa
+  const _uid = localStorage.getItem('orbit_current_uid');
+  if (_uid && localStorage.getItem('orbit_avatar_' + _uid)) {
+    window.location.href = '/home';
+  }
 
   let currentStep = 1;
   const totalSteps = 2;
