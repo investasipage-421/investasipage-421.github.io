@@ -423,12 +423,19 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 onAuthStateChanged(auth, (user) => {
   if (!user) { window.location.href = '/login'; return; }
-  // Simpan UID untuk dipakai saat save avatar
   localStorage.setItem('orbit_current_uid', user.uid);
   // Kalau sudah pernah isi profil, langsung ke /home
   if (localStorage.getItem('orbit_avatar_' + user.uid)) {
     window.location.href = '/home';
+    return;
   }
+
+  // Fungsi simpan profil pakai UID yang pasti benar
+  window._simpanProfil = function(sumber) {
+    localStorage.setItem('orbit_avatar_' + user.uid, selectedAvatar);
+    localStorage.setItem('orbit_sumber_' + user.uid, sumber);
+    window.location.href = '/home';
+  };
 });
 </script>
 
