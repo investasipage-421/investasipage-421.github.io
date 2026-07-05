@@ -363,8 +363,8 @@
 
   let currentStep = 1;
   const totalSteps = 2;
-  let selectedAvatar = null;
-  let selectedSumber = null;
+  window._orbitAvatar = null;
+  window._orbitSumber = null;
 
   function updateUI() {
     document.querySelectorAll('.step').forEach((el, i) => {
@@ -387,17 +387,17 @@
   function pilihAvatar(el, id) {
     document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
-    selectedAvatar = id;
+    window._orbitAvatar = id;
     setTimeout(() => { currentStep = 2; updateUI(); }, 300);
   }
 
   function pilihSumber(el, id) {
     document.querySelectorAll('.source-item').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
-    selectedSumber = id;
+    window._orbitSumber = id;
     setTimeout(() => {
-      localStorage.setItem('orbit_avatar', selectedAvatar);
-      localStorage.setItem('orbit_sumber', selectedSumber);
+      localStorage.setItem('orbit_avatar', window._orbitAvatar);
+      localStorage.setItem('orbit_sumber', window._orbitSumber);
       window.location.href = '/home';
     }, 300);
   }
@@ -432,7 +432,7 @@ onAuthStateChanged(auth, (user) => {
 
   // Fungsi simpan profil pakai UID yang pasti benar
   window._simpanProfil = function(sumber) {
-    localStorage.setItem('orbit_avatar_' + user.uid, selectedAvatar);
+    localStorage.setItem('orbit_avatar_' + user.uid, window._orbitAvatar);
     localStorage.setItem('orbit_sumber_' + user.uid, sumber);
     window.location.href = '/home';
   };
