@@ -217,6 +217,8 @@
     }
 
     function redirect(uid) {
+      // Simpan UID dulu sebelum redirect
+      localStorage.setItem('orbit_current_uid', uid);
       if (localStorage.getItem('orbit_avatar_' + uid)) {
         window.location.href = '/home';
       } else {
