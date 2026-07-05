@@ -358,6 +358,9 @@
 
 
 <script>
+  // Cek UID dari URL param atau Firebase nanti
+  // Sementara pakai generic check, akan diupdate setelah Firebase load
+
   let currentStep = 1;
   const totalSteps = 2;
   let selectedAvatar = null;
@@ -402,6 +405,31 @@
   window.tutupModal = function() {
     document.getElementById('modalOverlay').classList.remove('show');
   };
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDx5PqjFlKfrBcildKkCs77KjjGJ97dtvA",
+  authDomain: "orbitxy-6e79c.firebaseapp.com",
+  databaseURL: "https://orbitxy-6e79c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "orbitxy-6e79c",
+  storageBucket: "orbitxy-6e79c.firebasestorage.app",
+  messagingSenderId: "1064037228597",
+  appId: "1:1064037228597:web:7a0bdc18ca338ec1d7d17c"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+onAuthStateChanged(auth, (user) => {
+  if (!user) { window.location.href = '/login'; return; }
+  // Simpan UID untuk dipakai saat save avatar
+  localStorage.setItem('orbit_current_uid', user.uid);
+  // Kalau sudah pernah isi profil, langsung ke /home
+  if (localStorage.getItem('orbit_avatar_' + user.uid)) {
+    window.location.href = '/home';
+  }
+});
 </script>
 
 </body>
